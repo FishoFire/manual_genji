@@ -1,0 +1,208 @@
+<html>
+<header>
+<title>manual cp maker</title>
+</header>
+
+
+<body>
+
+<button onclick="Copy()" style="float:left; width:100%">  copy map to clipboard </button>
+
+
+<div id="top bar" style="margin:3px; position:relative; width:100%;float:left"> 
+    <div>
+    <textarea id="txtfield" name="txtfield" rows="1" cols="25"> map maker </textarea>   
+    <textarea id="txtfield" name="txtfield" rows="1" cols="25"> map code</textarea>
+    <textarea id="txtfield" name="txtfield" rows="3" style="display:inline-block;width:100%"> map notes </textarea>
+    </div>
+</div>
+<br/>
+
+<div id="save bar" style="border:1px solid  black; margin:3px; width:100%;float:left; display:none">
+
+    <div style="width:20%; border: 1px solid black; margin:1px; text-align: center; float:left">
+        <b>  Save slot 0</b> <br/> 
+        <textarea id="txtfield" name="txtfield" style="width:95%" rows="1"> savename</textarea> <br/>
+        <button onclick="Save(0)" style="width:95%"> Save </button> <br/>
+        <button onclick="Load(0)" style="width:95%">Load </button>
+    </div>
+    
+    <div style="width:20%; border: 1px solid black; margin:1px; text-align: center; float:left">
+        <b>  Save slot 1</b> <br/> 
+        <textarea id="txtfield" name="txtfield" style="width:95%" rows="1"> savename</textarea> <br/>
+        <button onclick="Save(1)" style="width:95%"> Save </button> <br/>
+        <button onclick="Load(1)" style="width:95%">Load </button>
+    </div>
+
+    <div style="width:20%; border: 1px solid black; margin:1px; text-align: center; float:left">
+        <b>  Save slot 2</b> <br/> 
+        <textarea id="txtfield" name="txtfield" style="width:95%" rows="1"> savename</textarea> <br/>
+        <button onclick="Save(2)" style="width:95%"> Save </button> <br/>
+        <button onclick="Load(2)" style="width:95%">Load </button>
+    </div>
+    
+     <div style="width:20%; border: 1px solid black; margin:1px; text-align: center; float:left">
+        <b>  Save slot 3</b> <br/> 
+        <textarea id="txtfield" name="txtfield" style="width:95%" rows="1"> savename</textarea> <br/>
+        <button onclick="Save(3)" style="width:95%"> Save </button> <br/>
+        <button onclick="Load(3)" style="width:95%">Load </button>
+    </div>
+
+</div>
+<br/>
+
+<div id="button div" style="border:1px solid black; margin:3px;margin-top: 5px;margin-bottom:5px; height:max-content;float:left;width:100%"> 
+    <div id="cp buttons"></div>
+    <button onclick="AddNewCP()" style="float:left;width:100%;margin-top:5px">  +   </button>
+</div>   
+
+<br\>
+
+<div id="cpdata" style="border:1px solid black; margin:3px; height:max-content;float:left;width:100%;display:none;padding:5px"> 
+    <div id="selectedcpnumber">Selected CP: SelectedCp</div>
+    position <textarea id="CPvector" name="txtfield" rows="1" cols="28" onchange="UpdateAfterChange()">0,0,0</textarea> <br/>
+    
+    <div id="hideoptionscp0" style="display:none">
+        <input type="checkbox" id="CPteleportTF" onclick="UpdateAfterChange()"> teleport <textarea id="CPteleportVect" name="txtfield" rows="1" cols="25">0,0,0</textarea> <br/>
+        <input type="checkbox" id="CPdashenable" onclick="UpdateAfterChange()"> dash <br\>
+        <input type="checkbox" id="CPultenable" onclick="UpdateAfterChange()"> ultimate <br\>
+    </div>
+    <textarea id="CPnotes" name="txtfield" rows="3" style="width:100%" onchange="UpdateAfterChange()"></textarea> <br/>
+    <button onclick="RemoveCP()" style="float:left;width:100%">  remove checkpoint  </button>
+</div>
+
+<div id="orbs-kills" style="border:1px solid black; margin:3px; height:max-content;float:left"> 
+    
+    <div id="orb" style="border:1px solid black; margin:3px; height:max-content;float:left;background-color:greenyellow;width:98%"> 
+        position: <textarea id="txtfield" name="txtfield" rows="1" cols="25">0,0,0</textarea> 
+        <input type="checkbox" id="dashenable"> lock 
+        <input type="checkbox" id="dashenable"> dash 
+        <input type="checkbox" id="ultenable"> ultimate
+        <button onclick="AddCP()" style="float:right">  remove orb  </button>
+    </div>
+
+    <div id="kill" style="border:1px solid black; margin:3px; height:max-content;float:left;background-color:red;width:98%"> 
+        position: <textarea id="txtfield" name="txtfield" rows="1" cols="25">0,0,0</textarea> 
+        radius: <textarea id="txtfield" name="txtfield" rows="1" cols="25">0.0</textarea> 
+        <button onclick="AddCP()" style="float:right">  remove orb  </button>
+    </div>
+
+    
+    
+</div>
+<button onclick="AddCP()" style="float:left; width:100%;">  add bounce orb  </button>
+<button onclick="AddCP()" style="float:left; width:100%">  add kill orb  </button>
+
+
+<script>
+
+var SelectedCp = -1
+var CheckPoints = [
+
+]
+
+function UpdateSelection(){
+    document.getElementById("selectedcpnumber").innerHTML  = "Selected: "+ SelectedCp
+    document.getElementById("CPvector").value  =  CheckPoints[parseInt(SelectedCp)][0]
+    document.getElementById("CPteleportTF").checked  = CheckPoints[parseInt(SelectedCp)][1]
+    document.getElementById("CPteleportVect").value  = CheckPoints[parseInt(SelectedCp)][2]
+    document.getElementById("CPdashenable").checked  = CheckPoints[parseInt(SelectedCp)][3]
+    document.getElementById("CPultenable").checked  = CheckPoints[parseInt(SelectedCp)][4]
+    
+    document.getElementById("CPnotes").value  = CheckPoints[parseInt(SelectedCp)][5]
+
+    document.getElementById("hideoptionscp0").style.display =  SelectedCp == 0 ? "none" : "block"
+}
+
+function UpdateAfterChange(){
+    CheckPoints[parseInt(SelectedCp)][0] = document.getElementById("CPvector").value
+    if (SelectedCp > 0){
+        CheckPoints[parseInt(SelectedCp)][1] = document.getElementById("CPteleportTF").checked
+        CheckPoints[parseInt(SelectedCp)][2] = document.getElementById("CPteleportVect").value
+        CheckPoints[parseInt(SelectedCp)][3] = document.getElementById("CPdashenable").checked 
+        CheckPoints[parseInt(SelectedCp)][4] = document.getElementById("CPultenable").checked
+    }
+    CheckPoints[parseInt(SelectedCp)][5] = document.getElementById("CPnotes").value
+}
+
+
+function AddNewCP(){
+    document.getElementById("cpdata").style.display = "block"
+    CheckPoints.push(
+        [
+        "0,0,0",
+        false,
+        "0,0,0",
+        false,
+        false,
+        "cp notes",
+        [],
+        []
+        ]
+    )
+    
+    SelectedCp ++
+    UpdateSelection()
+    
+    let btn = document.createElement("button");
+    btn.innerHTML = ("Checkpoint " + (CheckPoints.length - 1));
+    btn.id = "CPBUTTON" + (CheckPoints.length-1)
+    btn.value = (CheckPoints.length-1)
+    btn.className = "testclass"
+    btn.onclick = function(){SelectedCp = parseInt(btn.value);UpdateSelection()};
+    document.getElementById("cp buttons").appendChild(btn);
+
+}
+
+function RemoveCP(){
+    //each with value above this one
+    //value - 1
+    if (CheckPoints.length > 0){
+        document.getElementById("CPBUTTON"+SelectedCp).remove()
+        CheckPoints.splice(SelectedCp,1)
+        
+        for (let i = SelectedCp + 1;  i <= CheckPoints.length; i++) {
+            document.getElementById("CPBUTTON"+i).innerHTML = "Checkpoint " + (i - 1)
+            document.getElementById("CPBUTTON"+i).value =  (i - 1)
+            document.getElementById("CPBUTTON"+i).id = "CPBUTTON"+(i-1)
+        }   
+
+        SelectedCp --
+        UpdateSelection() 
+
+    }
+}
+
+
+
+function AddCP(){
+    // nothing
+}
+
+// copy button
+function Copy(){
+    var a = document.getElementById("results")
+    a.select()
+    a.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(a.value);
+
+}
+
+
+/*
+- auto number via code
+- remove bubles etc from first cp on genrating code auto
+- make it so u can add checkpoints inbetween
+- add move checkpoint
+
+*/
+
+
+</script>
+
+<style type="text/css">
+    .testclass { color: blue; text-decoration: bold; text-size: 10px; }
+</style>
+
+</body>
+</html>
