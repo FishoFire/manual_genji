@@ -4,6 +4,10 @@ globalvar ring1
 globalvar ring2
 globalvar orb
 
+rule "pause time":
+	wait(10) 
+	pauseMatchTime()
+
 rule "ring 1":
     @Event eachPlayer
     @Condition eventPlayer.isHoldingButton(Button.INTERACT)
@@ -38,14 +42,14 @@ rule "display":
 		updateEveryTick( eventPlayer.getEyePosition() + vect(0,1.4,0) + eventPlayer.getFacingDirection() * 5  ),
 		1, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, Color.PURPLE, SpecVisibility.DEFAULT)
 
-	createInWorldText(eventPlayer, "player: {0}".format(eventPlayer.getPosition()), 
+	createInWorldText(eventPlayer, "hostplayer: {0}".format(hostPlayer.getPosition()), 
 		updateEveryTick( eventPlayer.getEyePosition() + vect(0,1.6,0) + eventPlayer.getFacingDirection() * 5  ),
 		1, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, Color.ORANGE, SpecVisibility.DEFAULT)
 
 
-	createEffect(eventPlayer, Effect.RING, Color.SKY_BLUE, ring1, 1, EffectReeval.POSITION_AND_RADIUS)
-	createEffect(eventPlayer, Effect.RING, Color.PURPLE, ring2, 1, EffectReeval.POSITION_AND_RADIUS)
-	createEffect(eventPlayer, Effect.ORB, Color.LIME_GREEN, orb, 1, EffectReeval.POSITION_AND_RADIUS)
+	createEffect(getAllPlayers(), Effect.RING, Color.SKY_BLUE, ring1, 1, EffectReeval.POSITION_AND_RADIUS)
+	createEffect(getAllPlayers(), Effect.RING, Color.PURPLE, ring2, 1, EffectReeval.POSITION_AND_RADIUS)
+	createEffect(getAllPlayers(), Effect.ORB, Color.LIME_GREEN, orb, 1, EffectReeval.POSITION_AND_RADIUS)
 
 
 /*

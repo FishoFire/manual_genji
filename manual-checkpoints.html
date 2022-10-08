@@ -72,14 +72,18 @@
 
 
 <div id="orbs-kills" class="contentblock"> 
-    <button onclick="AddCP()" >  add bounce orb  </button>
-    <button onclick="AddCP()" >  add kill orb  </button>
-
+    <button onclick="AddOrb()" >  add bounce orb  </button>
+    <button onclick="AddKill()" >  add kill orb  </button>
+    <!--
     <div class="bounceorb"> 
-        position: <textarea rows="1" cols="25" placeholder="0,0,0"></textarea> 
-        <input type="checkbox" id="dashenable"> lock 
-        <input type="checkbox" id="dashenable"> dash 
-        <input type="checkbox" id="ultenable"> ultimate
+        <label>position</label>
+        <textarea id="abcdef" rows="1" cols="25" placeholder="0,0,0" onchange="updateorb()"></textarea></textarea> 
+        <label>Lock</label>
+        <input type="checkbox" id="lockenable" onchange="updateorb()">  
+        <label>dash</label>
+        <input type="checkbox" id="dashenable" onchange="updateorb()">  
+        <label>ultimate</label>
+        <input type="checkbox" id="ultenable" onchange="updateorb()"> 
         <button onclick="AddCP()" style="float:right">  remove orb  </button>
     </div>
 
@@ -88,8 +92,8 @@
         radius: <textarea  rows="1" cols="5" placeholder="0.0"></textarea> 
         <button onclick="AddCP()" style="float:right">  remove orb  </button>
     </div>
+    -->
 
-        
 </div>
 
 
@@ -140,6 +144,7 @@ function UpdateSelection(){
     document.getElementById("CPnotes").value  = CheckPoints[parseInt(SelectedCp)][5]
 
     document.getElementById("hideoptionscp0").style.display =  SelectedCp == 0 ? "none" : "block"
+    UpdateOrbs()
 }
 
 function UpdateAfterChange(){
@@ -158,14 +163,14 @@ function AddNewCP(){
     document.getElementById("cpdata").style.display = "block"
     CheckPoints.push(
         [
-        "0,0,0",
-        false,
-        "0,0,0",
-        false,
-        false,
-        "",
-        [],
-        []
+        "0,0,0", //0 pos
+        false, //1 teleport t/f
+        "0,0,0", //2 teleport pos
+        false, //3 dash
+        false, //4 ult
+        "", //5 notes
+        [], //6 orb
+        [] //7 kill
         ]
     )
     
@@ -181,6 +186,107 @@ function AddNewCP(){
     document.getElementById("cp_buttons").appendChild(btn);
 
 }
+
+function AddOrb(){
+    CheckPoints[SelectedCp][6].push(
+        [
+        "", //0 pos
+        false, //1 dash
+        false, //2 ult
+        false //3 lock
+        ]
+    )
+    UpdateOrbs()
+    // add default stats to cehckpoints curent selected
+    // update visuals
+}
+
+function AddKill(){
+
+}
+
+function UpdateOrbs(){
+     // delete all old orbs
+    const bounceorb = document.querySelectorAll('.bounceorb ');
+    bounceorb.forEach(bounceorb => {
+        bounceorb.remove();
+    });
+    const killorb = document.querySelectorAll('.killorb');
+    killorb.forEach(killorb => {
+        killorb.remove();
+    });
+
+    // add the new ones for each
+    if (CheckPoints[SelectedCp][6].length > 0){
+    for (let i = 0;  i < CheckPoints[SelectedCp][6].length; i++) { // orbs
+        let thediv = document.createElement("div");
+        thediv.id = "orbdiv" + i
+        thediv.innerHTML = "orb "+ i + " | ";
+        thediv.value = (CheckPoints.length-1)
+        thediv.className = "bounceorb"
+        document.getElementById("orbs-kills").appendChild(thediv);
+        
+        let labelthing = document.createElement("label");
+        labelthing.innerHTML = "position "
+        document.getElementById("orbdiv" + i).appendChild(labelthing);
+
+        let vectbox = document.createElement("textarea");
+        vectbox.id = "vectbox"
+        vectbox.placeholder = "0,0,0"
+        if (CheckPoints[SelectedCp][6][i][0] != ""){vectbox.value = CheckPoints[SelectedCp][6][i][0]}
+        vectbox.onchange = function(){CheckPoints[SelectedCp][6][i][0] = vectbox.value}
+        vectbox.rows = 1
+        vectbox.cols=25
+        document.getElementById("orbdiv" + i).appendChild(vectbox)
+
+        // checkbox lock
+        let labelthing2 = document.createElement("label");
+        labelthing2.innerHTML = " lock orb"
+        document.getElementById("orbdiv" + i).appendChild(labelthing2);
+ 
+        let checkbox1 = document.createElement("input");
+        checkbox1.setAttribute("type", "checkbox");
+        checkbox1.checked =  CheckPoints[SelectedCp][6][i][3]
+        checkbox1.onchange = function(){CheckPoints[SelectedCp][6][i][3] = checkbox1.checked}
+        document.getElementById("orbdiv" + i).appendChild(checkbox1)
+
+        // checkbox dash
+
+        // checkbox ult
+
+        let lockbutton = document.createElement("button");
+        lockbutton.innerHTML = "button"
+        lockbutton.style.float = "right"
+        lockbutton.value = i
+        lockbutton.onclick = function(){
+            CheckPoints[SelectedCp][6].splice(i,1);
+            UpdateOrbs();
+        }
+        document.getElementById("orbdiv" + i).appendChild(lockbutton);
+    }
+        /*
+        <div class="bounceorb"> 
+            <label>position</label>
+            <textarea id="abcdef" rows="1" cols="25" placeholder="0,0,0" onchange="updateorb()"></textarea></textarea> 
+            <label>Lock</label>
+            <input type="checkbox" id="lockenable" onchange="updateorb()">  
+            <label>dash</label>
+            <input type="checkbox" id="dashenable" onchange="updateorb()">  
+            <label>ultimate</label>
+            <input type="checkbox" id="ultenable" onchange="updateorb()"> 
+            <button onclick="AddCP()" style="float:right">  remove orb  </button>
+        </div>
+        */
+    }
+    
+    for (let i = 0;  i <= CheckPoints[SelectedCp][7].length; i++) { // kills
+
+    }
+    
+
+}
+        
+    
 
 function RemoveCP(){
     //each with value above this one
