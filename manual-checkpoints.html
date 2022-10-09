@@ -12,18 +12,18 @@
 
 <div class="contentblock"> 
     <div>
-    <textarea rows="1" cols="25" placeholder="map maker"></textarea>   
-    <textarea rows="1" cols="25" placeholder="map code"></textarea>
-    <textarea rows="3" style="width:90%" placeholder="map notes"></textarea>
+    <textarea rows="1" cols="25" placeholder="map maker" style="display:inline-block"></textarea>   
+    <textarea rows="1" cols="25" placeholder="map code" style="display:inline-block"></textarea>
+    <textarea rows="3" style="width:90%" placeholder="map notes" style="display:inline-block"></textarea>
     </div>
 </div>
 
-<div class="savebar">
+<div class="savebar"> <!-- savebar  --> <!-- contentblock  -->
 
     <div class="saveelement">
         <b>  Save slot 0</b> <br/> 
-        <textarea id="txtfield" name="txtfield" style="width:95%" rows="1"> savename</textarea> <br/>
-        <button onclick="Save(0)" style="width:95%"> Save </button> <br/>
+        <textarea id="txtfield" name="txtfield" style="width:95%" rows="1"> savename</textarea>
+        <button onclick="Save(0)" style="width:95%"> Save </button> 
         <button onclick="Load(0)" style="width:95%">Load </button>
     </div>
     
@@ -50,14 +50,14 @@
 
 </div>
 
-<div id="button div" class="contentblock"" > 
+<div id="button div" class="contentblock" > 
     <div id="cp_buttons"></div>
-    <button onclick="AddNewCP()" class="longbutton">  +   </button>
+    <button onclick="AddNewCP()" class="longbutton">  add checkpoint   </button>
 </div>   
 
 
 <div id="cpdata" class="contentblock"> 
-    <div id="selectedcpnumber">Selected CP: SelectedCp</div>
+    <div id="selectedcpnumber">Select a checkpoint</div>
     position <textarea id="CPvector" name="txtfield" rows="1" cols="25" onchange="UpdateAfterChange()" placeholder="0,0,0"></textarea> <br/>
     
     <div id="hideoptionscp0" style="display:none">
@@ -101,21 +101,77 @@
 
 
 <style type="text/css">
-    body {background-color: white; float:left; text-align:center;width: 90%;}
-    div {margin:10px}
+    body {
+        background-color:lightslategray; 
+        float:left; 
+        text-align:center;
+        width: 1000px;
+    }
 
-    .longbutton {width:90%; margin:5px;}
-    .contentblock {padding:3px; margin:3px;width:90%;background-color:gray;}
+    button{
+        padding:5px;
+        user-select: none;
+    }
 
-    .savebar {display:none; border:1px solid  black; margin:3px; width:100%;}
-    .saveelement {width:20%; border: 1px solid black; margin:1px; }
+    textarea {
+        padding:5px;
+    }
 
-    .bounceorb {margin:3px; padding:3px; background-color:greenyellow;width:98%}
-    .killorb {margin:3px; padding:3px; background-color:red;width:98%}
+    div {
+        margin:10px
+    }
 
-    #CPnotes {width:90%;margin-bottom: 3px;}
-    #selectedcpnumber {font-weight: bold;}
+    .longbutton {
+        width:90%; 
+        margin:5px;
+    }
+    .contentblock {
+        padding:3px; 
+        margin:3px;
+        width:90%;
+        background-color:lightslategray; /*gray*/
+        border: 1px solid black;
+    }
 
+    .savebar {
+        display:none; 
+        border:1px solid  black; 
+        margin:3px; 
+        width:100%;
+    }
+    .saveelement {
+        width:18%; 
+        border: 1px solid black;
+        margin:1px; 
+        display:inline-block;
+    }
+
+    .bounceorb {
+        margin:3px; 
+        padding:3px; 
+        background-color:green;
+        width:98%
+    }
+    .killorb {
+        margin:3px; 
+        padding:3px; 
+        background-color:crimson;
+        width:98%
+    }
+
+    #CPnotes {
+        width:90%;
+        margin-bottom: 3px;
+    }
+    #selectedcpnumber {
+        font-weight: bold;
+    }
+    #cpdata{
+        display:none;
+    }
+    #orbs-kills{
+        display:none;
+    }
 
 </style>
 
@@ -123,10 +179,15 @@
 <script>
 
 /*
-- auto number via code
-- remove bubles etc from first cp on genrating code auto
-- make it so u can add checkpoints inbetween
-- add move checkpoint
+
+- can move a cp by swaping the data in Checkpoints and updating the selection
+- maybe a seperate button for add cp end and add cp after curent cp
+- save button could togle the menu
+
+- orb counter
+
+- on copy, if any input field doesnt have right number of , or things dont get counted as numbers, then trow all of em in one error
+
 
 */
 
@@ -161,6 +222,7 @@ function UpdateAfterChange(){
 
 function AddNewCP(){
     document.getElementById("cpdata").style.display = "block"
+    document.getElementById("orbs-kills").style.display = "block"
     CheckPoints.push(
         [
         "0,0,0", //0 pos
@@ -202,7 +264,13 @@ function AddOrb(){
 }
 
 function AddKill(){
-
+	 CheckPoints[SelectedCp][7].push(
+        [
+        "", //0 pos
+        false //1 radius
+        ]
+    )
+    UpdateOrbs()
 }
 
 function UpdateOrbs(){
@@ -218,70 +286,92 @@ function UpdateOrbs(){
 
     // add the new ones for each
     if (CheckPoints[SelectedCp][6].length > 0){
-    for (let i = 0;  i < CheckPoints[SelectedCp][6].length; i++) { // orbs
-        let thediv = document.createElement("div");
-        thediv.id = "orbdiv" + i
-        thediv.innerHTML = "orb "+ i + " | ";
-        thediv.value = (CheckPoints.length-1)
-        thediv.className = "bounceorb"
-        document.getElementById("orbs-kills").appendChild(thediv);
-        
-        let labelthing = document.createElement("label");
-        labelthing.innerHTML = "position "
-        document.getElementById("orbdiv" + i).appendChild(labelthing);
+		for (let i = 0;  i < CheckPoints[SelectedCp][6].length; i++) { // orbs
+			let thediv = document.createElement("div");
+			thediv.id = "orbdiv" + i
+			thediv.innerHTML = "orb "+ i + " | position ";
+			thediv.value = (CheckPoints.length-1)
+			thediv.className = "bounceorb"
+			document.getElementById("orbs-kills").appendChild(thediv);
 
-        let vectbox = document.createElement("textarea");
-        vectbox.id = "vectbox"
-        vectbox.placeholder = "0,0,0"
-        if (CheckPoints[SelectedCp][6][i][0] != ""){vectbox.value = CheckPoints[SelectedCp][6][i][0]}
-        vectbox.onchange = function(){CheckPoints[SelectedCp][6][i][0] = vectbox.value}
-        vectbox.rows = 1
-        vectbox.cols=25
-        document.getElementById("orbdiv" + i).appendChild(vectbox)
+			let vectbox = document.createElement("textarea");
+			vectbox.id = "vectbox"
+			vectbox.placeholder = "0,0,0"
+			if (CheckPoints[SelectedCp][6][i][0] != ""){vectbox.value = CheckPoints[SelectedCp][6][i][0]}
+			vectbox.onchange = function(){CheckPoints[SelectedCp][6][i][0] = vectbox.value}
+			vectbox.rows = 1
+			vectbox.cols=25
+			document.getElementById("orbdiv" + i).appendChild(vectbox)
 
-        // checkbox lock
-        let labelthing2 = document.createElement("label");
-        labelthing2.innerHTML = " lock orb"
-        document.getElementById("orbdiv" + i).appendChild(labelthing2);
- 
-        let checkbox1 = document.createElement("input");
-        checkbox1.setAttribute("type", "checkbox");
-        checkbox1.checked =  CheckPoints[SelectedCp][6][i][3]
-        checkbox1.onchange = function(){CheckPoints[SelectedCp][6][i][3] = checkbox1.checked}
-        document.getElementById("orbdiv" + i).appendChild(checkbox1)
+			// checkbox lock
+			document.getElementById("orbdiv" + i).insertAdjacentText("beforeend", " | lock orb")
+			let checkbox1 = document.createElement("input");
+			checkbox1.setAttribute("type", "checkbox");
+			checkbox1.checked =  CheckPoints[SelectedCp][6][i][3]
+			checkbox1.onchange = function(){CheckPoints[SelectedCp][6][i][3] = checkbox1.checked}
+			document.getElementById("orbdiv" + i).appendChild(checkbox1)
+			
+			// checkbox dash
+			document.getElementById("orbdiv" + i).insertAdjacentText("beforeend", " | give dash")
+			let checkbox2 = document.createElement("input");
+			checkbox2.setAttribute("type", "checkbox");
+			checkbox2.checked =  CheckPoints[SelectedCp][6][i][1]
+			checkbox2.onchange = function(){CheckPoints[SelectedCp][6][i][1] = checkbox2.checked}
+			document.getElementById("orbdiv" + i).appendChild(checkbox2)
 
-        // checkbox dash
+			// checkbox ult
+			document.getElementById("orbdiv" + i).insertAdjacentText("beforeend", " | give ultimate")
+			let checkbox3 = document.createElement("input");
+			checkbox3.setAttribute("type", "checkbox");
+			checkbox3.checked =  CheckPoints[SelectedCp][6][i][2]
+			checkbox3.onchange = function(){CheckPoints[SelectedCp][6][i][2] = checkbox3.checked}
+			document.getElementById("orbdiv" + i).appendChild(checkbox3)
 
-        // checkbox ult
+			// delete button
+			let lockbutton = document.createElement("button");
+			lockbutton.innerHTML = "delete"
+			lockbutton.style.float = "right"
+			lockbutton.value = i
+			lockbutton.onclick = function(){CheckPoints[SelectedCp][6].splice(i,1);UpdateOrbs();}
+			document.getElementById("orbdiv" + i).appendChild(lockbutton);
 
-        let lockbutton = document.createElement("button");
-        lockbutton.innerHTML = "button"
-        lockbutton.style.float = "right"
-        lockbutton.value = i
-        lockbutton.onclick = function(){
-            CheckPoints[SelectedCp][6].splice(i,1);
-            UpdateOrbs();
-        }
-        document.getElementById("orbdiv" + i).appendChild(lockbutton);
-    }
-        /*
-        <div class="bounceorb"> 
-            <label>position</label>
-            <textarea id="abcdef" rows="1" cols="25" placeholder="0,0,0" onchange="updateorb()"></textarea></textarea> 
-            <label>Lock</label>
-            <input type="checkbox" id="lockenable" onchange="updateorb()">  
-            <label>dash</label>
-            <input type="checkbox" id="dashenable" onchange="updateorb()">  
-            <label>ultimate</label>
-            <input type="checkbox" id="ultenable" onchange="updateorb()"> 
-            <button onclick="AddCP()" style="float:right">  remove orb  </button>
-        </div>
-        */
-    }
-    
-    for (let i = 0;  i <= CheckPoints[SelectedCp][7].length; i++) { // kills
+		}
+	}
+	if (CheckPoints[SelectedCp][7].length > 0){
+		for (let it = 0;  it < CheckPoints[SelectedCp][7].length; it++) { // orbs
+			let thediv2 = document.createElement("div");
+			thediv2.id = "killdiv" + it
+			thediv2.innerHTML = "kill "+ it + " | position ";
+			thediv2.value = (CheckPoints.length-1)
+			thediv2.className = "killorb"
+			document.getElementById("orbs-kills").appendChild(thediv2);
 
-    }
+			let vectbox2 = document.createElement("textarea");
+			vectbox2.id = "vectbox"
+			vectbox2.placeholder = "0,0,0"
+			if (CheckPoints[SelectedCp][7][it][0] != ""){vectbox2.value = CheckPoints[SelectedCp][7][it][0]}
+			vectbox2.onchange = function(){CheckPoints[SelectedCp][7][it][0] = vectbox2.value}
+			vectbox2.rows = 1
+			vectbox2.cols = 25
+			document.getElementById("killdiv" + it).appendChild(vectbox2)	
+
+			document.getElementById("killdiv" + it).insertAdjacentText("beforeend", " | radius ")
+			
+			
+			let radius1 = document.createElement("textarea");
+			radius1.id = "vectbox"
+			radius1.placeholder = "0.1"
+			if (CheckPoints[SelectedCp][7][it][1] != ""){radius1.value = CheckPoints[SelectedCp][7][it][1]}
+			radius1.onchange = function(){CheckPoints[SelectedCp][7][it][1] = radius1.value}
+			radius1.rows = 1
+			radius1.cols = 8
+			document.getElementById("killdiv" + it).appendChild(radius1)	
+			
+	
+		}
+	}
+   
+
     
 
 }
