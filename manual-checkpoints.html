@@ -382,11 +382,10 @@ function UpdateOrbs(){
 		}
 	}
    
-
-    
-
 }
-        
+
+	
+           
     
 
 function RemoveCP(){
@@ -492,11 +491,50 @@ function Copy(){
 	data_kill_pos = data_kill_pos.slice(0,-1) + "\n\t\t);" 
 	data_kill_rad = data_kill_rad.slice(0,-1) + "\n\t\t);" 
 	data_kill_cp = data_kill_cp.slice(0,-1) + "\n\t\t);" 
+	
+	
+	ulteanbled = "disabled " // enable ult rule  3
+	if (CheckPoints.some(function(i){return i[4]})  ){
+		ulteanbled = ""
+		ultarray =  "Global.Dao = Array(Empty Array, "
+		for (let i = 0;  i < CheckPoints.length; i++){
+			if (CheckPoints[i][4]){
+				ultarray += i + ", "
+			}
+		}
+		ultarray = ultarray.slice(0,-2) + ");\n"
+	} else {
+		ultarray = "Global.Dao = Array(Empty Array, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);\n"
+	}
+
+
+
+	dasheanbled = "disabled " // enable dash rule  4
+	if (CheckPoints.some(function(i){return i[3]})  ){
+		dasheanbled = ""
+		dasharray = "Global.SHIFT = Array(Empty Array, "
+		for (let i = 0;  i < CheckPoints.length; i++){
+			if (CheckPoints[i][3]){
+				dasharray += i + ", "
+			}
+		}
+		dasharray = dasharray.slice(0,-2) + ");\n"
+	} else {
+		dasharray = "Global.SHIFT = Array(Empty Array, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);\n"
+	}
+	
 	/*
 	0 pos
 	1 radius
 	*/
 
+	/*
+	ultarray
+	Global.Dao = Array(Empty Array, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);
+
+	dasharray
+	Global.SHIFT = Array(Empty Array, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);
+	*/
     setdata()
 
     var resultthing = document.getElementById("results")
@@ -505,6 +543,8 @@ function Copy(){
     resultthing.setSelectionRange(0, 99999);
     navigator.clipboard.writeText(resultthing.value);
     //alert("data copied to clipboard")
+
+
 }
 
 function setdata(){
@@ -3915,7 +3955,8 @@ disabled rule("-----------------------------------------------------------------
 	}
 }
 
-disabled rule("Add Blade to Checkpoint <---- EDIT ME")
+
+${ulteanbled}rule("Add Blade to Checkpoint <---- EDIT ME")
 {
 	event
 	{
@@ -3925,11 +3966,13 @@ disabled rule("Add Blade to Checkpoint <---- EDIT ME")
 	actions
 	{
 		"Change \"-1\" to certain Checkpoints' number. For example if you want to add Blade to Checkpoint 2 and 6 change one of \"-1\" to 2 and other \"-1\" to 6"
-		Global.Dao = Array(Empty Array, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);
+		${ultarray}
+		
 	}
 }
 
-disabled rule("Add Dash to Checkpoint <---- EDIT ME")
+
+${dasheanbled}rule("Add Dash to Checkpoint <---- EDIT ME")
 {
 	event
 	{
@@ -3940,7 +3983,8 @@ disabled rule("Add Dash to Checkpoint <---- EDIT ME")
 	{
 		"Change \"-1\" to certain Checkpoints' number. For example if you want to add Dash to Checkpoint 7 and 1 change one of \"-1\" to 7 and other \"-1\" to 1"
 		Wait(1, Ignore Condition);
-		Global.SHIFT = Array(Empty Array, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);
+		${dasharray}
+	
 	}
 }
 
