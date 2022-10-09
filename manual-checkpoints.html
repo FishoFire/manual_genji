@@ -74,26 +74,6 @@
 <div id="orbs-kills" class="contentblock"> 
     <button onclick="AddOrb()" >  add bounce orb  </button>
     <button onclick="AddKill()" >  add kill orb  </button>
-    <!--
-    <div class="bounceorb"> 
-        <label>position</label>
-        <textarea id="abcdef" rows="1" cols="25" placeholder="0,0,0" onchange="updateorb()"></textarea></textarea> 
-        <label>Lock</label>
-        <input type="checkbox" id="lockenable" onchange="updateorb()">  
-        <label>dash</label>
-        <input type="checkbox" id="dashenable" onchange="updateorb()">  
-        <label>ultimate</label>
-        <input type="checkbox" id="ultenable" onchange="updateorb()"> 
-        <button onclick="AddCP()" style="float:right">  remove orb  </button>
-    </div>
-
-    <div class="killorb"> 
-        position: <textarea  rows="1" cols="25" placeholder="0,0,0"></textarea> 
-        radius: <textarea  rows="1" cols="5" placeholder="0.0"></textarea> 
-        <button onclick="AddCP()" style="float:right">  remove orb  </button>
-    </div>
-    -->
-
 </div>
 
 
@@ -186,7 +166,20 @@
 
 - orb counter
 
-- on copy, if any input field doesnt have right number of , or things dont get counted as numbers, then trow all of em in one error
+- input check
+	- if any input field doesnt have right number of , or things dont get counted as numbers
+	- on copy for all at once?
+	- color field if wrong input during typing?
+
+- give 2 save options: cookie and string format
+	- string format load into selected save with warning if something in it
+
+- map enable via checklist
+- workshop toggles
+- list wich addons are enabled so user knows for future data
+
+- make a var list for myself so i can cehck were to add variables in thre future fw updates
+
 
 
 */
@@ -255,7 +248,8 @@ function AddOrb(){
         "", //0 pos
         false, //1 dash
         false, //2 ult
-        false //3 lock
+        false, //3 lock
+		0 //4 strength
         ]
     )
     UpdateOrbs()
@@ -294,6 +288,7 @@ function UpdateOrbs(){
 			thediv.className = "bounceorb"
 			document.getElementById("orbs-kills").appendChild(thediv);
 
+			//vector
 			let vectbox = document.createElement("textarea");
 			vectbox.id = "vectbox"
 			vectbox.placeholder = "0,0,0"
@@ -302,6 +297,18 @@ function UpdateOrbs(){
 			vectbox.rows = 1
 			vectbox.cols=25
 			document.getElementById("orbdiv" + i).appendChild(vectbox)
+
+			// strength
+			document.getElementById("orbdiv" + i).insertAdjacentText("beforeend", " | strength")
+			let strbox = document.createElement("textarea");
+			strbox.id = "strbox"
+			strbox.placeholder = "0.0"
+			if (CheckPoints[SelectedCp][6][i][4] != ""){strbox.value = CheckPoints[SelectedCp][6][i][4]}
+			strbox.onchange = function(){CheckPoints[SelectedCp][6][i][4] = strbox.value}
+			strbox.rows = 1
+			strbox.cols = 6
+			document.getElementById("orbdiv" + i).appendChild(strbox)
+
 
 			// checkbox lock
 			document.getElementById("orbdiv" + i).insertAdjacentText("beforeend", " | lock orb")
@@ -356,8 +363,6 @@ function UpdateOrbs(){
 			document.getElementById("killdiv" + it).appendChild(vectbox2)	
 
 			document.getElementById("killdiv" + it).insertAdjacentText("beforeend", " | radius ")
-			
-			
 			let radius1 = document.createElement("textarea");
 			radius1.id = "vectbox"
 			radius1.placeholder = "0.1"
@@ -367,7 +372,13 @@ function UpdateOrbs(){
 			radius1.cols = 8
 			document.getElementById("killdiv" + it).appendChild(radius1)	
 			
-	
+			// delete button
+			let lockbutton = document.createElement("button");
+			lockbutton.innerHTML = "delete"
+			lockbutton.style.float = "right"
+			lockbutton.value = it
+			lockbutton.onclick = function(){CheckPoints[SelectedCp][7].splice(it,1);UpdateOrbs();}
+			document.getElementById("killdiv" + it).appendChild(lockbutton);
 		}
 	}
    
@@ -403,7 +414,21 @@ function AddCP(){
     // nothing
 }
 
-var data1 = ""
+var data_cps
+
+var data_orb_cp 
+var data_orb_pos
+var data_orb_lock
+var data_orb_dash
+var data_orb_ult
+var data_orb_strength
+
+var data_kill_pos
+var data_kill_rad
+var data_kill_cp
+
+
+
 
 // copy button
 function Copy(){
@@ -417,16 +442,60 @@ function Copy(){
         data_cps += "\n\t\t\tVector("+CheckPoints[i][0]+"),"
     }
     data_cps = data_cps.slice(0,-1) // remove last ,
-    data_cps += "\t\t\n);"
-    // kill orb data
-    // check if any
-    // loop each coz the things inbetween them need to be added
-    // 
+    data_cps += "\n\t\t);"
 
-    // loop trough pos
-    // loop trough radi
-    // loop torugh cp
+    // bounce
+	data_orb_cp = "Global.pinballnumber = Array( "
+	data_orb_pos = "Global.TQ = Array( "
+	data_orb_lock = "Global.BounceToggleLock = Array( "
+	data_orb_dash = "Global.TQ6 = Array( "
+	data_orb_ult = "Global.TQ5 = Array( "
+	data_orb_strength = "Global.EditMode = Array( "
+	for (let i = 0;  i < CheckPoints.length; i++){
+		for (let i2 = 0;  i2 < CheckPoints[i][6].length; i2++){
+			data_orb_cp += "\n\t\t\t" + i + ","
+			data_orb_pos += "\n\t\t\tVector("+CheckPoints[i][6][i2][0]+"),"
+			data_orb_lock += "\n\t\t\t" + (CheckPoints[i][6][i2][3] ? 'True' : 'False') + ","
+			data_orb_dash += "\n\t\t\t" + (CheckPoints[i][6][i2][1] ? 'True' : 'False') + ","
+			data_orb_ult += "\n\t\t\t" + (CheckPoints[i][6][i2][2] ? 'True' : 'False') + ","
+			data_orb_strength += "\n\t\t\t" + CheckPoints[i][6][i2][4]  + ","
+		}
+	}
+	
+	data_orb_cp = data_orb_cp.slice(0,-1) + "\n\t\t);" 
+	data_orb_pos = data_orb_pos.slice(0,-1) + "\n\t\t);" 
+	data_orb_lock = data_orb_lock.slice(0,-1) + "\n\t\t);" 
+	data_orb_dash = data_orb_dash.slice(0,-1) + "\n\t\t);" 
+	data_orb_ult = data_orb_ult.slice(0,-1) + "\n\t\t);" 
+	data_orb_strength = data_orb_strength.slice(0,-1) + "\n\t\t);" 
 
+	//}
+	/*
+	0 pos
+	1 dash
+	2 ult
+	3 lock
+	cp auto
+	*/
+
+	// kill
+	data_kill_pos = "Global.H = Array( "
+	data_kill_rad = "Global.I = Array( "
+	data_kill_cp = "Global.killballnumber = Array( "
+	for (let i = 0;  i < CheckPoints.length; i++){
+		for (let i2 = 0;  i2 < CheckPoints[i][7].length; i2++){
+			data_kill_pos += "\n\t\t\tVector(" + CheckPoints[i][7][i2][0]+"),"
+			data_kill_rad += "\n\t\t\t" + CheckPoints[i][7][i2][1]+","
+			data_kill_cp += "\n\t\t\t" + i + ","
+		}
+	}
+	data_kill_pos = data_kill_pos.slice(0,-1) + "\n\t\t);" 
+	data_kill_rad = data_kill_rad.slice(0,-1) + "\n\t\t);" 
+	data_kill_cp = data_kill_cp.slice(0,-1) + "\n\t\t);" 
+	/*
+	0 pos
+	1 radius
+	*/
 
     setdata()
 
@@ -633,51 +702,32 @@ rule("Map Data     <---- INSERT YOUR MAP DATA HERE")
 
 		"======= killballs =========================="
 		"killball level number - Number 123 - Number of the checkpoint (in position array starting count with 0)"
-		Global.killballnumber = Array(
-			1
-		);
-		
-		"killball positions - Vector(123.456,123.456,123.456)"
-		Global.H = Array(
-			Vector(0,0,0)
-		);
+		${data_kill_cp}
 			
+		"killball positions - Vector(123.456,123.456,123.456)"
+		${data_kill_pos}
+				
 		"killball radius - Vector(123.456,123.456,123.456)"
-		Global.I = Array(
-			1
-		);
-		
+		${data_kill_rad}
 				
 		"======= orbs =========================="	
 		"orb checkpoint number - Number 123 - Number of the checkpoint (in position array starting count with 0)"
-		Global.pinballnumber = Array(
-			1
-		);
+		${data_orb_cp}
 		
 		"orb position - Vector(123.456,123.456,123.456)"
-		Global.TQ = Array(
-			Vector(0,0,0)
-		);
+		${data_orb_pos}
 		
 		"orb bounce strength - Number 123.456 - default bounce is 10 - 0 means dont bounce"
-		Global.EditMode = Array(
-			10
-		);
+		${data_orb_strength}
 		
 		"orb gives ult - True or False"
-		Global.TQ5 = Array(
-			False  
-		);
+		${data_orb_ult}
 		
 		"orb gives dash - True or False"
-		Global.TQ6 = Array(
-			False
-		);
+		${data_orb_dash}
 		
 		"orb locks checkpoint - True or False"
-		Global.BounceToggleLock = Array(
-			False
-		);
+		${data_orb_lock}
 		
 		"======= others - DONT CHANGE =========================="	
 		Global.TimeRemaining = 263;
