@@ -18,7 +18,7 @@ ${dasheanbled}
 ${dasharray}
 */
 
-function setdata(){
+function setdata(){ //String.raw
     data_pasta = `
 settings
 {
@@ -211,54 +211,37 @@ rule("Map Data     <---- INSERT YOUR MAP DATA HERE")
 		
 		"======= Checkpoint data =========================="
 		"checkpoints positions - Vector(123.456,123.456,123.456) - The order is the checkpoint number.  The first Vector here is checkpoint 0"
+		${data_cps}
 
 		"======= killballs =========================="
 		"killball level number - Number 123 - Number of the checkpoint (in position array starting count with 0)"
-		Global.killballnumber = Array(
-			1
-		);
+		${data_kill_cp}
 		
 		"killball positions - Vector(123.456,123.456,123.456)"
-		Global.H = Array(
-			Vector(0,0,0)
-		);
-			
+		${data_kill_pos}
+
 		"killball radius - Vector(123.456,123.456,123.456)"
-		Global.I = Array(
-			1
-		);
+		${data_kill_rad}
 		
 				
 		"======= orbs =========================="	
 		"orb checkpoint number - Number 123 - Number of the checkpoint (in position array starting count with 0)"
-		Global.pinballnumber = Array(
-			1
-		);
+		${data_orb_cp}
 		
 		"orb position - Vector(123.456,123.456,123.456)"
-		Global.TQ = Array(
-			Vector(0,0,0)
-		);
+		${data_orb_pos}
 		
 		"orb bounce strength - Number 123.456 - default bounce is 10 - 0 means dont bounce"
-		Global.EditMode = Array(
-			10
-		);
+		${data_orb_strength}
 		
 		"orb gives ult - True or False"
-		Global.TQ5 = Array(
-			False  
-		);
+		${data_orb_ult}
 		
 		"orb gives dash - True or False"
-		Global.TQ6 = Array(
-			False
-		);
+		${data_orb_dash}
 		
 		"orb locks checkpoint - True or False"
-		Global.BounceToggleLock = Array(
-			False
-		);
+		${data_orb_lock}
 		
 		"======= others - DONT CHANGE =========================="	
 		Global.TimeRemaining = 263;
@@ -3446,7 +3429,7 @@ disabled rule("-----------------------------------------------------------------
 	}
 }
 
-disabled rule("Add Blade to Checkpoint <---- EDIT ME")
+${ulteanbled}rule("Add Blade to Checkpoint <---- EDIT ME")
 {
 	event
 	{
@@ -3456,11 +3439,11 @@ disabled rule("Add Blade to Checkpoint <---- EDIT ME")
 	actions
 	{
 		"Change \"-1\" to certain Checkpoints' number. For example if you want to add Blade to Checkpoint 2 and 6 change one of \"-1\" to 2 and other \"-1\" to 6"
-		Global.Dao = Array(Empty Array, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);
+		${ultarray}
 	}
 }
 
-disabled rule("Add Dash to Checkpoint <---- EDIT ME")
+${dasheanbled}rule("Add Dash to Checkpoint <---- EDIT ME")
 {
 	event
 	{
@@ -3471,7 +3454,7 @@ disabled rule("Add Dash to Checkpoint <---- EDIT ME")
 	{
 		"Change \"-1\" to certain Checkpoints' number. For example if you want to add Dash to Checkpoint 7 and 1 change one of \"-1\" to 7 and other \"-1\" to 1"
 		Wait(1, Ignore Condition);
-		Global.SHIFT = Array(Empty Array, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);
+		${dasharray} 
 	}
 }
 

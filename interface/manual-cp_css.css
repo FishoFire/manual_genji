@@ -1,0 +1,71 @@
+body {
+        background-color:lightslategray; 
+        float:left; 
+        text-align:center;
+        width: 1000px;
+    }
+
+    button{
+        padding:5px;
+        user-select: none;
+    }
+
+    textarea {
+        padding:5px;
+    }
+
+    div {
+        margin:10px
+    }
+
+    .longbutton {
+        width:90%; 
+        margin:5px;
+    }
+    .contentblock {
+        padding:3px; 
+        margin:3px;
+        width:90%;
+        background-color:lightslategray; /*gray*/
+        border: 1px solid black;
+    }
+
+    .savebar {
+        display:none; 
+        border:1px solid  black; 
+        margin:3px; 
+        width:100%;
+    }
+    .saveelement {
+        width:18%; 
+        border: 1px solid black;
+        margin:1px; 
+        display:inline-block;
+    }
+
+    .bounceorb {
+        margin:3px; 
+        padding:3px; 
+        background-color:green;
+        width:98%
+    }
+    .killorb {
+        margin:3px; 
+        padding:3px; 
+        background-color:crimson;
+        width:98%
+    }
+
+    #CPnotes {
+        width:90%;
+        margin-bottom: 3px;
+    }
+    #selectedcpnumber {
+        font-weight: bold;
+    }
+    #cpdata{
+        display:none;
+    }
+    #orbs-kills{
+        display:none;
+    }
