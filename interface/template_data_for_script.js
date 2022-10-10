@@ -19,7 +19,7 @@ ${dasharray}
 */
 
 function setdata(){ //String.raw
-    data_pasta = `
+    data_pasta = String.raw`
 settings
 {
 	main
