@@ -203,7 +203,7 @@ rule("Map Data     <---- INSERT YOUR MAP DATA HERE")
 		"checkpoints positions - Vector(123.456,123.456,123.456) - The order is the checkpoint number.  The first Vector here is checkpoint 0"
 		Global.A = Array(
 			Vector(94.24, -3, -69.20),
-			Vector(84.62, -3, -64.65),
+			Array(Vector(84.62, -3, -64.65), Vector(84.62, 10, -64.65)),
 			Vector(75.61, -3, -62.88),
 			Vector(73, 1, -47.25),
 			Vector(58.50, -2.5, -56.04),

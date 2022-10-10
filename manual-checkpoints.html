@@ -60,12 +60,13 @@
     <div id="selectedcpnumber">Select a checkpoint</div>
     position <textarea id="CPvector" name="txtfield" rows="1" cols="25" onchange="UpdateAfterChange()" placeholder="0,0,0"></textarea> <br/>
     
-    <div id="hideoptionscp0" style="display:none">
+    <!--<div id="hideoptionscp0" style="display:none"> -->
+
         <input type="checkbox" id="CPdashenable" onclick="UpdateAfterChange()"> dash
         <input type="checkbox" id="CPultenable" onclick="UpdateAfterChange()"> ultimate
-        <input type="checkbox" id="CPteleportTF" onclick="UpdateAfterChange()"> teleport <textarea id="CPteleportVect" name="txtfield" rows="1" cols="25" placeholder="0,0,0"></textarea> 
+        <input type="checkbox" id="CPteleportTF" onclick="UpdateAfterChange()"> teleport <textarea id="CPteleportVect" name="txtfield"  onchange="UpdateAfterChange()" rows="1" cols="25" placeholder="0,0,0"></textarea> 
 
-    </div>
+    <!-- </div>-->
     <textarea id="CPnotes" name="txtfield" rows="3" onchange="UpdateAfterChange()" placeholder="cp notes"></textarea>
     <button onclick="RemoveCP()" class="longbutton">  remove checkpoint  </button>
 </div>
@@ -194,18 +195,20 @@ function UpdateSelection(){
     document.getElementById("CPteleportVect").value  = CheckPoints[parseInt(SelectedCp)][2]
     document.getElementById("CPdashenable").checked  = CheckPoints[parseInt(SelectedCp)][3]
     document.getElementById("CPultenable").checked  = CheckPoints[parseInt(SelectedCp)][4]
-    
+	
     document.getElementById("CPnotes").value  = CheckPoints[parseInt(SelectedCp)][5]
 
-    document.getElementById("hideoptionscp0").style.display =  SelectedCp == 0 ? "none" : "block"
+    //document.getElementById("hideoptionscp0").style.display =  SelectedCp == 0 ? "none" : "block"
     UpdateOrbs()
 }
 
 function UpdateAfterChange(){
     CheckPoints[parseInt(SelectedCp)][0] = document.getElementById("CPvector").value
+
+	CheckPoints[parseInt(SelectedCp)][1] = document.getElementById("CPteleportTF").checked
+	CheckPoints[parseInt(SelectedCp)][2] = document.getElementById("CPteleportVect").value
+
     if (SelectedCp > 0){
-        CheckPoints[parseInt(SelectedCp)][1] = document.getElementById("CPteleportTF").checked
-        CheckPoints[parseInt(SelectedCp)][2] = document.getElementById("CPteleportVect").value
         CheckPoints[parseInt(SelectedCp)][3] = document.getElementById("CPdashenable").checked 
         CheckPoints[parseInt(SelectedCp)][4] = document.getElementById("CPultenable").checked
     }
@@ -434,11 +437,16 @@ function Copy(){
     
     // cp data
     data_cps = (
-        '"\n\t\tcheckpoints positions - Vector(123.456,123.456,123.456) - The order is the checkpoint number.  The first Vector here is checkpoint 0"' + 
         "\n\t\tGlobal.A = Array("
     )
     for (let i = 0;  i < CheckPoints.length; i++){
-        data_cps += "\n\t\t\tVector("+CheckPoints[i][0]+"),"
+        if (CheckPoints[i][1]){
+
+			data_cps += "\n\t\t\tArray(Vector(" + CheckPoints[i][0] + "), Vector(" + CheckPoints[i][2]+ ")),"
+
+		} else{
+			data_cps += "\n\t\t\tVector("+CheckPoints[i][0]+"),"
+		}
     }
     data_cps = data_cps.slice(0,-1) // remove last ,
     data_cps += "\n\t\t);"
@@ -738,6 +746,7 @@ rule("Map Data     <---- INSERT YOUR MAP DATA HERE")
 	{
 		
 		"======= Checkpoint data =========================="
+		"checkpoints positions - Vector(123.456,123.456,123.456) - The order is the checkpoint number.  The first Vector here is checkpoint 0"
 		${data_cps}
 
 		"======= killballs =========================="
