@@ -420,6 +420,8 @@ var data_kill_pos
 var data_kill_rad
 var data_kill_cp
 
+var mapcode
+var mapmaker
 // copy button
 function Copy(){
 
@@ -515,6 +517,9 @@ function Copy(){
 		dasharray = "Global.SHIFT = Array(Empty Array, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);\n"
 	}
 	
+    mapcode = document.getElementById("code").value
+    mapmaker = document.getElementById("maker").value
+
     setdata()
 
     var resultthing = document.getElementById("results")

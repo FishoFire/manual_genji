@@ -16,6 +16,10 @@ ${ulteanbled}
 ${ultarray}
 ${dasheanbled}
 ${dasharray}
+
+${mapmaker}
+${mapcode}
+
 */
 
 function setdata(){ //String.raw
@@ -260,14 +264,16 @@ rule("Credits here <---- INSERT YOUR NAME HERE")
 
 	actions
 	{
-		Create HUD Text(All Players(All Teams), Null, Null, Custom String("made by: NAME HERE"), Left, -15, Null, Null, Color(Violet),
+		Create HUD Text(All Players(All Teams), Null, Null, Custom String("made by:${mapmaker}"), Left, -15, Null, Null, Color(Violet),
 			Visible To, Default Visibility);
-		Create HUD Text(All Players(All Teams), Null, Null, Custom String("map code: XXXXX"), Left, -14, Null, Null, Color(Sky Blue),
+		Create HUD Text(All Players(All Teams), Null, Null, Custom String("map code:${mapcode}), Left, -14, Null, Null, Color(Sky Blue),
 			Visible To, Default Visibility);
 		Create HUD Text(All Players(All Teams), Null, Null, Custom String("Discord: dsc.gg/genjiparkour"), Left, -13, Null, Null, Color(
 			Aqua), Visible To, Default Visibility);
 	}
 }
+
+
 
 disabled rule("Custom difficulty hud")
 {
