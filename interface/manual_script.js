@@ -85,11 +85,10 @@ function ShowMsg(x){
 function Save(x){
     localStorage.setItem('headerdata'+x, JSON.stringify(MapData));
     localStorage.setItem('checkpoints'+x, JSON.stringify(CheckPoints));
-
-
-    SaveNames[x] = document.getElementById("save"+x).value 
+    SaveNames[x] = document.getElementById("save"+x).value ;
     localStorage.setItem('savenames',JSON.stringify(SaveNames))
-    //document.getElementById("save"+x).value = SaveNames[x]
+
+    ShowMsg("Saved!")
 }
 
 function Load(x){
@@ -112,6 +111,7 @@ function Load(x){
         UpdateSelection()
         UpdateTop()
         changebar(0)
+        ShowMsg("Loaded!")
     }
 }
 
@@ -170,6 +170,11 @@ function UpdateSelection(){
     document.getElementById("CPnotes").value  = CheckPoints[parseInt(SelectedCp)][5]
 
     //document.getElementById("hideoptionscp0").style.display =  SelectedCp == 0 ? "none" : "block"
+    document.getElementById("DashToggleEnabled").innerHTML = CheckPoints.some(function(i){return i[3]}) ? "Dash addon: enabled |" : "Dash addon: disabled |"
+    document.getElementById("DashToggleEnabled").style.color = CheckPoints.some(function(i){return i[3]}) ? "darkgreen" : "black"
+    document.getElementById("UltToggleEnabled").innerHTML = CheckPoints.some(function(i){return i[4]}) ? "| Ult addon: enabled" : "| Ult addon: disabled"
+    document.getElementById("UltToggleEnabled").style.color = CheckPoints.some(function(i){return i[4]}) ? "darkgreen" : "black"
+     
     UpdateOrbs()
 }
 
@@ -184,6 +189,14 @@ function UpdateAfterChange(){
 	CheckPoints[parseInt(SelectedCp)][4] = document.getElementById("CPultenable").checked
 
     CheckPoints[parseInt(SelectedCp)][5] = document.getElementById("CPnotes").value
+  
+
+    document.getElementById("DashToggleEnabled").innerHTML = CheckPoints.some(function(i){return i[3]}) ? "Dash addon: enabled |" : "Dash addon: disabled |"
+    document.getElementById("DashToggleEnabled").style.color = CheckPoints.some(function(i){return i[3]}) ? "darkgreen" : "black"
+    document.getElementById("UltToggleEnabled").innerHTML = CheckPoints.some(function(i){return i[4]}) ? "| Ult addon: enabled" : "| Ult addon: disabled"
+    document.getElementById("UltToggleEnabled").style.color = CheckPoints.some(function(i){return i[4]}) ? "darkgreen" : "black"
+     
+
 }
 
 

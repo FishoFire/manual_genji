@@ -24,15 +24,17 @@
 	<div class="contentblock"> 
 		<div>
 		<textarea rows="1" cols="25" placeholder="map maker" id="maker" style="display:inline-block" onchange="UpdateTop()"></textarea>   
-		<textarea rows="1" cols="25" placeholder="map code" id="code" style="display:inline-block" onchange="UpdateTop()"></textarea>
+		<textarea rows="1" cols="25" placeholder="map code" id="code" style="display:inline-block" onchange="UpdateTop()"></textarea> <br/>
+		<label id="DashToggleEnabled">Dash addon: disabled |</label>
+		<label id="UltToggleEnabled">| Ult addon: disabled</label>   <br/>
 		<textarea rows="3" style="width:90%" placeholder="map notes" id="notes" style="display:inline-block" onchange="UpdateTop()"></textarea>
 		</div>
 	</div>
 
 	<div id="button div" class="contentblock" > 
 		<div id="cp_buttons"></div>
-		<button onclick="AddNewCP(1)" style="width:40%">  add checkpoint  (after current) </button>
-		<button onclick="AddNewCP(0)" style="width:40%">  add checkpoint (at the end)  </button>
+		<button onclick="AddNewCP(1)" style="width:40%">  add checkpoint  (after current cp) </button>
+		<button onclick="AddNewCP(0)" style="width:40%">  add checkpoint (at the end of cp list)  </button>
 	
 	</div>   
 
@@ -118,7 +120,7 @@ Without the inspector there is currently no way to export them automatically. <b
 <br/><br/>
 
 <strong>step 3</strong> <br/>
-When your data is filled in, press the big "copy map to clipboard" button on top. <br/>
+When your data is filled in, press the big "copy map to clipboard" button on top of the data section. <br/>
 <br/><br/>
 
 <strong>step 4</strong> <br/>
