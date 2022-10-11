@@ -296,6 +296,7 @@ function UpdateOrbs(){
     if (CheckPoints[SelectedCp][6].length > 0){
 		for (let i = 0;  i < CheckPoints[SelectedCp][6].length; i++) { // orbs
 			let thediv = document.createElement("div");
+            thediv.style.textAlign = "left";
 			thediv.id = "orbdiv" + i
 			thediv.innerHTML = "orb "+ i + " | position ";
 			thediv.value = (CheckPoints.length-1)
@@ -309,23 +310,29 @@ function UpdateOrbs(){
 			if (CheckPoints[SelectedCp][6][i][0] != ""){vectbox.value = CheckPoints[SelectedCp][6][i][0]}
 			vectbox.onchange = function(){CheckPoints[SelectedCp][6][i][0] = vectbox.value}
 			vectbox.rows = 1
-			vectbox.cols=25
+			vectbox.cols = 20
 			document.getElementById("orbdiv" + i).appendChild(vectbox)
 
 			// strength
-			document.getElementById("orbdiv" + i).insertAdjacentText("beforeend", " | strength")
+			document.getElementById("orbdiv" + i).insertAdjacentText("beforeend", "\nstrength ")
 			let strbox = document.createElement("textarea");
 			strbox.id = "strbox"
 			strbox.placeholder = "0.0"
 			if (CheckPoints[SelectedCp][6][i][4] != ""){strbox.value = CheckPoints[SelectedCp][6][i][4]}
 			strbox.onchange = function(){CheckPoints[SelectedCp][6][i][4] = strbox.value}
 			strbox.rows = 1
-			strbox.cols = 6
+			strbox.cols = 5
 			document.getElementById("orbdiv" + i).appendChild(strbox)
 
+            /*
+            // filler
+            let filler = document.createElement("div");
+            filler.style.width = "25%"
+            document.getElementById("orbdiv" + i).appendChild(filler)
+            */
 
 			// checkbox lock
-			document.getElementById("orbdiv" + i).insertAdjacentText("beforeend", " | lock orb")
+			document.getElementById("orbdiv" + i).insertAdjacentText("beforeend", "| lock")
 			let checkbox1 = document.createElement("input");
 			checkbox1.setAttribute("type", "checkbox");
 			checkbox1.checked =  CheckPoints[SelectedCp][6][i][3]
@@ -333,7 +340,7 @@ function UpdateOrbs(){
 			document.getElementById("orbdiv" + i).appendChild(checkbox1)
 			
 			// checkbox dash
-			document.getElementById("orbdiv" + i).insertAdjacentText("beforeend", " | give dash")
+			document.getElementById("orbdiv" + i).insertAdjacentText("beforeend", "| dash")
 			let checkbox2 = document.createElement("input");
 			checkbox2.setAttribute("type", "checkbox");
 			checkbox2.checked =  CheckPoints[SelectedCp][6][i][1]
@@ -341,7 +348,7 @@ function UpdateOrbs(){
 			document.getElementById("orbdiv" + i).appendChild(checkbox2)
 
 			// checkbox ult
-			document.getElementById("orbdiv" + i).insertAdjacentText("beforeend", " | give ultimate")
+			document.getElementById("orbdiv" + i).insertAdjacentText("beforeend", "| ult")
 			let checkbox3 = document.createElement("input");
 			checkbox3.setAttribute("type", "checkbox");
 			checkbox3.checked =  CheckPoints[SelectedCp][6][i][2]
@@ -352,6 +359,9 @@ function UpdateOrbs(){
 			let lockbutton = document.createElement("button");
 			lockbutton.innerHTML = "delete"
 			lockbutton.style.float = "right"
+            //lockbutton.style.display = "relative"
+            //lockbutton.style.marginLeft = "25%"
+
 			lockbutton.value = i
 			lockbutton.onclick = function(){CheckPoints[SelectedCp][6].splice(i,1);UpdateOrbs();}
 			document.getElementById("orbdiv" + i).appendChild(lockbutton);
