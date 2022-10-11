@@ -1,33 +1,9 @@
 
 /*
-alert(  localStorage.getItem('myCat') ) // get
-localStorage.setItem('myCat', 'Tom'); //set 
-
-localStorage.removeItem('myCat'); // one
-localStorage.clear(); // all
-*/
-
-
-/*
-
-- can move a cp by swaping the data in Checkpoints and updating the selection
-- maybe a seperate button for add cp end and add cp after curent cp
-- save button could togle the menu
-
-- input check
-	- if any input field doesnt have right number of , or things dont get counted as numbers
-	- on copy for all at once?
-	- color field if wrong input during typing?
-
-- give 2 save options: cookie and string format
-	- string format load into selected save with warning if something in it
-
 
 - workshop toggles
 
-- list wich addons are enabled so user knows for future data
-
-
+- tell jack replace +++ with +!SEPERATOR!+
 
 
 */
@@ -131,8 +107,8 @@ function changebar(x){
 function ImportJson(){
 
 
-    CheckPoints = JSON.parse(document.getElementById('jsonfield').value.split("+++")[0])
-    MapData = JSON.parse(document.getElementById('jsonfield').value.split("+++")[1])
+    CheckPoints = JSON.parse(document.getElementById('jsonfield').value.split("+!SEPERATOR!+")[0])
+    MapData = JSON.parse(document.getElementById('jsonfield').value.split("+!SEPERATOR!+")[1])
     CpButtons()
     SelectedCp = 0
     document.getElementById("cpdata").style.display = "block"
@@ -148,7 +124,7 @@ function ImportJson(){
 }
 
 function ExportJson(){
-    var jsonstring = JSON.stringify(CheckPoints) + "+++" +  JSON.stringify(MapData) 
+    var jsonstring = JSON.stringify(CheckPoints) + "+!SEPERATOR!+" +  JSON.stringify(MapData) 
     
     var resultthing = document.getElementById("results")
     resultthing.value = jsonstring
