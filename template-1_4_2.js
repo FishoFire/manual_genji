@@ -274,7 +274,6 @@ rule("Credits here <---- INSERT YOUR NAME HERE")
 }
 
 
-
 disabled rule("Custom difficulty hud")
 {
 	event
@@ -3445,6 +3444,7 @@ ${ulteanbled}rule("Add Blade to Checkpoint <---- EDIT ME")
 	actions
 	{
 		"Change \"-1\" to certain Checkpoints' number. For example if you want to add Blade to Checkpoint 2 and 6 change one of \"-1\" to 2 and other \"-1\" to 6"
+		Wait(1, Ignore Condition);
 		${ultarray}
 	}
 }
