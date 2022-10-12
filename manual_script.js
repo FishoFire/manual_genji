@@ -3,9 +3,35 @@
 
 - workshop toggles
 
-- tell jack replace +++ with +!SEPERATOR!+
 
 
+==================
+change template:
+make function setdata = String.raw'data'
+put the variables in
+
+paste the variables in:
+${data_cps}
+
+${data_kill_cp}
+${data_kill_pos}
+${data_kill_rad}
+
+${data_orb_cp}
+${data_orb_pos}
+${data_orb_strength}
+${data_orb_ult}
+${data_orb_dash}
+${data_orb_lock}
+
+${ulteanbled}
+${ultarray}
+${dasheanbled}
+${dasharray}
+
+${mapmaker}
+${mapcode}
+=========================
 */
 
 var SelectedCp = -1
@@ -16,13 +42,19 @@ var MapData = [
     "" // notes
     ]
 
-
+// load save names
 if(localStorage.getItem('savenames') != null){
     var SaveNames = JSON.parse(localStorage.getItem('savenames'))
 
 } else {
     var SaveNames = ["save 0","save 1","save 2","save 3","save 4"]
 }
+document.getElementById("save0").value = SaveNames[0]
+document.getElementById("save1").value = SaveNames[1]
+document.getElementById("save2").value = SaveNames[2]
+document.getElementById("save3").value = SaveNames[3]
+document.getElementById("save4").value = SaveNames[4]
+
 
 
 function CpButtons(){
@@ -40,17 +72,10 @@ function CpButtons(){
         document.getElementById("cp_buttons").appendChild(btn);
     }
 }
-document.getElementById("save0").value = SaveNames[0]
-document.getElementById("save1").value = SaveNames[1]
-document.getElementById("save2").value = SaveNames[2]
-document.getElementById("save3").value = SaveNames[3]
-document.getElementById("save4").value = SaveNames[4]
 
 function ShowMsg(x){
-    
     document.getElementById("message").innerHTML = x
-    document.getElementById("message").style.display = "block"
-    
+    document.getElementById("message").style.display = "block" 
     setTimeout(() => {
         document.getElementById("message").style.display = "none"
         document.getElementById("message").innerHTML = "" 
@@ -69,21 +94,18 @@ function Save(x){
 
 function Load(x){
     if(localStorage.getItem('headerdata'+x) != null){
+        // load
         MapData = JSON.parse( localStorage.getItem('headerdata'+x) )
         CheckPoints = JSON.parse(  localStorage.getItem('checkpoints'+x) )
-        /*
-        UpdateTop()
-        UpdateSelection()
-        */
-        
-        CpButtons()
-        SelectedCp = 0
+        // show first tab
         document.getElementById("cpdata").style.display = "block"
         document.getElementById("orbs-kills").style.display = "block"
         document.getElementById("maker").value =  MapData[0]
         document.getElementById("code").value =  MapData[1]
         document.getElementById("notes").value =  MapData[2]
-
+        // load things in the tab
+        SelectedCp = 0
+        CpButtons()
         UpdateSelection()
         UpdateTop()
         changebar(0)
@@ -105,18 +127,17 @@ function changebar(x){
 }
 
 function ImportJson(){
-
-
     CheckPoints = JSON.parse(document.getElementById('jsonfield').value.split("+!SEPERATOR!+")[0])
     MapData = JSON.parse(document.getElementById('jsonfield').value.split("+!SEPERATOR!+")[1])
-    CpButtons()
-    SelectedCp = 0
+
     document.getElementById("cpdata").style.display = "block"
     document.getElementById("orbs-kills").style.display = "block"
     document.getElementById("maker").value =  MapData[0]
     document.getElementById("code").value =  MapData[1]
     document.getElementById("notes").value =  MapData[2]
+    SelectedCp = 0
 
+    CpButtons()
     UpdateSelection()
     UpdateTop()
     changebar(0)
@@ -125,13 +146,13 @@ function ImportJson(){
 
 function ExportJson(){
     var jsonstring = JSON.stringify(CheckPoints) + "+!SEPERATOR!+" +  JSON.stringify(MapData) 
-    
+
     var resultthing = document.getElementById("results")
     resultthing.value = jsonstring
     resultthing.select()
     resultthing.setSelectionRange(0, 99999);
     navigator.clipboard.writeText(resultthing.value);
-    //alert("data copied to clipboard")
+
     ShowMsg("copied to clipboard!")
 }
 
@@ -142,10 +163,8 @@ function UpdateSelection(){
     document.getElementById("CPteleportVect").value  = CheckPoints[parseInt(SelectedCp)][2]
     document.getElementById("CPdashenable").checked  = CheckPoints[parseInt(SelectedCp)][3]
     document.getElementById("CPultenable").checked  = CheckPoints[parseInt(SelectedCp)][4]
-	
     document.getElementById("CPnotes").value  = CheckPoints[parseInt(SelectedCp)][5]
 
-    //document.getElementById("hideoptionscp0").style.display =  SelectedCp == 0 ? "none" : "block"
     document.getElementById("DashToggleEnabled").innerHTML = CheckPoints.some(function(i){return i[3]}) ? "Dash addon: enabled |" : "Dash addon: disabled |"
     document.getElementById("DashToggleEnabled").style.color = CheckPoints.some(function(i){return i[3]}) ? "darkgreen" : "black"
     document.getElementById("UltToggleEnabled").innerHTML = CheckPoints.some(function(i){return i[4]}) ? "| Ult addon: enabled" : "| Ult addon: disabled"
@@ -156,23 +175,16 @@ function UpdateSelection(){
 
 function UpdateAfterChange(){
     CheckPoints[parseInt(SelectedCp)][0] = document.getElementById("CPvector").value
-
 	CheckPoints[parseInt(SelectedCp)][1] = document.getElementById("CPteleportTF").checked
 	CheckPoints[parseInt(SelectedCp)][2] = document.getElementById("CPteleportVect").value
-
-
 	CheckPoints[parseInt(SelectedCp)][3] = document.getElementById("CPdashenable").checked 
 	CheckPoints[parseInt(SelectedCp)][4] = document.getElementById("CPultenable").checked
-
     CheckPoints[parseInt(SelectedCp)][5] = document.getElementById("CPnotes").value
-  
 
     document.getElementById("DashToggleEnabled").innerHTML = CheckPoints.some(function(i){return i[3]}) ? "Dash addon: enabled |" : "Dash addon: disabled |"
     document.getElementById("DashToggleEnabled").style.color = CheckPoints.some(function(i){return i[3]}) ? "darkgreen" : "black"
     document.getElementById("UltToggleEnabled").innerHTML = CheckPoints.some(function(i){return i[4]}) ? "| Ult addon: enabled" : "| Ult addon: disabled"
     document.getElementById("UltToggleEnabled").style.color = CheckPoints.some(function(i){return i[4]}) ? "darkgreen" : "black"
-     
-
 }
 
 
@@ -180,7 +192,7 @@ function AddNewCP(x){
     document.getElementById("cpdata").style.display = "block"
     document.getElementById("orbs-kills").style.display = "block"
     
-    if(x == 0){
+    if(x == 0){ // add end
         CheckPoints.push(
             [
             "0,0,0", //0 pos
@@ -195,11 +207,9 @@ function AddNewCP(x){
         )
         SelectedCp = CheckPoints.length -1
 
-    } else {
-
+    } else { // add after current
         CheckPoints.splice(
             SelectedCp + 1, 
-              
             0, 
             [
             "0,0,0", //0 pos
@@ -212,10 +222,8 @@ function AddNewCP(x){
             [] //7 kill
             ]
         )
-
         SelectedCp ++
     }
-
     UpdateSelection()
     CpButtons()   
 }
@@ -231,8 +239,6 @@ function AddOrb(){
         ]
     )
     UpdateOrbs()
-    // add default stats to cehckpoints curent selected
-    // update visuals
 }
 
 function AddKill(){
@@ -256,7 +262,7 @@ function UpdateOrbs(){
     killorb.forEach(killorb => {
         killorb.remove();
     });
-	
+	// add current
 	var orbcount = 0
 	for (let i = 0; i < CheckPoints.length; i++){
 		if (CheckPoints[i][6] != []){
@@ -383,13 +389,9 @@ function UpdateOrbs(){
 	}
 
 }
-
-	
-        
+ 
 
 function RemoveCP(){
-    //each with value above this one
-    //value - 1
     if (CheckPoints.length > 0){
         document.getElementById("CPBUTTON"+SelectedCp).remove()
         CheckPoints.splice(SelectedCp,1)
@@ -399,19 +401,18 @@ function RemoveCP(){
             document.getElementById("CPBUTTON"+i).value =  (i - 1)
             document.getElementById("CPBUTTON"+i).id = "CPBUTTON"+(i-1)
         }   
-
         SelectedCp --
         UpdateSelection() 
-
     }
 }
 
-var data_cps
+// variables to put inside copy pasta
+var data_cps // checkpoints
 
 var data_orb_cp 
-var data_orb_pos
-var data_orb_lock
-var data_orb_dash
+var data_orb_pos 
+var data_orb_lock 
+var data_orb_dash 
 var data_orb_ult
 var data_orb_strength
 
@@ -421,18 +422,14 @@ var data_kill_cp
 
 var mapcode
 var mapmaker
+
 // copy button
 function Copy(){
-
     // cp data
-    data_cps = (
-        "\n\t\tGlobal.A = Array("
-    )
+    data_cps = "\n\t\tGlobal.A = Array("
     for (let i = 0;  i < CheckPoints.length; i++){
         if (CheckPoints[i][1]){
-
 			data_cps += "\n\t\t\tArray(Vector(" + CheckPoints[i][0] + "), Vector(" + CheckPoints[i][2]+ ")),"
-
 		} else{
 			data_cps += "\n\t\t\tVector("+CheckPoints[i][0]+"),"
 		}
@@ -488,7 +485,8 @@ function Copy(){
 	data_kill_rad = data_kill_rad.slice(0,-1) + "\n\t\t);" 
 	data_kill_cp = data_kill_cp.slice(0,-1) + "\n\t\t);" 
 	
-	ulteanbled = "disabled " // enable ult rule  
+    // enable ult rule  
+	ulteanbled = "disabled " 
 	if (CheckPoints.some(function(i){return i[4]})  ){
 		ulteanbled = ""
 		ultarray =  "Global.Dao = Array(Empty Array, "
@@ -502,7 +500,8 @@ function Copy(){
 		ultarray = "Global.Dao = Array(Empty Array, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);\n"
 	}
 
-	dasheanbled = "disabled " // enable dash rule  4
+    // enable dash rule  
+	dasheanbled = "disabled " 
 	if (CheckPoints.some(function(i){return i[3]})  ){
 		dasheanbled = ""
 		dasharray = "Global.SHIFT = Array(Empty Array, "
@@ -516,18 +515,17 @@ function Copy(){
 		dasharray = "Global.SHIFT = Array(Empty Array, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);\n"
 	}
 	
+    // map maker
     mapcode = document.getElementById("code").value
     mapmaker = document.getElementById("maker").value
 
-    setdata()
-
+    setdata() // loaded from data file
     var resultthing = document.getElementById("results")
     resultthing.value = data_pasta
     resultthing.select()
     resultthing.setSelectionRange(0, 99999);
     navigator.clipboard.writeText(resultthing.value);
     ShowMsg("copied to clipboard!")
-    //alert("data copied to clipboard")
 
 }
 
