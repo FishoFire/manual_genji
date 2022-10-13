@@ -2476,11 +2476,11 @@ rule ("Ban | Wallclimb for specific CPs <---- EDIT ME") {
         All;
     }
     conditions {
-        Workshop Setting Toggle(Custom String("Ban Switch", Null, Null, Null), Custom String("Ban Wallclimb for specific CPs", Null, Null, Null), False, 2) == True;
+        Workshop Setting Toggle(Custom String("Ban Switch", Null, Null, Null), Custom String("Ban Wallclimb for specific CPs", Null, Null, Null), ${ban_wallclimbEnabled}, 2) == True;
         (Event Player).C == 0;
         (Event Player).A < Subtract(Count Of(Global.A), 1);
         "Change \"-1\" to certain Checkpoints' number"
-        Array Contains(Array(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1), (Event Player).A) == True;
+        ${ban_wallclimbCp}
         "If all checkpoints need this function, enable this rule and disable Rule: \"Array Contains\" \r\n@Condition eventPlayer.A < len(A) - 1"
         Distance Between(Event Player, Value In Array(Global.A, Add((Event Player).A, 1))) <= 2;
     }
@@ -2498,11 +2498,11 @@ rule ("Ban | Bhop for specific CPs      <---- EDIT ME") {
         All;
     }
     conditions {
-        Workshop Setting Toggle(Custom String("Ban Switch", Null, Null, Null), Custom String("Ban Bhop for specific CPs", Null, Null, Null), False, 3) == True;
+        Workshop Setting Toggle(Custom String("Ban Switch", Null, Null, Null), Custom String("Ban Bhop for specific CPs", Null, Null, Null), ${ban_bhopEnabled}, 3) == True;
         (Event Player).C == 0;
         (Event Player).A < Subtract(Count Of(Global.A), 1);
         "Change \"-1\" to certain Checkpoints' number"
-        Array Contains(Array(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1), (Event Player).A) == True;
+        ${ban_bhopsCp}
         "If all checkpoints need this function, enable this rule and disable Rule: \"Array Contains\" \r\n@Condition eventPlayer.A < len(A) - 1"
         Distance Between(Event Player, Value In Array(Global.A, Add((Event Player).A, 1))) <= 2;
     }

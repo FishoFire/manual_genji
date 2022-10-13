@@ -27,6 +27,14 @@
 		<textarea rows="1" cols="25" placeholder="map code" id="code" style="display:inline-block" onchange="UpdateTop()"></textarea> <br/>
 		<label id="DashToggleEnabled">Dash addon: disabled |</label>
 		<label id="UltToggleEnabled">| Ult addon: disabled</label>   <br/>
+		<div style="border:1px solid black"> <b> Bans (workshop toggles)</b> <br/>
+			<input type="checkbox" id="ban_triple" onclick="UpdateTop()"> triple jump
+			<input type="checkbox" id="ban_multi" onclick="UpdateTop()"> multi climb
+			<input type="checkbox" id="ban_emote" onclick="UpdateTop()"> emote save
+			<input type="checkbox" id="ban_create" onclick="UpdateTop()"> create bhop
+			<input type="checkbox" id="ban_dbhop" onclick="UpdateTop()"> savehop
+			<input type="checkbox" id="ban_dashstart" onclick="UpdateTop()"> dash start
+		</div>
 		<textarea rows="3" style="width:90%" placeholder="map notes" id="notes" style="display:inline-block" onchange="UpdateTop()"></textarea>
 		</div>
 	</div>
@@ -48,7 +56,11 @@
 			<input type="checkbox" id="CPdashenable" onclick="UpdateAfterChange()"> dash
 			<input type="checkbox" id="CPultenable" onclick="UpdateAfterChange()"> ultimate
 			<input type="checkbox" id="CPteleportTF" onclick="UpdateAfterChange()"> teleport <textarea id="CPteleportVect" name="txtfield"  onchange="UpdateAfterChange()" rows="1" cols="25" placeholder="0,0,0"></textarea> 
-
+			<br/>
+			<input type="checkbox" id="CPbanBhop" onclick="UpdateAfterChange()"> ban bhop
+			<input type="checkbox" id="CpbanClimb" onclick="UpdateAfterChange()"> ban wallclimb
+			
+			
 		<!-- </div>-->
 		<textarea id="CPnotes" name="txtfield" rows="3" onchange="UpdateAfterChange()" placeholder="cp notes"></textarea>
 		<button onclick="RemoveCP()" class="longbutton">  remove checkpoint  </button>
@@ -146,7 +158,7 @@ Rememebrt that it's still possible to generate a share code for te map the usual
 </div>
 
 <textarea id="results" style="display:none"></textarea>
-<div style="text-align:left"><small>version 0.9</small></div>
+<div style="text-align:left"><small>version 0.91</small></div>
 
 
 <script src="template-1_5_manual.js"></script>

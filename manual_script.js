@@ -31,6 +31,8 @@ ${dasharray}
 
 ${mapmaker}
 ${mapcode}
+
+
 =========================
 */
 
@@ -97,12 +99,35 @@ function Load(x){
         // load
         MapData = JSON.parse( localStorage.getItem('headerdata'+x) )
         CheckPoints = JSON.parse(  localStorage.getItem('checkpoints'+x) )
+        
+        // check data
+        MapData[0] =  MapData[0] ?  MapData[0] : ""
+        MapData[1] =  MapData[1] ?  MapData[1] : ""
+        MapData[2] =  MapData[2] ?  MapData[2] : ""
+        MapData[3] =  MapData[3] ?  MapData[3] : false
+        MapData[4] =  MapData[4] ?  MapData[4] : false
+        MapData[5] =  MapData[5] ?  MapData[5] : false
+        MapData[6] =  MapData[6] ?  MapData[6] : false
+        MapData[7] =  MapData[7] ?  MapData[7] : false
+        MapData[8] =  MapData[8] ?  MapData[8] : false
+        
+        for(let i=0;i < CheckPoints.length;i++){
+            CheckPoints[i][8] = CheckPoints[i][8]  ?  CheckPoints[i][8]  : false
+            CheckPoints[i][9] = CheckPoints[i][9]  ?  CheckPoints[i][9]  : false
+        }
+  
         // show first tab
         document.getElementById("cpdata").style.display = "block"
         document.getElementById("orbs-kills").style.display = "block"
         document.getElementById("maker").value =  MapData[0]
         document.getElementById("code").value =  MapData[1]
         document.getElementById("notes").value =  MapData[2]
+        document.getElementById("ban_triple").checked = MapData[3]
+        document.getElementById("ban_multi").checked =  MapData[4]
+        document.getElementById("ban_emote" ).checked = MapData[5]
+        document.getElementById("ban_create").checked = MapData[6]
+        document.getElementById("ban_dbhop" ).checked =  MapData[7]
+        document.getElementById("ban_dashstart" ).checked = MapData[8]
         // load things in the tab
         SelectedCp = 0
         CpButtons()
@@ -117,6 +142,14 @@ function UpdateTop(){
     MapData[0] = document.getElementById("maker").value 
     MapData[1] = document.getElementById("code").value 
     MapData[2] = document.getElementById("notes").value 
+
+    MapData[3] = document.getElementById("ban_triple").checked
+    MapData[4] = document.getElementById("ban_multi").checked
+    MapData[5] = document.getElementById("ban_emote" ).checked
+    MapData[6] = document.getElementById("ban_create").checked
+    MapData[7] = document.getElementById("ban_dbhop" ).checked
+    MapData[8] = document.getElementById("ban_dashstart" ).checked
+
 }
 
 function changebar(x){
@@ -130,11 +163,36 @@ function ImportJson(){
     CheckPoints = JSON.parse(document.getElementById('jsonfield').value.split("+!SEPERATOR!+")[0])
     MapData = JSON.parse(document.getElementById('jsonfield').value.split("+!SEPERATOR!+")[1])
 
+    // fix data if missing
+    MapData[0] =  MapData[0] ?  MapData[0] : ""
+    MapData[1] =  MapData[1] ?  MapData[1] : ""
+    MapData[2] =  MapData[2] ?  MapData[2] : ""
+    
+    MapData[3] =  MapData[3] ?  MapData[3] : false
+    MapData[4] =  MapData[4] ?  MapData[4] : false
+    MapData[5] =  MapData[5] ?  MapData[5] : false
+    MapData[6] =  MapData[6] ?  MapData[6] : false
+    MapData[7] =  MapData[7] ?  MapData[7] : false
+    MapData[8] =  MapData[8] ?  MapData[8] : false
+
+    for(let i=0;i < CheckPoints.length;i++){
+        CheckPoints[i][8] = CheckPoints[i][8]  ?  CheckPoints[i][8]  : false
+        CheckPoints[i][9] = CheckPoints[i][9]  ?  CheckPoints[i][9]  : false
+    }
+
     document.getElementById("cpdata").style.display = "block"
     document.getElementById("orbs-kills").style.display = "block"
     document.getElementById("maker").value =  MapData[0]
     document.getElementById("code").value =  MapData[1]
     document.getElementById("notes").value =  MapData[2]
+    
+    document.getElementById("ban_triple").checked = MapData[3]
+    document.getElementById("ban_multi").checked =  MapData[4]
+    document.getElementById("ban_emote" ).checked = MapData[5]
+    document.getElementById("ban_create").checked = MapData[6]
+    document.getElementById("ban_dbhop" ).checked =  MapData[7]
+    document.getElementById("ban_dashstart" ).checked = MapData[8]
+
     SelectedCp = 0
 
     CpButtons()
@@ -165,11 +223,16 @@ function UpdateSelection(){
     document.getElementById("CPultenable").checked  = CheckPoints[parseInt(SelectedCp)][4]
     document.getElementById("CPnotes").value  = CheckPoints[parseInt(SelectedCp)][5]
 
+    document.getElementById("CPbanBhop").checked = CheckPoints[parseInt(SelectedCp)][8]
+    document.getElementById("CpbanClimb").checked = CheckPoints[parseInt(SelectedCp)][9]
+
     document.getElementById("DashToggleEnabled").innerHTML = CheckPoints.some(function(i){return i[3]}) ? "Dash addon: enabled |" : "Dash addon: disabled |"
     document.getElementById("DashToggleEnabled").style.color = CheckPoints.some(function(i){return i[3]}) ? "darkgreen" : "black"
     document.getElementById("UltToggleEnabled").innerHTML = CheckPoints.some(function(i){return i[4]}) ? "| Ult addon: enabled" : "| Ult addon: disabled"
     document.getElementById("UltToggleEnabled").style.color = CheckPoints.some(function(i){return i[4]}) ? "darkgreen" : "black"
      
+
+
     UpdateOrbs()
 }
 
@@ -180,6 +243,8 @@ function UpdateAfterChange(){
 	CheckPoints[parseInt(SelectedCp)][3] = document.getElementById("CPdashenable").checked 
 	CheckPoints[parseInt(SelectedCp)][4] = document.getElementById("CPultenable").checked
     CheckPoints[parseInt(SelectedCp)][5] = document.getElementById("CPnotes").value
+    CheckPoints[parseInt(SelectedCp)][8] = document.getElementById("CPbanBhop").checked
+    CheckPoints[parseInt(SelectedCp)][9] = document.getElementById("CpbanClimb").checked
 
     document.getElementById("DashToggleEnabled").innerHTML = CheckPoints.some(function(i){return i[3]}) ? "Dash addon: enabled |" : "Dash addon: disabled |"
     document.getElementById("DashToggleEnabled").style.color = CheckPoints.some(function(i){return i[3]}) ? "darkgreen" : "black"
@@ -202,7 +267,9 @@ function AddNewCP(x){
             false, //4 ult
             "", //5 notes
             [], //6 orb
-            [] //7 kill
+            [], //7 kill
+            false, //8 ban bhop
+            false // 9 ban climb
             ]
         )
         SelectedCp = CheckPoints.length -1
@@ -219,7 +286,9 @@ function AddNewCP(x){
             false, //4 ult
             "", //5 notes
             [], //6 orb
-            [] //7 kill
+            [], //7 kill
+            false, //8 ban bhop
+            false // 9 ban climb
             ]
         )
         SelectedCp ++
@@ -254,7 +323,7 @@ function AddKill(){
 
 function UpdateOrbs(){
      // delete all old orbs
-    const bounceorb = document.querySelectorAll('.bounceorb ');
+    const bounceorb = document.querySelectorAll('.bounceorb');
     bounceorb.forEach(bounceorb => {
         bounceorb.remove();
     });
@@ -423,6 +492,18 @@ var data_kill_cp
 var mapcode
 var mapmaker
 
+var ban_triple
+var ban_multi
+var ban_emote
+var ban_create
+var ban_dbhop // ddeath
+var ban_dashstart
+
+var ban_bhopsCp
+var ban_bhopEnabled
+
+var ban_wallclimbCp
+var ban_wallclimbEnabled
 // copy button
 function Copy(){
     // cp data
@@ -515,9 +596,48 @@ function Copy(){
 		dasharray = "Global.SHIFT = Array(Empty Array, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);\n"
 	}
 	
-    // map maker
-    mapcode = document.getElementById("code").value
-    mapmaker = document.getElementById("maker").value
+    // map header
+    mapcode = MapData[0] 
+    mapmaker = MapData[1] 
+
+    ban_triple = MapData[3] ? "True" : "False"
+    ban_multi = MapData[4] ? "True" : "False"
+    ban_emote = MapData[5] ? "True" : "False"
+    ban_create = MapData[6] ? "True" : "False"
+    ban_dbhop = MapData[7] ? "True" : "False"
+    ban_dashstart = MapData[8] ? "True" : "False"
+
+    
+
+	ban_bhopEnabled = "False"
+	if (CheckPoints.some(function(i){return i[8]})  ){
+		ban_bhopEnabled = "True"
+		ban_bhopsCp = "Array Contains(Array("
+		for (let i = 0;  i < CheckPoints.length; i++){
+			if (CheckPoints[i][8]){
+				ban_bhopsCp += i + ", "
+			}
+		}
+		ban_bhopsCp = ban_bhopsCp.slice(0,-2) + "), (Event Player).A) == True;\n"
+	} else {
+		ban_bhopsCp = "Array Contains(Array(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1), (Event Player).A) == True;\n"
+	}
+	
+    
+	ban_wallclimbEnabled = "False"
+	if (CheckPoints.some(function(i){return i[9]})  ){
+		ban_wallclimbEnabled = "True"
+		ban_wallclimbCp = "Array Contains(Array("
+		for (let i = 0;  i < CheckPoints.length; i++){
+			if (CheckPoints[i][9]){
+				ban_wallclimbCp += i + ", "
+			}
+		}
+		ban_wallclimbCp = ban_wallclimbCp.slice(0,-2) + "), (Event Player).A) == True;\n"
+	} else {
+		ban_wallclimbCp = "Array Contains(Array(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1), (Event Player).A) == True;\n"
+	}
+	
 
     setdata() // loaded from data file
     var resultthing = document.getElementById("results")
