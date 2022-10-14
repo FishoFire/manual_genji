@@ -621,8 +621,8 @@ function Copy(){
 	}
 	
     // map header
-    mapcode = MapData[0] 
-    mapmaker = MapData[1] 
+    mapmaker = MapData[0] 
+    mapcode = MapData[1] 
 
     ban_triple = MapData[3] ? "True" : "False"
     ban_multi = MapData[4] ? "True" : "False"
