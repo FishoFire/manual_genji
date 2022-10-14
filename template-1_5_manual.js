@@ -1163,7 +1163,7 @@ rule ("Setup and Variables") {
         "This probably isn't necessary"
         Set Global Variable(B, Subtract(Count Of(Global.A), 1));
         "KILLBALL()\r\n wait(2)\r\n pinball()"
-        Set Global Variable(PortalOn, Workshop Setting Toggle(Custom String("map settings", Null, Null, Null), Custom String("enable portals (control maps)", Null, Null, Null), True, 0));
+        Set Global Variable(PortalOn, Workshop Setting Toggle(Custom String("map settings", Null, Null, Null), Custom String("enable portals (control maps)", Null, Null, Null), ${portalon}, 0));
         "hudText(getAllPlayers(), \"\", null, \"{0} {1} {2}\".format(\"Time left until server resets:\", 90 - floor(getTotalTimeElapsed() / 60), \"Minutes\"), HudPosition.RIGHT, -15, Color.WHITE, Color.WHITE, Color.RED, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)"
         Set Global Variable(save, Empty Array);
         "old board\r\n new board"

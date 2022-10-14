@@ -25,8 +25,11 @@
 		<div>
 		<textarea rows="1" cols="25" placeholder="map maker" id="maker" style="display:inline-block" onchange="UpdateTop()"></textarea>   
 		<textarea rows="1" cols="25" placeholder="map code" id="code" style="display:inline-block" onchange="UpdateTop()"></textarea> <br/>
-		<label id="DashToggleEnabled">Dash addon: disabled |</label>
-		<label id="UltToggleEnabled">| Ult addon: disabled</label>   <br/>
+		<div>
+			<input type="checkbox" id="portalOn" onclick="UpdateTop()" checked="true"> default portals (control maps) | 
+			<label id="DashToggleEnabled">Dash addon: disabled |</label>
+			<label id="UltToggleEnabled">| Ult addon: disabled</label>   <br/>
+		</div>
 		<div style="border:1px solid black"> <b> Bans (workshop toggles)</b> <br/>
 			<input type="checkbox" id="ban_triple" onclick="UpdateTop()"> triple jump
 			<input type="checkbox" id="ban_multi" onclick="UpdateTop()"> multi climb
@@ -158,7 +161,7 @@ Rememebrt that it's still possible to generate a share code for te map the usual
 </div>
 
 <textarea id="results" style="display:none"></textarea>
-<div style="text-align:left"><small>version 0.91</small></div>
+<div style="text-align:left"><small>version 0.92</small></div>
 
 
 <script src="template-1_5_manual.js"></script>

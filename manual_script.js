@@ -110,6 +110,7 @@ function Load(x){
         MapData[6] =  MapData[6] ?  MapData[6] : false
         MapData[7] =  MapData[7] ?  MapData[7] : false
         MapData[8] =  MapData[8] ?  MapData[8] : false
+        MapData[9] = typeof MapData[9] != 'undefined' ?  MapData[9] : true
         
         for(let i=0;i < CheckPoints.length;i++){
             CheckPoints[i][8] = CheckPoints[i][8]  ?  CheckPoints[i][8]  : false
@@ -128,6 +129,7 @@ function Load(x){
         document.getElementById("ban_create").checked = MapData[6]
         document.getElementById("ban_dbhop" ).checked =  MapData[7]
         document.getElementById("ban_dashstart" ).checked = MapData[8]
+        document.getElementById("portalOn").checked = MapData[9]
         // load things in the tab
         SelectedCp = 0
         CpButtons()
@@ -149,7 +151,7 @@ function UpdateTop(){
     MapData[6] = document.getElementById("ban_create").checked
     MapData[7] = document.getElementById("ban_dbhop" ).checked
     MapData[8] = document.getElementById("ban_dashstart" ).checked
-
+    MapData[9] = document.getElementById("portalOn" ).checked
 }
 
 function changebar(x){
@@ -175,6 +177,8 @@ function ImportJson(){
     MapData[7] =  MapData[7] ?  MapData[7] : false
     MapData[8] =  MapData[8] ?  MapData[8] : false
 
+    MapData[9] = typeof MapData[9] != 'undefined' ?  MapData[9] : true
+
     for(let i=0;i < CheckPoints.length;i++){
         CheckPoints[i][8] = CheckPoints[i][8]  ?  CheckPoints[i][8]  : false
         CheckPoints[i][9] = CheckPoints[i][9]  ?  CheckPoints[i][9]  : false
@@ -192,6 +196,7 @@ function ImportJson(){
     document.getElementById("ban_create").checked = MapData[6]
     document.getElementById("ban_dbhop" ).checked =  MapData[7]
     document.getElementById("ban_dashstart" ).checked = MapData[8]
+    document.getElementById("portalOn").checked = MapData[9]
 
     SelectedCp = 0
 
@@ -504,6 +509,9 @@ var ban_bhopEnabled
 
 var ban_wallclimbCp
 var ban_wallclimbEnabled
+
+var portalon
+
 // copy button
 function Copy(){
     // cp data
@@ -607,6 +615,7 @@ function Copy(){
     ban_dbhop = MapData[7] ? "True" : "False"
     ban_dashstart = MapData[8] ? "True" : "False"
 
+    portalon = MapData[9] ? "True" : "False"
     
 
 	ban_bhopEnabled = "False"
