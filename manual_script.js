@@ -11,26 +11,36 @@ make function setdata = String.raw'data'
 put the variables in
 
 paste the variables in:
-${data_cps}
+var data_cps // checkpoints
 
-${data_kill_cp}
-${data_kill_pos}
-${data_kill_rad}
+var data_orb_cp 
+var data_orb_pos 
+var data_orb_lock 
+var data_orb_dash 
+var data_orb_ult
+var data_orb_strength
 
-${data_orb_cp}
-${data_orb_pos}
-${data_orb_strength}
-${data_orb_ult}
-${data_orb_dash}
-${data_orb_lock}
+var data_kill_pos
+var data_kill_rad
+var data_kill_cp
 
-${ulteanbled}
-${ultarray}
-${dasheanbled}
-${dasharray}
+var mapcode
+var mapmaker
 
-${mapmaker}
-${mapcode}
+var ban_triple
+var ban_multi
+var ban_emote
+var ban_create
+var ban_dbhop // ddeath
+var ban_dashstart
+
+var ban_bhopsCp
+var ban_bhopEnabled
+
+var ban_wallclimbCp
+var ban_wallclimbEnabled
+
+var portalon
 
 
 =========================
@@ -111,7 +121,7 @@ function Load(x){
         MapData[7] =  MapData[7] ?  MapData[7] : false
         MapData[8] =  MapData[8] ?  MapData[8] : false
         MapData[9] = typeof MapData[9] != 'undefined' ?  MapData[9] : true
-        
+        MapData[10] = typeof MapData[10] != 'undefined' ?  MapData[10] : "0"
         for(let i=0;i < CheckPoints.length;i++){
             CheckPoints[i][8] = CheckPoints[i][8]  ?  CheckPoints[i][8]  : false
             CheckPoints[i][9] = CheckPoints[i][9]  ?  CheckPoints[i][9]  : false
@@ -130,6 +140,7 @@ function Load(x){
         document.getElementById("ban_dbhop" ).checked =  MapData[7]
         document.getElementById("ban_dashstart" ).checked = MapData[8]
         document.getElementById("portalOn").checked = MapData[9]
+        document.getElementById("dif").value = MapData[10]
         // load things in the tab
         SelectedCp = 0
         CpButtons()
@@ -152,6 +163,8 @@ function UpdateTop(){
     MapData[7] = document.getElementById("ban_dbhop" ).checked
     MapData[8] = document.getElementById("ban_dashstart" ).checked
     MapData[9] = document.getElementById("portalOn" ).checked
+
+    MapData[10] = document.getElementById("dif").value
 }
 
 function changebar(x){
@@ -178,6 +191,7 @@ function ImportJson(){
     MapData[8] =  MapData[8] ?  MapData[8] : false
 
     MapData[9] = typeof MapData[9] != 'undefined' ?  MapData[9] : true
+    MapData[10] = typeof MapData[9] != 'undefined' ?  MapData[10] : "0"
 
     for(let i=0;i < CheckPoints.length;i++){
         CheckPoints[i][8] = CheckPoints[i][8]  ?  CheckPoints[i][8]  : false
@@ -197,6 +211,8 @@ function ImportJson(){
     document.getElementById("ban_dbhop" ).checked =  MapData[7]
     document.getElementById("ban_dashstart" ).checked = MapData[8]
     document.getElementById("portalOn").checked = MapData[9]
+    document.getElementById("dif").value = MapData[10]
+
 
     SelectedCp = 0
 
@@ -511,7 +527,7 @@ var ban_wallclimbCp
 var ban_wallclimbEnabled
 
 var portalon
-
+var difficultyhud
 // copy button
 function Copy(){
     // cp data
@@ -617,6 +633,7 @@ function Copy(){
 
     portalon = MapData[9] ? "True" : "False"
     
+    difficultyhud = MapData[10]
 
 	ban_bhopEnabled = "False"
 	if (CheckPoints.some(function(i){return i[8]})  ){
@@ -631,7 +648,6 @@ function Copy(){
 	} else {
 		ban_bhopsCp = "Array Contains(Array(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1), (Event Player).A) == True;\n"
 	}
-	
     
 	ban_wallclimbEnabled = "False"
 	if (CheckPoints.some(function(i){return i[9]})  ){

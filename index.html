@@ -26,14 +26,34 @@
 		<textarea rows="1" cols="25" placeholder="map maker" id="maker" style="display:inline-block" onchange="UpdateTop()"></textarea>   
 		<textarea rows="1" cols="25" placeholder="map code" id="code" style="display:inline-block" onchange="UpdateTop()"></textarea> <br/>
 		<div>
-			<input type="checkbox" id="portalOn" onclick="UpdateTop()" checked="true"> default portals (control maps) | 
 			<label id="DashToggleEnabled">Dash addon: disabled |</label>
 			<label id="UltToggleEnabled">| Ult addon: disabled</label>   <br/>
+			<input type="checkbox" id="portalOn" onclick="UpdateTop()" checked="true"> default portals (control maps) | 
+			difficulty <select name="difi" id="dif" onchange="UpdateTop()">
+				<option value="0">beginner</option>
+				<option value="1">easy-</option>
+				<option value="2">easy</option>
+				<option value="3">easy+</option>
+				<option value="4">medium-</option>
+				<option value="5">medium</option>
+				<option value="6">medium+</option>
+				<option value="7">hard-</option>
+				<option value="8">hard</option>
+				<option value="9">hard+"</option>
+				<option value="10">very hard-</option>
+				<option value="11">very hard</option>
+				<option value="12">very hard+</option>
+				<option value="13">extreme-</option>
+				<option value="14">extreme"</option>
+				 <option value="15">extreme+</option>
+				 <option value="16">hell</option>
+				 <option value="17">don't display</option>
+			</select>
 		</div>
 		<div style="border:1px solid black"> <b> Bans (workshop toggles)</b> <br/>
 			<input type="checkbox" id="ban_triple" onclick="UpdateTop()"> triple jump
 			<input type="checkbox" id="ban_multi" onclick="UpdateTop()"> multi climb
-			<input type="checkbox" id="ban_emote" onclick="UpdateTop()"> emote save
+			<input type="checkbox" id="ban_emote" onclick="UpdateTop()" style="display:none"><!-- emote save -->
 			<input type="checkbox" id="ban_create" onclick="UpdateTop()"> create bhop
 			<input type="checkbox" id="ban_dbhop" onclick="UpdateTop()"> savehop
 			<input type="checkbox" id="ban_dashstart" onclick="UpdateTop()"> dash start
@@ -54,17 +74,18 @@
 		<div id="selectedcpnumber">Select a checkpoint</div>
 		position <textarea id="CPvector" name="txtfield" rows="1" cols="25" onchange="UpdateAfterChange()" placeholder="0,0,0"></textarea> <br/>
 		
-		<!--<div id="hideoptionscp0" style="display:none"> -->
+	
 
-			<input type="checkbox" id="CPdashenable" onclick="UpdateAfterChange()"> dash
-			<input type="checkbox" id="CPultenable" onclick="UpdateAfterChange()"> ultimate
-			<input type="checkbox" id="CPteleportTF" onclick="UpdateAfterChange()"> teleport <textarea id="CPteleportVect" name="txtfield"  onchange="UpdateAfterChange()" rows="1" cols="25" placeholder="0,0,0"></textarea> 
-			<br/>
-			<input type="checkbox" id="CPbanBhop" onclick="UpdateAfterChange()"> ban bhop
-			<input type="checkbox" id="CpbanClimb" onclick="UpdateAfterChange()"> ban wallclimb
+		<input type="checkbox" id="CPdashenable" onclick="UpdateAfterChange()"> dash
+		<input type="checkbox" id="CPultenable" onclick="UpdateAfterChange()"> ultimate
+		<input type="checkbox" id="CPteleportTF" onclick="UpdateAfterChange()"> teleport <textarea id="CPteleportVect" name="txtfield"  onchange="UpdateAfterChange()" rows="1" cols="25" placeholder="0,0,0"></textarea> 
+		<br/>
+		<!-- disabled because it doesnt work (hiden next 2)-->
+		<input type="checkbox" id="CPbanBhop" onclick="UpdateAfterChange()" style="display:none"><!--  ban bhop -->
+		<input type="checkbox" id="CpbanClimb" onclick="UpdateAfterChange()" style="display:none"> <!-- ban wallclimb -->
+
 			
-			
-		<!-- </div>-->
+	
 		<textarea id="CPnotes" name="txtfield" rows="3" onchange="UpdateAfterChange()" placeholder="cp notes"></textarea>
 		<button onclick="RemoveCP()" class="longbutton">  remove checkpoint  </button>
 	</div>
@@ -161,10 +182,11 @@ Rememebrt that it's still possible to generate a share code for te map the usual
 </div>
 
 <textarea id="results" style="display:none"></textarea>
-<div style="text-align:left"><small>version 0.92</small></div>
+<div style="text-align:left"><small>version 0.93</small></div>
 
 
-<script src="template-1_5_manual.js"></script>
+<script src="template-1-51.js"></script>
+<!--- <script src="template-1_5_manual.js"></script> -->
 <!--- <script src="template-1_4_2.js"></script>  -->
 
 <script src="manual_script.js"></script>
