@@ -483,6 +483,7 @@ function UpdateOrbs(){
 
 function RemoveCP(){
     if (CheckPoints.length > 0){
+        /*
         document.getElementById("CPBUTTON"+SelectedCp).remove()
         CheckPoints.splice(SelectedCp,1)
         
@@ -491,6 +492,8 @@ function RemoveCP(){
             document.getElementById("CPBUTTON"+i).value =  (i - 1)
             document.getElementById("CPBUTTON"+i).id = "CPBUTTON"+(i-1)
         }   
+        */
+        CpButtons()
         SelectedCp --
         UpdateSelection() 
     }

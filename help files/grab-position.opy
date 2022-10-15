@@ -1,4 +1,54 @@
 
+settings {
+    "main": {
+        "description": "manually collect data for manual template",
+        "modeName": "genji tool"
+    },
+    "lobby": {
+        "allowPlayersInQueue": true,
+        "enableMatchVoiceChat": true,
+        "spectatorSlots": 3,
+        "team1Slots": 11,
+        "team2Slots": 0,
+        "returnToLobby": "never",
+        "swapTeamsAfterMatch": false
+    },
+    "gamemodes": {
+        "skirmish": {},
+        "tdm": {
+            "gameLengthInMn": 15,
+            "enableMercyRezKillCancel": false,
+            "enableSelfInitiatedRespawn": false
+        },
+        "general": {
+            "enableHeroSwitching": false,
+            "enableEnemyHealthBars": false,
+            "gamemodeStartTrigger": "immediately",
+            "heroLimit": "off",
+            "enableKillCam": false,
+            "enableKillFeed": false,
+            "enableRandomHeroes": true,
+            "respawnTime%": 0,
+            "spawnHealthPacks": "disabled"
+        }
+    },
+    "heroes": {
+        "allTeams": {
+            "genji": {
+                "enableAbility2": false,
+                "enableInfiniteAmmo": true,
+                "enableSpawningWithUlt": true,
+                "ability1Cooldown%": 0,
+                "ultDuration%": 25,
+                "passiveUltGen%": 500,
+                "ultGen%": 500
+            },
+            "enabledHeroes": [
+                "genji"
+            ]
+        }
+    }
+}
 
 globalvar ring1
 globalvar ring2
@@ -29,71 +79,26 @@ rule "orb":
 
 rule "display":
     @Event eachPlayer
+	eventPlayer.setStatusEffect(null, Status.PHASED_OUT, 9999)
+	/*
+	hudText(eventPlayer, "orb: {0}".format(orb), null, "set with Melee", HudPosition.LEFT, 0, Color.LIME_GREEN, Color.LIME_GREEN, Color.LIME_GREEN, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
+	hudText(eventPlayer, "ring 1: {0}".format(ring1), null, "set with interact + primary", HudPosition.LEFT, 1, Color.SKY_BLUE, Color.SKY_BLUE, Color.SKY_BLUE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
+	hudText(eventPlayer, "ring 2: {0}".format(ring2), null, "set with interact + secondary", HudPosition.LEFT, 2, Color.PURPLE, Color.PURPLE, Color.PURPLE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
+	hudText(eventPlayer, "hostplayer pos: {0}".format(hostPlayer.getPosition()), null, null, HudPosition.LEFT, 3, Color.ORANGE, Color.ORANGE, Color.ORANGE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
+	*/
+		
+	hudHeader(eventPlayer, "orb: {0}".format(orb), HudPosition.LEFT, 0, Color.LIME_GREEN, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
+	hudSubheader(eventPlayer, "set with Melee\n", HudPosition.LEFT, 1, Color.LIME_GREEN, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
 
-	createInWorldText(eventPlayer, "orb: {0} - set with Melee".format(orb) ,
-		updateEveryTick( eventPlayer.getEyePosition() + vect(0,1,0) + eventPlayer.getFacingDirection() * 5  ),
-		1, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, Color.LIME_GREEN, SpecVisibility.DEFAULT)
-	
-	createInWorldText(eventPlayer, "ring 1: {0} - set with interact + primary".format(ring1) ,
-		updateEveryTick( eventPlayer.getEyePosition() + vect(0,1.2,0) + eventPlayer.getFacingDirection() * 5  ),
-		1, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, Color.SKY_BLUE, SpecVisibility.DEFAULT)
-	
-	createInWorldText(eventPlayer, "ring 2: {0} - set with interact + secondary".format(ring2) ,
-		updateEveryTick( eventPlayer.getEyePosition() + vect(0,1.4,0) + eventPlayer.getFacingDirection() * 5  ),
-		1, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, Color.PURPLE, SpecVisibility.DEFAULT)
+	hudHeader(eventPlayer, "ring 1: {0}".format(ring1), HudPosition.LEFT, 10, Color.SKY_BLUE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
+	hudSubheader(eventPlayer, "set with interact + primary\n", HudPosition.LEFT, 11, Color.SKY_BLUE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
 
-	createInWorldText(eventPlayer, "hostplayer: {0}".format(hostPlayer.getPosition()), 
-		updateEveryTick( eventPlayer.getEyePosition() + vect(0,1.6,0) + eventPlayer.getFacingDirection() * 5  ),
-		1, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, Color.ORANGE, SpecVisibility.DEFAULT)
+	hudHeader(eventPlayer, "ring 2: {0}".format(ring2), HudPosition.LEFT, 20, Color.PURPLE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
+	hudSubheader(eventPlayer, "set with interact + secondary\n", HudPosition.LEFT, 21, Color.PURPLE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
 
+	hudHeader(eventPlayer, "hostplayer: {0}".format(hostPlayer.getPosition()), HudPosition.LEFT, 30, Color.ORANGE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
 
 	createEffect(getAllPlayers(), Effect.RING, Color.SKY_BLUE, ring1, 1, EffectReeval.POSITION_AND_RADIUS)
 	createEffect(getAllPlayers(), Effect.RING, Color.PURPLE, ring2, 1, EffectReeval.POSITION_AND_RADIUS)
 	createEffect(getAllPlayers(), Effect.ORB, Color.LIME_GREEN, orb, 1, EffectReeval.POSITION_AND_RADIUS)
 
-
-/*
-
-
-settings
-{
-	modes
-	{
-		Control
-		{
-			Limit Roles: 1 Tank 2 Offense 2 Support
-		}
-
-		Escort
-		{
-			Limit Roles: 1 Tank 2 Offense 2 Support
-		}
-
-		Hybrid
-		{
-			Limit Roles: 1 Tank 2 Offense 2 Support
-		}
-
-		Push
-		{
-			Limit Roles: 1 Tank 2 Offense 2 Support
-		}
-	}
-}
-
-
-
-rule ("grab location") {
-    event {
-        Ongoing - Each Player;
-        All;
-        All;
-    }
-    conditions {
-        Is Button Held(Event Player, Button(Interact)) == True;
-    }
-    actions {
-        Small Message(Event Player, Position Of(Event Player));
-    }
-}
-*/
