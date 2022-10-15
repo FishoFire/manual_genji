@@ -51,9 +51,27 @@ var CheckPoints = []
 var MapData = [
     "", // maker
     "", // code
-    "" // notes
+    "", // notes
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    "0"
     ]
-
+/*
+] ?  MapData[2] : ""
+        MapData[3] =  MapData[3] ?  MapData[3] : false
+        MapData[4] =  MapData[4] ?  MapData[4] : false
+        MapData[5] =  MapData[5] ?  MapData[5] : false
+        MapData[6] =  MapData[6] ?  MapData[6] : false
+        MapData[7] =  MapData[7] ?  MapData[7] : false
+        MapData[8] =  MapData[8] ?  MapData[8] : false
+        MapData[9] = typeof MapData[9] != 'undefined' ?  MapData[9] : true
+        MapData[10] = typeof MapData[10] != 'undefined' ?  MapData[10] : "0"
+*/
 // load save names
 if(localStorage.getItem('savenames') != null){
     var SaveNames = JSON.parse(localStorage.getItem('savenames'))
