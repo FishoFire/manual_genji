@@ -687,9 +687,66 @@ function Copy(){
 		ban_wallclimbCp = "Array Contains(Array(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1), (Event Player).A) == True;\n"
 	}
 	
+    
+    function getTextareaLineNumber(textarea, name) {
+            
+        document.getElementById(name+"-textarea-line-number").innerHTML = textarea.value.substr(0, textarea.selectionStart).split("\n").length;
+        document.getElementById(name+"-textarea-col-number").innerHTML = textarea.selectionStart - textarea.value.substr(0, textarea.selectionStart).lastIndexOf("\n");
+    }
+
+    function demoDecompile() {
+        
+        var str = "";
+        var language = document.getElementById("languageInput").value;
+        
+        try {
+            str = decompileAllRules(document.getElementById("results").value, language);
+        } catch (e) {
+            console.log(e);
+            str = e;
+        }
+        document.getElementById("overpy-textarea").value = str;
+    }
+
+    function demoCompile() {
+        
+        var str = "";
+        var language = document.getElementById("languageInput").value;
+        try {
+            compilationResult = compile(document.getElementById("overpy-textarea").value, language);
+            str += "//Elements: "+compilationResult.nbElements+"\n";
+            if (compilationResult.activatedExtensions.length > 0) {
+                str += "//Extension points: "+compilationResult.spentExtensionPoints+"/"+(compilationResult.availableExtensionPoints < 0 ? "unknown" : compilationResult.availableExtensionPoints)+"\n"
+            }
+            str += compilationResult.result;
+            if (compilationResult.encounteredWarnings.length > 0) {
+                var strWarn = "/* Warnings were encountered:\n\n"
+                for (var warning of compilationResult.encounteredWarnings) {
+                    strWarn += " - "+warning+"\n\n";
+                }
+                strWarn += "*/\n";
+                str = strWarn+str;
+            }
+        } catch (e) {
+            console.log(e);
+            str = e;
+        }
+        document.getElementById("results").value = str;
+    }
+
+function demoAddText() {
+	document.getElementById("workshop-textarea").value = decompileTest;
+	document.getElementById("overpy-textarea").value = "";
+	document.getElementById("compiled-textarea").value = "";
+	
+}
 
     setdata() // loaded from data file
+    demoDecompile();
+    demoCompile();
+
     var resultthing = document.getElementById("results")
+
     resultthing.value = data_pasta
     resultthing.select()
     resultthing.setSelectionRange(0, 99999);
