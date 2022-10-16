@@ -7,22 +7,8 @@
 
 <body>
 
-<label style="color:darkred"> <b>!!! for now your overwatch langauge needs to be set to english to paste the data in!!!!</b> </label>
-<select id="languageInput">
-	<option value="en-US">English [en-US]</option>
-	<option value="de-DE">Deutsch [de-DE]</option>
-	<option value="es-ES">Español (EU) [es-ES]</option>
-	<option value="es-MX">Español (AL) [es-MX]</option>
-	<option value="fr-FR">Français [fr-FR]</option>
-	<option value="it-IT">Italiano [it-IT]</option>
-	<option value="ja-JP">日本語 [ja-JP]</option>
-	<option value="ko-KR">한국어 [ko-KR]</option>
-	<option value="pl-PL">Polski [pl-PL]</option>
-	<option value="pt-BR">Português [pt-BR]</option>
-	<option value="ru-RU">Русский [ru-RU]</option>
-	<option value="zh-CN">简体中文 [zh-CN]</option>
-	<option value="zh-TW">繁體中文 [zh-TW]</option>
-</select>
+
+
 
 <div id="message"></div>
 
@@ -66,7 +52,25 @@
 				 <option value="16">hell</option>
 				 <option value="17">don't display</option>
 			</select>
+		Client langauge
+		<select id="languageInput">
+			<option value="en-US">English [en-US]</option>
+			<option value="de-DE">Deutsch [de-DE]</option>
+			<option value="es-ES">Español (EU) [es-ES]</option>
+			<option value="es-MX">Español (AL) [es-MX]</option>
+			<option value="fr-FR">Français [fr-FR]</option>
+			<option value="it-IT">Italiano [it-IT]</option>
+			<option value="ja-JP">日本語 [ja-JP]</option>
+			<option value="ko-KR">한국어 [ko-KR]</option>
+			<option value="pl-PL">Polski [pl-PL]</option>
+			<option value="pt-BR">Português [pt-BR]</option>
+			<option value="ru-RU">Русский [ru-RU]</option>
+			<option value="zh-CN">简体中文 [zh-CN]</option>
+			<option value="zh-TW">繁體中文 [zh-TW]</option>
+		</select>
+		
 		</div>
+		
 		<div style="border:1px solid black"> <b> Bans (workshop toggles)</b> <br/>
 			<input type="checkbox" id="ban_triple" onclick="UpdateTop()"> triple jump
 			<input type="checkbox" id="ban_multi" onclick="UpdateTop()"> multi climb
@@ -185,7 +189,6 @@ Press the big <i>'copy map to clipboard'</i> button on top of the <i>'data'</i> 
 Go ingame and create a lobby.<br/>
 Paste in the data from step 3 copy button with the orange + symbol.<br/>
 Don't forget to also select the map you want to play on. <br/>
-If your overwatch isn't set to english, you will have to set your langauge to english or ask a friend with an english client.<br/>
 <br/>
 <img src="plusbutton.png" alt="picture of plus button"> 
 
@@ -207,8 +210,10 @@ Remember that it's still possible to generate a share code for te map the usual 
 <input type="hidden" id="overpy-textarea">
 <input type="hidden" id="compiled-textarea">
 
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/VS%20Code%20Extension/overpy.js"></script>
+<script src="overpy-master/VS Code Extension/overpy.js"></script>
 
+<!--
+<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/VS%20Code%20Extension/overpy.js"></script>
 
 <script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/utils/other.js"></script>
 
@@ -364,7 +369,7 @@ Remember that it's still possible to generate a share code for te map the usual 
 <script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/parser.js"></script>
 <script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/compiler.js"></script>
 <script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/data/localizedStrings.js"></script>
-
+-->
 <script src="template-1-51.js"></script>
 <!--- <script src="template-1_5_manual.js"></script> -->
 <!--- <script src="template-1_4_2.js"></script>  -->

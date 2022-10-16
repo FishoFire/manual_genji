@@ -693,26 +693,27 @@ function Copy(){
         document.getElementById(name+"-textarea-line-number").innerHTML = textarea.value.substr(0, textarea.selectionStart).split("\n").length;
         document.getElementById(name+"-textarea-col-number").innerHTML = textarea.selectionStart - textarea.value.substr(0, textarea.selectionStart).lastIndexOf("\n");
     }
-
+    
     function demoDecompile() {
-        
-        var str = "";
-        var language = document.getElementById("languageInput").value;
-        
+       
         try {
-            str = decompileAllRules(document.getElementById("results").value, language);
+         
+            var str = "";
+            var language = document.getElementById("languageInput").value;
+            str = decompileAllRules(data_pasta, language);
         } catch (e) {
             console.log(e);
             str = e;
         }
-        document.getElementById("overpy-textarea").value = str;
+        //document.getElementById("overpy-textarea").value = str;
     }
 
     function demoCompile() {
         
-        var str = "";
-        var language = document.getElementById("languageInput").value;
+     
         try {
+            var str = "";
+            var language = document.getElementById("languageInput").value;
             compilationResult = compile(document.getElementById("overpy-textarea").value, language);
             str += "//Elements: "+compilationResult.nbElements+"\n";
             if (compilationResult.activatedExtensions.length > 0) {
@@ -731,20 +732,36 @@ function Copy(){
             console.log(e);
             str = e;
         }
-        document.getElementById("results").value = str;
+        data_pasta = str;
     }
-
-function demoAddText() {
-	document.getElementById("workshop-textarea").value = decompileTest;
-	document.getElementById("overpy-textarea").value = "";
-	document.getElementById("compiled-textarea").value = "";
-	
-}
-
+    /*
+    function demoAddText() {
+        document.getElementById("workshop-textarea").value = decompileTest;
+        document.getElementById("overpy-textarea").value = "";
+        document.getElementById("compiled-textarea").value = "";
+        
+    }
+    */
     setdata() // loaded from data file
+    
+    /*
     demoDecompile();
     demoCompile();
-
+    */
+    
+    
+    try {
+        var language = document.getElementById("languageInput").value;
+        data_pasta = "#!disableMapDetectionFix\n"+data_pasta
+        data_pasta = decompileAllRules(data_pasta, "en-US");
+        data_pasta = compile(data_pasta, language);
+        data_pasta  = data_pasta.result
+    
+   
+    } catch (e) {
+        console.log(e);
+    }
+            
     var resultthing = document.getElementById("results")
 
     resultthing.value = data_pasta

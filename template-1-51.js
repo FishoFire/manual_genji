@@ -193,12 +193,12 @@ rule("Map Data     <---- INSERT YOUR MAP DATA HERE")
 	actions
 	{
 		
-		"======= Checkpoint data =========================="
-		"checkpoints positions - Vector(123.456,123.456,123.456) - The order is the checkpoint number.  The first Vector here is checkpoint 0"
+		"======= Checkpoint data ==========================
+		Checkpoints positions - Vector(123.456,123.456,123.456) - The order is the checkpoint number.  The first Vector here is checkpoint 0"
 		${data_cps}
 
-		"======= killballs =========================="
-		"killball level number - Number 123 - Number of the checkpoint (in position array starting count with 0)"
+		"======= killballs ==========================
+		Killball level number - Number 123 - Number of the checkpoint (in position array starting count with 0)"
 		${data_kill_cp}
 		
 		"killball positions - Vector(123.456,123.456,123.456)"
@@ -208,8 +208,8 @@ rule("Map Data     <---- INSERT YOUR MAP DATA HERE")
 		${data_kill_rad}
 		
 				
-		"======= orbs =========================="	
-		"orb checkpoint number - Number 123 - Number of the checkpoint (in position array starting count with 0)"
+		"======= orbs ==========================
+		orb checkpoint number - Number 123 - Number of the checkpoint (in position array starting count with 0)"
 		${data_orb_cp}
 		
 		"orb position - Vector(123.456,123.456,123.456)"
@@ -3604,7 +3604,8 @@ disabled rule("custom portals - function")
 		Wait(1, Ignore Condition);
 	}
 }
-
+`
+/*
 rule("Ms. Destructo | Destroys Breakable Objects On All Maps")
 {
 	event
@@ -3675,5 +3676,6 @@ rule("Ms. Destructo | Destroys Breakable Objects On All Maps")
 		Global.MsDestructo.ArrayIterator = 0;
 		Global.MsDestructo = 0;
 	}
-}`
+}
+*/
 }
