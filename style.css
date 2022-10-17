@@ -22,7 +22,7 @@
         */
         background-color: gray;
         color: white;
-        width:25%;
+        width:15%;
     }
 
     button{
@@ -39,8 +39,11 @@
     }
 
     #message{
+        
+        /*
         display:none;
-        /*width:85%;*/
+        width:85%;
+        */
         border:1px solid black;
         margin:5px;
         padding:5px;
@@ -59,13 +62,7 @@
         border: 1px solid black;
     }
 
-    #helpbar {
-        display:none; 
-    }
 
-    #savebar {
-        display:none; 
-    }
     .saveelement {
         /*width:18%; */
         width:80%;

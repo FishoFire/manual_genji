@@ -46,6 +46,7 @@ var portalon
 =========================
 */
 
+changebar(3) // initial page
 var SelectedCp = -1
 var CheckPoints = []
 var MapData = [
@@ -105,10 +106,10 @@ function CpButtons(){
 
 function ShowMsg(x){
     document.getElementById("message").innerHTML = x
-    document.getElementById("message").style.display = "block" 
+    document.getElementById("messageblock").style.display = "block"
     setTimeout(() => {
-        document.getElementById("message").style.display = "none"
-        document.getElementById("message").innerHTML = "" 
+        document.getElementById("messageblock").style.display = "none"
+        document.getElementById("message").innerHTML = ""
     }, 2500);
     
 }
@@ -119,7 +120,7 @@ function Save(x){
     SaveNames[x] = document.getElementById("save"+x).value ;
     localStorage.setItem('savenames',JSON.stringify(SaveNames))
 
-    ShowMsg("Saved!")
+    // ShowMsg("Saved!")
 }
 
 function Load(x){
@@ -186,58 +187,65 @@ function UpdateTop(){
 }
 
 function changebar(x){
+    
     document.getElementById("tool").style.display = x == 0 ? "block" : "none"
     document.getElementById("savebar").style.display = x == 1 ? "block" : "none"
     document.getElementById("helpbar").style.display = x == 2 ? "block" : "none"
+    document.getElementById("settingsdata").style.display = x == 3 ? "block" : "none"
+    
 
 }
 
 function ImportJson(){
-    CheckPoints = JSON.parse(document.getElementById('jsonfield').value.split("+!SEPERATOR!+")[0])
-    MapData = JSON.parse(document.getElementById('jsonfield').value.split("+!SEPERATOR!+")[1])
+    try{
+        CheckPoints = JSON.parse(document.getElementById('jsonfield').value.split("+!SEPERATOR!+")[0])
+        MapData = JSON.parse(document.getElementById('jsonfield').value.split("+!SEPERATOR!+")[1])
 
-    // fix data if missing
-    MapData[0] =  MapData[0] ?  MapData[0] : ""
-    MapData[1] =  MapData[1] ?  MapData[1] : ""
-    MapData[2] =  MapData[2] ?  MapData[2] : ""
-    
-    MapData[3] =  MapData[3] ?  MapData[3] : false
-    MapData[4] =  MapData[4] ?  MapData[4] : false
-    MapData[5] =  MapData[5] ?  MapData[5] : false
-    MapData[6] =  MapData[6] ?  MapData[6] : false
-    MapData[7] =  MapData[7] ?  MapData[7] : false
-    MapData[8] =  MapData[8] ?  MapData[8] : false
+        // fix data if missing
+        MapData[0] =  MapData[0] ?  MapData[0] : ""
+        MapData[1] =  MapData[1] ?  MapData[1] : ""
+        MapData[2] =  MapData[2] ?  MapData[2] : ""
+        
+        MapData[3] =  MapData[3] ?  MapData[3] : false
+        MapData[4] =  MapData[4] ?  MapData[4] : false
+        MapData[5] =  MapData[5] ?  MapData[5] : false
+        MapData[6] =  MapData[6] ?  MapData[6] : false
+        MapData[7] =  MapData[7] ?  MapData[7] : false
+        MapData[8] =  MapData[8] ?  MapData[8] : false
 
-    MapData[9] = typeof MapData[9] != 'undefined' ?  MapData[9] : true
-    MapData[10] = typeof MapData[9] != 'undefined' ?  MapData[10] : "0"
+        MapData[9] = typeof MapData[9] != 'undefined' ?  MapData[9] : true
+        MapData[10] = typeof MapData[9] != 'undefined' ?  MapData[10] : "0"
 
-    for(let i=0;i < CheckPoints.length;i++){
-        CheckPoints[i][8] = CheckPoints[i][8]  ?  CheckPoints[i][8]  : false
-        CheckPoints[i][9] = CheckPoints[i][9]  ?  CheckPoints[i][9]  : false
+        for(let i=0;i < CheckPoints.length;i++){
+            CheckPoints[i][8] = CheckPoints[i][8]  ?  CheckPoints[i][8]  : false
+            CheckPoints[i][9] = CheckPoints[i][9]  ?  CheckPoints[i][9]  : false
+        }
+
+        document.getElementById("cpdata").style.display = "block"
+        document.getElementById("orbs-kills").style.display = "block"
+        document.getElementById("maker").value =  MapData[0]
+        document.getElementById("code").value =  MapData[1]
+        document.getElementById("notes").value =  MapData[2]
+        
+        document.getElementById("ban_triple").checked = MapData[3]
+        document.getElementById("ban_multi").checked =  MapData[4]
+        document.getElementById("ban_emote" ).checked = MapData[5]
+        document.getElementById("ban_create").checked = MapData[6]
+        document.getElementById("ban_dbhop" ).checked =  MapData[7]
+        document.getElementById("ban_dashstart" ).checked = MapData[8]
+        document.getElementById("portalOn").checked = MapData[9]
+        document.getElementById("dif").value = MapData[10]
+
+
+        SelectedCp = 0
+
+        CpButtons()
+        UpdateSelection()
+        UpdateTop()
+        changebar(0)
+    } catch (e){
+        // console.log(e);
     }
-
-    document.getElementById("cpdata").style.display = "block"
-    document.getElementById("orbs-kills").style.display = "block"
-    document.getElementById("maker").value =  MapData[0]
-    document.getElementById("code").value =  MapData[1]
-    document.getElementById("notes").value =  MapData[2]
-    
-    document.getElementById("ban_triple").checked = MapData[3]
-    document.getElementById("ban_multi").checked =  MapData[4]
-    document.getElementById("ban_emote" ).checked = MapData[5]
-    document.getElementById("ban_create").checked = MapData[6]
-    document.getElementById("ban_dbhop" ).checked =  MapData[7]
-    document.getElementById("ban_dashstart" ).checked = MapData[8]
-    document.getElementById("portalOn").checked = MapData[9]
-    document.getElementById("dif").value = MapData[10]
-
-
-    SelectedCp = 0
-
-    CpButtons()
-    UpdateSelection()
-    UpdateTop()
-    changebar(0)
 
 }
 
@@ -250,7 +258,7 @@ function ExportJson(){
     resultthing.setSelectionRange(0, 99999);
     navigator.clipboard.writeText(resultthing.value);
 
-    ShowMsg("copied to clipboard!")
+    // ShowMsg("copied to clipboard!")
 }
 
 function UpdateSelection(){
@@ -554,148 +562,220 @@ var portalon
 var difficultyhud
 // copy button
 function Copy(){
-    // cp data
-    data_cps = "\n\t\tGlobal.A = Array("
-    for (let i = 0;  i < CheckPoints.length; i++){
-        if (CheckPoints[i][1]){
-			data_cps += "\n\t\t\tArray(Vector(" + CheckPoints[i][0] + "), Vector(" + CheckPoints[i][2]+ ")),"
-		} else{
-			data_cps += "\n\t\t\tVector("+CheckPoints[i][0]+"),"
-		}
+    if (CheckPoints.length <1){
+        console.log("length")
+        return
     }
-    data_cps = data_cps.slice(0,-1) // remove last ,
-    data_cps += "\n\t\t);"
-
-    // bounce
-	data_orb_cp = "Global.pinballnumber = Array( "
-	data_orb_pos = "Global.TQ = Array( "
-	data_orb_lock = "Global.BounceToggleLock = Array( "
-	data_orb_dash = "Global.TQ6 = Array( "
-	data_orb_ult = "Global.TQ5 = Array( "
-	data_orb_strength = "Global.EditMode = Array( "
-	for (let i = 0;  i < CheckPoints.length; i++){
-		for (let i2 = 0;  i2 < CheckPoints[i][6].length; i2++){
-			data_orb_cp += "\n\t\t\t" + i + ","
-			data_orb_pos += "\n\t\t\tVector("+CheckPoints[i][6][i2][0]+"),"
-			data_orb_lock += "\n\t\t\t" + (CheckPoints[i][6][i2][3] ? 'True' : 'False') + ","
-			data_orb_dash += "\n\t\t\t" + (CheckPoints[i][6][i2][1] ? 'True' : 'False') + ","
-			data_orb_ult += "\n\t\t\t" + (CheckPoints[i][6][i2][2] ? 'True' : 'False') + ","
-			data_orb_strength += "\n\t\t\t" + CheckPoints[i][6][i2][4]  + ","
-		}
-	}
-	
-	data_orb_cp = data_orb_cp.slice(0,-1) + "\n\t\t);" 
-	data_orb_pos = data_orb_pos.slice(0,-1) + "\n\t\t);" 
-	data_orb_lock = data_orb_lock.slice(0,-1) + "\n\t\t);" 
-	data_orb_dash = data_orb_dash.slice(0,-1) + "\n\t\t);" 
-	data_orb_ult = data_orb_ult.slice(0,-1) + "\n\t\t);" 
-	data_orb_strength = data_orb_strength.slice(0,-1) + "\n\t\t);" 
-
-	/*
-	0 pos
-	1 dash
-	2 ult
-	3 lock
-	cp auto
-	*/
-
-	// kill
-	data_kill_pos = "Global.H = Array( "
-	data_kill_rad = "Global.I = Array( "
-	data_kill_cp = "Global.killballnumber = Array( "
-	for (let i = 0;  i < CheckPoints.length; i++){
-		for (let i2 = 0;  i2 < CheckPoints[i][7].length; i2++){
-			data_kill_pos += "\n\t\t\tVector(" + CheckPoints[i][7][i2][0]+"),"
-			data_kill_rad += "\n\t\t\t" + CheckPoints[i][7][i2][1]+","
-			data_kill_cp += "\n\t\t\t" + i + ","
-		}
-	}
-	data_kill_pos = data_kill_pos.slice(0,-1) + "\n\t\t);" 
-	data_kill_rad = data_kill_rad.slice(0,-1) + "\n\t\t);" 
-	data_kill_cp = data_kill_cp.slice(0,-1) + "\n\t\t);" 
-	
-    // enable ult rule  
-	ulteanbled = "disabled " 
-	if (CheckPoints.some(function(i){return i[4]})  ){
-		ulteanbled = ""
-		ultarray =  "Global.Dao = Array(Empty Array, "
-		for (let i = 0;  i < CheckPoints.length; i++){
-			if (CheckPoints[i][4]){
-				ultarray += i + ", "
-			}
-		}
-		ultarray = ultarray.slice(0,-2) + ");\n"
-	} else {
-		ultarray = "Global.Dao = Array(Empty Array, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);\n"
-	}
-
-    // enable dash rule  
-	dasheanbled = "disabled " 
-	if (CheckPoints.some(function(i){return i[3]})  ){
-		dasheanbled = ""
-		dasharray = "Global.SHIFT = Array(Empty Array, "
-		for (let i = 0;  i < CheckPoints.length; i++){
-			if (CheckPoints[i][3]){
-				dasharray += i + ", "
-			}
-		}
-		dasharray = dasharray.slice(0,-2) + ");\n"
-	} else {
-		dasharray = "Global.SHIFT = Array(Empty Array, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);\n"
-	}
-	
-    // map header
-    mapmaker = MapData[0] 
-    mapcode = MapData[1] 
-
-    ban_triple = MapData[3] ? "True" : "False"
-    ban_multi = MapData[4] ? "True" : "False"
-    ban_emote = MapData[5] ? "True" : "False"
-    ban_create = MapData[6] ? "True" : "False"
-    ban_dbhop = MapData[7] ? "True" : "False"
-    ban_dashstart = MapData[8] ? "True" : "False"
-
-    portalon = MapData[9] ? "True" : "False"
     
-    difficultyhud = MapData[10]
+    ShowMsg("compiling");
 
-	ban_bhopEnabled = "False"
-	if (CheckPoints.some(function(i){return i[8]})  ){
-		ban_bhopEnabled = "True"
-		ban_bhopsCp = "Array Contains(Array("
-		for (let i = 0;  i < CheckPoints.length; i++){
-			if (CheckPoints[i][8]){
-				ban_bhopsCp += i + ", "
-			}
-		}
-		ban_bhopsCp = ban_bhopsCp.slice(0,-2) + "), (Event Player).A) == True;\n"
-	} else {
-		ban_bhopsCp = "Array Contains(Array(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1), (Event Player).A) == True;\n"
-	}
-    
-	ban_wallclimbEnabled = "False"
-	if (CheckPoints.some(function(i){return i[9]})  ){
-		ban_wallclimbEnabled = "True"
-		ban_wallclimbCp = "Array Contains(Array("
-		for (let i = 0;  i < CheckPoints.length; i++){
-			if (CheckPoints[i][9]){
-				ban_wallclimbCp += i + ", "
-			}
-		}
-		ban_wallclimbCp = ban_wallclimbCp.slice(0,-2) + "), (Event Player).A) == True;\n"
-	} else {
-		ban_wallclimbCp = "Array Contains(Array(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1), (Event Player).A) == True;\n"
-	}
-	
+    setTimeout(
+        function (){
+           
+            // cp data
+            data_cps = "\n\t\tGlobal.A = Array("
+            for (let i = 0;  i < CheckPoints.length; i++){
+                if (CheckPoints[i][1]){
+                    data_cps += "\n\t\t\tArray(Vector(" + CheckPoints[i][0] + "), Vector(" + CheckPoints[i][2]+ ")),"
+                } else{
+                    data_cps += "\n\t\t\tVector("+CheckPoints[i][0]+"),"
+                }
+            }
+            data_cps = data_cps.slice(0,-1) // remove last ,
+            data_cps += "\n\t\t);"
 
-    setdata() // loaded from data file
-    var resultthing = document.getElementById("results")
-    resultthing.value = data_pasta
-    resultthing.select()
-    resultthing.setSelectionRange(0, 99999);
-    navigator.clipboard.writeText(resultthing.value);
-    ShowMsg("copied to clipboard!")
+            // bounce
+            data_orb_cp = "Global.pinballnumber = Array( "
+            data_orb_pos = "Global.TQ = Array( "
+            data_orb_lock = "Global.BounceToggleLock = Array( "
+            data_orb_dash = "Global.TQ6 = Array( "
+            data_orb_ult = "Global.TQ5 = Array( "
+            data_orb_strength = "Global.EditMode = Array( "
+            for (let i = 0;  i < CheckPoints.length; i++){
+                for (let i2 = 0;  i2 < CheckPoints[i][6].length; i2++){
+                    
+                    data_orb_cp += "\n\t\t\t" + i + ","
+                    data_orb_pos += "\n\t\t\tVector("+CheckPoints[i][6][i2][0]+"),"
+                    data_orb_lock += "\n\t\t\t" + (CheckPoints[i][6][i2][3] ? 'True' : 'False') + ","
+                    data_orb_dash += "\n\t\t\t" + (CheckPoints[i][6][i2][1] ? 'True' : 'False') + ","
+                    data_orb_ult += "\n\t\t\t" + (CheckPoints[i][6][i2][2] ? 'True' : 'False') + ","
+                    data_orb_strength += "\n\t\t\t" + CheckPoints[i][6][i2][4] + ","
+                    
+                    /*
+                    data_orb_cp += "\n\t\t\t" + i + ","
+                    data_orb_pos += "\n\t\t\tVector(" + CheckPoints[i][6][i2][0].split(",").some(function(ab){return isNaN(ab)}) || CheckPoints[i][6][i2][0].split(",").length != 3 ? "0,0,0" : CheckPoints[i][6][i2][0] + "),"
+                    data_orb_lock += "\n\t\t\t" + (CheckPoints[i][6][i2][3] ? 'True' : 'False') + ","
+                    data_orb_dash += "\n\t\t\t" + (CheckPoints[i][6][i2][1] ? 'True' : 'False') + ","
+                    data_orb_ult += "\n\t\t\t" + (CheckPoints[i][6][i2][2] ? 'True' : 'False') + ","
+                    data_orb_strength += "\n\t\t\t" + ( isNaN(CheckPoints[i][6][i2][4]) ? "0" :  CheckPoints[i][6][i2][4]  ) + ",
+                    */
+                }
+            }
+
+            data_orb_cp = data_orb_cp.slice(0,-1) + "\n\t\t);"
+            data_orb_pos = data_orb_pos.slice(0,-1) + "\n\t\t);"
+            data_orb_lock = data_orb_lock.slice(0,-1) + "\n\t\t);"
+            data_orb_dash = data_orb_dash.slice(0,-1) + "\n\t\t);"
+            data_orb_ult = data_orb_ult.slice(0,-1) + "\n\t\t);"
+            data_orb_strength = data_orb_strength.slice(0,-1) + "\n\t\t);"
+
+            /*
+            0 pos
+            1 dash
+            2 ult
+            3 lock
+            cp auto
+            */
+
+            // kill
+            data_kill_pos = "Global.H = Array( "
+            data_kill_rad = "Global.I = Array( "
+            data_kill_cp = "Global.killballnumber = Array( "
+            for (let i = 0;  i < CheckPoints.length; i++){
+                for (let i2 = 0;  i2 < CheckPoints[i][7].length; i2++){
+                    data_kill_pos += "\n\t\t\tVector(" + CheckPoints[i][7][i2][0]+"),"
+                    data_kill_rad += "\n\t\t\t" + CheckPoints[i][7][i2][1]+","
+                    data_kill_cp += "\n\t\t\t" + i + ","
+                }
+            }
+            data_kill_pos = data_kill_pos.slice(0,-1) + "\n\t\t);"
+            data_kill_rad = data_kill_rad.slice(0,-1) + "\n\t\t);"
+            data_kill_cp = data_kill_cp.slice(0,-1) + "\n\t\t);"
+
+            // enable ult rule
+            ulteanbled = "disabled "
+            if (CheckPoints.some(function(i){return i[4]})  ){
+                ulteanbled = ""
+                ultarray =  "Global.Dao = Array(Empty Array, "
+                for (let i = 0;  i < CheckPoints.length; i++){
+                    if (CheckPoints[i][4]){
+                        ultarray += i + ", "
+                    }
+                }
+                ultarray = ultarray.slice(0,-2) + ");\n"
+            } else {
+                ultarray = "Global.Dao = Array(Empty Array, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);\n"
+            }
+
+            // enable dash rule
+            dasheanbled = "disabled "
+            if (CheckPoints.some(function(i){return i[3]})  ){
+                dasheanbled = ""
+                dasharray = "Global.SHIFT = Array(Empty Array, "
+                for (let i = 0;  i < CheckPoints.length; i++){
+                    if (CheckPoints[i][3]){
+                        dasharray += i + ", "
+                    }
+                }
+                dasharray = dasharray.slice(0,-2) + ");\n"
+            } else {
+                dasharray = "Global.SHIFT = Array(Empty Array, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);\n"
+            }
+
+            // map header
+            mapmaker = MapData[0]
+            mapcode = MapData[1]
+
+            ban_triple = MapData[3] ? "True" : "False"
+            ban_multi = MapData[4] ? "True" : "False"
+            ban_emote = MapData[5] ? "True" : "False"
+            ban_create = MapData[6] ? "True" : "False"
+            ban_dbhop = MapData[7] ? "True" : "False"
+            ban_dashstart = MapData[8] ? "True" : "False"
+
+            portalon = MapData[9] ? "True" : "False"
+
+            difficultyhud = MapData[10]
+
+            ban_bhopEnabled = "False"
+            if (CheckPoints.some(function(i){return i[8]})  ){
+                ban_bhopEnabled = "True"
+                ban_bhopsCp = "Array Contains(Array("
+                for (let i = 0;  i < CheckPoints.length; i++){
+                    if (CheckPoints[i][8]){
+                        ban_bhopsCp += i + ", "
+                    }
+                }
+                ban_bhopsCp = ban_bhopsCp.slice(0,-2) + "), (Event Player).A) == True;\n"
+            } else {
+                ban_bhopsCp = "Array Contains(Array(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1), (Event Player).A) == True;\n"
+            }
+
+            ban_wallclimbEnabled = "False"
+            if (CheckPoints.some(function(i){return i[9]})  ){
+                ban_wallclimbEnabled = "True"
+                ban_wallclimbCp = "Array Contains(Array("
+                for (let i = 0;  i < CheckPoints.length; i++){
+                    if (CheckPoints[i][9]){
+                        ban_wallclimbCp += i + ", "
+                    }
+                }
+                ban_wallclimbCp = ban_wallclimbCp.slice(0,-2) + "), (Event Player).A) == True;\n"
+            } else {
+                ban_wallclimbCp = "Array Contains(Array(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1), (Event Player).A) == True;\n"
+            }
+
+
+            setdata(); // loaded from data file
+
+            var language = document.getElementById("languageInput").value;
+            if (language != "en-US"){
+                data_pasta = decompileAllRules(data_pasta, "en-US");
+                data_pasta = data_pasta + "\n#!disableMapDetectionFix"
+                data_pasta = compile(data_pasta, language);
+                data_pasta  = data_pasta.result;
+            }
+            var resultthing = document.getElementById("results");
+            resultthing.value = data_pasta;
+            resultthing.select();
+            resultthing.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(resultthing.value);
+        },
+        10
+    );
+
+    //
+    // document.getElementById("message").innerHTML = "compiling";
+    // document.getElementById("messageblock").style.display = "block";
+
+
+
+    setTimeout(ShowMsg, 10, "copied to clipboard!");
 
 }
+   
+//
+// async function compilingthings(){
+//     try {
+//
+//         await saycompile();
+//         var language = document.getElementById("languageInput").value;
+//         //if (language != "en-US"){
+//             data_pasta = await decompileAllRules(data_pasta, "en-US");
+//             //data_pasta = data_pasta + "\n#!disableMapDetectionFix"
+//             data_pasta = compile(data_pasta, language);
+//             data_pasta  = data_pasta.result;
+//         //}
+//
+//     } catch (e) {
+//         // console.log(e);
+//     }
+//
+//  }
+//
+//
+// function saycompile(){
+//     document.getElementById("message").innerHTML = "compiling";
+//     document.getElementById("messageblock").style.display = "block" ;
+// }
+//
+// function dorest(){
+//     var resultthing = document.getElementById("results");
+//     resultthing.value = data_pasta;
+//     resultthing.select();
+//     resultthing.setSelectionRange(0, 99999);
+//     navigator.clipboard.writeText(resultthing.value);
+//     // ShowMsg("copied to clipboard!")
+// }
 
 
