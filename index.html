@@ -8,30 +8,26 @@
 <body>
 
 
+<div class="contentblock"> 
+	<button onclick="Copy()" class="longbutton">  copy map to clipboard </button>
+</div>
 
-
-<div id="message"></div>
-
+<div class="contentblock" style="display:none" id="messageblock"> 
+	<div id="message"></div>
+</div>
 <div class="sidebar">
+	<button onclick="changebar(3)" class="sidebarbutton">settings</button> 
 	<button onclick="changebar(0)" class="sidebarbutton">data</button> 
 	<button onclick="changebar(1)" class="sidebarbutton">save/load</button> 
 	<button onclick="changebar(2)" class="sidebarbutton">help</button> 
-
 </div>
 
-<div id = "tool">
+<div id="settingsdata">
 	<div class="contentblock"> 
-		<button onclick="Copy()" class="longbutton">  copy map to clipboard </button>
-	</div>
-
-	<div class="contentblock"> 
-		<div>
-		<textarea rows="1" cols="25" placeholder="map maker" id="maker" style="display:inline-block" onchange="UpdateTop()"></textarea>   
-		<textarea rows="1" cols="25" placeholder="map code" id="code" style="display:inline-block" onchange="UpdateTop()"></textarea> <br/>
-		<div>
-			<label id="DashToggleEnabled">Dash addon: disabled |</label>
-			<label id="UltToggleEnabled">| Ult addon: disabled</label>   <br/>
-			<input type="checkbox" id="portalOn" onclick="UpdateTop()" checked="true"> default portals (control maps) | 
+		<div class="contentblock"> 
+			<label> Display information </label> </br>
+			<textarea rows="1" cols="25" placeholder="map maker" id="maker" style="display:inline-block" onchange="UpdateTop()"></textarea>   
+			<textarea rows="1" cols="25" placeholder="map code" id="code" style="display:inline-block" onchange="UpdateTop()"></textarea> <br/>
 			difficulty <select name="difi" id="dif" onchange="UpdateTop()">
 				<option value="0">beginner</option>
 				<option value="1">easy-</option>
@@ -51,27 +47,34 @@
 				 <option value="15">extreme+</option>
 				 <option value="16">hell</option>
 				 <option value="17">don't display</option>
-			</select>
-		Client langauge
-		<select id="languageInput">
-			<option value="en-US">English [en-US]</option>
-			<option value="de-DE">Deutsch [de-DE]</option>
-			<option value="es-ES">Español (EU) [es-ES]</option>
-			<option value="es-MX">Español (AL) [es-MX]</option>
-			<option value="fr-FR">Français [fr-FR]</option>
-			<option value="it-IT">Italiano [it-IT]</option>
-			<option value="ja-JP">日本語 [ja-JP]</option>
-			<option value="ko-KR">한국어 [ko-KR]</option>
-			<option value="pl-PL">Polski [pl-PL]</option>
-			<option value="pt-BR">Português [pt-BR]</option>
-			<option value="ru-RU">Русский [ru-RU]</option>
-			<option value="zh-CN">简体中文 [zh-CN]</option>
-			<option value="zh-TW">繁體中文 [zh-TW]</option>
-		</select>
-		
+			</select> 
+		</div>
+		<div class="contentblock">
+			<label id="DashToggleEnabled">Dash addon: disabled |</label>
+			<label id="UltToggleEnabled">| Ult addon: disabled</label>   <br/>
+		</div>
+		<div class="contentblock">
+			
+			overwatch text langauge
+			<select id="languageInput">
+				<option value="en-US">English [en-US]</option>
+				<option value="de-DE">Deutsch [de-DE]</option>
+				<option value="es-ES">Español (EU) [es-ES]</option>
+				<option value="es-MX">Español (AL) [es-MX]</option>
+				<option value="fr-FR">Français [fr-FR]</option>
+				<option value="it-IT">Italiano [it-IT]</option>
+				<option value="ja-JP">日本語 [ja-JP]</option>
+				<option value="ko-KR">한국어 [ko-KR]</option>
+				<option value="pl-PL">Polski [pl-PL]</option>
+				<option value="pt-BR">Português [pt-BR]</option>
+				<option value="ru-RU">Русский [ru-RU]</option>
+				<option value="zh-CN">简体中文 [zh-CN]</option>
+				<option value="zh-TW">繁體中文 [zh-TW]</option>
+			</select> <br/>
+			<input type="checkbox" id="portalOn" onclick="UpdateTop()" checked="true"> default portals (control maps)
 		</div>
 		
-		<div style="border:1px solid black"> <b> Bans (workshop toggles)</b> <br/>
+		<div class="contentblock"> <b> Bans (workshop toggles)</b> <br/>
 			<input type="checkbox" id="ban_triple" onclick="UpdateTop()"> triple jump
 			<input type="checkbox" id="ban_multi" onclick="UpdateTop()"> multi climb
 			<input type="checkbox" id="ban_emote" onclick="UpdateTop()" style="display:none"><!-- emote save -->
@@ -79,129 +82,141 @@
 			<input type="checkbox" id="ban_dbhop" onclick="UpdateTop()"> savehop
 			<input type="checkbox" id="ban_dashstart" onclick="UpdateTop()"> dash start
 		</div>
-		<textarea rows="3" style="width:90%" placeholder="map notes" id="notes" style="display:inline-block" onchange="UpdateTop()"></textarea>
+
+		<div class="contentblock">
+			<textarea rows="6" style="width:90%" placeholder="map notes" id="notes" style="display:inline-block" onchange="UpdateTop()"></textarea>
 		</div>
 	</div>
-
-	<div id="button div" class="contentblock" > 
-		<div id="cp_buttons"></div>
-		<button onclick="AddNewCP(1)" style="width:40%">add checkpoint (after current cp)</button>
-		<button onclick="AddNewCP(0)" style="width:40%">add checkpoint (end of cp list)</button>
-	
-	</div>   
+</div>
 
 
-	<div id="cpdata" class="contentblock"> 
-		<div id="selectedcpnumber">Select a checkpoint</div>
-		position <textarea id="CPvector" name="txtfield" rows="1" cols="25" onchange="UpdateAfterChange()" placeholder="0,0,0"></textarea> <br/>
+
+
+<div id="tool">
+
+	<div class="contentblock"> 
 		
-	
 
-		<input type="checkbox" id="CPdashenable" onclick="UpdateAfterChange()"> dash
-		<input type="checkbox" id="CPultenable" onclick="UpdateAfterChange()"> ultimate
-		<input type="checkbox" id="CPteleportTF" onclick="UpdateAfterChange()"> teleport <textarea id="CPteleportVect" name="txtfield"  onchange="UpdateAfterChange()" rows="1" cols="25" placeholder="0,0,0"></textarea> 
-		<br/>
-		<!-- disabled because it doesnt work (hiden next 2)-->
-		<input type="checkbox" id="CPbanBhop" onclick="UpdateAfterChange()" style="display:none"><!--  ban bhop -->
-		<input type="checkbox" id="CpbanClimb" onclick="UpdateAfterChange()" style="display:none"> <!-- ban wallclimb -->
+		<div id="button div" class="contentblock" > 
+			<div id="cp_buttons"></div>
+			<button onclick="AddNewCP(1)" style="width:40%">add checkpoint (after current cp)</button>
+			<button onclick="AddNewCP(0)" style="width:40%">add checkpoint (end of cp list)</button>
+		
+		</div>   
 
+		<div id="cpdata" class="contentblock"> 
+			<div id="selectedcpnumber">Select a checkpoint</div>
+			position <textarea id="CPvector" name="txtfield" rows="1" cols="25" onchange="UpdateAfterChange()" placeholder="0,0,0"></textarea> <br/>
 			
-	
-		<textarea id="CPnotes" name="txtfield" rows="3" onchange="UpdateAfterChange()" placeholder="cp notes"></textarea>
-		<button onclick="RemoveCP()" class="longbutton">  remove checkpoint  </button>
+		
+
+			<input type="checkbox" id="CPdashenable" onclick="UpdateAfterChange()"> dash
+			<input type="checkbox" id="CPultenable" onclick="UpdateAfterChange()"> ultimate
+			<input type="checkbox" id="CPteleportTF" onclick="UpdateAfterChange()"> teleport <textarea id="CPteleportVect" name="txtfield"  onchange="UpdateAfterChange()" rows="1" cols="25" placeholder="0,0,0"></textarea> 
+			<br/>
+			<!-- disabled because it doesnt work (hiden next 2)-->
+			<input type="checkbox" id="CPbanBhop" onclick="UpdateAfterChange()" style="display:none"><!--  ban bhop -->
+			<input type="checkbox" id="CpbanClimb" onclick="UpdateAfterChange()" style="display:none"> <!-- ban wallclimb -->
+
+				
+		
+			<textarea id="CPnotes" name="txtfield" rows="3" onchange="UpdateAfterChange()" placeholder="cp notes"></textarea>
+			<button onclick="RemoveCP()" class="longbutton">  remove checkpoint  </button>
+		</div>
+
+
+		<div id="orbs-kills" class="contentblock"> 
+			<button onclick="AddOrb()" >  add bounce orb  </button>
+			<button onclick="AddKill()" >  add kill orb  </button>
+			<label id="orbcounter"> </label>
+		</div>
 	</div>
+</div>
 
+<div id="savebar">
+	<div class="contentblock"> <!-- savebar  --> <!-- contentblock  -->
+			<div class="saveelement">
+				<button onclick="ExportJson()">export current data as json</button>
+				<button onclick="ImportJson()">import json</button>
+				<textarea id="jsonfield" rows="1" cols="25" placeholder="json pasta here"></textarea>
+			</div>
+			
+			<div class="saveelement">
+				<b>  Save slot 0</b> <br/> 
+				<textarea id="save0" name="txtfield" style="width:95%" rows="1"> savename</textarea>
+				<button onclick="Save(0)" style="width:95%"> Save </button> 
+				<button onclick="Load(0)" style="width:95%">Load </button>
+			</div>
+			
+			<div class="saveelement">
+				<b>  Save slot 1</b> <br/> 
+				<textarea id="save1" name="txtfield" style="width:95%" rows="1"> savename</textarea> <br/>
+				<button onclick="Save(1)" style="width:95%"> Save </button> <br/>
+				<button onclick="Load(1)" style="width:95%">Load </button>
+			</div>
 
-	<div id="orbs-kills" class="contentblock"> 
-		<button onclick="AddOrb()" >  add bounce orb  </button>
-		<button onclick="AddKill()" >  add kill orb  </button>
-		<label id="orbcounter"> </label>
+			<div class="saveelement">
+				<b>  Save slot 2</b> <br/> 
+				<textarea id="save2" name="txtfield" style="width:95%" rows="1"> savename</textarea> <br/>
+				<button onclick="Save(2)" style="width:95%"> Save </button> <br/>
+				<button onclick="Load(2)" style="width:95%">Load </button>
+			</div>
+			
+			<div class="saveelement">
+				<b>  Save slot 3</b> <br/> 
+				<textarea id="save3" name="txtfield" style="width:95%" rows="1"> savename</textarea> <br/>
+				<button onclick="Save(3)" style="width:95%"> Save </button> <br/>
+				<button onclick="Load(3)" style="width:95%">Load </button>
+			</div>
+
+			<div class="saveelement">
+				<b>  Save slot 4</b> <br/> 
+				<textarea id="save4" name="txtfield" style="width:95%" rows="1"> savename</textarea> <br/>
+				<button onclick="Save(4)" style="width:95%"> Save </button> <br/>
+				<button onclick="Load(4)" style="width:95%">Load </button>
+			</div>
 	</div>
 </div>
 
 
-<div id="savebar" class="contentblock"> <!-- savebar  --> <!-- contentblock  -->
-		<div class="saveelement">
-			<button onclick="ExportJson()">export current data as json</button>
-			<button onclick="ImportJson()">import json</button>
-			<textarea id="jsonfield" rows="1" cols="25" placeholder="json pasta here"></textarea>
-		</div>
-		
-		<div class="saveelement">
-			<b>  Save slot 0</b> <br/> 
-			<textarea id="save0" name="txtfield" style="width:95%" rows="1"> savename</textarea>
-			<button onclick="Save(0)" style="width:95%"> Save </button> 
-			<button onclick="Load(0)" style="width:95%">Load </button>
-		</div>
-		
-		<div class="saveelement">
-			<b>  Save slot 1</b> <br/> 
-			<textarea id="save1" name="txtfield" style="width:95%" rows="1"> savename</textarea> <br/>
-			<button onclick="Save(1)" style="width:95%"> Save </button> <br/>
-			<button onclick="Load(1)" style="width:95%">Load </button>
-		</div>
+<div id="helpbar">
+	<div class="contentblock">
+		<p>
+		<strong>step 1</strong><br/>
+		Go ingame and open the vector tool on code <b>QR1PZ</b><br/>
+		</p>
 
-		<div class="saveelement">
-			<b>  Save slot 2</b> <br/> 
-			<textarea id="save2" name="txtfield" style="width:95%" rows="1"> savename</textarea> <br/>
-			<button onclick="Save(2)" style="width:95%"> Save </button> <br/>
-			<button onclick="Load(2)" style="width:95%">Load </button>
-		</div>
-		
-		<div class="saveelement">
-			<b>  Save slot 3</b> <br/> 
-			<textarea id="save3" name="txtfield" style="width:95%" rows="1"> savename</textarea> <br/>
-			<button onclick="Save(3)" style="width:95%"> Save </button> <br/>
-			<button onclick="Load(3)" style="width:95%">Load </button>
-		</div>
+		<p>
+		<strong>step 2</strong> <br/>
+		Find the vector co-ordinates with the vector tool.<br/>
+		Type the vectors in the <i>'data'</i> tab of this web interface.<br/>
+		There is no way to automate this without the inspector, have fun typing.<br/>
+		</p>
 
-		<div class="saveelement">
-			<b>  Save slot 4</b> <br/> 
-			<textarea id="save4" name="txtfield" style="width:95%" rows="1"> savename</textarea> <br/>
-			<button onclick="Save(4)" style="width:95%"> Save </button> <br/>
-			<button onclick="Load(4)" style="width:95%">Load </button>
-		</div>
-</div>
+		<p>
+		<strong>step 3</strong> <br/>
+		Save the data in the <i>'save/load'</i> tab for later editing. <br/>
+		Press the big <i>'copy map to clipboard'</i> button on top of the <i>'data'</i> tab. <br/>
+		</p>
+
+		<p>
+		<strong>step 4</strong> <br/>
+		Go ingame and create a lobby.<br/>
+		Paste in the data from step 3 copy button with the orange + symbol.<br/>
+		Don't forget to also select the map you want to play on. <br/>
+		<br/>
+		<img src="plusbutton.png" alt="picture of plus button"> 
+
+		</p>
 
 
-<div id="helpbar" class="contentblock">
+		<p>
+		<strong>step 5</strong> <br/>
+		The map is now ready for testing and playing.<br/>
+		Remember that it's still possible to generate a share code for te map the usual way.<br/>
+		</p>
 
-<p>
-<strong>step 1</strong><br/>
-Go ingame and open the vector tool on code <b>QR1PZ</b><br/>
-</p>
-
-<p>
-<strong>step 2</strong> <br/>
-Find the vector co-ordinates with the vector tool.<br/>
-Type the vectors in the <i>'data'</i> tab of this web interface.<br/>
-There is no way to automate this without the inspector, have fun typing.<br/>
-</p>
-
-<p>
-<strong>step 3</strong> <br/>
-Save the data in the <i>'save/load'</i> tab for later editing. <br/>
-Press the big <i>'copy map to clipboard'</i> button on top of the <i>'data'</i> tab. <br/>
-</p>
-
-<p>
-<strong>step 4</strong> <br/>
-Go ingame and create a lobby.<br/>
-Paste in the data from step 3 copy button with the orange + symbol.<br/>
-Don't forget to also select the map you want to play on. <br/>
-<br/>
-<img src="plusbutton.png" alt="picture of plus button"> 
-
-</p>
-
-
-<p>
-<strong>step 5</strong> <br/>
-The map is now ready for testing and playing.<br/>
-Remember that it's still possible to generate a share code for te map the usual way.<br/>
-</p>
-
-
+	</div>
 </div>
 
 <textarea id="results" style="display:none"></textarea>

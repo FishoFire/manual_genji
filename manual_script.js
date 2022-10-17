@@ -46,6 +46,7 @@ var portalon
 =========================
 */
 
+changebar(3) // initial page
 var SelectedCp = -1
 var CheckPoints = []
 var MapData = [
@@ -105,9 +106,9 @@ function CpButtons(){
 
 function ShowMsg(x){
     document.getElementById("message").innerHTML = x
-    document.getElementById("message").style.display = "block" 
+    document.getElementById("messageblock").style.display = "block" 
     setTimeout(() => {
-        document.getElementById("message").style.display = "none"
+        document.getElementById("messageblock").style.display = "none"
         document.getElementById("message").innerHTML = "" 
     }, 2500);
     
@@ -165,7 +166,7 @@ function Load(x){
         UpdateSelection()
         UpdateTop()
         changebar(0)
-        ShowMsg("Loaded!")
+        //ShowMsg("Loaded!")
     }
 }
 
@@ -186,58 +187,65 @@ function UpdateTop(){
 }
 
 function changebar(x){
+    
     document.getElementById("tool").style.display = x == 0 ? "block" : "none"
     document.getElementById("savebar").style.display = x == 1 ? "block" : "none"
     document.getElementById("helpbar").style.display = x == 2 ? "block" : "none"
+    document.getElementById("settingsdata").style.display = x == 3 ? "block" : "none"
+    
 
 }
 
 function ImportJson(){
-    CheckPoints = JSON.parse(document.getElementById('jsonfield').value.split("+!SEPERATOR!+")[0])
-    MapData = JSON.parse(document.getElementById('jsonfield').value.split("+!SEPERATOR!+")[1])
+    try{
+        CheckPoints = JSON.parse(document.getElementById('jsonfield').value.split("+!SEPERATOR!+")[0])
+        MapData = JSON.parse(document.getElementById('jsonfield').value.split("+!SEPERATOR!+")[1])
 
-    // fix data if missing
-    MapData[0] =  MapData[0] ?  MapData[0] : ""
-    MapData[1] =  MapData[1] ?  MapData[1] : ""
-    MapData[2] =  MapData[2] ?  MapData[2] : ""
-    
-    MapData[3] =  MapData[3] ?  MapData[3] : false
-    MapData[4] =  MapData[4] ?  MapData[4] : false
-    MapData[5] =  MapData[5] ?  MapData[5] : false
-    MapData[6] =  MapData[6] ?  MapData[6] : false
-    MapData[7] =  MapData[7] ?  MapData[7] : false
-    MapData[8] =  MapData[8] ?  MapData[8] : false
+        // fix data if missing
+        MapData[0] =  MapData[0] ?  MapData[0] : ""
+        MapData[1] =  MapData[1] ?  MapData[1] : ""
+        MapData[2] =  MapData[2] ?  MapData[2] : ""
+        
+        MapData[3] =  MapData[3] ?  MapData[3] : false
+        MapData[4] =  MapData[4] ?  MapData[4] : false
+        MapData[5] =  MapData[5] ?  MapData[5] : false
+        MapData[6] =  MapData[6] ?  MapData[6] : false
+        MapData[7] =  MapData[7] ?  MapData[7] : false
+        MapData[8] =  MapData[8] ?  MapData[8] : false
 
-    MapData[9] = typeof MapData[9] != 'undefined' ?  MapData[9] : true
-    MapData[10] = typeof MapData[9] != 'undefined' ?  MapData[10] : "0"
+        MapData[9] = typeof MapData[9] != 'undefined' ?  MapData[9] : true
+        MapData[10] = typeof MapData[9] != 'undefined' ?  MapData[10] : "0"
 
-    for(let i=0;i < CheckPoints.length;i++){
-        CheckPoints[i][8] = CheckPoints[i][8]  ?  CheckPoints[i][8]  : false
-        CheckPoints[i][9] = CheckPoints[i][9]  ?  CheckPoints[i][9]  : false
+        for(let i=0;i < CheckPoints.length;i++){
+            CheckPoints[i][8] = CheckPoints[i][8]  ?  CheckPoints[i][8]  : false
+            CheckPoints[i][9] = CheckPoints[i][9]  ?  CheckPoints[i][9]  : false
+        }
+
+        document.getElementById("cpdata").style.display = "block"
+        document.getElementById("orbs-kills").style.display = "block"
+        document.getElementById("maker").value =  MapData[0]
+        document.getElementById("code").value =  MapData[1]
+        document.getElementById("notes").value =  MapData[2]
+        
+        document.getElementById("ban_triple").checked = MapData[3]
+        document.getElementById("ban_multi").checked =  MapData[4]
+        document.getElementById("ban_emote" ).checked = MapData[5]
+        document.getElementById("ban_create").checked = MapData[6]
+        document.getElementById("ban_dbhop" ).checked =  MapData[7]
+        document.getElementById("ban_dashstart" ).checked = MapData[8]
+        document.getElementById("portalOn").checked = MapData[9]
+        document.getElementById("dif").value = MapData[10]
+
+
+        SelectedCp = 0
+
+        CpButtons()
+        UpdateSelection()
+        UpdateTop()
+        changebar(0)
+    } catch (e){
+        console.log(e);
     }
-
-    document.getElementById("cpdata").style.display = "block"
-    document.getElementById("orbs-kills").style.display = "block"
-    document.getElementById("maker").value =  MapData[0]
-    document.getElementById("code").value =  MapData[1]
-    document.getElementById("notes").value =  MapData[2]
-    
-    document.getElementById("ban_triple").checked = MapData[3]
-    document.getElementById("ban_multi").checked =  MapData[4]
-    document.getElementById("ban_emote" ).checked = MapData[5]
-    document.getElementById("ban_create").checked = MapData[6]
-    document.getElementById("ban_dbhop" ).checked =  MapData[7]
-    document.getElementById("ban_dashstart" ).checked = MapData[8]
-    document.getElementById("portalOn").checked = MapData[9]
-    document.getElementById("dif").value = MapData[10]
-
-
-    SelectedCp = 0
-
-    CpButtons()
-    UpdateSelection()
-    UpdateTop()
-    changebar(0)
 
 }
 
@@ -554,6 +562,10 @@ var portalon
 var difficultyhud
 // copy button
 function Copy(){
+    if (CheckPoints.length <1){
+        console.log("length")
+        return
+    }
     // cp data
     data_cps = "\n\t\tGlobal.A = Array("
     for (let i = 0;  i < CheckPoints.length; i++){
@@ -687,89 +699,45 @@ function Copy(){
 		ban_wallclimbCp = "Array Contains(Array(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1), (Event Player).A) == True;\n"
 	}
 	
-    
-    function getTextareaLineNumber(textarea, name) {
-            
-        document.getElementById(name+"-textarea-line-number").innerHTML = textarea.value.substr(0, textarea.selectionStart).split("\n").length;
-        document.getElementById(name+"-textarea-col-number").innerHTML = textarea.selectionStart - textarea.value.substr(0, textarea.selectionStart).lastIndexOf("\n");
-    }
-    
-    function demoDecompile() {
-       
-        try {
-         
-            var str = "";
-            var language = document.getElementById("languageInput").value;
-            str = decompileAllRules(data_pasta, language);
-        } catch (e) {
-            console.log(e);
-            str = e;
-        }
-        //document.getElementById("overpy-textarea").value = str;
-    }
 
-    function demoCompile() {
-        
-     
-        try {
-            var str = "";
-            var language = document.getElementById("languageInput").value;
-            compilationResult = compile(document.getElementById("overpy-textarea").value, language);
-            str += "//Elements: "+compilationResult.nbElements+"\n";
-            if (compilationResult.activatedExtensions.length > 0) {
-                str += "//Extension points: "+compilationResult.spentExtensionPoints+"/"+(compilationResult.availableExtensionPoints < 0 ? "unknown" : compilationResult.availableExtensionPoints)+"\n"
-            }
-            str += compilationResult.result;
-            if (compilationResult.encounteredWarnings.length > 0) {
-                var strWarn = "/* Warnings were encountered:\n\n"
-                for (var warning of compilationResult.encounteredWarnings) {
-                    strWarn += " - "+warning+"\n\n";
-                }
-                strWarn += "*/\n";
-                str = strWarn+str;
-            }
-        } catch (e) {
-            console.log(e);
-            str = e;
-        }
-        data_pasta = str;
-    }
-    /*
-    function demoAddText() {
-        document.getElementById("workshop-textarea").value = decompileTest;
-        document.getElementById("overpy-textarea").value = "";
-        document.getElementById("compiled-textarea").value = "";
-        
-    }
-    */
-    setdata() // loaded from data file
-    
-    /*
-    demoDecompile();
-    demoCompile();
-    */
-    
-    
-    try {
-        var language = document.getElementById("languageInput").value;
-        data_pasta = "#!disableMapDetectionFix\n"+data_pasta
-        data_pasta = decompileAllRules(data_pasta, "en-US");
-        data_pasta = compile(data_pasta, language);
-        data_pasta  = data_pasta.result
-    
+    setdata() // loaded from data file   
+    compilingthings()
+    dorest() 
+}
    
+
+async function compilingthings(){ 
+    try {
+         (async () => {
+            await saycompile()
+        })();
+        var language = document.getElementById("languageInput").value;
+        //if (language != "en-US"){
+            data_pasta = await decompileAllRules(data_pasta, "en-US");
+            //data_pasta = data_pasta + "\n#!disableMapDetectionFix"
+            data_pasta = await compile(data_pasta, language);
+            data_pasta  = data_pasta.result
+        //}
+        
     } catch (e) {
         console.log(e);
     }
-            
-    var resultthing = document.getElementById("results")
+    
+ }
 
+
+function saycompile(){
+    document.getElementById("message").innerHTML = "compiling";
+    document.getElementById("messageblock").style.display = "block" ;
+} 
+
+function dorest(){
+    var resultthing = document.getElementById("results")
     resultthing.value = data_pasta
     resultthing.select()
     resultthing.setSelectionRange(0, 99999);
     navigator.clipboard.writeText(resultthing.value);
     ShowMsg("copied to clipboard!")
-
 }
 
 
