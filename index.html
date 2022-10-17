@@ -189,26 +189,24 @@
 		<p>
 		<strong>step 2</strong> <br/>
 		Find the vector co-ordinates with the vector tool.<br/>
-		Type the vectors in the <i>'data'</i> tab of this web interface.<br/>
+		Type the vectors in the <i>data</i> tab of this web interface.<br/>
 		There is no way to automate this without the inspector, have fun typing.<br/>
 		</p>
 
 		<p>
 		<strong>step 3</strong> <br/>
-		Save the data in the <i>'save/load'</i> tab for later editing. <br/>
-		Press the big <i>'copy map to clipboard'</i> button on top of the <i>'data'</i> tab. <br/>
+		Make sure the langauge in the <i>settings</i> tab matches your overwatch client.<br/>
+		Save the data in the <i>save/load</i> tab for later editing. <br/>
+		Press the big <i>copy map to clipboard</i> button on top. <br/>
 		</p>
 
-		<p>
 		<strong>step 4</strong> <br/>
 		Go ingame and create a lobby.<br/>
 		Paste in the data from step 3 copy button with the orange + symbol.<br/>
 		Don't forget to also select the map you want to play on. <br/>
 		<br/>
 		<img src="plusbutton.png" alt="picture of plus button"> 
-
 		</p>
-
 
 		<p>
 		<strong>step 5</strong> <br/>
@@ -220,174 +218,14 @@
 </div>
 
 <textarea id="results" style="display:none"></textarea>
-<div style="text-align:left"><small>version 0.95</small></div>
+<div style="text-align:left"><small>version 0.96</small></div>
 
 <input type="hidden" id="overpy-textarea">
 <input type="hidden" id="compiled-textarea">
 
 <script src="overpy-master/VS Code Extension/overpy.js"></script>
 
-<!--
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/VS%20Code%20Extension/overpy.js"></script>
-
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/utils/other.js"></script>
-
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/data/opy/stringEntities.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/data/opy/constants.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/data/opy/modules.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/data/opy/internalFunctions.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/data/opy/functions.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/data/opy/keywords.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/data/opy/memberFunctions.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/data/actions.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/data/values.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/data/maps.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/data/heroes.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/data/gamemodes.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/data/constants.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/data/other.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/data/customGameSettings.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/data/opy/preprocessing.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/data/opy/annotations.js"></script>
-
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/globalVars.js"></script>
-
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/utils/logging.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/utils/ast.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/utils/types.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/utils/compilation.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/utils/decompilation.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/utils/file.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/utils/optimization.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/utils/strings.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/utils/translation.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/utils/varNames.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/utils/tokens.js"></script>
-
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/decompiler/decompileTest.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/decompiler/workshopToAst.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/decompiler/astToOpy.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/decompiler/decompiler.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/decompiler/tokenizer.js"></script>
-
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/obfuscation.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__add__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__and__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__append__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__array__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__arraySlice__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__assignTo__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__button__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__chaseAtRate__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__chaseOverTime__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__color__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__del__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__dict__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__distanceTo__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__divide__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__doWhile__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__elif__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__else__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__equals__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__for__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__format__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__filteredArray__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__gamemode__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__globalVar__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__greaterThan__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__greaterThanOrEquals__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__hero__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__if__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__ifThenElse__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__indexOfArrayValue__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__inequals__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__lastOf__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__lessThan__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__lessThanOrEquals__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__map__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__mappedArray__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__modulo__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__multiply__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__negate__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__number__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__not__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__or__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__playerVar__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__raiseToPower__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__remove__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__reverse__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__rule__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__skip__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__subtract__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__switch__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__team__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__valueInArray__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__wait__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__while__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__xComponentOf__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__yComponentOf__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/__zComponentOf__.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/_&addToScore.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/_&setStatusEffect.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/_&setUltCharge.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/abs.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/acos.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/acosDeg.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/addToTeamScore.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/all.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/any.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/asin.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/asinDeg.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/atan2.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/atan2Deg.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/break.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/ceil.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/continue.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/cos.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/cosDeg.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/createBeam.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/createEffect.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/createWorkshopSetting.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/crossProduct.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/directionTowards.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/disableInspector.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/distance.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/dotProduct.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/enableInspector.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/eventPlayer.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/floor.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/getAllPlayers.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/getCurrentMap.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/getOppositeTeam.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/len.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/lineIntersectsSphere.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/log.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/max.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/min.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/normalize.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/playEffect.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/print.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/printLog.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/round.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/sin.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/sinDeg.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/sorted.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/sqrt.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/tan.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/tanDeg.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/vect.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/vectorTowards.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/functions/waitUntil.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/tokenizer.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/astParser.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/astToWorkshop.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/parser.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/compiler/compiler.js"></script>
-<script src="https://raw.githubusercontent.com/Zezombye/overpy/master/src/data/localizedStrings.js"></script>
--->
 <script src="template-1-51.js"></script>
-<!--- <script src="template-1_5_manual.js"></script> -->
-<!--- <script src="template-1_4_2.js"></script>  -->
 
 <script src="manual_script.js"></script>
 </body>

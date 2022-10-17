@@ -166,7 +166,7 @@ function Load(x){
         UpdateSelection()
         UpdateTop()
         changebar(0)
-        //ShowMsg("Loaded!")
+        ShowMsg("Loaded!")
     }
 }
 
@@ -562,14 +562,16 @@ var portalon
 var difficultyhud
 // copy button
 function Copy(){
+    if (CheckPoints.length <1){
+        console.log("length")
+        return
+    }
+    
     ShowMsg("compiling");
 
     setTimeout(
         function (){
-            if (CheckPoints.length <1){
-                console.log("length")
-                return
-            }
+           
             // cp data
             data_cps = "\n\t\tGlobal.A = Array("
             for (let i = 0;  i < CheckPoints.length; i++){
@@ -591,12 +593,22 @@ function Copy(){
             data_orb_strength = "Global.EditMode = Array( "
             for (let i = 0;  i < CheckPoints.length; i++){
                 for (let i2 = 0;  i2 < CheckPoints[i][6].length; i2++){
+                    
                     data_orb_cp += "\n\t\t\t" + i + ","
                     data_orb_pos += "\n\t\t\tVector("+CheckPoints[i][6][i2][0]+"),"
                     data_orb_lock += "\n\t\t\t" + (CheckPoints[i][6][i2][3] ? 'True' : 'False') + ","
                     data_orb_dash += "\n\t\t\t" + (CheckPoints[i][6][i2][1] ? 'True' : 'False') + ","
                     data_orb_ult += "\n\t\t\t" + (CheckPoints[i][6][i2][2] ? 'True' : 'False') + ","
-                    data_orb_strength += "\n\t\t\t" + CheckPoints[i][6][i2][4]  + ","
+                    data_orb_strength += "\n\t\t\t" + CheckPoints[i][6][i2][4] + ","
+                    
+                    /*
+                    data_orb_cp += "\n\t\t\t" + i + ","
+                    data_orb_pos += "\n\t\t\tVector(" + CheckPoints[i][6][i2][0].split(",").some(function(ab){return isNaN(ab)}) || CheckPoints[i][6][i2][0].split(",").length != 3 ? "0,0,0" : CheckPoints[i][6][i2][0] + "),"
+                    data_orb_lock += "\n\t\t\t" + (CheckPoints[i][6][i2][3] ? 'True' : 'False') + ","
+                    data_orb_dash += "\n\t\t\t" + (CheckPoints[i][6][i2][1] ? 'True' : 'False') + ","
+                    data_orb_ult += "\n\t\t\t" + (CheckPoints[i][6][i2][2] ? 'True' : 'False') + ","
+                    data_orb_strength += "\n\t\t\t" + ( isNaN(CheckPoints[i][6][i2][4]) ? "0" :  CheckPoints[i][6][i2][4]  ) + ",
+                    */
                 }
             }
 
@@ -707,11 +719,12 @@ function Copy(){
             setdata(); // loaded from data file
 
             var language = document.getElementById("languageInput").value;
-            //if (language != "en-US"){
-            data_pasta = decompileAllRules(data_pasta, "en-US");
-            //data_pasta = data_pasta + "\n#!disableMapDetectionFix"
-            data_pasta = compile(data_pasta, language);
-            data_pasta  = data_pasta.result;
+            if (language != "en-US"){
+                data_pasta = decompileAllRules(data_pasta, "en-US");
+                data_pasta = data_pasta + "\n#!disableMapDetectionFix"
+                data_pasta = compile(data_pasta, language);
+                data_pasta  = data_pasta.result;
+            }
             var resultthing = document.getElementById("results");
             resultthing.value = data_pasta;
             resultthing.select();
