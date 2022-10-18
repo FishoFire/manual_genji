@@ -283,6 +283,34 @@ function UpdateSelection(){
     UpdateOrbs()
 }
 
+function IsVector(vec){ // return true if vectir
+    return  !(
+        vec.split(",").some(vec=> isNaN(vec)) ||
+        vec.split(",").length != 3
+        )
+}
+
+function FieldColorsVect(thing){
+    try{
+        if (typeof thing != "undefined"){
+            IsVector(thing.value) ? thing.style.backgroundColor="": thing.style.backgroundColor="red"
+        }
+    } catch(e) {
+        console.log(e)
+    }
+}
+
+function FieldColorsNum(thing){
+    try{
+        if (typeof thing != "undefined"){
+            !isNaN(thing.value) ? thing.style.backgroundColor="": thing.style.backgroundColor="red"
+        }
+    } catch(e) {
+        console.log(e)
+    }
+}
+
+
 function UpdateAfterChange(){
     CheckPoints[parseInt(SelectedCp)][0] = document.getElementById("CPvector").value
 	CheckPoints[parseInt(SelectedCp)][1] = document.getElementById("CPteleportTF").checked
@@ -405,12 +433,14 @@ function UpdateOrbs(){
 			let vectbox = document.createElement("textarea");
 			vectbox.id = "vectbox"
 			vectbox.placeholder = "0,0,0"
+            
 			if (CheckPoints[SelectedCp][6][i][0] != ""){vectbox.value = CheckPoints[SelectedCp][6][i][0]}
 			vectbox.onchange = function(){CheckPoints[SelectedCp][6][i][0] = vectbox.value}
-			vectbox.rows = 1
+            vectbox.rows = 1
 			vectbox.cols = 20
+            vectbox.onkeyup=function(){FieldColorsVect(this)}
 			document.getElementById("orbdiv" + i).appendChild(vectbox)
-
+        
 			// strength
 			document.getElementById("orbdiv" + i).insertAdjacentText("beforeend", "\nstrength ")
 			let strbox = document.createElement("textarea");
@@ -420,6 +450,7 @@ function UpdateOrbs(){
 			strbox.onchange = function(){CheckPoints[SelectedCp][6][i][4] = strbox.value}
 			strbox.rows = 1
 			strbox.cols = 5
+            strbox.onkeyup=function(){FieldColorsNum(this)}
 			document.getElementById("orbdiv" + i).appendChild(strbox)
 
             /*
@@ -482,7 +513,9 @@ function UpdateOrbs(){
 			vectbox2.onchange = function(){CheckPoints[SelectedCp][7][it][0] = vectbox2.value}
 			vectbox2.rows = 1
 			vectbox2.cols = 25
+            vectbox2.onkeyup=function(){FieldColorsVect(this)}
 			document.getElementById("killdiv" + it).appendChild(vectbox2)	
+        
 
 			document.getElementById("killdiv" + it).insertAdjacentText("beforeend", " | radius ")
 			let radius1 = document.createElement("textarea");
@@ -492,8 +525,10 @@ function UpdateOrbs(){
 			radius1.onchange = function(){CheckPoints[SelectedCp][7][it][1] = radius1.value}
 			radius1.rows = 1
 			radius1.cols = 8
+            radius1.onkeyup=function(){FieldColorsNum(this)}
 			document.getElementById("killdiv" + it).appendChild(radius1)	
 			
+
 			// delete button
 			let lockbutton = document.createElement("button");
 			lockbutton.innerHTML = "delete"
