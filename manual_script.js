@@ -282,12 +282,32 @@ function UpdateSelection(){
 
     UpdateOrbs()
 }
-
+/*
 function IsVector(vec){ // return true if vectir
     return  !(
         vec.split(",").some(vec=> isNaN(vec)) ||
         vec.split(",").length != 3
         )
+}
+*/
+function IsVector(vec){ // return true if vectir
+    //const re = /^\d+(?=\.)?\d*?\s?,\s?\d+(?=\.)?\d*?\s?,\s?\d+(?=\.)?\d*$/;
+    const re = /^\s*-?\d+(\.?(\d+)?)\s*,\s*-?\d+(\.?(\d+)?)\s*,\s*-?\d+(\.?(\d+)?)\s*$/;
+    return re.exec(vec)
+    /*
+    ^ Starts with
+    \s* 0 or more whitespaces
+    \d+ 1 or more digits
+    \.? optional decimal
+    \d+? optional 1+ digits
+    \s* 0 or more whitespaces
+    , comma
+    */
+}
+
+
+function isNumber(numb){
+    return !isNaN(numb) && numb != ""
 }
 
 function FieldColorsVect(thing){
@@ -303,7 +323,8 @@ function FieldColorsVect(thing){
 function FieldColorsNum(thing){
     try{
         if (typeof thing != "undefined"){
-            !isNaN(thing.value) ? thing.style.backgroundColor="": thing.style.backgroundColor="red"
+            //!isNaN(thing.value) ? thing.style.backgroundColor="": thing.style.backgroundColor="red"
+            isNumber(thing.value) ? thing.style.backgroundColor="": thing.style.backgroundColor="red"
         }
     } catch(e) {
         console.log(e)
