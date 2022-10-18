@@ -1592,7 +1592,7 @@ rule("Setup and Variables")
 			"17th entry is dont display"
 			If(Global.Difficultyhud < 17);
 				Create HUD Text(All Players(All Teams), Null, Array(Custom String("beginner"), Custom String("easy -"), Custom String("easy"),
-					Custom String("easy +,"), Custom String("medium -"), Custom String("medium"), Custom String("medium +"), Custom String(
+					Custom String("easy +"), Custom String("medium -"), Custom String("medium"), Custom String("medium +"), Custom String(
 					"hard -"), Custom String("hard"), Custom String("hard +"), Custom String("very hard -"), Custom String("very hard"),
 					Custom String("very hard +"), Custom String("extreme -"), Custom String("extreme"), Custom String("extreme +"), Custom String(
 					"hell"))[Global.Difficultyhud], Null, Top, -24, Null, Array(Color(Green), Color(Lime Green), Color(Lime Green), Color(
