@@ -79,7 +79,7 @@
 			<input type="checkbox" id="ban_multi" onclick="UpdateTop()"> multi climb
 			<input type="checkbox" id="ban_emote" onclick="UpdateTop()" style="display:none"><!-- emote save -->
 			<input type="checkbox" id="ban_create" onclick="UpdateTop()"> create bhop
-			<input type="checkbox" id="ban_dbhop" onclick="UpdateTop()"> savehop
+			<input type="checkbox" id="ban_dbhop" onclick="UpdateTop()"> Deathbhop
 			<input type="checkbox" id="ban_dashstart" onclick="UpdateTop()"> dash start
 		</div>
 
@@ -106,13 +106,12 @@
 
 		<div id="cpdata" class="contentblock"> 
 			<div id="selectedcpnumber">Select a checkpoint</div>
-			position <textarea id="CPvector" name="txtfield" rows="1" cols="25" onchange="UpdateAfterChange()" placeholder="0,0,0"></textarea> <br/>
+			position <textarea id="CPvector" name="txtfield" rows="1" cols="25" onchange="UpdateAfterChange()" onkeyup="FieldColorsVect(this)" placeholder="0,0,0"></textarea> <br/>
 			
-		
 
 			<input type="checkbox" id="CPdashenable" onclick="UpdateAfterChange()"> dash
 			<input type="checkbox" id="CPultenable" onclick="UpdateAfterChange()"> ultimate
-			<input type="checkbox" id="CPteleportTF" onclick="UpdateAfterChange()"> teleport <textarea id="CPteleportVect" name="txtfield"  onchange="UpdateAfterChange()" rows="1" cols="25" placeholder="0,0,0"></textarea> 
+			<input type="checkbox" id="CPteleportTF" onclick="UpdateAfterChange()"> teleport <textarea id="CPteleportVect" name="txtfield" onchange="UpdateAfterChange()" onkeyup="FieldColorsVect(this)"  rows="1" cols="25" placeholder="0,0,0"></textarea> 
 			<br/>
 			<!-- disabled because it doesnt work (hiden next 2)-->
 			<input type="checkbox" id="CPbanBhop" onclick="UpdateAfterChange()" style="display:none"><!--  ban bhop -->
@@ -218,7 +217,7 @@
 </div>
 
 <textarea id="results" style="display:none"></textarea>
-<div style="text-align:left"><small>version 0.96</small></div>
+<div style="text-align:left"><small>version 0.97.5</small></div>
 
 <input type="hidden" id="overpy-textarea">
 <input type="hidden" id="compiled-textarea">
