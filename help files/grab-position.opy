@@ -53,6 +53,8 @@ settings {
 globalvar ring1
 globalvar ring2
 globalvar orb
+playervar Flymode
+playervar flytoggle
 
 rule "pause time":
 	wait(10) 
@@ -80,13 +82,7 @@ rule "orb":
 rule "display":
     @Event eachPlayer
 	eventPlayer.setStatusEffect(null, Status.PHASED_OUT, 9999)
-	/*
-	hudText(eventPlayer, "orb: {0}".format(orb), null, "set with Melee", HudPosition.LEFT, 0, Color.LIME_GREEN, Color.LIME_GREEN, Color.LIME_GREEN, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
-	hudText(eventPlayer, "ring 1: {0}".format(ring1), null, "set with interact + primary", HudPosition.LEFT, 1, Color.SKY_BLUE, Color.SKY_BLUE, Color.SKY_BLUE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
-	hudText(eventPlayer, "ring 2: {0}".format(ring2), null, "set with interact + secondary", HudPosition.LEFT, 2, Color.PURPLE, Color.PURPLE, Color.PURPLE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
-	hudText(eventPlayer, "hostplayer pos: {0}".format(hostPlayer.getPosition()), null, null, HudPosition.LEFT, 3, Color.ORANGE, Color.ORANGE, Color.ORANGE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
-	*/
-		
+	eventPlayer.disableGamemodeHud()
 	hudHeader(eventPlayer, "orb: {0}".format(orb), HudPosition.LEFT, 0, Color.LIME_GREEN, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
 	hudSubheader(eventPlayer, "set with Melee\n", HudPosition.LEFT, 1, Color.LIME_GREEN, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
 
@@ -101,4 +97,62 @@ rule "display":
 	createEffect(getAllPlayers(), Effect.RING, Color.SKY_BLUE, ring1, 1, EffectReeval.POSITION_AND_RADIUS)
 	createEffect(getAllPlayers(), Effect.RING, Color.PURPLE, ring2, 1, EffectReeval.POSITION_AND_RADIUS)
 	createEffect(getAllPlayers(), Effect.ORB, Color.LIME_GREEN, orb, 1, EffectReeval.POSITION_AND_RADIUS)
+
+
+    hudHeader(eventPlayer, "Fly toggle: deflect", HudPosition.RIGHT, 30, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
+    hudSubheader(eventPlayer, "jump/crouch to fly faster\n", HudPosition.RIGHT, 31, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
+
+    hudHeader(eventPlayer, "Reload: reset ring 1, +interact ring 2", HudPosition.RIGHT, 40, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
+
+
+rule "give ult":
+    @Event eachPlayer
+    @Condition eventPlayer.getUltCharge() < 0
+    @Condition eventPlayer.isUsingUltimate() == false
+    wait(0.1)
+    eventPlayer.setUltCharge(100)
+    if RULE_CONDITION:
+        goto RULE_START
+
+
+rule "Fly/Noclip Toggle | Hold Deflect":
+    @Event eachPlayer
+    @Condition eventPlayer.isHoldingButton(Button.ABILITY_2) == true
+
+    waitUntil(not eventPlayer.isHoldingButton(Button.ABILITY_2), 1)
+    if eventPlayer.isHoldingButton(Button.CROUCH) and eventPlayer.isHoldingButton(Button.INTERACT):
+        wait()
+        return
+
+    eventPlayer.flytoggle = eventPlayer.getPosition() + Vector.UP
+    eventPlayer.startForcingPosition(eventPlayer.flytoggle, true)
+    eventPlayer.disableEnvironmentCollision(true)
+    
+    while eventPlayer.isAlive() and eventPlayer.flytoggle != null and not eventPlayer.isHoldingButton(Button.ABILITY_2):
+        eventPlayer.flytoggle += eventPlayer.getFacingDirection() * (
+            0.25 + eventPlayer.isHoldingButton(Button.JUMP) if eventPlayer.getThrottle().z > 0 else 
+            -0.25 - eventPlayer.isHoldingButton(Button.JUMP) if eventPlayer.getThrottle().z < 0 else 
+            0
+            )
+        eventPlayer.flytoggle += worldVector(vect(eventPlayer.getThrottle().x*0.3,0,0), eventPlayer, Transform.ROTATION) 
+        wait()
+    
+
+    eventPlayer.enableEnvironmentCollision()
+    eventPlayer.stopForcingPosition()
+    eventPlayer.flytoggle = null
+
+    wait(1)
+
+rule "reload":
+    @Event eachPlayer
+    @Condition eventPlayer.isHoldingButton(Button.RELOAD)
+
+    if eventPlayer.isHoldingButton(Button.INTERACT) and ring2 != null:
+        eventPlayer.teleport(ring2)
+
+    elif ring1 != null and not eventPlayer.isHoldingButton(Button.INTERACT):
+         eventPlayer.teleport(ring1)
+
+    wait()
 
