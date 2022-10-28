@@ -305,14 +305,21 @@ function IsVector(vec){ // return true if vectir
     */
 }
 
+function defaultVect(vec){
+    return IsVector(vec) ? vec : "0,0,0"
+}
 
 function isNumber(numb){
     return !isNaN(numb) && numb != ""
+}
+function defaultNum(num){
+    return isNumber(num) ? num : "0"
 }
 
 function FieldColorsVect(thing){
     try{
         if (typeof thing != "undefined"){
+            thing.value = thing.value.replace("(","").replace(")","") // remove ()
             IsVector(thing.value) ? thing.style.backgroundColor="": thing.style.backgroundColor="red"
         }
     } catch(e) {
@@ -323,7 +330,7 @@ function FieldColorsVect(thing){
 function FieldColorsNum(thing){
     try{
         if (typeof thing != "undefined"){
-            //!isNaN(thing.value) ? thing.style.backgroundColor="": thing.style.backgroundColor="red"
+            thing.value = thing.value.replace(",","") // remove ,
             isNumber(thing.value) ? thing.style.backgroundColor="": thing.style.backgroundColor="red"
         }
     } catch(e) {
@@ -467,13 +474,15 @@ function UpdateOrbs(){
 			let strbox = document.createElement("textarea");
 			strbox.id = "strbox"
 			strbox.placeholder = "0.0"
-			if (CheckPoints[SelectedCp][6][i][4] != ""){strbox.value = CheckPoints[SelectedCp][6][i][4]}
+			//if (CheckPoints[SelectedCp][6][i][4] != ""){strbox.value = CheckPoints[SelectedCp][6][i][4]}
+            if (CheckPoints[SelectedCp][6][i][4].length != "undefined" && CheckPoints[SelectedCp][6][i][4] != ""){strbox.value = CheckPoints[SelectedCp][6][i][4];FieldColorsNum(strbox)}else{strbox.value=""}
 			strbox.onchange = function(){CheckPoints[SelectedCp][6][i][4] = strbox.value}
 			strbox.rows = 1
 			strbox.cols = 5
             strbox.onkeyup=function(){FieldColorsNum(this)}
 			document.getElementById("orbdiv" + i).appendChild(strbox)
-
+            //if (typeof strbox.value != 'undefined'){FieldColorsNum(strbox)}
+            //FieldColorsNum(strbox)
             /*
             // filler
             let filler = document.createElement("div");
@@ -542,7 +551,8 @@ function UpdateOrbs(){
 			let radius1 = document.createElement("textarea");
 			radius1.id = "vectbox"
 			radius1.placeholder = "0.1"
-			if (CheckPoints[SelectedCp][7][it][1] != ""){radius1.value = CheckPoints[SelectedCp][7][it][1]}
+			//if (CheckPoints[SelectedCp][7][it][1] != ""){radius1.value = CheckPoints[SelectedCp][7][it][1]}
+             if (CheckPoints[SelectedCp][7][it][1].length != "undefined" && CheckPoints[SelectedCp][7][it][1] != ""){radius1.value = CheckPoints[SelectedCp][7][it][1];FieldColorsNum(radius1)}else{radius1.value=""}
 			radius1.onchange = function(){CheckPoints[SelectedCp][7][it][1] = radius1.value}
 			radius1.rows = 1
 			radius1.cols = 8
@@ -628,19 +638,19 @@ function Copy(){
     setTimeout(
         function (){
            
-            // cp data
+            // cp data ==================
             data_cps = "\n\t\tGlobal.A = Array("
             for (let i = 0;  i < CheckPoints.length; i++){
                 if (CheckPoints[i][1]){
-                    data_cps += "\n\t\t\tArray(Vector(" + CheckPoints[i][0] + "), Vector(" + CheckPoints[i][2]+ ")),"
+                    data_cps += "\n\t\t\tArray(Vector(" + defaultVect(CheckPoints[i][0]) + "), Vector(" + defaultVect(CheckPoints[i][2])+ ")),"
                 } else{
-                    data_cps += "\n\t\t\tVector("+CheckPoints[i][0]+"),"
+                    data_cps += "\n\t\t\tVector("+defaultVect(CheckPoints[i][0])+"),"
                 }
             }
             data_cps = data_cps.slice(0,-1) // remove last ,
             data_cps += "\n\t\t);"
 
-            // bounce
+            // bounce ==================
             data_orb_cp = "Global.pinballnumber = Array( "
             data_orb_pos = "Global.TQ = Array( "
             data_orb_lock = "Global.BounceToggleLock = Array( "
@@ -651,20 +661,12 @@ function Copy(){
                 for (let i2 = 0;  i2 < CheckPoints[i][6].length; i2++){
                     
                     data_orb_cp += "\n\t\t\t" + i + ","
-                    data_orb_pos += "\n\t\t\tVector("+CheckPoints[i][6][i2][0]+"),"
+                    data_orb_pos += "\n\t\t\tVector("+defaultVect(CheckPoints[i][6][i2][0])+"),"
                     data_orb_lock += "\n\t\t\t" + (CheckPoints[i][6][i2][3] ? 'True' : 'False') + ","
                     data_orb_dash += "\n\t\t\t" + (CheckPoints[i][6][i2][1] ? 'True' : 'False') + ","
                     data_orb_ult += "\n\t\t\t" + (CheckPoints[i][6][i2][2] ? 'True' : 'False') + ","
-                    data_orb_strength += "\n\t\t\t" + CheckPoints[i][6][i2][4] + ","
+                    data_orb_strength += "\n\t\t\t" + defaultNum(CheckPoints[i][6][i2][4]) + ","
                     
-                    /*
-                    data_orb_cp += "\n\t\t\t" + i + ","
-                    data_orb_pos += "\n\t\t\tVector(" + CheckPoints[i][6][i2][0].split(",").some(function(ab){return isNaN(ab)}) || CheckPoints[i][6][i2][0].split(",").length != 3 ? "0,0,0" : CheckPoints[i][6][i2][0] + "),"
-                    data_orb_lock += "\n\t\t\t" + (CheckPoints[i][6][i2][3] ? 'True' : 'False') + ","
-                    data_orb_dash += "\n\t\t\t" + (CheckPoints[i][6][i2][1] ? 'True' : 'False') + ","
-                    data_orb_ult += "\n\t\t\t" + (CheckPoints[i][6][i2][2] ? 'True' : 'False') + ","
-                    data_orb_strength += "\n\t\t\t" + ( isNaN(CheckPoints[i][6][i2][4]) ? "0" :  CheckPoints[i][6][i2][4]  ) + ",
-                    */
                 }
             }
 
@@ -675,22 +677,14 @@ function Copy(){
             data_orb_ult = data_orb_ult.slice(0,-1) + "\n\t\t);"
             data_orb_strength = data_orb_strength.slice(0,-1) + "\n\t\t);"
 
-            /*
-            0 pos
-            1 dash
-            2 ult
-            3 lock
-            cp auto
-            */
-
-            // kill
+            // kill ==================
             data_kill_pos = "Global.H = Array( "
             data_kill_rad = "Global.I = Array( "
             data_kill_cp = "Global.killballnumber = Array( "
             for (let i = 0;  i < CheckPoints.length; i++){
                 for (let i2 = 0;  i2 < CheckPoints[i][7].length; i2++){
-                    data_kill_pos += "\n\t\t\tVector(" + CheckPoints[i][7][i2][0]+"),"
-                    data_kill_rad += "\n\t\t\t" + CheckPoints[i][7][i2][1]+","
+                    data_kill_pos += "\n\t\t\tVector(" + defaultVect(CheckPoints[i][7][i2][0])+"),"
+                    data_kill_rad += "\n\t\t\t" + defaultNum(CheckPoints[i][7][i2][1])+","
                     data_kill_cp += "\n\t\t\t" + i + ","
                 }
             }
@@ -698,7 +692,7 @@ function Copy(){
             data_kill_rad = data_kill_rad.slice(0,-1) + "\n\t\t);"
             data_kill_cp = data_kill_cp.slice(0,-1) + "\n\t\t);"
 
-            // enable ult rule
+            // enable ult rule ==================
             ulteanbled = "disabled "
             if (CheckPoints.some(function(i){return i[4]})  ){
                 ulteanbled = ""
@@ -713,7 +707,7 @@ function Copy(){
                 ultarray = "Global.Dao = Array(Empty Array, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);\n"
             }
 
-            // enable dash rule
+            // enable dash rule ==================
             dasheanbled = "disabled "
             if (CheckPoints.some(function(i){return i[3]})  ){
                 dasheanbled = ""
@@ -728,21 +722,7 @@ function Copy(){
                 dasharray = "Global.SHIFT = Array(Empty Array, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);\n"
             }
 
-            // map header
-            mapmaker = MapData[0]
-            mapcode = MapData[1]
-
-            ban_triple = MapData[3] ? "True" : "False"
-            ban_multi = MapData[4] ? "True" : "False"
-            ban_emote = MapData[5] ? "True" : "False"
-            ban_create = MapData[6] ? "True" : "False"
-            ban_dbhop = MapData[7] ? "True" : "False"
-            ban_dashstart = MapData[8] ? "True" : "False"
-
-            portalon = MapData[9] ? "True" : "False"
-
-            difficultyhud = MapData[10]
-
+            // bhop ban per cp(not functioning ingame) ==================
             ban_bhopEnabled = "False"
             if (CheckPoints.some(function(i){return i[8]})  ){
                 ban_bhopEnabled = "True"
@@ -757,6 +737,7 @@ function Copy(){
                 ban_bhopsCp = "Array Contains(Array(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1), (Event Player).A) == True;\n"
             }
 
+             // wallclimb ban per cp (not functioning ingame) ==================
             ban_wallclimbEnabled = "False"
             if (CheckPoints.some(function(i){return i[9]})  ){
                 ban_wallclimbEnabled = "True"
@@ -771,11 +752,24 @@ function Copy(){
                 ban_wallclimbCp = "Array Contains(Array(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1), (Event Player).A) == True;\n"
             }
 
+            // map header ==================
+            mapmaker = MapData[0]
+            mapcode = MapData[1]
 
+            ban_triple = MapData[3] ? "True" : "False"
+            ban_multi = MapData[4] ? "True" : "False"
+            ban_emote = MapData[5] ? "True" : "False"
+            ban_create = MapData[6] ? "True" : "False"
+            ban_dbhop = MapData[7] ? "True" : "False"
+            ban_dashstart = MapData[8] ? "True" : "False"
+            portalon = MapData[9] ? "True" : "False"
+            difficultyhud = MapData[10]
+
+            // ====== compile and copy ===================
             setdata(); // loaded from data file
 
             var language = document.getElementById("languageInput").value;
-            if (language != "en-US"){
+            if (language != "en-US"){ // recompile in overpy to translate if not eng
                 data_pasta = decompileAllRules(data_pasta, "en-US");
                 data_pasta = data_pasta + "\n#!disableMapDetectionFix"
                 data_pasta = compile(data_pasta, language);
@@ -789,10 +783,6 @@ function Copy(){
         },
         10
     );
-
-    //
-    // document.getElementById("message").innerHTML = "compiling";
-    // document.getElementById("messageblock").style.display = "block";
 
 
 

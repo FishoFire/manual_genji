@@ -53,12 +53,22 @@ settings {
 globalvar ring1
 globalvar ring2
 globalvar orb
+globalvar kill1pos
+globalvar kill1rad
+
 playervar Flymode
 playervar flytoggle
+playervar killfx
+playervar bouncefx
 
 rule "pause time":
 	wait(10) 
 	pauseMatchTime()
+    createEffect(getAllPlayers(), Effect.RING, Color.SKY_BLUE, ring1, 1, EffectReeval.POSITION_AND_RADIUS)
+	createEffect(getAllPlayers(), Effect.RING, Color.PURPLE, ring2, 1, EffectReeval.POSITION_AND_RADIUS)
+	createEffect(getAllPlayers(), Effect.ORB, Color.LIME_GREEN, orb, 1, EffectReeval.POSITION_AND_RADIUS)
+    createEffect(getAllPlayers(), Effect.SPHERE, Color.BLUE, kill1pos,kill1rad, EffectReeval.POSITION_AND_RADIUS)
+    kill1rad = 1
 
 rule "ring 1":
     @Event eachPlayer
@@ -75,8 +85,47 @@ rule "ring 2":
 
 rule "orb":
     @Event eachPlayer	
+    @Condition not eventPlayer.isHoldingButton(Button.INTERACT)
 	@Condition eventPlayer.isHoldingButton(Button.MELEE)
 	orb = eventPlayer.getPosition()
+
+
+rule "kill orb pos":
+    @Event eachPlayer
+    @Condition eventPlayer.isHoldingButton(Button.INTERACT)
+    @Condition eventPlayer.isHoldingButton(Button.MELEE)
+    kill1pos = eventPlayer.getPosition()
+
+rule "kill orb rad":
+    @Event eachPlayer
+    @Condition eventPlayer.isHoldingButton(Button.INTERACT)
+    @Condition eventPlayer.isHoldingButton(Button.JUMP) or eventPlayer.isHoldingButton(Button.CROUCH)
+    kill1rad += 0.1  if eventPlayer.isHoldingButton(Button.JUMP) else -0.1
+   
+rule "kill display":
+    @Event eachPlayer
+    @Condition distance(eventPlayer, kill1pos) < kill1rad
+    @Condition kill1pos != null
+
+    #createEffect(getAllPlayers(), Effect.BAD_AURA, Color.RED, eventPlayer.getEyePosition()+eventPlayer.getFacingDirection(), 0.3, EffectReeval.POSITION_AND_RADIUS)
+    #eventPlayer.killfx = getLastCreatedEntity()
+    eventPlayer.setStatusEffect(null,Status.BURNING,9999)
+    waitUntil(distance(eventPlayer, kill1pos) > kill1rad, 9999)
+    eventPlayer.clearStatusEffect(Status.BURNING)
+    #destroyEffect(eventPlayer.killfx)
+
+rule "bounce display":
+    @Event eachPlayer
+    @Condition distance(eventPlayer, orb) < 1.4
+    @Condition orb != null
+
+    playEffect(eventPlayer, DynamicEffect.BUFF_EXPLOSION_SOUND, Color.WHITE, eventPlayer, 75)
+    createEffect(getAllPlayers(), Effect.CLOUD, Color.LIME_GREEN, eventPlayer, 1, EffectReeval.POSITION_AND_RADIUS)
+    
+    eventPlayer.bouncefx = getLastCreatedEntity()
+
+    waitUntil(distance(eventPlayer, orb) > 1.4, 9999)
+    destroyEffect(eventPlayer.bouncefx)
 
 
 rule "display":
@@ -91,20 +140,19 @@ rule "display":
 
 	hudHeader(eventPlayer, "ring 2: {0}".format(ring2), HudPosition.LEFT, 20, Color.PURPLE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
 	hudSubheader(eventPlayer, "set with interact + secondary\n", HudPosition.LEFT, 21, Color.PURPLE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
+	
+    hudHeader(eventPlayer, "kill:{0} - radius:{1}".format(kill1pos,kill1rad), HudPosition.LEFT, 30, Color.BLUE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
+	hudSubheader(eventPlayer, "set with interact(first) + melee\nsize: interact + jump/crouch\n", HudPosition.LEFT, 31, Color.BLUE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
 
-	hudHeader(eventPlayer, "hostplayer: {0}".format(hostPlayer.getPosition()), HudPosition.LEFT, 30, Color.ORANGE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
-
-	createEffect(getAllPlayers(), Effect.RING, Color.SKY_BLUE, ring1, 1, EffectReeval.POSITION_AND_RADIUS)
-	createEffect(getAllPlayers(), Effect.RING, Color.PURPLE, ring2, 1, EffectReeval.POSITION_AND_RADIUS)
-	createEffect(getAllPlayers(), Effect.ORB, Color.LIME_GREEN, orb, 1, EffectReeval.POSITION_AND_RADIUS)
-
-
-    hudHeader(eventPlayer, "Fly toggle: deflect", HudPosition.RIGHT, 30, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
-    hudSubheader(eventPlayer, "jump/crouch to fly faster\n", HudPosition.RIGHT, 31, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
+    hudHeader(eventPlayer, "hostplayer: {0}   ".format(hostPlayer.getPosition()), HudPosition.LEFT, 50, Color.ORANGE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
 
     hudHeader(eventPlayer, "Reload: reset ring 1, +interact ring 2", HudPosition.RIGHT, 40, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
 
+    # left
+    hudHeader(eventPlayer, "Fly toggle: deflect", HudPosition.RIGHT, 30, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
+    hudSubheader(eventPlayer, "jump/crouch to fly faster\n", HudPosition.RIGHT, 31, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
 
+  
 rule "give ult":
     @Event eachPlayer
     @Condition eventPlayer.getUltCharge() < 0
@@ -156,3 +204,16 @@ rule "reload":
 
     wait()
 
+
+
+rule "facing": # secret
+    @Event eachPlayer
+    @Condition eventPlayer.isHoldingButton(Button.JUMP)
+    @Condition eventPlayer.isHoldingButton(Button.CROUCH)
+    @Condition eventPlayer.isHoldingButton(Button.ULTIMATE)
+    @Condition eventPlayer.isHoldingButton(Button.INTERACT)
+
+    hudHeader(eventPlayer, "your facing: {0}".format(eventPlayer.getFacingDirection()), HudPosition.RIGHT, 55, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
+
+
+    #jummp + crouch + ult + interact
