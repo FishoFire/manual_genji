@@ -4,6 +4,7 @@
         text-align:center;
         width:100%;
         max-width: 1000px;
+        vertical-align: middle;
         /*width: 1000px;*/
     }
 
@@ -36,6 +37,10 @@
 
     div {
         margin:10px;
+    }
+
+    textarea {
+        vertical-align: middle
     }
 
     #message{
@@ -71,6 +76,15 @@
         padding:5px;
         display:inline-block;
     }
+
+    .titles{
+        margin:3px; 
+        padding:3px; 
+        background-color:lightsteelblue;
+        /*width:50%*/
+
+    }
+
 
     .bounceorb {
         margin:3px; 

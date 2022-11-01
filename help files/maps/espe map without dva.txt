@@ -1,36 +1,9 @@
-/*
-${data_cps}
-
-${data_kill_cp}
-${data_kill_pos}
-${data_kill_rad}
-
-${data_orb_cp}
-${data_orb_pos}
-${data_orb_strength}
-${data_orb_ult}
-${data_orb_dash}
-${data_orb_lock}
-
-${ulteanbled}
-${ultarray}
-${dasheanbled}
-${dasharray}
-
-${mapmaker}
-${mapcode}
-
-*/
-
-
-function setdata(){ //String.raw
-    data_pasta = String.raw`
 settings
 {
 	main
 	{
-		Description: "~ The Official Genji Parkour Editor ~\nCode: 54CRY\nAdapted by: nebula#11571/FishoFire#2431\n Makeshift copied template"
-		Mode Name: "Genji Parkour v1.0.4.2 - manual"
+		Description: "  ~ The Official Genji Parkour Editor ~\nCode: 54CRY\nAdapted by: nebula#11571/FishoFire#2431"
+		Mode Name: "Genji Parkour v1.0.5"
 	}
 
 	lobby
@@ -103,6 +76,7 @@ variables
 		0: A
 		1: B
 		2: C
+		3: MsDestructo
 		4: TimeRemaining
 		7: H
 		8: I
@@ -144,7 +118,9 @@ variables
 		3: D
 		4: E
 		5: F
+		6: ArrayIterator
 		7: H
+		8: MapVectorArray
 		9: J
 		10: K
 		11: LockState
@@ -196,7 +172,8 @@ subroutines
 	8: UpdateCache
 	9: checkpointFailReset
 }
-disabled rule("------------------------------------------------------------------------ Map pasta ------------------------------------------------------------------------")
+
+disabled rule("------------------------------------------------------------------------ Map pasta ------------------------------------------------------------------------ ")
 {
 	event
 	{
@@ -216,37 +193,130 @@ rule("Map Data     <---- INSERT YOUR MAP DATA HERE")
 		
 		"======= Checkpoint data =========================="
 		"checkpoints positions - Vector(123.456,123.456,123.456) - The order is the checkpoint number.  The first Vector here is checkpoint 0"
-		${data_cps}
+		
+		Global.A = Array(
+			Vector(101.27, -1, -73.46),
+			Vector(101.86, -1, -62.58),
+			Vector(86.22, -0.26, -54.51),
+			Vector(76.73, 1.01, -53),
+			Vector(67.08, 0.74, -57.19),
+			Vector(61.64, 2.46, -62.82),
+			Vector(50.06, -2.53, -78.83),
+			Vector(54.31, -3, -64.84),
+			Vector(37.38, -1.72, -64.14),
+			Vector(33.46, 0, -48.18),
+			Vector(20.38, -0.92, -38.9),
+			Vector(12.23, 5.5, -45.55),
+			Vector(-4.61, 0.81, -51.28),
+			Vector(-13.68, 5.5, -42.87),
+			Vector(-23.85, 3.08, -26.19),
+			Vector(-16.41, -3.01, -33.57),
+			Vector(-19.97, -5.9, -50.4),
+			Vector(-19.83, -6.13, -67.82),
+			Vector(-21.62, -6, -71.35),
+			Vector(-23.42, -6, -76.37),
+			Vector(-34.34, -4.48, -78.03),
+			Vector(-49.99, -2.5, -77.73),
+			Vector(-66.69, 0.86, -58.75),
+			Vector(-71.55, 1.02, -50.01),
+			Vector(-76.32, 1.02, -53.11),
+			Vector(-85.42, -0.13, -55.28),
+			Vector(-63.35, 0.76, -56.44),
+			Vector(-42.16, -5.97, -60.4),
+			Vector(-32.04, 0, -61.13),
+			Vector(-15.32, -6, -55.81),
+			Vector(-19.13, -0.96, -38.92),
+			Vector(-17.64, 5.26, -36.68),
+			Vector(-13.09, 5.5, -35),
+			Vector(10.36, 3, -44.29),
+			Vector(20.38, 3, -25.82),
+			Vector(27.54, 2, -14.31),
+			Vector(9.79, -2.13, -15.97),
+			Vector(21.14, 3, -28.76),
+			Vector(32.41, 0.02, -48.28),
+			Vector(32.04, 0, -61.12),
+			Vector(14.41, -6, -49.48),
+			Vector(51.35, -5.78, -61.81),
+			Vector(55.37, -4, -77.76),
+			Vector(66.72, 2.86, -76.7),
+			Vector(71.36, 1.02, -62.42),
+			Vector(92.7, -3, -68.81)
+		);
 
 		"======= killballs =========================="
 		"killball level number - Number 123 - Number of the checkpoint (in position array starting count with 0)"
-		${data_kill_cp}
+		Global.killballnumber = Array( 
+			11,
+			35
+		);
 		
 		"killball positions - Vector(123.456,123.456,123.456)"
-		${data_kill_pos}
+		Global.H = Array( 
+			Vector(8.04, 4.5, -47.83),
+			Vector(25.22, 4, -18.39)
+		);
 
 		"killball radius - Vector(123.456,123.456,123.456)"
-		${data_kill_rad}
+		Global.I = Array( 
+			2,
+			2
+		);
 		
 				
 		"======= orbs =========================="	
 		"orb checkpoint number - Number 123 - Number of the checkpoint (in position array starting count with 0)"
-		${data_orb_cp}
+		Global.pinballnumber = Array( 
+			3,
+			16,
+			21,
+			40,
+			40
+		);
 		
 		"orb position - Vector(123.456,123.456,123.456)"
-		${data_orb_pos}
+		Global.TQ = Array( 
+			Vector(69.95, 4.09, -53.08),
+			Vector(-19.92, 3, -57.25),
+			Vector(-59.62, 3, -70.87),
+			Vector(19.55, -2.22, -62.9),
+			Vector(31.18, 1.16, -70.71)
+		);
 		
 		"orb bounce strength - Number 123.456 - default bounce is 10 - 0 means dont bounce"
-		${data_orb_strength}
+		Global.EditMode = Array( 
+			0,
+			0,
+			0,
+			0,
+			0
+		);
 		
 		"orb gives ult - True or False"
-		${data_orb_ult}
+		Global.TQ5 = Array( 
+			False,
+			False,
+			False,
+			False,
+			False
+		);
 		
 		"orb gives dash - True or False"
-		${data_orb_dash}
+		Global.TQ6 = Array( 
+			False,
+			False,
+			True,
+			True,
+			True
+		);
 		
 		"orb locks checkpoint - True or False"
-		${data_orb_lock}
+		Global.BounceToggleLock = Array( 
+			True,
+			True,
+			False,
+			True,
+			True
+		);
 		
 		"======= others - DONT CHANGE =========================="	
 		Global.TimeRemaining = 263;
@@ -265,15 +335,14 @@ rule("Credits here <---- INSERT YOUR NAME HERE")
 
 	actions
 	{
-		Create HUD Text(All Players(All Teams), Null, Null, Custom String("made by:${mapmaker}"), Left, -15, Null, Null, Color(Violet),
+		Create HUD Text(All Players(All Teams), Null, Null, Custom String("made by: FishoFire"), Left, -15, Null, Null, Color(Violet),
 			Visible To, Default Visibility);
-		Create HUD Text(All Players(All Teams), Null, Null, Custom String("map code:${mapcode}"), Left, -14, Null, Null, Color(Sky Blue),
+		Create HUD Text(All Players(All Teams), Null, Null, Custom String("map code: HTYBM"), Left, -14, Null, Null, Color(Sky Blue),
 			Visible To, Default Visibility);
 		Create HUD Text(All Players(All Teams), Null, Null, Custom String("Discord: dsc.gg/genjiparkour"), Left, -13, Null, Null, Color(
 			Aqua), Visible To, Default Visibility);
 	}
 }
-
 
 disabled rule("Custom difficulty hud")
 {
@@ -1435,7 +1504,7 @@ rule("Teleport | Add | Interact + Rel﻿oad")
 	}
 }
 
-disabled rule("------------------------------------------------------------------------  General rules ------------------------------------------------------------------------")
+disabled rule("------------------------------------------------------------------------  General rules ------------------------------------------------------------------------ ")
 {
 	event
 	{
@@ -1606,7 +1675,7 @@ rule("Setup and Variables")
 			Input Binding String(Button(Secondary Fire)), Input Binding String(Button(Interact)))), Null, Right, -10, Null, Color(
 			Lime Green), Null, Visible To String and Color, Default Visibility);
 		If(!Host Player.EditorOn);
-			Global.Difficultyhud = Workshop Setting Combo(Custom String("map settings"), Custom String("difficulty (display hud)"), 0, Array(
+			Global.Difficultyhud = Workshop Setting Combo(Custom String("map settings"), Custom String("difficulty (display hud)"), 2, Array(
 				Custom String("beginner"), Custom String("easy-"), Custom String("easy"), Custom String("easy+"), Custom String("medium-"),
 				Custom String("medium"), Custom String("medium+"), Custom String("hard-"), Custom String("hard"), Custom String("hard+"),
 				Custom String("very hard-"), Custom String("very hard"), Custom String("very hard+"), Custom String("extreme-"), Custom String(
@@ -1848,7 +1917,7 @@ rule("SUB | Start Game")
 		"ListPlayersAtCheckpoints[eventPlayer.CurrentCheckpoint].append(eventPlayer)"
 		Event Player.LockCollected = Null;
 		Event Player.C = 0;
-		disabled Event Player.LockState = False;
+		"eventPlayer.LockState = false"
 		Call Subroutine(UpdateCache);
 	}
 }
@@ -2113,7 +2182,7 @@ rule("Preview orbs/portals")
 
 	actions
 	{
-		Wait(0.500, Abort When False);
+		Wait(0.900, Abort When False);
 		Event Player.PreviewsArray = Filtered Array(Global.CustomPortalStart, Global.CustomPortalCP[Index Of Array Value(
 			Global.CustomPortalStart, Current Array Element)] == Event Player.A);
 		Modify Player Variable(Event Player, PreviewsArray, Append To Array, Filtered Array(Global.TQ,
@@ -2447,8 +2516,8 @@ rule("Combo | Restart Run | Crouch + Interact + Deflect")
 		End;
 		Call Subroutine(Sub1);
 		Play Effect(Event Player, Ring Explosion Sound, Color(White), Event Player, 100);
-		Wait(0.016, Ignore Condition);
 		"Portal1PlayerList.remove(eventPlayer)\r\nPortal2PlayerList.remove(eventPlayer)"
+		Wait(0.016, Ignore Condition);
 		Event Player.LockState = False;
 	}
 }
@@ -2856,7 +2925,7 @@ rule("Give Dash")
 	}
 }
 
-disabled rule("------------------------------------------------------------------------ Checks ------------------------------------------------------------------------")
+disabled rule("------------------------------------------------------------------------ Checks ------------------------------------------------------------------------ ")
 {
 	event
 	{
@@ -3256,7 +3325,8 @@ rule("Ban | Wallclimb for specific CPs <---- EDIT ME")
 		Event Player.C == 0;
 		Event Player.A < Count Of(Global.A) - 1;
 		"Change \"-1\" to certain Checkpoints' number"
-		Array Contains(Array(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1), Event Player.A) == True;
+		Array Contains(Array(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1), (Event Player).A) == True;
+
 		"If all checkpoints need this function, enable this rule and disable Rule: \"Array Contains\" \r\n@Condition eventPlayer.A < len(A) - 1"
 		Distance Between(Event Player, Global.A[Event Player.A + 1]) <= 2;
 	}
@@ -3284,7 +3354,8 @@ rule("Ban | Bhop for specific CPs      <---- EDIT ME")
 		Event Player.C == 0;
 		Event Player.A < Count Of(Global.A) - 1;
 		"Change \"-1\" to certain Checkpoints' number"
-		Array Contains(Array(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1), Event Player.A) == True;
+		Array Contains(Array(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1), (Event Player).A) == True;
+
 		"If all checkpoints need this function, enable this rule and disable Rule: \"Array Contains\" \r\n@Condition eventPlayer.A < len(A) - 1"
 		Distance Between(Event Player, Global.A[Event Player.A + 1]) <= 2;
 	}
@@ -3380,14 +3451,10 @@ rule("Ban | Create Bhop")
 		Ongoing - Global;
 	}
 
-	conditions
-	{
-		Workshop Setting Toggle(Custom String("Ban Switch"), Custom String("Ban Create Bhop"), False, 2) == True;
-	}
-
 	actions
 	{
-		Global.kaxiaotiao = True;
+		Wait(1, Ignore Condition);
+		Global.kaxiaotiao = Workshop Setting Toggle(Custom String("Ban Switch"), Custom String("Ban Create Bhop"), False, 2);
 	}
 }
 
@@ -3398,14 +3465,10 @@ rule("Ban | Deathbhop")
 		Ongoing - Global;
 	}
 
-	conditions
-	{
-		Workshop Setting Toggle(Custom String("Ban Switch"), Custom String("Ban Deathbhop"), False, 4) == True;
-	}
-
 	actions
 	{
-		Global.deathjump = True;
+		Wait(1, Ignore Condition);
+		Global.deathjump = Workshop Setting Toggle(Custom String("Ban Switch"), Custom String("Ban Deathbhop"), False, 4);
 	}
 }
 
@@ -3416,14 +3479,10 @@ rule("Ban | Dash Start")
 		Ongoing - Global;
 	}
 
-	conditions
-	{
-		Workshop Setting Toggle(Custom String("Ban Switch"), Custom String("Ban Dash Start"), False, 4) == True;
-	}
-
 	actions
 	{
-		Global.DashExploitToggle = True;
+		Wait(1, Ignore Condition);
+		Global.DashExploitToggle = Workshop Setting Toggle(Custom String("Ban Switch"), Custom String("Ban Dash Start"), False, 4);
 	}
 }
 
@@ -3435,7 +3494,7 @@ disabled rule("-----------------------------------------------------------------
 	}
 }
 
-${ulteanbled}rule("Add Blade to Checkpoint <---- EDIT ME")
+rule("Add Blade to Checkpoint <---- EDIT ME")
 {
 	event
 	{
@@ -3446,11 +3505,12 @@ ${ulteanbled}rule("Add Blade to Checkpoint <---- EDIT ME")
 	{
 		"Change \"-1\" to certain Checkpoints' number. For example if you want to add Blade to Checkpoint 2 and 6 change one of \"-1\" to 2 and other \"-1\" to 6"
 		Wait(1, Ignore Condition);
-		${ultarray}
+		Global.Dao = Array(Empty Array, 20, 44);
+
 	}
 }
 
-${dasheanbled}rule("Add Dash to Checkpoint <---- EDIT ME")
+rule("Add Dash to Checkpoint <---- EDIT ME")
 {
 	event
 	{
@@ -3461,9 +3521,11 @@ ${dasheanbled}rule("Add Dash to Checkpoint <---- EDIT ME")
 	{
 		"Change \"-1\" to certain Checkpoints' number. For example if you want to add Dash to Checkpoint 7 and 1 change one of \"-1\" to 7 and other \"-1\" to 1"
 		Wait(1, Ignore Condition);
-		${dasharray} 
+		Global.SHIFT = Array(Empty Array, 6, 8, 16, 40, 43);
+ 
 	}
 }
+
 
 disabled rule("In world text for certain Checkpoints <---- EDIT ME")
 {
@@ -3474,10 +3536,12 @@ disabled rule("In world text for certain Checkpoints <---- EDIT ME")
 
 	actions
 	{
-		Create In-World Text(
-			Filtered Array(All Players(All Teams), Current Array Element.A == 31), Custom String("hint: text here"), 
-			Vector(0,0,0), 1.200, Clip Against Surfaces, Visible To Position and String, Color(Aqua), Default Visibility
-		);
+		Create In-World Text(Filtered Array(All Players(All Teams), Current Array Element.A == 0), Custom String("Text for checkpoint 0"),
+			Vector(0, 0, 0), 1.200, Clip Against Surfaces, Visible To Position and String, Color(Orange), Default Visibility);
+		Create In-World Text(Filtered Array(All Players(All Teams), Current Array Element.A == 1), Custom String("Text for checkpoint 1"),
+			Vector(0, 0, 0), 1.200, Clip Against Surfaces, Visible To Position and String, Color(Orange), Default Visibility);
+		Create In-World Text(Filtered Array(All Players(All Teams), Current Array Element.A == 2), Custom String("Text for checkpoint 2"),
+			Vector(0, 0, 0), 3, Clip Against Surfaces, Visible To Position and String, Color(Orange), Default Visibility);
 	}
 }
 
@@ -3531,10 +3595,10 @@ rule("pre-set control map portal - placement - toggled via workshop")
 				Vector(30.472, 58.367, -156.307), Vector(-199.945, 2.015, -2.918), Vector(-194.930, 2.015, -8.054));
 			Global.PortalDest = Array(Vector(28.375, 57.659, -161.195), Vector(-200.464, 1.306, -8.604), Vector(333.088, -23.389, -40.933),
 				Vector(-200.464, 1.306, -8.604), Vector(333.088, -23.389, -40.933), Vector(28.375, 57.829, -161.195));
-		Else If(Current Map == Map(Lijiang Tower) || Current Map == Map(Lijiang Tower Lunar New Year));
-			"\"control > ***den\",\"control > market\",\"***den > control\",\"***den > market\",\"market > control\",\"market > ***den\""
-			Global.PortalNames = Array(Custom String("***den"), Custom String("Night Market"), Custom String("Control Center"), Custom String(
-				"Night Market"), Custom String("Control Center"), Custom String("***den"));
+		Else If(Current Map == Map(Lijiang Tower) || Current Map == Map(Lijiang Tower));
+			"\"control > garden\",\"control > market\",\"garden > control\",\"garden > market\",\"market > control\",\"market > garden\""
+			Global.PortalNames = Array(Custom String("Garden"), Custom String("Night Market"), Custom String("Control Center"), Custom String(
+				"Night Market"), Custom String("Control Center"), Custom String("Garden"));
 			Global.PortalLoc = Array(Vector(-2.815, 271, 295.373), Vector(2.905, 271, 295.052), Vector(5.788, 95.056, 135.298), Vector(-5.343,
 				95.050, 134.638), Vector(-2.738, 0, -61.911), Vector(5.043, 0, -61.879));
 			Global.PortalDest = Array(Vector(0.286, 94.292, 140.396), Vector(0.584, -0.709, -54.469), Vector(0.245, 270.292, 301.428), Vector(
@@ -3548,9 +3612,9 @@ rule("pre-set control map portal - placement - toggled via workshop")
 			Global.PortalDest = Array(Vector(-40.190, 13.292, -0.105), Vector(78.430, 128.292, 0.149), Vector(-190.540, -93.569, 0.122),
 				Vector(78.430, 128.292, 0.149), Vector(-190.540, -93.569, 0.122), Vector(-40.190, 13.292, -0.105));
 		Else If(Current Map == Map(Oasis));
-			"\"uni > ***den\",\"uni > city\",\"***den > uni\",\"***den > city\",\"city > ***den\",\"city > uni\""
-			Global.PortalNames = Array(Custom String("***dens"), Custom String("City Center"), Custom String("University"), Custom String(
-				"City Center"), Custom String("***dens"), Custom String("University"));
+			"\"uni > garden\",\"uni > city\",\"garden > uni\",\"garden > city\",\"city > garden\",\"city > uni\""
+			Global.PortalNames = Array(Custom String("Gardens"), Custom String("City Center"), Custom String("University"), Custom String(
+				"City Center"), Custom String("Gardens"), Custom String("University"));
 			Global.PortalLoc = Array(Vector(-211.137, 20, -5.084), Vector(-211.346, 20, 5.029), Vector(143.061, 8.377, -245.040), Vector(
 				139.333, 8.377, -249.964), Vector(157.297, 12.522, 255.759), Vector(151.452, 12.522, 261.099));
 			Global.PortalDest = Array(Vector(134.366, 7.829, -240.530), Vector(158.270, 11.814, 262.272), Vector(-206.269, 19.292, 0.103),
@@ -3598,16 +3662,13 @@ disabled rule("custom portals - data <---- EDIT ME")
 	actions
 	{
 		"Portal start position"
-		Global.CustomPortalStart = Array(Vector(0,0,0));
-		
+		Global.CustomPortalStart = Array(Vector(0, 0, 0));
 		"Portal end position (on same number as start position)"
-		Global.CustomPortalEndpoint = Array(Vector(0,1,0));
-		
+		Global.CustomPortalEndpoint = Array(Vector(0, 10, 0));
 		"Portal checkpoint (on same number as start position) \r\n999 = apply portal to entire map"
-		Global.CustomPortalCP = Array(0);
+		Global.CustomPortalCP = Array(999);
 	}
 }
-
 
 disabled rule("custom portals - function")
 {
@@ -3622,7 +3683,7 @@ disabled rule("custom portals - function")
 	{
 		Count Of(Global.CustomPortalStart) > 0;
 		Is True For Any(Global.CustomPortalStart, Distance Between(Position Of(Event Player) + Vector(0, 0.200, 0), Current Array Element)
-			< 1.100 && Array Contains(Array(999, Event Player.A), Global.CustomPortalCP[Current Array Index])) == True;
+			< 1.300 && Array Contains(Array(999, Event Player.A), Global.CustomPortalCP[Current Array Index])) == True;
 	}
 
 	actions
@@ -3630,7 +3691,7 @@ disabled rule("custom portals - function")
 		Event Player.PortalLoop = 0;
 		For Player Variable(Event Player, PortalLoop, 0, Count Of(Global.CustomPortalStart), 1);
 			If(Distance Between(Position Of(Event Player) + Vector(0, 0.200, 0), Global.CustomPortalStart[Event Player.PortalLoop])
-				< 1.100 && Array Contains(Array(999, Event Player.A), Global.CustomPortalCP[Event Player.PortalLoop]));
+				< 1.300 && Array Contains(Array(999, Event Player.A), Global.CustomPortalCP[Event Player.PortalLoop]));
 				Teleport(Event Player, Global.CustomPortalEndpoint[Event Player.PortalLoop]);
 				Abort;
 			End;
@@ -3639,5 +3700,3 @@ disabled rule("custom portals - function")
 	}
 }
 
-`
-}

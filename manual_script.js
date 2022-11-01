@@ -1,54 +1,62 @@
 
 /*
 
-- workshop toggles
-
-
-
 ==================
 change template:
 make function setdata = String.raw'data'
 put the variables in
+turn editor to off
+replace settings with one were all maps on
+
 
 paste the variables in:
 var data_cps // checkpoints
 
-var data_orb_cp 
-var data_orb_pos 
-var data_orb_lock 
-var data_orb_dash 
-var data_orb_ult
-var data_orb_strength
+${data_orb_cp}
+${data_orb_pos}
+${data_orb_lock} 
+${data_orb_dash} 
+${data_orb_ult}
+${data_orb_strength}
+${data_kill_pos}
+${data_kill_rad}
+${data_kill_cp}
 
-var data_kill_pos
-var data_kill_rad
-var data_kill_cp
+${mapcode}
+${mapmaker}
 
-var mapcode
-var mapmaker
+${ban_triple}
+${ban_multi}
+${ban_emote}
+${ban_create}
+${ban_dbhop}
+${ban_dashstart}
 
-var ban_triple
-var ban_multi
-var ban_emote
-var ban_create
-var ban_dbhop // ddeath
-var ban_dashstart
+${ban_bhopsCp}
+${ban_bhopEnabled}
 
-var ban_bhopsCp
-var ban_bhopEnabled
+${ban_wallclimbCp}
+${ban_wallclimbEnabled}
 
-var ban_wallclimbCp
-var ban_wallclimbEnabled
+${portalon}
+${difficultyhud}
 
-var portalon
+${compon}
+${comptime}
+${compattempt}
+${comprestarts}
 
-
+${titleon}
+${titlenames}
+${titlecps}
+${titlecolors}
 =========================
 */
 
 changebar(3) // initial page
 var SelectedCp = -1
 var CheckPoints = []
+var maxtimecomp = 240
 var MapData = [
     "", // maker
     "", // code
@@ -60,8 +68,27 @@ var MapData = [
     false,
     false,
     true,
-    "0"
+    "0",
+    120, // 11 time limit 
+    false, // 12 comp mode on
+    0, //13 attempt limit
+    [ 
+        [0,"bunny","Lime Green"],
+        [10,"jumper","White"],
+        [20,"Ninja","Yellow"],
+        [30,"pro","Orange"],
+        [40,"expert","Purple"],
+        [50,"MASTER","Red"]   
+     ], // 14 title data
+    false,// 15 title on
+    false //16 comp disable restart mid run (late because i forgot)
     ]
+
+
+
+
+
+MakeTitles()
 /*
 ] ?  MapData[2] : ""
         MapData[3] =  MapData[3] ?  MapData[3] : false
@@ -145,7 +172,20 @@ function Load(x){
             CheckPoints[i][8] = CheckPoints[i][8]  ?  CheckPoints[i][8]  : false
             CheckPoints[i][9] = CheckPoints[i][9]  ?  CheckPoints[i][9]  : false
         }
-  
+        MapData[11] =  MapData[11] ?  MapData[11] :  120
+        MapData[12] =  MapData[12] ?  MapData[12] :  false
+        MapData[13] =  MapData[13] ?  MapData[13] :  0
+        MapData[14] =  MapData[14] ?  MapData[14] :   [ 
+            [0,"bunny","Lime Green"],
+            [10,"jumper","White"],
+            [20,"Ninja","Yellow"],
+            [30,"pro","Orange"],
+            [40,"expert","Purple"],
+            [50,"MASTER","Red"]   
+        ]
+        MapData[15] =  MapData[15] ?  MapData[15] :  false
+        MapData[16] =  MapData[16] ?  MapData[16] :  false
+          
         // show first tab
         document.getElementById("cpdata").style.display = "block"
         document.getElementById("orbs-kills").style.display = "block"
@@ -160,11 +200,19 @@ function Load(x){
         document.getElementById("ban_dashstart" ).checked = MapData[8]
         document.getElementById("portalOn").checked = MapData[9]
         document.getElementById("dif").value = MapData[10]
+        document.getElementById("comptimeslider").value = MapData[11] 
+        document.getElementById("comptimenumber").value = MapData[11] 
+        document.getElementById("comptoggle").checked = MapData[12]      
+        document.getElementById("compattempt").value = MapData[13] 
+        document.getElementById("titletoggle").checked = MapData[15]
+		document.getElementById("comprestart").checked = MapData[16]	
+            
         // load things in the tab
         SelectedCp = 0
         CpButtons()
         UpdateSelection()
         UpdateTop()
+        MakeTitles()
         changebar(0)
         ShowMsg("Loaded!")
     }
@@ -184,6 +232,11 @@ function UpdateTop(){
     MapData[9] = document.getElementById("portalOn" ).checked
 
     MapData[10] = document.getElementById("dif").value
+    MapData[11] =  document.getElementById("comptimenumber").value
+    MapData[12] = document.getElementById("comptoggle").checked
+    MapData[13] = document.getElementById("compattempt").value
+    MapData[15] = document.getElementById("titletoggle").checked
+    MapData[16] = document.getElementById("comprestart").checked
 }
 
 function changebar(x){
@@ -216,6 +269,21 @@ function ImportJson(){
         MapData[9] = typeof MapData[9] != 'undefined' ?  MapData[9] : true
         MapData[10] = typeof MapData[9] != 'undefined' ?  MapData[10] : "0"
 
+        MapData[11] =  MapData[11] ?  MapData[11] : 120
+        MapData[12] = MapData[12] ? MapData[12] : false
+        MapData[13] =  MapData[13] ?  MapData[13] : 0
+
+        MapData[14] =  MapData[14] ?  MapData[14] :    [ 
+            [0,"bunny","Lime Green"],
+            [10,"jumper","White"],
+            [20,"Ninja","Yellow"],
+            [30,"pro","Orange"],
+            [40,"expert","Purple"],
+            [50,"MASTER","Red"]   
+        ]
+        MapData[15] =  MapData[15] ?  MapData[15] :  false
+        MapData[16] =  MapData[16] ?  MapData[16] :  false
+
         for(let i=0;i < CheckPoints.length;i++){
             CheckPoints[i][8] = CheckPoints[i][8]  ?  CheckPoints[i][8]  : false
             CheckPoints[i][9] = CheckPoints[i][9]  ?  CheckPoints[i][9]  : false
@@ -235,14 +303,20 @@ function ImportJson(){
         document.getElementById("ban_dashstart" ).checked = MapData[8]
         document.getElementById("portalOn").checked = MapData[9]
         document.getElementById("dif").value = MapData[10]
-
+        document.getElementById("comptimeslider").value = MapData[11] 
+        document.getElementById("comptimenumber").value = MapData[11] 
+        document.getElementById("comptoggle").checked = MapData[12]      
+        document.getElementById("compattempt").value = MapData[13] 
+        document.getElementById("titletoggle").checked = MapData[15]
+		document.getElementById("comprestart").checked = MapData[16]
 
         SelectedCp = 0
-
         CpButtons()
         UpdateSelection()
         UpdateTop()
         changebar(0)
+        MakeTitles()
+        ShowMsg("Loaded!")
     } catch (e){
         // console.log(e);
     }
@@ -314,6 +388,10 @@ function isNumber(numb){
 }
 function defaultNum(num){
     return isNumber(num) ? num : "0"
+}
+
+function defaultBool(boo){
+    return boo ? "True" : "False"
 }
 
 function FieldColorsVect(thing){
@@ -558,7 +636,6 @@ function UpdateOrbs(){
 			radius1.cols = 8
             radius1.onkeyup=function(){FieldColorsNum(this)}
 			document.getElementById("killdiv" + it).appendChild(radius1)	
-			
 
 			// delete button
 			let lockbutton = document.createElement("button");
@@ -571,7 +648,90 @@ function UpdateOrbs(){
 	}
 
 }
- 
+
+
+
+function MakeTitles(){
+    const titles = document.querySelectorAll('.titles');
+    titles.forEach(titles => {titles.remove();});
+
+    for (let i = 0;  i < MapData[14].length; i++) { 
+
+        let titlediv = document.createElement("div");
+        titlediv.style.textAlign = "left";
+        titlediv.id = "titlediv" + i
+        titlediv.innerHTML = " CP: ";
+        titlediv.className = "titles"
+        document.getElementById("titlelist").appendChild(titlediv);
+
+        //cp
+        let titlecp = document.createElement("textarea");
+        titlecp.id = "titlecp" + i
+        titlecp.placeholder = "0"
+        titlecp.value = MapData[14][i][0]
+        titlecp.onkeyup=function(){FieldColorsNum(this)}
+        titlecp.onchange=function(){MapData[14][i][0] = titlecp.value}
+        titlecp.rows = 1
+        titlecp.cols = 5
+        document.getElementById("titlediv" + i).appendChild(titlecp)
+
+        // title
+        document.getElementById("titlediv" + i).insertAdjacentText("beforeend"," Title: ")
+        let titlename = document.createElement("textarea");
+        titlename.value = MapData[14][i][1]
+        titlename.id = "titlename" + i
+        titlename.placeholder = "Ninja"
+        titlename.onchange=function(){MapData[14][i][1] = titlename.value}
+        titlename.rows = 1
+        titlename.cols = 15
+        document.getElementById("titlediv" + i).appendChild(titlename)
+
+        // color
+        document.getElementById("titlediv" + i).insertAdjacentText("beforeend"," Color: ")
+        let titlecolor = document.createElement("select");
+        titlecolor.id = "titlecolor" + i
+        titlecolor.onchange = function(){MapData[14][i][2] = titlecolor.value}
+        var colorsvar = ["Aqua","Black","Blue","Gray","Green","Lime Green","Orange","Purple","Red","Rose","Sky Blue","Turquoise","Violet","White","Yellow"]
+        
+        
+        for (var i2 = 0; i2 < colorsvar.length; i2++){
+            var opt = document.createElement('option');
+            opt.value = colorsvar[i2];
+            opt.innerHTML = colorsvar[i2];
+            titlecolor.appendChild(opt);        
+        }
+        titlecolor.value  = MapData[14][i][2]
+        document.getElementById("titlediv" + i).appendChild(titlecolor)
+
+        // remove button
+        let deletebutton = document.createElement("button");
+        deletebutton.innerHTML = "delete"
+        deletebutton.style.float = "right"
+        deletebutton.value = i
+        deletebutton.onclick = function(){RemoveTitle(this.value)}
+        document.getElementById("titlediv" + i).appendChild(deletebutton); 
+
+    }
+}
+
+function AddTitle(){
+    
+    MapData[14].push(
+        [
+        0,
+        "bunny",
+        "White"
+        ]
+    )
+    MakeTitles()
+}
+
+function RemoveTitle(x){
+    if (MapData[14].length > 1){
+        MapData[14].splice(x,1)
+    }
+    MakeTitles()
+}
 
 function RemoveCP(){
     if (CheckPoints.length > 1){
@@ -626,6 +786,16 @@ var ban_wallclimbEnabled
 
 var portalon
 var difficultyhud
+
+var compon
+var comptime
+var compattempt
+var comprestarts
+
+var titleon
+var titlenames
+var titlecps
+var titlecolors
 // copy button
 function Copy(){
     if (CheckPoints.length <1){
@@ -756,18 +926,37 @@ function Copy(){
             mapmaker = MapData[0]
             mapcode = MapData[1]
 
-            ban_triple = MapData[3] ? "True" : "False"
-            ban_multi = MapData[4] ? "True" : "False"
-            ban_emote = MapData[5] ? "True" : "False"
-            ban_create = MapData[6] ? "True" : "False"
-            ban_dbhop = MapData[7] ? "True" : "False"
-            ban_dashstart = MapData[8] ? "True" : "False"
-            portalon = MapData[9] ? "True" : "False"
-            difficultyhud = MapData[10]
+            ban_triple = defaultBool(MapData[3])
+            ban_multi = defaultBool(MapData[4])
+            ban_emote = defaultBool(MapData[5])
+            ban_create = defaultBool(MapData[6])
+            ban_dbhop = defaultBool(MapData[7])
+            ban_dashstart = defaultBool(MapData[8])
+            portalon = defaultBool( MapData[9] )
+            difficultyhud = defaultNum(MapData[10])
 
+            comptime = defaultNum(MapData[11])
+            compon = defaultBool( MapData[12])
+            compattempt = defaultNum(MapData[13])
+            comprestarts = defaultBool(MapData[16])
+        
+
+            titleon = MapData[15] ? "" : "disabled "
+            titlecps = "Set Global Variable At Index(TitleData, 0, Array("
+            titlenames = "Set Global Variable At Index(TitleData, 1, Array("
+            titlecolors = "Set Global Variable At Index(TitleData, 2, Array("
+            for (let i = 0;  i < MapData[14].length; i++){ 
+                titlecps +=  defaultNum(MapData[14][i][0]) + ", "
+                titlenames += 'Custom String("' +  MapData[14][i][1] +  '", Null, Null, Null), '
+                titlecolors += 'Color(' +  MapData[14][i][2] +  '), '
+            }
+            titlecps = titlecps.slice(0,-2) + "));"
+            titlenames = titlenames.slice(0,-2) + "));"
+            titlecolors = titlecolors.slice(0,-2) + "));"
+            
             // ====== compile and copy ===================
             setdata(); // loaded from data file
-
+      
             var language = document.getElementById("languageInput").value;
             if (language != "en-US"){ // recompile in overpy to translate if not eng
                 data_pasta = decompileAllRules(data_pasta, "en-US");
