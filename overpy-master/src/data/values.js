@@ -5741,6 +5741,24 @@ var valueFuncKw =
         "pt-BR": "Não",
         "zh-CN": "非"
     },
+    "__number__": {
+        "args": [
+            {
+                "name": "NUMBER",
+                "type": "FloatLiteral",
+                "default": "0"
+            }
+        ],
+        "isConstant": true,
+        "return": "float",
+        "guid": "00000000AC38",
+        "en-US": "Number",
+        "es-MX": "Número",
+        "fr-FR": "Nombre",
+        "ja-JP": "数値",
+        "pt-BR": "Número",
+        "zh-CN": "数字"
+    },
     "__or__": {
         "guid": "00000000B274",
         "description": "Whether either of the two inputs are true (or equivalent to true).",
@@ -6814,6 +6832,32 @@ var valueFuncKw =
         "ja-JP": "減算",
         "pt-BR": "Subtrair",
         "zh-CN": "减"
+    },
+    "__team__": {
+        "args": [
+            {
+                "name": "TEAM",
+                "type": "TeamLiteral",
+                "default": "ALL",
+                "description": "Team",
+                "descriptionLocalized": {
+                    "en-US": "Team"
+                }
+            }
+        ],
+        "isConstant": true,
+        "guid": "00000000BB26",
+        "return": "Team",
+        "en-US": "Team",
+        "es-ES": "Equipo",
+        "es-MX": "Equipo",
+        "fr-FR": "Équipe",
+        "it-IT": "Squadra",
+        "ja-JP": "チーム",
+        "pl-PL": "Drużyna",
+        "pt-BR": "Equipe",
+        "ru-RU": "Команда",
+        "zh-CN": "队伍"
     },
     "__valueInArray__": {
         "description": "The value found at a specific element of an array. Results in 0 if the element does not exist.",
@@ -9029,12 +9073,18 @@ var valueFuncKw =
         },
         "canBePutInBoolean": false,
         "en-US": "All Heroes",
+        "de-DE": "Alle Helden",
+        "es-ES": "Todos los héroes",
         "es-MX": "Todos los héroes",
         "fr-FR": "Tous les héros",
-        "ko-KR": "모든 영웅",
+        "it-IT": "Tutti gli eroi",
         "ja-JP": "全ヒーロー",
+        "ko-KR": "모든 영웅",
+        "pl-PL": "Wszyscy bohaterowie",
         "pt-BR": "Todos os Heróis",
-        "zh-CN": "全部英雄"
+        "ru-RU": "Все герои",
+        "zh-CN": "全部英雄",
+        "zh-TW": "所有英雄"
     },
     "getAverageServerLoad": {
         "guid": "00000000C997",

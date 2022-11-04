@@ -60,7 +60,11 @@
         margin:5px;
     }
     .contentblock {
-        padding:3px; 
+        /*padding: 3px; */
+        padding-top: 6px;
+        padding-bottom: 6px;
+        padding-left: 3px;
+        padding-right: 3px;
         margin:3px;
         width:90%;
         background-color:lightslategray; /*gray*/
@@ -80,23 +84,23 @@
     .titles{
         margin:3px; 
         padding:3px; 
-        background-color:lightsteelblue;
-        /*width:50%*/
-
+        background-color:#92A0AD; /*lightsteelblue;*/
+        border:1px solid #4B5258;
     }
-
 
     .bounceorb {
         margin:3px; 
         padding:3px; 
         background-color:green;
-        width:98%
+        width:98%;
+        border:1px solid darkgreen;
     }
     .killorb {
         margin:3px; 
         padding:3px; 
         background-color:crimson;
-        width:98%
+        width:98%;
+        border:1px solid darkred;
     }
 
     #CPnotes {

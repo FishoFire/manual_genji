@@ -219,7 +219,7 @@ function parseAst(content) {
     }
 
     //Normalize arguments
-    if (content.name === "__for__") {
+    if (content.name === "__for__" && content.args.length !== 4) {
 
         if (content.args.length !== 1) {
             error("Function '"+content.name+"' takes 1 argument, received "+content.args.length);
@@ -362,6 +362,7 @@ function parseAst(content) {
         } else if (content.parent.name === "@Condition") {
             content.expectedType = "bool";
         } else if (content.parent.name in funcKw) {
+            //console.log(content);
             content.expectedType = funcKw[content.parent.name].args[content.parent.argIndex].type;
         } else {
             error("Unknown parent name '"+content.parent.name+"'");

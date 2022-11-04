@@ -85,10 +85,7 @@ function decompileRuleToAst(content) {
 		} else {
 			if (eventInst.length > 1) {
 				//There cannot be only 2 event instructions: it's either 1 (global) or 3 (every other event).
-				if (topy(eventInst[1], eventTeamKw) !== "all") {
-					ruleAttributes.eventTeam = topy(eventInst[1], eventTeamKw);
-				}
-
+				ruleAttributes.eventTeam = topy(eventInst[1], eventTeamKw);
 				ruleAttributes.eventPlayer = topy(eventInst[2], eventPlayerKw);
 			}
 		}
@@ -107,8 +104,8 @@ function decompileRuleToAst(content) {
 	}
 
 	var astRule = new Ast("__rule__", [], astActions);
-	astRule.isDisabled = currentRuleIsDisabled;
 	astRule.ruleAttributes = ruleAttributes;
+	astRule.ruleAttributes.isDisabled = currentRuleIsDisabled;
 	
 	return astRule;
 }
@@ -244,6 +241,7 @@ function decompile(content) {
 
 		if (operatorCheck.operatorFound !== null) {
 			var operator = operatorCheck.operatorFound.trim();
+			debug("Handling operator '"+operator+"'");
 			
 			var operands = [content.slice(0, operatorCheck.operatorPosition), content.slice(operatorCheck.operatorPosition + operatorCheck.operatorFound.length)]
 			if (operator in binaryOpToFuncMapping) {
@@ -328,9 +326,6 @@ function decompile(content) {
     
     //Check for string literals
     if (name.startsWith('"')) {
-		if (name.includes("W_e_l_c_o_m_e_ _t_o_ _L_o_o_t_ _Q_u_e_s_t_!".replace(/_/g, ""))) {
-			error("C_a_n_n_o_t_ _d_e_c_o_m_p_i_l_e_ _t_h_i_s_ _g_a_m_e_m_o_d_e_".replace(/_/g, ""));
-		}
         return new Ast(unescapeString(name, false), [], [], "StringLiteral");
     }
     
@@ -368,7 +363,7 @@ function decompile(content) {
         var args = getArgs(content.substring(bracketPos[0]+1, bracketPos[1]), false);
         
 	}
-    debug("Arguments: "+args);
+    debug("Arguments: "+args.join(","));
 
     //Special functions
 
@@ -476,6 +471,7 @@ function decompile(content) {
 			if (args.length < 1) {
 				error("Function '"+name+"' has "+args.length+"args, expected at least 1");
 			}
+
 		} else if (name !== "__array__") {
 			if (args.length !== wsFuncKw[name].args.length) {
 				error("Function '"+name+"' has "+args.length+"args, expected "+funcKw[name].args.length);
@@ -489,7 +485,7 @@ function decompile(content) {
 			//console.log(wsFuncKw[name].args[i].type);
 
 			if (wsFuncKw[name].args[i].type in constantValues) {
-				console.log(args[i])
+				//console.log(args[i])
 				astArgs.push(new Ast(args[i] === "__removed_from_ow2__" ? args[i] : topy(args[i], constantValues[wsFuncKw[name].args[i].type]), [], [], wsFuncKw[name].args[i].type));
 			} else if (wsFuncKw[name].args[i].type === "GlobalVariable") {
 				astArgs.push(new Ast(translateVarToPy(args[i], true), [], [], "GlobalVariable"));
@@ -502,6 +498,18 @@ function decompile(content) {
 			}
 		} else {
 			astArgs.push(decompile(args[i]));
+		}
+	}
+
+	if (name === "__localizedString__") {
+		astArgs[0].type = "LocalizedStringLiteral";
+	} else if (name === "__customString__") {
+		astArgs[0].type = "CustomStringLiteral";
+	}
+	
+	if (name === "__localizedString__" || name === "__customString__") {
+		while (astArgs.length < 4) {
+			astArgs.push(getAstForNull());
 		}
 	}
 	

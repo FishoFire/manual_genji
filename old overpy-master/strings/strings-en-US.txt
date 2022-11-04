@@ -1,0 +1,6 @@
+[Core] DataTool v1.73.0.998-git-a78963088140866ae69aa44d440b11e2170be2fc
+[Core] CommandLine: ["C:\Program Files\Overwatch", "Dump-strings", "-L=enUS", "-T=enUS"]
+[Core] CommandLineFile: C:\Users\Zezombye\Downloads\toolchain-release(1)\DataTool.args
+[CASC] Text Language: enUS | Speech Language: enUS
+[CASC] Overwatch build 2.1.0.1.105995
+[CASC] Initializing...

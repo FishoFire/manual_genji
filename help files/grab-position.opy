@@ -1,4 +1,3 @@
-
 settings {
     "main": {
         "description": "manually collect data for manual template",
@@ -45,10 +44,19 @@ settings {
             },
             "enabledHeroes": [
                 "genji"
-            ]
+            ],
+            "general": {
+                "abilityCooldown%": 0,
+                "damageDealt%": 10,
+                "damageReceived%": 10,
+                "healingDealt%": 10,
+                "healingReceived%": 500,
+                "health%": 500
+            }
         }
     }
 }
+
 
 globalvar ring1
 globalvar ring2
@@ -155,10 +163,22 @@ rule "display":
   
 rule "give ult":
     @Event eachPlayer
-    @Condition eventPlayer.getUltCharge() < 0
+    @Condition eventPlayer.getUltCharge() < 100
     @Condition eventPlayer.isUsingUltimate() == false
     wait(0.1)
     eventPlayer.setUltCharge(100)
+    if RULE_CONDITION:
+        goto RULE_START
+
+  
+rule "dash cd":
+    @Event eachPlayer
+    @Hero genji
+    @Condition eventPlayer.getAbilityCooldown(Button.ABILITY_1) > 0
+    @Condition not eventPlayer.isUsingAbility1()
+    wait(0.1)
+    smallMessage(eventPlayer,"test")
+    eventPlayer.setAbilityCooldown(Button.ABILITY_1,0)
     if RULE_CONDITION:
         goto RULE_START
 

@@ -2,11 +2,14 @@
 /*
 
 ==================
+overpy update: comment out the line that checks numbers
+
 change template:
 make function setdata = String.raw'data'
 put the variables in
-turn editor to off
-replace settings with one were all maps on
+- turn editor to off
+- remove :lb comments
+- replace settings with one were all maps on
 
 
 paste the variables in:
@@ -45,6 +48,10 @@ ${compon}
 ${comptime}
 ${compattempt}
 ${comprestarts}
+${compdescription[0]}
+${compdescription[1]}
+${compdescription[2]}
+${compdescription[3]}
 
 ${titleon}
 ${titlenames}
@@ -78,10 +85,11 @@ var MapData = [
         [20,"Ninja","Yellow"],
         [30,"pro","Orange"],
         [40,"expert","Purple"],
-        [50,"MASTER","Red"]   
+        [50,"master","Red"]   
      ], // 14 title data
     false,// 15 title on
-    false //16 comp disable restart mid run (late because i forgot)
+    false, //16 comp disable restart mid run (late because i forgot)
+    "",//comp description
     ]
 
 
@@ -132,12 +140,15 @@ function CpButtons(){
 }
 
 function ShowMsg(x){
-    document.getElementById("message").innerHTML = x
+    
+    document.getElementById("message").innerHTML = CompileError ? "error" : x
     document.getElementById("messageblock").style.display = "block"
+    document.getElementById("message").style.backgroundColor = CompileError ? "red" : "cyan" 
     setTimeout(() => {
         document.getElementById("messageblock").style.display = "none"
         document.getElementById("message").innerHTML = ""
-    }, 2500);
+        CompileError = false
+    }, 5000); // 2500
     
 }
 
@@ -181,11 +192,12 @@ function Load(x){
             [20,"Ninja","Yellow"],
             [30,"pro","Orange"],
             [40,"expert","Purple"],
-            [50,"MASTER","Red"]   
+            [50,"master","Red"]   
         ]
         MapData[15] =  MapData[15] ?  MapData[15] :  false
         MapData[16] =  MapData[16] ?  MapData[16] :  false
-          
+        MapData[17] =  MapData[17] ?  MapData[17] :  "" 
+
         // show first tab
         document.getElementById("cpdata").style.display = "block"
         document.getElementById("orbs-kills").style.display = "block"
@@ -206,6 +218,7 @@ function Load(x){
         document.getElementById("compattempt").value = MapData[13] 
         document.getElementById("titletoggle").checked = MapData[15]
 		document.getElementById("comprestart").checked = MapData[16]	
+        document.getElementById("compdesc").value = MapData[17]	
             
         // load things in the tab
         SelectedCp = 0
@@ -237,6 +250,11 @@ function UpdateTop(){
     MapData[13] = document.getElementById("compattempt").value
     MapData[15] = document.getElementById("titletoggle").checked
     MapData[16] = document.getElementById("comprestart").checked
+    MapData[17]	= document.getElementById("compdesc").value
+    
+    
+    document.getElementById("compdiv").style.backgroundColor = document.getElementById("comptoggle").checked ? "lightslategray" : "#5F6D7A"
+    document.getElementById("titlediv").style.backgroundColor = document.getElementById("titletoggle").checked ? "lightslategray" : "#5F6D7A"
 }
 
 function changebar(x){
@@ -279,10 +297,11 @@ function ImportJson(){
             [20,"Ninja","Yellow"],
             [30,"pro","Orange"],
             [40,"expert","Purple"],
-            [50,"MASTER","Red"]   
+            [50,"master","Red"]   
         ]
         MapData[15] =  MapData[15] ?  MapData[15] :  false
         MapData[16] =  MapData[16] ?  MapData[16] :  false
+        MapData[17] =  MapData[17] ?  MapData[17] :  "" 
 
         for(let i=0;i < CheckPoints.length;i++){
             CheckPoints[i][8] = CheckPoints[i][8]  ?  CheckPoints[i][8]  : false
@@ -309,7 +328,8 @@ function ImportJson(){
         document.getElementById("compattempt").value = MapData[13] 
         document.getElementById("titletoggle").checked = MapData[15]
 		document.getElementById("comprestart").checked = MapData[16]
-
+        document.getElementById("compdesc").value = MapData[17]
+        
         SelectedCp = 0
         CpButtons()
         UpdateSelection()
@@ -338,8 +358,12 @@ function ExportJson(){
 function UpdateSelection(){
     document.getElementById("selectedcpnumber").innerHTML  = "Checkpoint: "+ SelectedCp
     document.getElementById("CPvector").value  =  CheckPoints[parseInt(SelectedCp)][0]
+    FieldColorsVect(document.getElementById("CPvector"))
+
     document.getElementById("CPteleportTF").checked  = CheckPoints[parseInt(SelectedCp)][1]
     document.getElementById("CPteleportVect").value  = CheckPoints[parseInt(SelectedCp)][2]
+    FieldColorsVect(document.getElementById("CPteleportVect"))
+
     document.getElementById("CPdashenable").checked  = CheckPoints[parseInt(SelectedCp)][3]
     document.getElementById("CPultenable").checked  = CheckPoints[parseInt(SelectedCp)][4]
     document.getElementById("CPnotes").value  = CheckPoints[parseInt(SelectedCp)][5]
@@ -347,9 +371,9 @@ function UpdateSelection(){
     document.getElementById("CPbanBhop").checked = CheckPoints[parseInt(SelectedCp)][8]
     document.getElementById("CpbanClimb").checked = CheckPoints[parseInt(SelectedCp)][9]
 
-    document.getElementById("DashToggleEnabled").innerHTML = CheckPoints.some(function(i){return i[3]}) ? "Dash addon: enabled |" : "Dash addon: disabled |"
+    document.getElementById("DashToggleEnabled").innerHTML = CheckPoints.some(function(i){return i[3]}) ? "dash addon(automatic): enabled |" : "dash addon(automatic): disabled |"
     document.getElementById("DashToggleEnabled").style.color = CheckPoints.some(function(i){return i[3]}) ? "darkgreen" : "black"
-    document.getElementById("UltToggleEnabled").innerHTML = CheckPoints.some(function(i){return i[4]}) ? "| Ult addon: enabled" : "| Ult addon: disabled"
+    document.getElementById("UltToggleEnabled").innerHTML = CheckPoints.some(function(i){return i[4]}) ? "| ult addon(automatic): enabled" : "| ult addon(automatic): disabled"
     document.getElementById("UltToggleEnabled").style.color = CheckPoints.some(function(i){return i[4]}) ? "darkgreen" : "black"
      
 
@@ -427,9 +451,9 @@ function UpdateAfterChange(){
     CheckPoints[parseInt(SelectedCp)][8] = document.getElementById("CPbanBhop").checked
     CheckPoints[parseInt(SelectedCp)][9] = document.getElementById("CpbanClimb").checked
 
-    document.getElementById("DashToggleEnabled").innerHTML = CheckPoints.some(function(i){return i[3]}) ? "Dash addon: enabled |" : "Dash addon: disabled |"
+    document.getElementById("DashToggleEnabled").innerHTML = CheckPoints.some(function(i){return i[3]}) ? "dash addon(automatic): enabled |" : "dash addon(automatic): disabled |"
     document.getElementById("DashToggleEnabled").style.color = CheckPoints.some(function(i){return i[3]}) ? "darkgreen" : "black"
-    document.getElementById("UltToggleEnabled").innerHTML = CheckPoints.some(function(i){return i[4]}) ? "| Ult addon: enabled" : "| Ult addon: disabled"
+    document.getElementById("UltToggleEnabled").innerHTML = CheckPoints.some(function(i){return i[4]}) ? "| ult addon(automatic): enabled" : "| ult addon(automatic): disabled"
     document.getElementById("UltToggleEnabled").style.color = CheckPoints.some(function(i){return i[4]}) ? "darkgreen" : "black"
 }
 
@@ -548,7 +572,7 @@ function UpdateOrbs(){
 			document.getElementById("orbdiv" + i).appendChild(vectbox)
         
 			// strength
-			document.getElementById("orbdiv" + i).insertAdjacentText("beforeend", "\nstrength ")
+			document.getElementById("orbdiv" + i).insertAdjacentText("beforeend", " | strength ")
 			let strbox = document.createElement("textarea");
 			strbox.id = "strbox"
 			strbox.placeholder = "0.0"
@@ -660,7 +684,7 @@ function MakeTitles(){
         let titlediv = document.createElement("div");
         titlediv.style.textAlign = "left";
         titlediv.id = "titlediv" + i
-        titlediv.innerHTML = " CP: ";
+        titlediv.innerHTML = " checkpoint ";
         titlediv.className = "titles"
         document.getElementById("titlelist").appendChild(titlediv);
 
@@ -676,7 +700,7 @@ function MakeTitles(){
         document.getElementById("titlediv" + i).appendChild(titlecp)
 
         // title
-        document.getElementById("titlediv" + i).insertAdjacentText("beforeend"," Title: ")
+        document.getElementById("titlediv" + i).insertAdjacentText("beforeend"," | title ")
         let titlename = document.createElement("textarea");
         titlename.value = MapData[14][i][1]
         titlename.id = "titlename" + i
@@ -687,7 +711,7 @@ function MakeTitles(){
         document.getElementById("titlediv" + i).appendChild(titlename)
 
         // color
-        document.getElementById("titlediv" + i).insertAdjacentText("beforeend"," Color: ")
+        document.getElementById("titlediv" + i).insertAdjacentText("beforeend"," | color ")
         let titlecolor = document.createElement("select");
         titlecolor.id = "titlecolor" + i
         titlecolor.onchange = function(){MapData[14][i][2] = titlecolor.value}
@@ -753,7 +777,7 @@ function RemoveCP(){
         UpdateSelection() 
     }
 }
-
+var CompileError
 // variables to put inside copy pasta
 var data_cps // checkpoints
 
@@ -791,11 +815,16 @@ var compon
 var comptime
 var compattempt
 var comprestarts
+var compdescription = []
+
+
 
 var titleon
 var titlenames
 var titlecps
 var titlecolors
+
+
 // copy button
 function Copy(){
     if (CheckPoints.length <1){
@@ -803,8 +832,9 @@ function Copy(){
         return
     }
     
-    ShowMsg("compiling");
-
+    ShowMsg("compiling - do not tab out");
+    CompileError = false
+   
     setTimeout(
         function (){
            
@@ -939,7 +969,21 @@ function Copy(){
             compon = defaultBool( MapData[12])
             compattempt = defaultNum(MapData[13])
             comprestarts = defaultBool(MapData[16])
-        
+  
+
+            var descriptionsub = MapData[17]
+            var desc_i1 = 0
+            for (let i = 0;  i < 4; i++){ 
+                if(descriptionsub.length > 120){
+                    desc_i1 = descriptionsub.substr(0,120).lastIndexOf(" ") + 1
+                } else {
+                    desc_i1 = 120
+                }
+                
+                compdescription[i] = descriptionsub.substr(0,desc_i1)
+                descriptionsub = descriptionsub.substr(desc_i1)
+            }
+     
 
             titleon = MapData[15] ? "" : "disabled "
             titlecps = "Set Global Variable At Index(TitleData, 0, Array("
@@ -957,25 +1001,41 @@ function Copy(){
             // ====== compile and copy ===================
             setdata(); // loaded from data file
       
-            var language = document.getElementById("languageInput").value;
-            if (language != "en-US"){ // recompile in overpy to translate if not eng
-                data_pasta = decompileAllRules(data_pasta, "en-US");
-                data_pasta = data_pasta + "\n#!disableMapDetectionFix"
-                data_pasta = compile(data_pasta, language);
-                data_pasta  = data_pasta.result;
+            
+            try {
+                var language = document.getElementById("languageInput").value;
+                if (language != "en-US" ){ // recompile in overpy to translate if not eng - || true
+                    data_pasta = decompileAllRules(data_pasta, "en-US");
+                    data_pasta = data_pasta + "\n#!disableMapDetectionFix"
+                    data_pasta = compile(data_pasta, language);
+                    data_pasta  = data_pasta.result;
+                }
+            }  catch(e) {
+                console.log(e)
+                CompileError = true
             }
             var resultthing = document.getElementById("results");
             resultthing.value = data_pasta;
             resultthing.select();
             resultthing.setSelectionRange(0, 99999);
+
+            //navigator.clipboard.writeText(resultthing.value);
+            setTimeout(async()=>console.log(
+            await window.navigator.clipboard.readText()), 3000)
             navigator.clipboard.writeText(resultthing.value);
+
+
         },
         10
     );
-
-
-
     setTimeout(ShowMsg, 10, "copied to clipboard!");
+
+    /*
+    setTimeout(async()=>console.log(
+     await window.navigator.clipboard.readText()), 3000)
+    */
+
+    
 
 }
    

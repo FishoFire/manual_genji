@@ -65,6 +65,35 @@ function compile(content, language="en-US", _rootPath="") {
 		console.log(astRules);
 	}
 
+	var result = compileRules(astRules);
+
+	var spentExtensionPoints = 0;
+	for (var ext of activatedExtensions) {
+		spentExtensionPoints += customGameSettingsSchema.extensions.values[ext].points;
+	}
+	
+    
+	if (DEBUG_MODE) {
+		var t1 = performance.now();
+		console.log("Compilation time: "+(t1-t0)+"ms");
+	}
+	return {
+		result: result,
+		macros: macros,
+		globalVariables: globalVariables,
+		playerVariables: playerVariables,
+		subroutines: subroutines,
+		encounteredWarnings: encounteredWarnings,
+		enumMembers: enumMembers,
+		nbElements: nbElements,
+		activatedExtensions: activatedExtensions,
+		spentExtensionPoints: spentExtensionPoints,
+		availableExtensionPoints: availableExtensionPoints,
+	};
+}
+
+function compileRules(astRules) {
+	
     var parsedAstRules = parseAstRules(astRules);
 
 	if (DEBUG_MODE) {
@@ -157,25 +186,8 @@ ${tows("__rule__", ruleKw)}("OverPy Map Detection") {
 	if (!compiledCustomGameSettings) {
 		warn("w_workshop_ui_disabled", "No settings were declared; it is impossible to paste this gamemode as-is, as the workshop UI is disabled.");
 	}
-	
-    
-	if (DEBUG_MODE) {
-		var t1 = performance.now();
-		console.log("Compilation time: "+(t1-t0)+"ms");
-	}
-	return {
-		result: result,
-		macros: macros,
-		globalVariables: globalVariables,
-		playerVariables: playerVariables,
-		subroutines: subroutines,
-		encounteredWarnings: encounteredWarnings,
-		enumMembers: enumMembers,
-		nbElements: nbElements,
-		activatedExtensions: activatedExtensions,
-		spentExtensionPoints: spentExtensionPoints,
-		availableExtensionPoints: availableExtensionPoints,
-	};
+
+	return result;
 }
 
 function getInitDirectivesRules() {
@@ -368,8 +380,13 @@ function compileCustomGameSettings(customGameSettings) {
 
 	for (var key of Object.keys(customGameSettings)) {
 		if (key === "main" || key === "lobby") {
+			//workshop bug - cannot paste "best available"
+			if (key === "lobby" && customGameSettings["lobby"].dataCenterPreference === "bestAvailable") {
+				delete customGameSettings["lobby"].dataCenterPreference;
+			}
 			result[tows(key, customGameSettingsSchema)] = compileCustomGameSettingsDict(customGameSettings[key], customGameSettingsSchema[key].values);
 			if (key === "lobby") {
+
 				//Figure out the amount of available slots
 				var maxTeam1Slots = 0;
 				var maxTeam2Slots = 0;
@@ -439,8 +456,8 @@ function compileCustomGameSettings(customGameSettings) {
 				if ("enabled" in customGameSettings.gamemodes[gamemode] && customGameSettings.gamemodes[gamemode].enabled === false) {
 					wsGamemode = tows("__disabled__", ruleKw)+" "+wsGamemode;
 					isGamemodeEnabled = false;
-					delete customGameSettings.gamemodes[gamemode].enabled;
 				}
+				delete customGameSettings.gamemodes[gamemode].enabled;
 				result[wsGamemodes][wsGamemode] = {};
 				if ("enabledMaps" in customGameSettings.gamemodes[gamemode] || "disabledMaps" in customGameSettings.gamemodes[gamemode]) {
 					if ("enabledMaps" in customGameSettings.gamemodes[gamemode] && "disabledMaps" in customGameSettings.gamemodes[gamemode]) {
@@ -456,7 +473,8 @@ function compileCustomGameSettings(customGameSettings) {
 						} else if (mapKw[map].onlyInOw1) {
 							error("The map '"+map+"' is not available in OW2");
 						} else if (map.endsWith("Night") || map.endsWith("Halloween") || map.endsWith("Winter") || map.endsWith("Lny") || ["iliosRuins", "iliosLighthouse", "iliosWell", "nepalSanctum", "nepalShrine", "nepalVillage", "oasisCityCenter", "oasisGardens", "oasisUniversity"].includes(map)) {
-							error("The map '"+map+"' cannot be pasted, you will have to select/deselect it manually via the UI")
+							warn("w_ow2_map_paste_bug", "The map '"+map+"' cannot be pasted, you will have to select/deselect it manually via the UI.")
+							delete customGameSettings.gamemodes[gamemode][mapsKey][map];
 						}
 					}
 					//Test if there are only workshop maps (for extension points)
@@ -505,12 +523,17 @@ function compileCustomGameSettings(customGameSettings) {
 				}
 
 				if ("general" in customGameSettings.heroes[team]) {
-					Object.assign(result[wsHeroes][wsTeam], compileCustomGameSettingsDict(customGameSettings.heroes[team].general, customGameSettingsSchema.heroes.values.general));
+					Object.assign(result[wsHeroes][wsTeam], compileCustomGameSettingsDict(customGameSettings.heroes[team].general, customGameSettingsSchema.heroes.values.general.values));
 					delete customGameSettings.heroes[team].general;
 				}
 
 				for (var hero of Object.keys(customGameSettings.heroes[team])) {
 					var wsHero = tows(hero, heroKw);
+					for (var key of Object.keys(customGameSettings.heroes[team][hero])) {
+						if (!(key in customGameSettingsSchema.heroes.values[hero].values)) {
+							error("'"+hero+"' has no property '"+key+"'");
+						}
+					}
 					result[wsHeroes][wsTeam][wsHero] = compileCustomGameSettingsDict(customGameSettings.heroes[team][hero], customGameSettingsSchema.heroes.values[hero].values);
 				}
 
