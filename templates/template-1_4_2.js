@@ -22,6 +22,7 @@ ${mapcode}
 
 */
 
+
 function setdata(){ //String.raw
     data_pasta = String.raw`
 settings

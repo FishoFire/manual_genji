@@ -4,6 +4,7 @@
         text-align:center;
         width:100%;
         max-width: 1000px;
+        vertical-align: middle;
         /*width: 1000px;*/
     }
 
@@ -38,6 +39,10 @@
         margin:10px;
     }
 
+    textarea {
+        vertical-align: middle
+    }
+
     #message{
         
         /*
@@ -55,7 +60,11 @@
         margin:5px;
     }
     .contentblock {
-        padding:3px; 
+        /*padding: 3px; */
+        padding-top: 6px;
+        padding-bottom: 6px;
+        padding-left: 3px;
+        padding-right: 3px;
         margin:3px;
         width:90%;
         background-color:lightslategray; /*gray*/
@@ -72,17 +81,26 @@
         display:inline-block;
     }
 
+    .titles{
+        margin:3px; 
+        padding:3px; 
+        background-color:#92A0AD; /*lightsteelblue;*/
+        border:1px solid #4B5258;
+    }
+
     .bounceorb {
         margin:3px; 
         padding:3px; 
         background-color:green;
-        width:98%
+        width:98%;
+        border:1px solid darkgreen;
     }
     .killorb {
         margin:3px; 
         padding:3px; 
         background-color:crimson;
-        width:98%
+        width:98%;
+        border:1px solid darkred;
     }
 
     #CPnotes {

@@ -1078,18 +1078,6 @@ const opyInternalFuncs = {
         "isConstant": true,
         return: ["float", "Vector"],
     },
-    "__number__": {
-        "args": [
-            {
-                "name": "NUMBER",
-                "type": "FloatLiteral",
-                "default": "0",
-            },
-        ],
-        "isConstant": true,
-        return: "FloatLiteral",
-        "en-US": "Number",
-    },
     "__remove__": {
         "args": [
             {
@@ -1128,17 +1116,6 @@ const opyInternalFuncs = {
         ],
         return: "void",
     },
-    "__team__": {
-        "args": [
-            {
-                "name": "TEAM",
-                "type": "TeamLiteral",
-                "default": "ALL",
-            }
-        ],
-        "isConstant": true,
-        return: "Team",
-    }
 }
 /* 
  * This file is part of OverPy (https://github.com/Zezombye/overpy).
@@ -4453,7 +4430,7 @@ const actionKw =
         "en-US": "Press Button",
         "es-MX": "Presionar botón",
         "fr-FR": "Appuyer sur un bouton",
-        "ja-JP": "ボタンを押してください",
+        "ja-JP": "ボタンを押す",
         "pt-BR": "Pressionar Botão",
         "zh-CN": "按下按键"
     },
@@ -22299,6 +22276,24 @@ var valueFuncKw =
         "pt-BR": "Não",
         "zh-CN": "非"
     },
+    "__number__": {
+        "args": [
+            {
+                "name": "NUMBER",
+                "type": "FloatLiteral",
+                "default": "0"
+            }
+        ],
+        "isConstant": true,
+        "return": "float",
+        "guid": "00000000AC38",
+        "en-US": "Number",
+        "es-MX": "Número",
+        "fr-FR": "Nombre",
+        "ja-JP": "数値",
+        "pt-BR": "Número",
+        "zh-CN": "数字"
+    },
     "__or__": {
         "guid": "00000000B274",
         "description": "Whether either of the two inputs are true (or equivalent to true).",
@@ -23372,6 +23367,32 @@ var valueFuncKw =
         "ja-JP": "減算",
         "pt-BR": "Subtrair",
         "zh-CN": "减"
+    },
+    "__team__": {
+        "args": [
+            {
+                "name": "TEAM",
+                "type": "TeamLiteral",
+                "default": "ALL",
+                "description": "Team",
+                "descriptionLocalized": {
+                    "en-US": "Team"
+                }
+            }
+        ],
+        "isConstant": true,
+        "guid": "00000000BB26",
+        "return": "Team",
+        "en-US": "Team",
+        "es-ES": "Equipo",
+        "es-MX": "Equipo",
+        "fr-FR": "Équipe",
+        "it-IT": "Squadra",
+        "ja-JP": "チーム",
+        "pl-PL": "Drużyna",
+        "pt-BR": "Equipe",
+        "ru-RU": "Команда",
+        "zh-CN": "队伍"
     },
     "__valueInArray__": {
         "description": "The value found at a specific element of an array. Results in 0 if the element does not exist.",
@@ -25587,12 +25608,18 @@ var valueFuncKw =
         },
         "canBePutInBoolean": false,
         "en-US": "All Heroes",
+        "de-DE": "Alle Helden",
+        "es-ES": "Todos los héroes",
         "es-MX": "Todos los héroes",
         "fr-FR": "Tous les héros",
-        "ko-KR": "모든 영웅",
+        "it-IT": "Tutti gli eroi",
         "ja-JP": "全ヒーロー",
+        "ko-KR": "모든 영웅",
+        "pl-PL": "Wszyscy bohaterowie",
         "pt-BR": "Todos os Heróis",
-        "zh-CN": "全部英雄"
+        "ru-RU": "Все герои",
+        "zh-CN": "全部英雄",
+        "zh-TW": "所有英雄"
     },
     "getAverageServerLoad": {
         "guid": "00000000C997",
@@ -30230,6 +30257,35 @@ const mapKw =
         "zh-CN": "万圣节吉拉德堡",
         "zh-TW": "蓋亞爾城堡（萬聖節）"
     },
+    "circuitRoyal": {
+        "gamemodes": [
+            "skirmish",
+            "escort"
+        ],
+        "guid": "00000001777C",
+        "en-US": "Circuit Royal",
+        "fr-FR": "Circuit royal",
+        "ja-JP": "CIRCUIT ROYAL",
+        "ko-KR": "서킷 로얄",
+        "pl-PL": "Circuit royal",
+        "ru-RU": "Королевская трасса",
+        "zh-CN": "皇家赛道",
+        "zh-TW": "皇家賽道"
+    },
+    "colosseo": {
+        "gamemodes": [
+            "skirmish",
+            "push"
+        ],
+        "guid": "000000015B56",
+        "en-US": "Colosseo",
+        "ja-JP": "COLOSSEO",
+        "ko-KR": "콜로세오",
+        "pl-PL": "Koloseum",
+        "ru-RU": "Колизей",
+        "zh-CN": "斗兽场",
+        "zh-TW": "羅馬競技場"
+    },
     "dorado": {
         "guid": "0000000008C1",
         "gamemodes": [
@@ -30338,6 +30394,19 @@ const mapKw =
         "zh-CN": "万圣节艾兴瓦尔德",
         "zh-TW": "愛西瓦德（萬聖節）"
     },
+    "esperanca": {
+        "gamemodes": [
+            "skirmish",
+            "push"
+        ],
+        "guid": "000000016D84",
+        "en-US": "Esperança",
+        "ja-JP": "ESPERANCA",
+        "ko-KR": "이스페란사",
+        "ru-RU": "Эсперанса",
+        "zh-CN": "埃斯佩兰萨",
+        "zh-TW": "希望之城"
+    },
     "estadioDasRas": {
         "onlyInOw1": true,
         "guid": "000000004629",
@@ -30392,7 +30461,7 @@ const mapKw =
         "zh-TW": "花村（冬境）"
     },
     "havana": {
-        "guid": "00000000B457",
+        "guid": "00000000B8EA",
         "gamemodes": [
             "escort",
             "skirmish",
@@ -30845,7 +30914,7 @@ const mapKw =
         "es-MX": "Torre Lijiang Año Nuevo Lunar",
         "fr-FR": "Tour de Lijiang nouvel an lunaire",
         "it-IT": "Torre di Lijiang Capodanno Lunare",
-        "ja-JP": "LIJIANG TOWER LUNAR NEW YEAR",
+        "ja-JP": "LIJIANG TOWER 旧正月",
         "ko-KR": "리장 타워 설날",
         "pl-PL": "Wieża Lijiang Księżycowa",
         "pt-BR": "Torre Lijiang Ano Novo Lunar",
@@ -30859,13 +30928,27 @@ const mapKw =
             "bountyHunter",
             "tdm"
         ],
-        "guid": "000000014366",
+        "guid": "000000010DFE",
         "en-US": "Malevento",
         "ja-JP": "MALEVENTO",
         "ko-KR": "말레벤토",
         "ru-RU": "Малевенто",
         "zh-CN": "马莱温多",
         "zh-TW": "馬勒馮托"
+    },
+    "midtown": {
+        "gamemodes": [
+            "skirmish",
+            "hybrid"
+        ],
+        "guid": "00000001777A",
+        "en-US": "Midtown",
+        "ja-JP": "MIDTOWN",
+        "ko-KR": "미드타운",
+        "pl-PL": "Dzielnica Midtown",
+        "ru-RU": "Мидтаун",
+        "zh-CN": "中城",
+        "zh-TW": "中城區"
     },
     "necropolis": {
         "guid": "0000000053FB",
@@ -31013,6 +31096,20 @@ const mapKw =
         "zh-CN": "圣诞节尼泊尔村庄",
         "zh-TW": "尼泊爾村落（冬境）"
     },
+    "newQueenStreet": {
+        "gamemodes": [
+            "skirmish",
+            "push"
+        ],
+        "guid": "000000015B54",
+        "en-US": "New Queen Street",
+        "ja-JP": "NEW QUEEN STREET",
+        "ko-KR": "뉴 퀸 스트리트",
+        "pt-BR": "Nova Queen Street",
+        "ru-RU": "Нью-Квин-стрит",
+        "zh-CN": "新皇后街",
+        "zh-TW": "新皇后街"
+    },
     "numbani": {
         "guid": "0000000002EA",
         "gamemodes": [
@@ -31125,6 +31222,19 @@ const mapKw =
         "zh-CN": "绿洲城大学",
         "zh-TW": "綠洲城大學"
     },
+    "paraiso": {
+        "gamemodes": [
+            "skirmish",
+            "hybrid"
+        ],
+        "guid": "000000017763",
+        "en-US": "Paraíso",
+        "ja-JP": "PARAISO",
+        "ko-KR": "파라이수",
+        "ru-RU": "Параисо",
+        "zh-CN": "帕拉伊苏",
+        "zh-TW": "帕拉伊索"
+    },
     "paris": {
         "guid": "00000000831E",
         "gamemodes": [
@@ -31196,7 +31306,7 @@ const mapKw =
             "escort",
             "skirmish",
             "ffa",
-            "tdm",
+            "tdm"
         ],
         "en-US": "Route 66",
         "es-ES": "Ruta 66",
@@ -31248,7 +31358,7 @@ const mapKw =
         "zh-TW": "經典雪梨海港運動公園"
     },
     "templeOfAnubis": {
-        "guid": "00000000012E",
+        "guid": "00000000AB25",
         "gamemodes": [
             "assault",
             "skirmish",
@@ -31479,49 +31589,7 @@ const mapKw =
         "ru-RU": "Мастерская: остров ночь",
         "zh-CN": "地图工坊岛屿（夜间）",
         "zh-TW": "工作坊島嶼（夜晚）"
-    },
-    "colosseo": {
-        "gamemodes": [
-            "skirmish",
-            "push",
-        ],
-        "en-US": "Colosseo",
-    },
-    "esperanca": {
-        "gamemodes": [
-            "skirmish",
-            "push",
-        ],
-        "en-US": "Esperança",
-    },
-    "newQueenStreet": {
-        "gamemodes": [
-            "skirmish",
-            "push",
-        ],
-        "en-US": "New Queen Street",
-    },
-    "circuitRoyal": {
-        "gamemodes": [
-            "skirmish",
-            "escort",
-        ],
-        "en-US": "Circuit Royal",
-    },
-    "paraiso": {
-        "gamemodes": [
-            "skirmish",
-            "hybrid",
-        ],
-        "en-US": "Paraíso",
-    },
-    "midtown": {
-        "gamemodes": [
-            "skirmish",
-            "hybrid",
-        ],
-        "en-US": "Midtown",
-    },
+    }
 }
 //end-json
 /* 
@@ -31712,8 +31780,20 @@ const heroKw =
     "bastion": {
         "guid": "000000000023",
         "secondaryFire": {
+            "guid": "000000012F0C",
             "en-US": "A-36 Tactical Grenade",
+            "de-DE": "Taktische Granate A-36",
+            "es-ES": "Granada táctica A-36",
+            "es-MX": "Granada táctica A-36",
+            "fr-FR": "Grenade tactique A-36",
+            "it-IT": "Granata Tattica A-36",
+            "ja-JP": "A-36タクティカル・グレネード",
             "ko-KR": "A-36 전술 수류탄",
+            "pl-PL": "Granat Taktyczny A-36",
+            "pt-BR": "Granada Tática A-36",
+            "ru-RU": "Тактическая граната A-36",
+            "zh-CN": "A-36战术榴弹",
+            "zh-TW": "A-36戰術榴彈"
         },
         "ability1": {
             "guid": "0000000003C3",
@@ -31732,8 +31812,20 @@ const heroKw =
             "zh-TW": "切換模式"
         },
         "ultimate": {
+            "guid": "0000000003C1",
             "en-US": "Configuration: Artillery",
-            "ko-KR": "설정: 전차",
+            "de-DE": "Konfiguration: Panzer",
+            "es-ES": "Modo tanque",
+            "es-MX": "Configuración: tanque",
+            "fr-FR": "Configuration : artillerie",
+            "it-IT": "Assetto Carro Armato",
+            "ja-JP": "タンク・モード",
+            "ko-KR": "설정: 포격",
+            "pl-PL": "Konfiguracja: Czołg",
+            "pt-BR": "Configuração: Tanque",
+            "ru-RU": "Режим артиллерии",
+            "zh-CN": "火炮模式",
+            "zh-TW": "火砲模式"
         },
         "en-US": "Bastion",
         "ja-JP": "バスティオン",
@@ -31850,8 +31942,20 @@ const heroKw =
             "zh-TW": "火箭拳"
         },
         "ability1": {
+            "guid": "000000015B59",
             "en-US": "Power Block",
+            "de-DE": "Faustschild",
+            "es-ES": "Bloqueo de poder",
+            "es-MX": "Bloqueo de poder",
+            "fr-FR": "Parade puissante",
+            "it-IT": "Baluardo",
+            "ja-JP": "パワー・ブロック",
             "ko-KR": "파워 블락",
+            "pl-PL": "Mocarny Blok",
+            "pt-BR": "Bloqueio Energético",
+            "ru-RU": "Мощный блок",
+            "zh-CN": "悍猛格挡",
+            "zh-TW": "強力格擋"
         },
         "ability2": {
             "guid": "000000005B4A",
@@ -32044,7 +32148,7 @@ const heroKw =
             "zh-CN": "滑翔",
             "zh-TW": "滑翔"
         },
-        "guid": "0000000108C5",
+        "guid": "000000008684",
         "en-US": "Echo",
         "fr-FR": "Écho",
         "ja-JP": "エコー",
@@ -32274,6 +32378,82 @@ const heroKw =
         "zh-CN": "半藏",
         "zh-TW": "半藏"
     },
+    "junkerQueen": {
+        "secondaryFire": {
+            "guid": "00000000D3A4",
+            "en-US": "Jagged Blade",
+            "de-DE": "Gezackte Klinge",
+            "es-ES": "Cuchilla dentada",
+            "es-MX": "Hoja dentada",
+            "fr-FR": "Lame crantée",
+            "it-IT": "Lama Dentata",
+            "ja-JP": "ギザギザブレード",
+            "ko-KR": "톱니칼",
+            "pl-PL": "Postrzępione Ostrze",
+            "pt-BR": "Lâmina Serrilhada",
+            "ru-RU": "Зазубренный клинок",
+            "zh-CN": "锯齿利刃",
+            "zh-TW": "鋸刃"
+        },
+        "ability2": {
+            "guid": "00000000EB9B",
+            "en-US": "Carnage",
+            "de-DE": "Gemetzel",
+            "es-ES": "Matanza",
+            "es-MX": "Masacre",
+            "it-IT": "Mattanza",
+            "ja-JP": "カーネイジ",
+            "ko-KR": "도륙",
+            "pl-PL": "Rzeźnia",
+            "pt-BR": "Carnificina",
+            "ru-RU": "Карнаж",
+            "zh-CN": "血斩",
+            "zh-TW": "屠殺"
+        },
+        "ability1": {
+            "guid": "00000000EA9C",
+            "en-US": "Commanding Shout",
+            "de-DE": "Befehlsruf",
+            "es-ES": "Grito de mando",
+            "es-MX": "Alarido dominante",
+            "fr-FR": "Cri de commandement",
+            "it-IT": "Urlo di Comando",
+            "ja-JP": "コマンディング・シャウト",
+            "ko-KR": "지휘의 외침",
+            "pl-PL": "Władczy Okrzyk",
+            "pt-BR": "Grito de Guerra",
+            "ru-RU": "Ободряющий клич",
+            "zh-CN": "命令怒吼",
+            "zh-TW": "統率怒號"
+        },
+        "ultimate": {
+            "guid": "00000000EC04",
+            "en-US": "Rampage",
+            "de-DE": "Randale",
+            "es-ES": "Masacre",
+            "es-MX": "Desenfreno",
+            "fr-FR": "Massacre",
+            "it-IT": "Furia",
+            "ja-JP": "ランペイジ",
+            "ko-KR": "살육",
+            "pl-PL": "Rozwałka",
+            "pt-BR": "Chacina",
+            "ru-RU": "Буйство",
+            "zh-CN": "轰翻天",
+            "zh-TW": "瘋狂殺戮"
+        },
+        "guid": "000000016CEA",
+        "en-US": "Junker Queen",
+        "fr-FR": "Reine des Junkers",
+        "it-IT": "Regina dei Junker",
+        "ja-JP": "ジャンカー・クイーン",
+        "ko-KR": "정커퀸",
+        "pl-PL": "Królowa Junkertown",
+        "pt-BR": "Rainha Junker",
+        "ru-RU": "Королева Стервятников",
+        "zh-CN": "渣客女王",
+        "zh-TW": "垃圾鎮女王"
+    },
     "junkrat": {
         "guid": "0000000001AA",
         "ability1": {
@@ -32332,6 +32512,63 @@ const heroKw =
         "ru-RU": "Крысавчик",
         "zh-CN": "狂鼠",
         "zh-TW": "炸彈鼠"
+    },
+    "kiriko": {
+        "ability1": {
+            "guid": "000000009447",
+            "en-US": "Swift Step",
+            "de-DE": "Schneller Schritt",
+            "es-ES": "Paso ligero",
+            "es-MX": "Paso ágil",
+            "fr-FR": "Pas véloce",
+            "it-IT": "Passo Rapido",
+            "ja-JP": "神出鬼没",
+            "ko-KR": "순보",
+            "pl-PL": "Raźny Ruch",
+            "pt-BR": "Passo Rápido",
+            "ru-RU": "Быстрый шаг",
+            "zh-CN": "瞬",
+            "zh-TW": "瞬影步"
+        },
+        "ability2": {
+            "guid": "00000000D4DD",
+            "en-US": "Protection Suzu",
+            "de-DE": "Suzu des Schutzes",
+            "es-ES": "Suzu de protección",
+            "es-MX": "Suzu de protección",
+            "fr-FR": "Suzu de protection",
+            "it-IT": "Suzu di Protezione",
+            "ja-JP": "鈴のご加護",
+            "ko-KR": "정화의 방울",
+            "pl-PL": "Ochronne Suzu",
+            "pt-BR": "Suzu de Proteção",
+            "ru-RU": "Талисман защиты",
+            "zh-CN": "铃",
+            "zh-TW": "祓除鈴"
+        },
+        "ultimate": {
+            "guid": "000000009478",
+            "en-US": "Kitsune Rush",
+            "de-DE": "Kitsunami",
+            "es-ES": "Marcha del kitsune",
+            "es-MX": "Arremetida de kitsune",
+            "fr-FR": "Ruée de kitsune",
+            "it-IT": "Scatto Kitsune",
+            "ja-JP": "狐走り",
+            "ko-KR": "여우길",
+            "pl-PL": "Pęd Kitsune",
+            "pt-BR": "Corrida da Kitsune",
+            "ru-RU": "Рывок Кицунэ",
+            "zh-CN": "狐",
+            "zh-TW": "御狐衝刺"
+        },
+        "guid": "000000016CEC",
+        "en-US": "Kiriko",
+        "ja-JP": "キリコ",
+        "ko-KR": "키리코",
+        "ru-RU": "Кирико",
+        "zh-CN": "雾子",
+        "zh-TW": "霧子"
     },
     "lucio": {
         "guid": "0000000002DA",
@@ -32423,8 +32660,20 @@ const heroKw =
             "zh-TW": "戰術翻滾"
         },
         "ability2": {
+            "guid": "000000015795",
             "en-US": "Magnetic Grenade",
+            "de-DE": "Magnetische Granate",
+            "es-ES": "Granada magnética",
+            "es-MX": "Granada magnética",
+            "fr-FR": "Grenade magnétique",
+            "it-IT": "Granata Magnetica",
+            "ja-JP": "マグネティック・グレネード",
             "ko-KR": "자력 수류탄",
+            "pl-PL": "Granat Magnetyczny",
+            "pt-BR": "Granada Magnética",
+            "ru-RU": "Магнитная граната",
+            "zh-CN": "磁性手雷",
+            "zh-TW": "磁吸榴彈"
         },
         "ultimate": {
             "guid": "0000000004A2",
@@ -32635,8 +32884,20 @@ const heroKw =
     "orisa": {
         "guid": "000000002D21",
         "secondaryFire": {
+            "guid": "000000014ED8",
             "en-US": "Energy Javelin",
-            "ko-KR": "수호의 창",
+            "de-DE": "Energiespeer",
+            "es-ES": "Jabalina de energía",
+            "es-MX": "Jabalina de energía",
+            "fr-FR": "Javelot d’énergie",
+            "it-IT": "Giavellotto Energetico",
+            "ja-JP": "エネルギー・ジャベリン",
+            "ko-KR": "투창",
+            "pl-PL": "Włócznia Energetyczna",
+            "pt-BR": "Dardo Energético",
+            "ru-RU": "Энергетическое копье",
+            "zh-CN": "能量标枪",
+            "zh-TW": "能量標槍"
         },
         "ability1": {
             "guid": "000000004ED3",
@@ -32655,12 +32916,36 @@ const heroKw =
             "zh-TW": "強化防禦"
         },
         "ability2": {
+            "guid": "000000014ED6",
             "en-US": "Javelin Spin",
-            "ko-KR": "투창",
+            "de-DE": "Speerwirbel",
+            "es-ES": "Girojabalina",
+            "es-MX": "Giro de lanza",
+            "fr-FR": "Rotation de javelot",
+            "it-IT": "Giavellotto Rotante",
+            "ja-JP": "ジャベリン・スピン",
+            "ko-KR": "수호의 창",
+            "pl-PL": "Obrót Włócznią",
+            "pt-BR": "Giro do Dardo",
+            "ru-RU": "Вращение копьем",
+            "zh-CN": "标枪旋击",
+            "zh-TW": "迴旋標槍"
         },
         "ultimate": {
+            "guid": "000000014EDA",
             "en-US": "Terra Surge",
+            "de-DE": "Terrawoge",
+            "es-ES": "Terraluvión",
+            "es-MX": "Impacto terrestre",
+            "fr-FR": "Vague Terra",
+            "it-IT": "Impeto Terrestre",
+            "ja-JP": "テラ・サージ",
             "ko-KR": "대지의 창",
+            "pl-PL": "Impuls Bojowy",
+            "pt-BR": "Rompante Terrano",
+            "ru-RU": "Встряска земли",
+            "zh-CN": "撼地猛刺",
+            "zh-TW": "大地湧能"
         },
         "en-US": "Orisa",
         "ja-JP": "オリーサ",
@@ -33004,6 +33289,77 @@ const heroKw =
         "ru-RU": "Сигма",
         "zh-CN": "西格玛",
         "zh-TW": "席格馬"
+    },
+    "sojourn": {
+        "secondaryFire": {
+            "guid": "00000000796B",
+            "en-US": "Railgun Alt Fire",
+            "de-DE": "Railgun – Alternativer Feuermodus",
+            "es-ES": "Disparo secundario del cañón de riel",
+            "es-MX": "Disparo secundario de Cañón de riel",
+            "fr-FR": "Canon électrique : tir alternatif",
+            "it-IT": "Fuoco Alternativo Fucile a Rotaia",
+            "ja-JP": "レールガン - サブ攻撃",
+            "ko-KR": "레일건 보조 발사",
+            "pl-PL": "Alternatywny atak Karabinu Kinetycznego",
+            "pt-BR": "Canhão Elétrico - Disparo alternativo",
+            "ru-RU": "Дополнительный режим огня рельсотрона",
+            "zh-CN": "电磁炮辅助模式",
+            "zh-TW": "磁軌槍次要攻擊"
+        },
+        "ability1": {
+            "guid": "000000007964",
+            "en-US": "Power Slide",
+            "de-DE": "Powerslide",
+            "es-ES": "Maniobra evasiva",
+            "es-MX": "Deslizamiento impulsor",
+            "fr-FR": "Tacle",
+            "it-IT": "Scivolata Energica",
+            "ja-JP": "パワー・スライド",
+            "ko-KR": "파워 슬라이드",
+            "pl-PL": "Super Wślizg",
+            "pt-BR": "Deslizada Enérgica",
+            "ru-RU": "Суперподкат",
+            "zh-CN": "机动滑铲",
+            "zh-TW": "強力滑行"
+        },
+        "ability2": {
+            "guid": "000000007965",
+            "en-US": "Disruptor Shot",
+            "de-DE": "Disruptionsschuss",
+            "es-ES": "Disparo inmovilizador",
+            "es-MX": "Disparo disruptivo",
+            "fr-FR": "Tir disruptif",
+            "it-IT": "Colpo Distruttivo",
+            "ja-JP": "ディスラプター・ショット",
+            "ko-KR": "분열 사격",
+            "pl-PL": "Strzał Zakłócający",
+            "pt-BR": "Disparo Disruptivo",
+            "ru-RU": "Дезинтегрирующий выстрел",
+            "zh-CN": "干扰弹",
+            "zh-TW": "擾亂射擊"
+        },
+        "ultimate": {
+            "guid": "00000000796E",
+            "en-US": "Overclock",
+            "de-DE": "Übertaktung",
+            "es-ES": "Supercarga",
+            "fr-FR": "Surcadençage",
+            "ja-JP": "オーバークロック",
+            "ko-KR": "오버클럭",
+            "pl-PL": "Przeciążenie",
+            "pt-BR": "Sobrecarga",
+            "ru-RU": "Разгон",
+            "zh-CN": "机体超频",
+            "zh-TW": "磁能超頻"
+        },
+        "guid": "000000016CFA",
+        "en-US": "Sojourn",
+        "ja-JP": "ソジョーン",
+        "ko-KR": "소전",
+        "ru-RU": "Соджорн",
+        "zh-CN": "索杰恩",
+        "zh-TW": "索潔恩"
     },
     "soldier": {
         "guid": "000000000224",
@@ -33548,60 +33904,6 @@ const heroKw =
         "ru-RU": "Дзенъятта",
         "zh-CN": "禅雅塔",
         "zh-TW": "禪亞塔"
-    },
-    "sojourn": {
-        "secondaryFire": {
-            "en-US": "Railgun Alt Fire",
-        },
-        "ability1": {
-            "en-US": "Power Slide",
-            "ko-KR": "파워 슬라이드",
-        },
-        "ability2": {
-            "en-US": "Disruptor Shot",
-            "ko-KR": "분열 사격",
-        },
-        "ultimate": {
-            "en-US": "Overclock",
-            "ko-KR": "오버클럭",
-        },
-        "en-US": "Sojourn",
-        "ko-KR": "소전",
-    },
-    "junkerQueen": {
-        "secondaryFire": {
-            "en-US": "Jagged Blade",
-            "ko-KR": "톱니칼",
-        },
-        "ability2": {
-            "en-US": "Carnage",
-            "ko-KR": "도륙",
-        },
-        "ability1": {
-            "en-US": "Commanding Shout",
-        },
-        "ultimate": {
-            "en-US": "Rampage",
-            "ko-KR": "살육",
-        },
-        "en-US": "Junker Queen",
-        "ko-KR": "정커퀸",
-    },
-    "kiriko": {
-        "ability1": {
-            "en-US": "Swift Step",
-            "ko-KR": "순보",
-        },
-        "ability2": {
-            "en-US": "Protection Suzu",
-            "ko-KR": "정화의 방울",
-        },
-        "ultimate": {
-            "en-US": "Kitsune Rush",
-            "ko-KR": "여우길",
-        },
-        "en-US": "Kiriko",
-        "ko-KR": "키리코",
     }
 }
 //end-json
@@ -33665,10 +33967,10 @@ const gamemodeKw =
     "control": {
         "defaultTeam1Players": 6,
         "defaultTeam2Players": 6,
-        "guid": "00000000CD5B",
+        "guid": "000000005839",
         "en-US": "Control",
         "de-DE": "Kontrolle",
-        "fr-FR": "Contrôle",
+        "fr-FR": "Point de contrôle",
         "it-IT": "Controllo",
         "ja-JP": "コントロール",
         "ko-KR": "쟁탈",
@@ -33818,8 +34120,8 @@ const gamemodeKw =
     },
     "meisSnowballOffensive": {
         "onlyInOw1": true,
-        "defaultTeam1Players": 6,
-        "defaultTeam2Players": 6,
+        "defaultTeam1Players": 5,
+        "defaultTeam2Players": 5,
         "guid": "00000000525A",
         "en-US": "Mei's Snowball Offensive",
         "de-DE": "Meis Schneeballschlacht",
@@ -33836,7 +34138,7 @@ const gamemodeKw =
         "zh-TW": "小美的雪球大作戰"
     },
     "practiceRange": {
-        "guid": "0000000040BE",
+        "guid": "000000002BA1",
         "defaultTeam1Players": 6,
         "defaultTeam2Players": 0,
         "en-US": "Practice Range",
@@ -33849,9 +34151,27 @@ const gamemodeKw =
         "ko-KR": "훈련장",
         "pl-PL": "Obszar treningowy",
         "pt-BR": "Campo de Treinamento",
-        "ru-RU": "Учебный полигон",
+        "ru-RU": "УЧЕБНЫЙ ПОЛИГОН",
         "zh-CN": "训练靶场",
         "zh-TW": "訓練中心"
+    },
+    "push": {
+        "defaultTeam1Players": 5,
+        "defaultTeam2Players": 5,
+        "guid": "00000001695F",
+        "en-US": "Push",
+        "de-DE": "Schub",
+        "es-ES": "Avance",
+        "es-MX": "Avance",
+        "fr-FR": "Avancée",
+        "it-IT": "Scorta",
+        "ja-JP": "プッシュ",
+        "ko-KR": "밀기",
+        "pl-PL": "Przepychanka",
+        "pt-BR": "Avanço",
+        "ru-RU": "Натиск",
+        "zh-CN": "机动推进",
+        "zh-TW": "推進"
     },
     "skirmish": {
         "defaultTeam1Players": 6,
@@ -33925,15 +34245,7 @@ const gamemodeKw =
         "ru-RU": "Охота на йети",
         "zh-CN": "雪域狩猎",
         "zh-TW": "雪怪大作戰"
-    },
-    "push": {
-        "defaultTeam1Players": 5,
-        "defaultTeam2Players": 5,
-        "en-US": "Push",
-    },
-    "survivor": {
-        "en-US": "Survivor",
-    },
+    }
 }
 //end-json
 /*
@@ -34760,7 +35072,7 @@ const constantValues =
             "guid": "000000010BE8",
             "en-US": "Ready",
             "es-MX": "Listo",
-            "fr-FR": "Prêt",
+            "fr-FR": "Prête",
             "ja-JP": "準備完了",
             "pt-BR": "Pronto",
             "zh-CN": "做好准备"
@@ -39777,6 +40089,765 @@ const funcKw = Object.assign({}, wsFuncKw, opyFuncs, opyInternalFuncs);
 
 "use strict";
 
+const ruleAttributesDisplayNamesKw =
+//begin-json
+{
+    "event": {
+        "guid": "00000000B23E",
+        "en-US": "Event",
+        "es-ES": "Evento",
+        "es-MX": "Evento",
+        "fr-FR": "Évènement",
+        "it-IT": "Evento",
+        "ja-JP": "イベント",
+        "pl-PL": "Zdarzenie",
+        "pt-BR": "Evento",
+        "ru-RU": "Событие",
+        "zh-CN": "事件"
+    },
+    "eventPlayer": {
+        "guid": "00000000B25A",
+        "en-US": "Player",
+        "es-ES": "Jugador",
+        "es-MX": "Jugador",
+        "fr-FR": "Joueur",
+        "it-IT": "Giocatore",
+        "ja-JP": "プレイヤー",
+        "pl-PL": "Gracz",
+        "pt-BR": "Jogador",
+        "ru-RU": "Игрок",
+        "zh-CN": "玩家"
+    },
+    "eventTeam": {
+        "guid": "00000000B23A",
+        "en-US": "Team",
+        "es-ES": "Equipo",
+        "es-MX": "Equipo",
+        "fr-FR": "Équipe",
+        "it-IT": "Squadra",
+        "ja-JP": "チーム",
+        "pl-PL": "Drużyna",
+        "pt-BR": "Equipe",
+        "ru-RU": "Команда",
+        "zh-CN": "队伍"
+    },
+    "subroutineName": {
+        "guid": "00000000FEBE",
+        "en-US": "Subroutine",
+        "es-ES": "Subrutina",
+        "es-MX": "Subrutina",
+        "fr-FR": "Sous-programme",
+        "ja-JP": "サブルーチン",
+        "pl-PL": "Podprogram",
+        "pt-BR": "Sub-rotina",
+        "ru-RU": "Подпрограмма",
+        "zh-CN": "子程序",
+        "zh-TW": "子程序"
+    }
+}
+//end-json
+
+const workshopUiKw =
+//begin-json
+{
+    "action": {
+        "guid": "00000000BBC7",
+        "en-US": "Action",
+        "de-DE": "Aktion",
+        "es-ES": "Acción",
+        "es-MX": "Acción",
+        "it-IT": "Azione",
+        "ja-JP": "アクション",
+        "pl-PL": "Działanie",
+        "pt-BR": "Ação",
+        "ru-RU": "Действие",
+        "zh-CN": "动作",
+        "zh-TW": "動作"
+    },
+    "actions": {
+        "guid": "0000000077D4",
+        "en-US": "Actions",
+        "de-DE": "Aktionen",
+        "es-ES": "Acciones",
+        "es-MX": "Acciones",
+        "it-IT": "Azioni",
+        "ja-JP": "アクション",
+        "pl-PL": "Działania",
+        "pt-BR": "Ações",
+        "ru-RU": "Действия",
+        "zh-CN": "动作",
+        "zh-TW": "動作"
+    },
+    "addAction": {
+        "guid": "00000000BB39",
+        "en-US": "Create Action",
+        "de-DE": "Aktion hinzufügen",
+        "es-ES": "Crear acción",
+        "es-MX": "Crear acción",
+        "fr-FR": "Créer une action",
+        "it-IT": "Crea azione",
+        "ja-JP": "アクションを作成",
+        "ko-KR": "Action 생성",
+        "pl-PL": "Stwórz działanie",
+        "pt-BR": "Criar Ação",
+        "ru-RU": "Создать действие",
+        "zh-CN": "创建动作",
+        "zh-TW": "建立動作"
+    },
+    "addCondition": {
+        "guid": "00000000BB38",
+        "en-US": "Create Condition",
+        "de-DE": "Bedingung hinzufügen",
+        "es-ES": "Crear condición",
+        "es-MX": "Crear condición",
+        "fr-FR": "Créer une condition",
+        "it-IT": "Crea condizione",
+        "ja-JP": "条件を作成",
+        "ko-KR": "Condition 생성",
+        "pl-PL": "Stwórz warunek",
+        "pt-BR": "Criar Condição",
+        "ru-RU": "Создать условие",
+        "zh-CN": "创建条件",
+        "zh-TW": "建立條件"
+    },
+    "cancel": {
+        "guid": "0000000076E9",
+        "en-US": "Cancel",
+        "de-DE": "Abbrechen",
+        "es-ES": "Cancelar",
+        "es-MX": "Cancelar",
+        "fr-FR": "Annuler",
+        "it-IT": "Annulla",
+        "ja-JP": "キャンセル",
+        "ko-KR": "취소",
+        "pl-PL": "Anuluj",
+        "pt-BR": "Cancelar",
+        "ru-RU": "Отмена",
+        "zh-CN": "取消",
+        "zh-TW": "取消"
+    },
+    "conditions": {
+        "guid": "0000000077D3",
+        "en-US": "Conditions",
+        "de-DE": "Bedingungen",
+        "es-ES": "Condiciones",
+        "es-MX": "Condiciones",
+        "it-IT": "Condizioni",
+        "ja-JP": "条件",
+        "pl-PL": "Warunki",
+        "pt-BR": "Condições",
+        "ru-RU": "Условия",
+        "zh-CN": "条件",
+        "zh-TW": "條件"
+    },
+    "conflictingGlobalVarName": {
+        "guid": "00000000EB21",
+        "en-US": "Error: Global variable '%1$s' conflicts with another variable",
+        "de-DE": "Fehler: Globale Variable [%1$s] steht in Konflikt mit einer anderen Variable.",
+        "es-ES": "Error: La variable global «%1$s» entra en conflicto con otra variable.",
+        "es-MX": "Error: La variable global '%1$s' está en conflicto con otra variable",
+        "fr-FR": "Erreur : la variable globale « %1$s » entre en conflit avec une autre variable",
+        "it-IT": "Errore: la Variabile Globale '%1$s' è in conflitto con un'altra variabile",
+        "ja-JP": "エラー: グローバル変数「%1$s」が他の変数と矛盾しています",
+        "ko-KR": "오류: 전역 변수 '%1$s'이(가) 다른 변수와 충돌합니다.",
+        "pl-PL": "Błąd: Występuje konflikt globalnej zmiennej „%1$s” z inną zmienną",
+        "pt-BR": "Erro: Conflito da variável global '%1$s' com outra variável",
+        "ru-RU": "Ошибка: обнаружен конфликт глобальной переменной '%1$s' с другой переменной",
+        "zh-CN": "错误：全局变量”%1$s“与另一个变量冲突",
+        "zh-TW": "錯誤：全域變數'%1$s'與其它變數相衝突"
+    },
+    "conflictingPlayerVarName": {
+        "guid": "00000000EB2B",
+        "en-US": "Error: Player variable '%1$s' conflicts with another variable",
+        "de-DE": "Fehler: Spielervariable [%1$s] steht in Konflikt mit einer anderen Variable.",
+        "es-ES": "Error: La variable de jugador «%1$s» entra en conflicto con otra variable.",
+        "es-MX": "Error: La variable de jugador '%1$s' está en conflicto con otra variable",
+        "fr-FR": "Erreur : la variable de joueur « %1$s » entre en conflit avec une autre variable",
+        "it-IT": "Errore: la Variabile Giocatore '%1$s' è in conflitto con un'altra variabile",
+        "ja-JP": "エラー: プレイヤー変数「%1$s」が他の変数と矛盾しています",
+        "ko-KR": "오류: 플레이어 변수 '%1$s'이(가) 다른 변수와 충돌합니다.",
+        "pl-PL": "Błąd: Występuje konflikt globalnej „%1$s” gracza z inną zmienną.",
+        "pt-BR": "Erro: Conflito da variável de jogador '%1$s' com outra variável",
+        "ru-RU": "Ошибка: обнаружен конфликт переменной игрока '%1$s' с другой переменной",
+        "zh-CN": "错误：玩家变量”%1$s“与另一个变量冲突",
+        "zh-TW": "錯誤：玩家變數'%1$s'與其它變數相衝突"
+    },
+    "conflictingSubroutineName": {
+        "guid": "00000000FEDD",
+        "en-US": "Error: Subroutine '%1$s' conflicts with another subroutine",
+        "de-DE": "Fehler: Subroutine [%1$s] steht in Konflikt mit einer anderen Subroutine.",
+        "es-ES": "Error: La subrutina «%1$s» entra en conflicto con otra.",
+        "es-MX": "Error: La subrutina '%1$s' está en conflicto con otra subrutina",
+        "fr-FR": "Erreur : le sous-programme « %1$s » est en conflit avec un autre sous-programme",
+        "it-IT": "Errore: la Subroutine '%1$s' è in conflitto con un'altra subroutine",
+        "ja-JP": "エラー: サブルーチン「%1$s」が他のサブルーチンと矛盾しています",
+        "ko-KR": "오류: '%1$s' 서브루틴이 다른 서브루틴과 충돌합니다.",
+        "pl-PL": "Błąd: Konflikt podprogramu „%1$s” z innym podprogramem",
+        "pt-BR": "Erro: Sub-rotina '%1$s' está em conflito com outra",
+        "ru-RU": "Ошибка: подпрограмма '%1$s' конфликтует с другой подпрограммой",
+        "zh-CN": "错误：子程序”%1$s“与另一个子程序冲突",
+        "zh-TW": "錯誤：子程序'%1$s'與其它子程序相衝突"
+    },
+    "deleteActions": {
+        "guid": "00000000BA15",
+        "en-US": "Delete (%1$s) |RplAction:Actions;?",
+        "de-DE": "(%1$s) |RplAktion:Aktionen; löschen?",
+        "es-ES": "¿Eliminar (%1$s) |Rplacción:acciones;?",
+        "es-MX": "¿Deseas eliminar (%1$s) |Rpl la acción:las acciones?",
+        "fr-FR": "Supprimer %1$s |Rplaction:actions; ?",
+        "it-IT": "Eliminare (%1$s) |Rplazione:azioni;?",
+        "ja-JP": "（%1$s）個のアクションを削除しますか？",
+        "ko-KR": "Action (%1$s)개를 삭제하시겠습니까?",
+        "pl-PL": "Usunąć (%1$s) |Rpldziałanie:działania:działań;?",
+        "pt-BR": "Excluir (%1$s) |RplAção:Ações;?",
+        "ru-RU": "Удалить (%1$s) |Rplдействие:действия:действий;?",
+        "zh-CN": "删除这(%1$s)个动作？",
+        "zh-TW": "刪除這(%1$s)個動作？"
+    },
+    "deleteConditions": {
+        "guid": "00000000BA16",
+        "en-US": "Delete (%1$s) |RplCondition:Conditions;?",
+        "de-DE": "(%1$s) |RplBedingung:Bedingungen; löschen?",
+        "es-ES": "¿Eliminar (%1$s) |Rplcondición:condiciones;?",
+        "es-MX": "¿Deseas eliminar (%1$s) |Rpl la condición:las condiciones?",
+        "fr-FR": "Supprimer %1$s |Rplcondition:conditions; ?",
+        "it-IT": "Eliminare (%1$s) |Rplcondizione:condizioni;?",
+        "ja-JP": "（%1$s）個の条件を削除しますか？",
+        "ko-KR": "Condition (%1$s)개를 삭제하시겠습니까?",
+        "pl-PL": "Usunąć (%1$s) |Rplwarunek:warunki:warunków;?",
+        "pt-BR": "Excluir (%1$s) |RplCondição:Condições;?",
+        "ru-RU": "Удалить (%1$s) |Rplусловие:условия:условий;?",
+        "zh-CN": "删除这(%1$s)个条件？",
+        "zh-TW": "刪除這(%1$s)個條件？"
+    },
+    "deleteRules": {
+        "guid": "00000000BA17",
+        "en-US": "Delete (%1$s) |RplRule:Rules;?",
+        "de-DE": "%1$s |RplRegel:Regeln; löschen?",
+        "es-ES": "¿Eliminar (%1$s) |Rplregla:reglas;?",
+        "es-MX": "¿Deseas eliminar (%1$s) |Rpl la regla:las reglas?",
+        "fr-FR": "Supprimer %1$s |Rplrègle:règles; ?",
+        "it-IT": "Eliminare (%1$s) |Rplregola:regole;?",
+        "ja-JP": "（%1$s）個のルールを削除しますか？",
+        "ko-KR": "Rule (%1$s)개를 삭제하시겠습니까?",
+        "pl-PL": "Usunąć (%1$s) |Rplregułę:reguły:reguł;?",
+        "pt-BR": "Excluir (%1$s) |RplRegra:Regras;?",
+        "ru-RU": "Удалить (%1$s) |Rplправило:правила:правил;?",
+        "zh-CN": "删除这(%1$s)个规则？",
+        "zh-TW": "刪除這(%1$s)個規則？"
+    },
+    "editAction": {
+        "guid": "00000000B988",
+        "en-US": "Edit Action",
+        "de-DE": "Aktion bearbeiten",
+        "es-ES": "Editar acción",
+        "es-MX": "Editar acción",
+        "fr-FR": "Éditer l’action",
+        "it-IT": "Modifica azione",
+        "ja-JP": "アクションを編集",
+        "ko-KR": "Action 편집",
+        "pl-PL": "Edytuj działanie",
+        "pt-BR": "Editar Ação",
+        "ru-RU": "Изменить действие",
+        "zh-CN": "编辑动作",
+        "zh-TW": "編輯動作"
+    },
+    "editComment": {
+        "guid": "00000000FBAC",
+        "en-US": "Edit Comment",
+        "de-DE": "Kommentar bearbeiten",
+        "es-ES": "Editar comentario",
+        "es-MX": "Editar comentario",
+        "fr-FR": "Éditer le commentaire",
+        "it-IT": "Modifica commento",
+        "ja-JP": "コメントを編集",
+        "ko-KR": "코멘트 편집",
+        "pl-PL": "Edytuj komentarz",
+        "pt-BR": "Editar comentário",
+        "ru-RU": "Комментарий",
+        "zh-CN": "编辑注释",
+        "zh-TW": "編輯註解"
+    },
+    "editCondition": {
+        "guid": "00000000B987",
+        "en-US": "Edit Condition",
+        "de-DE": "Bedingung bearbeiten",
+        "es-ES": "Editar condición",
+        "es-MX": "Editar condición",
+        "fr-FR": "Éditer la condition",
+        "it-IT": "Modifica condizione",
+        "ja-JP": "条件を編集",
+        "ko-KR": "Condition 편집",
+        "pl-PL": "Edytuj warunek",
+        "pt-BR": "Editar Condição",
+        "ru-RU": "Изменить условие",
+        "zh-CN": "编辑条件",
+        "zh-TW": "編輯條件"
+    },
+    "editExtensions": {
+        "guid": "000000012996",
+        "en-US": "Edit Extensions",
+        "de-DE": "Erweiterungen bearbeiten",
+        "es-ES": "Editar extensiones",
+        "es-MX": "Editar extensiones",
+        "fr-FR": "Éditer les extensions",
+        "it-IT": "Modifica estensioni",
+        "ja-JP": "拡張を編集",
+        "ko-KR": "확장 편집",
+        "pl-PL": "Edytuj rozszerzenia",
+        "pt-BR": "Editar Extensões",
+        "ru-RU": "Расширения",
+        "zh-CN": "编辑扩展",
+        "zh-TW": "編輯擴充功能"
+    },
+    "editSubroutineNames": {
+        "guid": "00000000FFF3",
+        "en-US": "Edit Subroutine Names",
+        "de-DE": "Subroutinennamen ändern",
+        "es-ES": "Editar nombres de subrutinas",
+        "es-MX": "Editar nombres de subrutina",
+        "fr-FR": "Éditer les noms de sous-programmes",
+        "it-IT": "Modifica nomi subroutine",
+        "ja-JP": "サブルーチンの名前を編集",
+        "ko-KR": "Subroutine 이름 편집",
+        "pl-PL": "Edytuj nazwy podprogramów",
+        "pt-BR": "Editar nomes de sub-rotinas",
+        "ru-RU": "Изменить имена подпрограмм",
+        "zh-CN": "编辑子程序名称",
+        "zh-TW": "編輯子程序命名"
+    },
+    "editVariableNames": {
+        "guid": "00000000EAAB",
+        "en-US": "Edit Variable Names",
+        "de-DE": "Variablennamen ändern",
+        "es-ES": "Editar nombres de variables",
+        "es-MX": "Editar nombres de variables",
+        "fr-FR": "Modifier les noms de variables",
+        "it-IT": "Modifica nomi variabili",
+        "ja-JP": "変数の名前を編集",
+        "ko-KR": "Variable 이름 편집",
+        "pl-PL": "Edytuj nazwy zmiennych",
+        "pt-BR": "Editar Nomes de Variáveis",
+        "ru-RU": "Изменить имена переменных",
+        "zh-CN": "编辑变量名",
+        "zh-TW": "編輯變數命名"
+    },
+    "emptyGlobalVarName": {
+        "guid": "00000000EB29",
+        "en-US": "Error: Global variable '%1$s' requires a name",
+        "de-DE": "Fehler: Globale Variable [%1$s] benötigt einen Namen.",
+        "es-ES": "Error: La variable global «%1$s» requiere un nombre.",
+        "es-MX": "Error: La variable global '%1$s' requiere un nombre",
+        "fr-FR": "Erreur : la variable globale « %1$s » doit être nommée",
+        "it-IT": "Errore: la Variabile Globale '%1$s' richiede un nome",
+        "ja-JP": "エラー: グローバル変数「%1$s」の名前が必要です",
+        "ko-KR": "오류: 전역 변수 '%1$s'에 이름이 필요합니다.",
+        "pl-PL": "Błąd: Zmienna globalna (%1$s) wymaga nazwy",
+        "pt-BR": "Erro: A variável global '%1$s' requer um nome",
+        "ru-RU": "Ошибка: глобальной переменной '%1$s' требуется имя",
+        "zh-CN": "错误：全局变量“%1$s“需要一个名称",
+        "zh-TW": "錯誤：全域變數'%1$s'需要命名"
+    },
+    "emptyPlayerVarName": {
+        "guid": "00000000EB1E",
+        "en-US": "Error: Player variable '%1$s' requires a name",
+        "de-DE": "Fehler: Spielervariable [%1$s] benötigt einen Namen.",
+        "es-ES": "Error: La variable de jugador «%1$s» requiere un nombre.",
+        "es-MX": "Error: La variable de jugador '%1$s' requiere un nombre",
+        "fr-FR": "Erreur : la variable de joueur « %1$s » doit être nommée",
+        "it-IT": "Errore: la Variabile Giocatore '%1$s' richiede un nome",
+        "ja-JP": "エラー: プレイヤー変数「%1$s」の名前が必要です",
+        "ko-KR": "오류: 플레이어 변수 '%1$s'에 이름이 필요합니다.",
+        "pl-PL": "Błąd: Zmienna gracza (%1$s) wymaga nazwy",
+        "pt-BR": "Erro: A variável de jogador '%1$s' requer um nome",
+        "ru-RU": "Ошибка: переменной игрока '%1$s' требуется имя",
+        "zh-CN": "错误：玩家变量“%1$s“需要一个名称",
+        "zh-TW": "錯誤：玩家變數'%1$s'需要命名"
+    },
+    "emptySubroutineName": {
+        "guid": "00000000FEDA",
+        "en-US": "Error: Subroutine '%1$s' requires a name",
+        "de-DE": "Fehler: Subroutine [%1$s] benötigt einen Namen.",
+        "es-ES": "Error: La subrutina «%1$s» requiere un nombre.",
+        "es-MX": "Error: La subrutina '%1$s' requiere un nombre",
+        "fr-FR": "Erreur : le sous-programme « %1$s » requiert un nom",
+        "it-IT": "Errore: la Subroutine '%1$s' richiede un nome",
+        "ja-JP": "エラー: サブルーチン「%1$s」の名前が必要です",
+        "ko-KR": "오류: '%1$s' 서브루틴에 이름이 필요합니다.",
+        "pl-PL": "Błąd: Podprogram „%1$s” wymaga nazwy",
+        "pt-BR": "Erro: Sub-rotina '%1$s' requer um nome",
+        "ru-RU": "Ошибка: подпрограмме '%1$s' требуется имя",
+        "zh-CN": "错误：子程序“%1$s“需要一个名称",
+        "zh-TW": "錯誤：子程序'%1$s'需要命名"
+    },
+    "extensionPointsAvailable": {
+        "guid": "000000012A6A",
+        "en-US": "Extension Points Available",
+        "de-DE": "Verfügbare Erweiterungspunkte",
+        "es-ES": "Puntos de extensión disponibles",
+        "es-MX": "Puntos de extensión disponibles",
+        "fr-FR": "Points d’extension disponibles",
+        "it-IT": "Punti estensione disponibili",
+        "ja-JP": "利用可能拡張ポイント",
+        "ko-KR": "사용 가능한 확장 포인트",
+        "pl-PL": "Dostępne punkty rozszerzeń",
+        "pt-BR": "Pontos de Extensão Disponíveis",
+        "ru-RU": "Доступные очки расширений",
+        "zh-CN": "可用扩展点数",
+        "zh-TW": "可用的擴充點數"
+    },
+    "extensionPointsAvailableDesc": {
+        "guid": "000000012A6B",
+        "en-US": "You can gain Extension Points by removing Player Slots or by disabling all non-Workshop Maps",
+        "de-DE": "Du erhältst Erweiterungspunkte, indem du Spielerslots entfernst oder alle Karten deaktivierst, die nicht aus dem Workshop stammen.",
+        "es-ES": "Puedes conseguir puntos de extensión eliminando ranuras de jugador o desactivando todos los mapas que no son del Taller.",
+        "es-MX": "Puedes obtener puntos de extensión si eliminas puestos de jugadores o si deshabilitas todos los mapas que no sean del Workshop.",
+        "fr-FR": "Vous pouvez gagner des points d’extension en supprimant des emplacements de joueurs ou en désactivant toutes les cartes qui ne proviennent pas de la Forge",
+        "it-IT": "Puoi ottenere punti estensione rimuovendo slot giocatore o disattivando le mappe non appartenenti al Workshop",
+        "ja-JP": "プレイヤースロットを削除するか、すべての非「WORKSHOP」マップを無効化すると、拡張ポイントを得られる",
+        "ko-KR": "확장 포인트는 플레이어 슬롯을 제거하거나 워크샵이 아닌 전장을 모두 비활성화하여 얻을 수 있습니다",
+        "pl-PL": "Możesz zdobyć punkty rozszerzeń, usuwając miejsca dla graczy lub wyłączając wszystkie mapy niewarsztatowe.",
+        "pt-BR": "Você pode receber Pontos de Extensão removendo Espaços de Jogador ou desativando todos os Mapas que não forem do Workshop",
+        "ru-RU": "Чтобы получить очки расширений, уберите ячейки игроков или оставьте только поля боя из категории «Мастерская».",
+        "zh-CN": "移除玩家栏位或禁用所有非地图工坊地图即可获得扩展点数",
+        "zh-TW": "移除玩家欄位或關閉所有非工作坊地圖可獲得擴充點數"
+    },
+    "extensionPointsSpent": {
+        "guid": "000000012A8B",
+        "en-US": "Extension Points Spent",
+        "de-DE": "Verwendete Erweiterungspunkte",
+        "es-ES": "Puntos de extensión empleados",
+        "es-MX": "Puntos de extensión gastados",
+        "fr-FR": "Points d’extension dépensés",
+        "it-IT": "Punti estensione spesi",
+        "ja-JP": "消費拡張ポイント",
+        "ko-KR": "사용한 확장 포인트",
+        "pl-PL": "Użyte punkty rozszerzeń",
+        "pt-BR": "Pontos de Extensão Gastos",
+        "ru-RU": "Потраченные очки расширений",
+        "zh-CN": "已用扩展点数",
+        "zh-TW": "消耗的擴充點數"
+    },
+    "extensionPointsSpentDesc": {
+        "guid": "000000012A8D",
+        "en-US": "Extension Points Spent cannot exceed Extension Points Available",
+        "de-DE": "Es können nicht mehr Erweiterungspunkte verwendet werden, als verfügbar sind.",
+        "es-ES": "Los puntos de extensión empleados no pueden superar los puntos de extensión disponibles.",
+        "es-MX": "Los puntos de extensión gastados no pueden exceder los puntos de extensión disponibles",
+        "fr-FR": "Les points d’extension dépensés ne peuvent pas dépasser les points d’extension disponibles",
+        "it-IT": "I punti estensione spesi non possono superare quelli disponibili",
+        "ja-JP": "消費拡張ポイントは利用可能拡張ポイント以下に収める必要がある",
+        "ko-KR": "사용한 확장 포인트는 사용 가능한 확장 포인트를 초과할 수 없습니다",
+        "pl-PL": "Liczba użytych punktów rozszerzeń nie może przekroczyć dostępnych punktów rozszerzeń",
+        "pt-BR": "Os Pontos de Extensão Gastos não podem exceder os Pontos de Extensão Disponíveis",
+        "ru-RU": "Количество потраченных очков расширений не должно превышать количество доступных очков.",
+        "zh-CN": "已用扩展点数不能超过可用扩展点数",
+        "zh-TW": "消耗的擴充點數不可大於可用的擴充點數"
+    },
+    "invalidGlobalVarName": {
+        "guid": "00000000EB25",
+        "en-US": "Error: Global variable '%1$s' contains an invalid name",
+        "de-DE": "Fehler: Globale Variable [%1$s] enthält einen ungültigen Namen.",
+        "es-ES": "Error: La variable global «%1$s» contiene un nombre no válido.",
+        "es-MX": "Error: La variable global '%1$s' contiene un nombre no válido",
+        "fr-FR": "Erreur : la variable globale « %1$s » contient un nom invalide",
+        "it-IT": "Errore: la Variabile Globale '%1$s' contiene un nome non valido",
+        "ja-JP": "エラー: グローバル変数「%1$s」に無効な名前が含まれています",
+        "ko-KR": "오류: 전역 변수 '%1$s'이(가) 유효하지 않은 이름을 포함하고 있습니다.",
+        "pl-PL": "Błąd: Zmienna globalna (%1$s) zawiera nieprawidłową nazwę",
+        "pt-BR": "Erro: A variável global '%1$s' contém um nome inválido",
+        "ru-RU": "Ошибка: глобальная переменная '%1$s' содержит некорректное имя",
+        "zh-CN": "错误：全局变量”%1$s“包含无效的名称",
+        "zh-TW": "錯誤：全域變數'%1$s'包含無效命名"
+    },
+    "invalidPlayerVarName": {
+        "guid": "00000000EB2A",
+        "en-US": "Error: Player variable '%1$s' contains an invalid name",
+        "de-DE": "Fehler: Spielervariable [%1$s] enthält einen ungültigen Namen.",
+        "es-ES": "Error: La variable de jugador «%1$s» contiene un nombre no válido.",
+        "es-MX": "Error: La variable de jugador '%1$s' contiene un nombre no válido",
+        "fr-FR": "Erreur : la variable de joueur « %1$s » contient un nom invalide",
+        "it-IT": "Errore: la Variabile Giocatore '%1$s' contiene un nome non valido",
+        "ja-JP": "エラー: プレイヤー変数「%1$s」に無効な名前が含まれています",
+        "ko-KR": "오류: 플레이어 변수 '%1$s'이(가) 유효하지 않은 이름을 포함하고 있습니다.",
+        "pl-PL": "Błąd: Zmienna gracza (%1$s) zawiera nieprawidłową nazwę",
+        "pt-BR": "Erro: A variável de jogador '%1$s' contém um nome inválido",
+        "ru-RU": "Ошибка: переменная игрока '%1$s' содержит некорректное имя",
+        "zh-CN": "错误：玩家变量”%1$s“包含无效的名称",
+        "zh-TW": "錯誤：玩家變數'%1$s'包含無效命名"
+    },
+    "invalidSubroutineName": {
+        "guid": "00000000FEDC",
+        "en-US": "Error: Subroutine '%1$s' contains an invalid name",
+        "de-DE": "Fehler: Subroutine [%1$s] enthält einen ungültigen Namen.",
+        "es-ES": "Error: La subrutina «%1$s» contiene un nombre no válido.",
+        "es-MX": "Error: La subrutina '%1$s' contiene un nombre no válido",
+        "fr-FR": "Erreur : le sous-programme « %1$s » contient un nom invalide",
+        "it-IT": "Errore: la Subroutine '%1$s' contiene un nome non valido",
+        "ja-JP": "エラー: サブルーチン「%1$s」に無効な名前が含まれています",
+        "ko-KR": "오류: '%1$s' 서브루틴에 유효하지 않은 이름이 포함되어 있습니다.",
+        "pl-PL": "Błąd: Podprogram „%1$s” zawiera nieprawidłową nazwę",
+        "pt-BR": "Erro: Sub-rotina '%1$s' contém nome inválido",
+        "ru-RU": "Ошибка: подпрограмма '%1$s' содержит некорректное имя",
+        "zh-CN": "错误：子程序”%1$s“包含无效的名称",
+        "zh-TW": "錯誤：子程序'%1$s'的命名無效"
+    },
+    "noActions": {
+        "guid": "00000000BA40",
+        "en-US": "No Actions",
+        "de-DE": "Keine Aktionen",
+        "es-ES": "No hay acciones",
+        "es-MX": "Sin acciones",
+        "fr-FR": "Aucune action",
+        "it-IT": "Nessuna azione",
+        "ja-JP": "アクションなし",
+        "ko-KR": "Action 없음",
+        "pl-PL": "Brak działań",
+        "pt-BR": "Sem Ações",
+        "ru-RU": "Нет действий",
+        "zh-CN": "无动作",
+        "zh-TW": "無動作"
+    },
+    "noConditions": {
+        "guid": "00000000BA41",
+        "en-US": "No Conditions",
+        "de-DE": "Keine Bedingungen",
+        "es-ES": "No hay condiciones",
+        "es-MX": "Sin condiciones",
+        "fr-FR": "Aucune condition",
+        "it-IT": "Nessuna condizione",
+        "ja-JP": "条件なし",
+        "ko-KR": "Condition 없음",
+        "pl-PL": "Brak warunków",
+        "pt-BR": "Sem Condições",
+        "ru-RU": "Нет условий",
+        "zh-CN": "无条件",
+        "zh-TW": "無條件"
+    },
+    "noRules": {
+        "guid": "00000000BA3F",
+        "en-US": "No Rules",
+        "de-DE": "Keine Regeln",
+        "es-ES": "No hay reglas",
+        "es-MX": "Sin reglas",
+        "fr-FR": "Aucune règle",
+        "it-IT": "Nessuna regola",
+        "ja-JP": "ルールなし",
+        "ko-KR": "Rule 없음",
+        "pl-PL": "Brak reguł",
+        "pt-BR": "Sem Regras",
+        "ru-RU": "Нет правил",
+        "zh-CN": "无规则",
+        "zh-TW": "無規則"
+    },
+    "notEnoughExtensionPoints": {
+        "guid": "000000012C28",
+        "en-US": "Error: Too many Workshop Extension Points spent; please remove one or more Extensions.",
+        "de-DE": "Fehler: Zu viele Erweiterungspunkte verwendet. Bitte entferne eine oder mehr Erweiterungen.",
+        "es-ES": "Error: Se han empleado demasiados puntos de extensión del Taller. Elimina una o más extensiones.",
+        "es-MX": "Error: Demasiados puntos de extensión del Workshop gastados; elimina una o más extensiones.",
+        "fr-FR": "Erreur : trop de points d’extension de la Forge dépensés ; veuillez supprimer une ou plusieurs extensions.",
+        "it-IT": "Errore: hai speso troppi punti estensione Workshop. Rimuovi una o più estensioni.",
+        "ja-JP": "エラー: 消費拡張ポイントが多すぎます。拡張を1つ以上削除してください",
+        "ko-KR": "경고: 사용한 워크샵 확장 포인트가 너무 많습니다. 하나 이상의 확장을 제거하십시오.",
+        "pl-PL": "Błąd: Użyto zbyt wiele punktów rozszerzeń Warsztatu; usuń jedno lub więcej rozszerzeń.",
+        "pt-BR": "Erro: Excesso de gastos de Pontos de Extensão do Workshop; remova uma ou mais Extensões.",
+        "ru-RU": "Ошибка: потрачено слишком много очков расширений «Мастерской». Удалите одно или несколько расширений.",
+        "zh-CN": "错误：已用地图工坊扩展点数过多；请移除一项或多项扩展。",
+        "zh-TW": "錯誤：消耗的工作坊擴充點數過多，請移除至少一個擴充"
+    },
+    "ok": {
+        "guid": "0000000076E8",
+        "en-US": "Ok",
+        "de-DE": "OK",
+        "es-ES": "Aceptar",
+        "es-MX": "Aceptar",
+        "fr-FR": "OK",
+        "it-IT": "OK",
+        "ja-JP": "OK",
+        "ko-KR": "확인",
+        "pl-PL": "OK",
+        "ru-RU": "ОК",
+        "zh-CN": "确定",
+        "zh-TW": "確認"
+    },
+    "resetToDefaults": {
+        "guid": "00000000FFF5",
+        "en-US": "Reset to Defaults",
+        "de-DE": "Einstellungen zurücksetzen",
+        "es-ES": "Restablecer valores por defecto",
+        "es-MX": "Restablecer a valores predeterminados",
+        "fr-FR": "Paramètres par défaut",
+        "it-IT": "Ripristina le impostazioni predefinite",
+        "ja-JP": "デフォルトに戻す",
+        "ko-KR": "기본값으로 다시 설정",
+        "pl-PL": "Przywróć domyślne",
+        "pt-BR": "Restaurar predefinições",
+        "ru-RU": "По умолчанию",
+        "zh-CN": "重设为默认",
+        "zh-TW": "恢復為預設值"
+    },
+    "rule": {
+        "guid": "00000000AD34",
+        "en-US": "Rule %1$s",
+        "es-ES": "Regla %1$s",
+        "es-MX": "Regla %1$s",
+        "fr-FR": "Règle %1$s",
+        "it-IT": "Regola %1$s",
+        "ja-JP": "ルール%1$s",
+        "pl-PL": "Reguła %1$s",
+        "pt-BR": "Regra %1$s",
+        "ru-RU": "Правило %1$s",
+        "zh-CN": "规则 %1$s"
+    },
+    "rules": {
+        "guid": "00000000B98E",
+        "en-US": "Rules",
+        "de-DE": "Regeln",
+        "es-ES": "Reglas",
+        "es-MX": "Reglas",
+        "fr-FR": "Règles",
+        "it-IT": "Regole",
+        "ja-JP": "ルール",
+        "pl-PL": "Reguły",
+        "pt-BR": "Regras",
+        "ru-RU": "Правила",
+        "zh-CN": "规则",
+        "zh-TW": "規則"
+    },
+    "scriptDiagnostics": {
+        "guid": "00000000F418",
+        "en-US": "Script Diagnostics",
+        "de-DE": "Skriptdiagnostik",
+        "es-ES": "Diagnóstico de script",
+        "es-MX": "Diagnóstico de secuencia de comandos",
+        "fr-FR": "Diagnostic du script",
+        "it-IT": "Diagnostica script",
+        "ja-JP": "スクリプト診断",
+        "ko-KR": "스크립트 진단",
+        "pl-PL": "Diagnostyka skryptu",
+        "pt-BR": "Diagnóstico de script",
+        "ru-RU": "Диагностика скрипта",
+        "zh-CN": "诊断脚本",
+        "zh-TW": "腳本診斷分析"
+    },
+    "settings": {
+        "guid": "000000002CD4",
+        "en-US": "SETTINGS",
+        "de-DE": "EINSTELLUNGEN",
+        "es-ES": "AJUSTES",
+        "es-MX": "CONFIGURACIÓN",
+        "fr-FR": "PARAMÈTRES",
+        "it-IT": "IMPOSTAZIONI",
+        "ja-JP": "設定",
+        "ko-KR": "설정",
+        "pl-PL": "USTAWIENIA",
+        "pt-BR": "CONFIGURAÇÕES",
+        "ru-RU": "НАСТРОЙКИ",
+        "zh-CN": "比赛设置",
+        "zh-TW": "設定"
+    },
+    "tooLongGlobalVarName": {
+        "guid": "00000000EB2F",
+        "en-US": "Error: Global variable '%1$s' contains a name that is too long",
+        "de-DE": "Fehler: Globale Variable [%1$s] enthält einen zu langen Namen.",
+        "es-ES": "Error: La variable global «%1$s» contiene un nombre demasiado largo.",
+        "es-MX": "Error: La variable global '%1$s' contiene un nombre que es demasiado largo",
+        "fr-FR": "Erreur : la variable globale « %1$s » contient un nom trop long",
+        "it-IT": "Errore: la Variabile Globale '%1$s' contiene un nome troppo lungo",
+        "ja-JP": "エラー: グローバル変数「%1$s」に含まれる名前が長すぎます",
+        "ko-KR": "오류: 전역 변수 '%1$s'이(가) 너무 긴 이름을 포함하고 있습니다.",
+        "pl-PL": "Błąd: Zmienna globalna (%1$s) zawiera zbyt długą nazwę",
+        "pt-BR": "Erro: A variável global '%1$s' contém um nome muito longo",
+        "ru-RU": "Ошибка: глобальная переменная '%1$s' содержит слишком длинное имя",
+        "zh-CN": "错误：全局变量”%1$s“包含过长的名称",
+        "zh-TW": "錯誤：全域變數'%1$s'包含過長的命名"
+    },
+    "tooLongPlayerVarName": {
+        "guid": "00000000EB2E",
+        "en-US": "Error: Player variable '%1$s' contains a name that is too long",
+        "de-DE": "Fehler: Spielervariable [%1$s] enthält einen zu langen Namen.",
+        "es-ES": "Error: La variable de jugador «%1$s» contiene un nombre demasiado largo.",
+        "es-MX": "Error: La variable de jugador '%1$s' contiene un nombre que es demasiado largo",
+        "fr-FR": "Erreur : la variable de joueur « %1$s » contient un nom trop long",
+        "it-IT": "Errore: la Variabile Giocatore '%1$s' contiene un nome troppo lungo",
+        "ja-JP": "エラー: プレイヤー変数「%1$s」に含まれる名前が長すぎます",
+        "ko-KR": "오류: 플레이어 변수 '%1$s'이(가) 너무 긴 이름을 포함하고 있습니다.",
+        "pl-PL": "Błąd: Zmienna gracza (%1$s) zawiera zbyt długą nazwę",
+        "pt-BR": "Erro: A variável de jogador '%1$s' contém um nome muito longo",
+        "ru-RU": "Ошибка: переменная игрока '%1$s' содержит слишком длинное имя",
+        "zh-CN": "错误：玩家变量”%1$s“包含过长的名称",
+        "zh-TW": "錯誤：玩家變數'%1$s'包含過長的命名"
+    },
+    "tooLongSubroutineName": {
+        "guid": "00000000FEDB",
+        "en-US": "Error: Subroutine '%1$s' contains a name that is too long",
+        "de-DE": "Fehler: Subroutine [%1$s] enthält einen zu langen Namen.",
+        "es-ES": "Error: La subrutina «%1$s» contiene un nombre demasiado largo.",
+        "es-MX": "Error: La subrutina '%1$s' contiene un nombre que es demasiado largo",
+        "fr-FR": "Erreur : le sous-programme « %1$s » contient un nom trop long",
+        "it-IT": "Errore: la Subroutine '%1$s' contiene un nome troppo lungo",
+        "ja-JP": "エラー: サブルーチン「%1$s」に含まれる名前が長すぎます",
+        "ko-KR": "오류: '%1$s' 서브루틴에 너무 긴 이름이 포함되어 있습니다.",
+        "pl-PL": "Błąd: Podprogram „%1$s” zawiera zbyt długą nazwę",
+        "pt-BR": "Erro: Sub-rotina '%1$s' contém um nome muito longo",
+        "ru-RU": "Ошибка: подпрограмма '%1$s' содержит слишком длинное имя",
+        "zh-CN": "错误：子程序”%1$s“包含过长的名称",
+        "zh-TW": "錯誤：子程序'%1$s'包含過長的命名"
+    },
+    "totalElementCount": {
+        "guid": "00000000F41B",
+        "en-US": "Total Element Count",
+        "de-DE": "Gesamtanzahl aller Elemente",
+        "es-ES": "Total de elementos",
+        "es-MX": "Recuento total de elementos",
+        "fr-FR": "Nombre total d’éléments",
+        "it-IT": "Numero totale elementi",
+        "ja-JP": "合計要素数",
+        "ko-KR": "총 요소 수",
+        "pl-PL": "Łączna liczba elementów",
+        "pt-BR": "Total de elementos",
+        "ru-RU": "Всего элементов",
+        "zh-CN": "总计元素数量",
+        "zh-TW": "元件數量"
+    },
+    "totalElementCountDesc": {
+        "guid": "00000000F41D",
+        "en-US": "Elements include rules, conditions, actions, and values (up to a max of %1$s)",
+        "de-DE": "Elemente schließen Regeln, Konditionen, Aktionen und Werte ein (bis zu einem Maximum von %1$s)",
+        "es-ES": "Entre los elementos se incluyen reglas, condiciones, acciones y valores (hasta un máximo de %1$s)",
+        "es-MX": "Los elementos incluyen reglas, condiciones, acciones y valores (hasta un máximo de %1$s)",
+        "fr-FR": "Ces éléments incluent les règles, conditions, actions et valeurs (jusqu’à un maximum de %1$s).",
+        "it-IT": "Gli elementi includono regole, condizioni, azioni e valori (fino a un massimo di %1$s)",
+        "ja-JP": "要素にはルール、条件、アクション、値が含まれます（最大%1$sまで）",
+        "ko-KR": "요소에는 규칙, 조건, 액션, 값이 포함됩니다 (최대 %1$s)",
+        "pl-PL": "Do elementów zaliczają się reguły, warunki, działania i wartości (maksymalnie %1$s)",
+        "pt-BR": "Elementos incluem regras, condições, ações e valores (até %1$s)",
+        "ru-RU": "Элементы включают в себя правила, условия, действия и значения (вплоть до %1$s).",
+        "zh-CN": "元素包括规则、条件、行动和值（最多可有%1$s个）",
+        "zh-TW": "元件包括規則、條件、動作和數值（最高為%1$s）"
+    }
+}
+//end-json
+/* 
+ * This file is part of OverPy (https://github.com/Zezombye/overpy).
+ * Copyright (c) 2019 Zezombye.
+ * 
+ * This program is free software: you can redistribute it and/or modify  
+ * it under the terms of the GNU General Public License as published by  
+ * the Free Software Foundation, version 3.
+ *
+ * This program is distributed in the hope that it will be useful, but 
+ * WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+"use strict";
+
 const customGameSettingsSchema = 
 //begin-json
 {
@@ -39785,6 +40856,21 @@ const customGameSettingsSchema =
             "beamEffects": {
                 "points": 2,
                 "guid": "0000000129FF",
+                "descriptionLocalized": {
+                    "guid": "000000012BFC",
+                    "en-US": "Adds effects to the Type menu of the Create Beam Effect action. The Color parameter picks a Team Color if given a non-Team Color.",
+                    "de-DE": "Fügt dem Type-Menü der Aktion [Create Beam Effect] Effekte hinzu. Der Farbparameter wählt eine Teamfarbe wenn keine der Teamfarben ausgewählt ist.",
+                    "es-ES": "Añade efectos al menú «Tipo» de la acción «Create Beam Effect». El parámetro «Color» escoge un color de equipo si no se le da uno.",
+                    "es-MX": "Añade efectos al menú Tipo de la acción Crear efecto de rayo. El parámetro Color elige un color de equipo si obtiene un color que no pertenece a ningún equipo.",
+                    "fr-FR": "Ajoute des effets au menu de type de l’action « Créer un effet de rayon ». Le paramètre de couleur choisit une couleur d’équipe s’il reçoit une couleur qui n’appartient à aucune équipe.",
+                    "it-IT": "Aggiunge effetti al menu Tipo dell'Azione Create Beam Effect. Il parametro Colore sceglie un colore di squadra se gli viene attribuito un colore non di squadra.",
+                    "ja-JP": "「ビーム・エフェクトを作成」アクションのタイプ・メニューにエフェクトを追加する。チームカラー以外が割り当てられた場合、色パラメーターはチームカラーを選択する",
+                    "ko-KR": "Create Beam Effect 액션의 Type 메뉴에 효과를 추가합니다. 팀 색상이 아닌 색상이 주어졌을 경우 Color 매개변수가 팀 색상을 선택합니다.",
+                    "pl-PL": "Dodaje efekty do menu typów działania Create Beam Effect. Parametr Color wybiera kolor drużyny jeśli podano kolor inny niż drużyny.",
+                    "pt-BR": "Adiciona efeitos ao menu de Tipo da ação Criar Efeito de Feixe. O parâmetro Cor escolhe uma Cor de Equipe se outra Cor que não as das Equipes for atribuída.",
+                    "ru-RU": "Добавляет эффекты в меню «Тип» действия [Create Beam Effect]. Параметр «Цвет» выбирает цвет команды если задан вариант не соответствующий возможным цветам команды.",
+                    "zh-CN": "在“创建光束效果”动作的类型菜单中添加效果。当“颜色”参数被指定为非队伍颜色时，会选取一种队伍颜色。"
+                },
                 "en-US": "Beam Effects",
                 "de-DE": "Strahleffekte",
                 "es-ES": "Efectos de haz",
@@ -39798,6 +40884,21 @@ const customGameSettingsSchema =
             "beamSounds": {
                 "points": 1,
                 "guid": "000000012D9B",
+                "descriptionLocalized": {
+                    "guid": "000000012D9F",
+                    "en-US": "Adds sounds to the Type menu of the Create Effect action.",
+                    "de-DE": "Fügt dem Type-Menü der Aktion [Create Effect] Sounds hinzu.",
+                    "es-ES": "Añade sonidos al menú «Tipo» de la acción «Create Effect».",
+                    "es-MX": "Añade sonidos al menú Tipo de la acción Crear efecto.",
+                    "fr-FR": "Ajoute des sons au menu de type de l’action « Créer un effet ».",
+                    "it-IT": "Aggiunge suoni al menu Tipo dell'Azione Create Effect.",
+                    "ja-JP": "「エフェクトを作成」アクションのタイプ・メニューに音を追加する",
+                    "ko-KR": "Create Effect 액션의 Type 메뉴에 음향을 추가합니다.",
+                    "pl-PL": "Dodaje dźwięki do menu typów działania Create Effect.",
+                    "pt-BR": "Adiciona sons ao menu Tipo da ação Criar Efeito.",
+                    "ru-RU": "Добавляет звуки в меню «Тип» действия [Create Effect].",
+                    "zh-CN": "在“创建效果”动作的类型菜单中添加声音。"
+                },
                 "en-US": "Beam Sounds",
                 "de-DE": "Sounds von Strahlen",
                 "es-ES": "Sonidos de haz",
@@ -39811,6 +40912,21 @@ const customGameSettingsSchema =
             "buffAndDebuffSounds": {
                 "points": 2,
                 "guid": "000000012E70",
+                "descriptionLocalized": {
+                    "guid": "000000012E71",
+                    "en-US": "Adds sounds to the Type menu of the Create Effect and Play Effect actions.",
+                    "de-DE": "Fügt dem Type-Menü der Aktionen [Create Effect] und [Play Effect] Sounds hinzu.",
+                    "es-ES": "Añade sonidos al menú «Tipo» de las acciones «Create Effect» y «Play Effect».",
+                    "es-MX": "Añade sonidos al menú Tipo de las acciones Crear efecto y Reproducir efecto.",
+                    "fr-FR": "Ajoute des sons au menu de type des actions « Créer un effet » et « Jouer un effet ».",
+                    "it-IT": "Aggiunge suoni al menu Tipo delle Azioni Create Effect e Play Effect.",
+                    "ja-JP": "「エフェクトを作成」および「エフェクトを再生」アクションのタイプ・メニューに音を追加する",
+                    "ko-KR": "Create Effect 및 Play Effect 액션의 Type 메뉴에 음향을 추가합니다.",
+                    "pl-PL": "Dodaje dźwięki do menu typów działań Create Effect i Play Effect.",
+                    "pt-BR": "Adiciona sons ao menu Tipo das ações Criar Efeito e Reproduzir Efeito.",
+                    "ru-RU": "Добавляет звуковые эффекты в меню «Тип» действий [Create Effect] и [Play Effect].",
+                    "zh-CN": "在“创建效果”和“播放效果”动作的类型菜单中添加声音。"
+                },
                 "en-US": "Buff and Debuff Sounds",
                 "de-DE": "Sounds von Stärkungs- und Schwächungseffekten",
                 "es-ES": "Sonidos de beneficios y perjuicios",
@@ -39824,6 +40940,21 @@ const customGameSettingsSchema =
             "buffStatusEffects": {
                 "points": 2,
                 "guid": "000000012A02",
+                "descriptionLocalized": {
+                    "guid": "000000012D9C",
+                    "en-US": "Adds effects to the Type menus of the Create Effect and Play Effect actions. The Radius parameter is ignored. The Color parameter picks a Team Color if given a non-Team Color. For first-person effects Position expects a player.",
+                    "de-DE": "Fügt den Type-Menüs der Aktionen [Create Effect] und [Play Effect] Effekte hinzu. Der Radiusparameter wird ignoriert. Der Farbparameter wählt eine Teamfarbe wenn keine der Teamfarben ausgewählt ist. Bei Effekten für die Egoperspektive wird für den Positionswert ein Spieler erwartet.",
+                    "es-ES": "Añade efectos a los menús «Tipo» de las acciones «Create Effect» y «Play Effect». El parámetro «Radio» se ignora. El parámetro «Color» escoge un color de equipo si no se le da uno. Para los efectos en primera persona «Position» requiere un jugador.",
+                    "es-MX": "Añade efectos a los menús Tipo de las acciones Crear efecto y Reproducir efecto. Se ignora el parámetro del radio. El parámetro Color elige un color de equipo si obtiene un color que no pertenece a ningún equipo. Para efectos de primera persona Posición requiere un jugador.",
+                    "fr-FR": "Ajoute des effets aux menus de type des actions « Créer un effet » et « Jouer un effet ». Le paramètre de rayon est ignoré. Le paramètre de couleur choisit une couleur d’équipe s’il reçoit une couleur qui n’appartient à aucune équipe. Pour les effets en première personne la position suppose un joueur.",
+                    "it-IT": "Aggiunge effetti ai menu Tipo delle Azioni Create Effect e Play Effect. Il parametro Raggio viene ignorato. Il parametro Colore sceglie un colore di squadra se gli viene attribuito un colore non di squadra. Per gli effetti in prima persona Posizione necessita un giocatore.",
+                    "ja-JP": "「エフェクトを作成」および「エフェクトを再生」アクションのタイプ・メニューにエフェクトを追加する。範囲パラメーターは無視する。チームカラー以外が割り当てられた場合、色パラメーターはチームカラーを選択する。一人称視点エフェクトの場合、「位置」はプレイヤーになる",
+                    "ko-KR": "Create Effect 및 Play Effect 액션의 Type 메뉴에 효과를 추가합니다. Radius 매개변수는 무시됩니다. 팀 색상이 아닌 색상이 주어졌을 경우 Color 매개변수가 팀 색상을 선택합니다. 1인칭 시점 효과의 경우 Position에 플레이어가 필요합니다.",
+                    "pl-PL": "Dodaje efekty do menu typów działań Create Effect i Play Effect. Parametr Radius jest ignorowany. Parametr Color wybiera kolor drużyny jeśli podano kolor inny niż drużyny. Dla efektów pierwszoosobowych parametr Position oczekuje gracza.",
+                    "pt-BR": "Adiciona efeitos aos menus de Tipo das ações Criar Efeito e Reproduzir Efeito. O parâmetro Raio é ignorado. O parâmetro Cor escolhe uma Cor de Equipe se outra Cor que não as das Equipes for atribuída. Para efeitos em primeira pessoa Posição requer um jogador.",
+                    "ru-RU": "Добавляет эффекты в меню «Тип» действий [Create Effect] и [Play Effect]. Параметр «Радиус» не учитывается. Параметр «Цвет» выбирает цвет команды если задан вариант не соответствующий возможным цветам команды. Для эффектов от первого лица параметр «Позиция» требует указание игрока.",
+                    "zh-CN": "在“创建效果”和“播放效果”动作的类型菜单中添加效果。无视“半径”参数。当“颜色”参数被指定为非队伍颜色时，会选取一种队伍颜色。对第一人称效果，位置应为玩家。"
+                },
                 "en-US": "Buff Status Effects",
                 "de-DE": "Effekte von Stärkungseffekten",
                 "es-ES": "Efectos de estados de mejoras",
@@ -39837,6 +40968,21 @@ const customGameSettingsSchema =
             "debuffStatusEffects": {
                 "points": 2,
                 "guid": "000000012BFB",
+                "descriptionLocalized": {
+                    "guid": "000000012D9C",
+                    "en-US": "Adds effects to the Type menus of the Create Effect and Play Effect actions. The Radius parameter is ignored. The Color parameter picks a Team Color if given a non-Team Color. For first-person effects Position expects a player.",
+                    "de-DE": "Fügt den Type-Menüs der Aktionen [Create Effect] und [Play Effect] Effekte hinzu. Der Radiusparameter wird ignoriert. Der Farbparameter wählt eine Teamfarbe wenn keine der Teamfarben ausgewählt ist. Bei Effekten für die Egoperspektive wird für den Positionswert ein Spieler erwartet.",
+                    "es-ES": "Añade efectos a los menús «Tipo» de las acciones «Create Effect» y «Play Effect». El parámetro «Radio» se ignora. El parámetro «Color» escoge un color de equipo si no se le da uno. Para los efectos en primera persona «Position» requiere un jugador.",
+                    "es-MX": "Añade efectos a los menús Tipo de las acciones Crear efecto y Reproducir efecto. Se ignora el parámetro del radio. El parámetro Color elige un color de equipo si obtiene un color que no pertenece a ningún equipo. Para efectos de primera persona Posición requiere un jugador.",
+                    "fr-FR": "Ajoute des effets aux menus de type des actions « Créer un effet » et « Jouer un effet ». Le paramètre de rayon est ignoré. Le paramètre de couleur choisit une couleur d’équipe s’il reçoit une couleur qui n’appartient à aucune équipe. Pour les effets en première personne la position suppose un joueur.",
+                    "it-IT": "Aggiunge effetti ai menu Tipo delle Azioni Create Effect e Play Effect. Il parametro Raggio viene ignorato. Il parametro Colore sceglie un colore di squadra se gli viene attribuito un colore non di squadra. Per gli effetti in prima persona Posizione necessita un giocatore.",
+                    "ja-JP": "「エフェクトを作成」および「エフェクトを再生」アクションのタイプ・メニューにエフェクトを追加する。範囲パラメーターは無視する。チームカラー以外が割り当てられた場合、色パラメーターはチームカラーを選択する。一人称視点エフェクトの場合、「位置」はプレイヤーになる",
+                    "ko-KR": "Create Effect 및 Play Effect 액션의 Type 메뉴에 효과를 추가합니다. Radius 매개변수는 무시됩니다. 팀 색상이 아닌 색상이 주어졌을 경우 Color 매개변수가 팀 색상을 선택합니다. 1인칭 시점 효과의 경우 Position에 플레이어가 필요합니다.",
+                    "pl-PL": "Dodaje efekty do menu typów działań Create Effect i Play Effect. Parametr Radius jest ignorowany. Parametr Color wybiera kolor drużyny jeśli podano kolor inny niż drużyny. Dla efektów pierwszoosobowych parametr Position oczekuje gracza.",
+                    "pt-BR": "Adiciona efeitos aos menus de Tipo das ações Criar Efeito e Reproduzir Efeito. O parâmetro Raio é ignorado. O parâmetro Cor escolhe uma Cor de Equipe se outra Cor que não as das Equipes for atribuída. Para efeitos em primeira pessoa Posição requer um jogador.",
+                    "ru-RU": "Добавляет эффекты в меню «Тип» действий [Create Effect] и [Play Effect]. Параметр «Радиус» не учитывается. Параметр «Цвет» выбирает цвет команды если задан вариант не соответствующий возможным цветам команды. Для эффектов от первого лица параметр «Позиция» требует указание игрока.",
+                    "zh-CN": "在“创建效果”和“播放效果”动作的类型菜单中添加效果。无视“半径”参数。当“颜色”参数被指定为非队伍颜色时，会选取一种队伍颜色。对第一人称效果，位置应为玩家。"
+                },
                 "en-US": "Debuff Status Effects",
                 "de-DE": "Effekte von Schwächungseffekten",
                 "es-ES": "Efectos de estados de perjuicios",
@@ -39850,6 +40996,21 @@ const customGameSettingsSchema =
             "energyExplosionEffects": {
                 "points": 4,
                 "guid": "000000012D79",
+                "descriptionLocalized": {
+                    "guid": "000000012D9E",
+                    "en-US": "Adds effects to the Type menu of the Play Effect action. The Radius parameter is ignored. The Color parameter picks a Team Color if given a non-Team Color.",
+                    "de-DE": "Fügt dem Type-Menü der Aktion [Play Effect] Effekte hinzu. Der Radiusparameter wird ignoriert. Der Farbparameter wählt eine Teamfarbe wenn keine der Teamfarben ausgewählt ist.",
+                    "es-ES": "Añade efectos al menú «Tipo» de la acción «Play Effect». El parámetro «Radio» se ignora. El parámetro «Color» escoge un color de equipo si no se le da uno.",
+                    "es-MX": "Añade efectos al menú Tipo de la acción Reproducir efecto. Se ignora el parámetro del radio. El parámetro Color elige un color de equipo si obtiene un color que no pertenece a ningún equipo.",
+                    "fr-FR": "Ajoute des effets au menu de type de l’action « Jouer un effet ». Le paramètre de rayon est ignoré. Le paramètre de couleur choisit une couleur d’équipe s’il reçoit une couleur qui n’appartient à aucune équipe.",
+                    "it-IT": "Aggiunge effetti al menu Tipo dell'Azione Play Effect. Il parametro Raggio viene ignorato. Il parametro Colore sceglie un colore di squadra se gli viene attribuito un colore non di squadra.",
+                    "ja-JP": "「エフェクトを再生」アクションのタイプ・メニューにエフェクトを追加する。範囲パラメーターは無視する。チームカラー以外が割り当てられた場合、色パラメーターはチームカラーを選択する",
+                    "ko-KR": "Play Effect 액션의 Type 메뉴에 효과를 추가합니다. Radius 매개변수는 무시됩니다. 팀 색상이 아닌 색상이 주어졌을 경우 Color 매개변수가 팀 색상을 선택합니다.",
+                    "pl-PL": "Dodaje efekty do menu typów działania Play Effect. Parametr Radius jest ignorowany. Parametr Color wybiera kolor drużyny jeśli podano kolor inny niż drużyny.",
+                    "pt-BR": "Adiciona efeitos ao menu de Tipo da ação Reproduzir Efeito. O parâmetro Raio é ignorado. O parâmetro Cor escolhe uma Cor de Equipe se outra Cor que não as das Equipes for atribuída.",
+                    "ru-RU": "Добавляет эффекты в меню «Тип» действия [Play Effect]. Параметр «Радиус» не учитывается. Параметр «Цвет» выбирает цвет команды если задан вариант не соответствующий возможным цветам команды.",
+                    "zh-CN": "在“播放效果”动作的类型菜单中添加效果。无视“半径”参数。当“颜色”参数被指定为非队伍颜色时，会选取一种队伍颜色。"
+                },
                 "en-US": "Energy Explosion Effects",
                 "de-DE": "Effekte von Energieexplosionen",
                 "es-ES": "Efectos de explosión de energía",
@@ -39863,6 +41024,21 @@ const customGameSettingsSchema =
             "explosionSounds": {
                 "points": 2,
                 "guid": "000000012EB2",
+                "descriptionLocalized": {
+                    "guid": "000000012EB3",
+                    "en-US": "Adds sounds to the Type menu of the Play Effect action.",
+                    "de-DE": "Fügt dem Type-Menü der Aktion [Play Effect] Sounds hinzu.",
+                    "es-ES": "Añade sonidos al menú «Tipo» de la acción «Play Effect».",
+                    "es-MX": "Añade sonidos al menú Tipo de la acción Reproducir efecto.",
+                    "fr-FR": "Ajoute des sons au menu de type de l’action « Jouer un effet ».",
+                    "it-IT": "Aggiunge suoni al menu Tipo dell'Azione Play Effect.",
+                    "ja-JP": "「エフェクトを再生」アクションのタイプ・メニューに音を追加する",
+                    "ko-KR": "Play Effect 액션의 Type 메뉴에 음향을 추가합니다.",
+                    "pl-PL": "Dodaje dźwięki do menu typów działania Play Effect.",
+                    "pt-BR": "Adiciona sons ao menu Tipo da ação Reproduzir Efeito.",
+                    "ru-RU": "Добавляет звуковые эффекты в меню «Тип» действия [Play Effect].",
+                    "zh-CN": "在“播放效果”动作的类型菜单中添加声音。"
+                },
                 "en-US": "Explosion Sounds",
                 "de-DE": "Sounds von Explosionen",
                 "es-ES": "Sonidos de explosiones",
@@ -39876,6 +41052,21 @@ const customGameSettingsSchema =
             "kineticExplosionEffects": {
                 "points": 4,
                 "guid": "000000012D22",
+                "descriptionLocalized": {
+                    "guid": "000000012D9E",
+                    "en-US": "Adds effects to the Type menu of the Play Effect action. The Radius parameter is ignored. The Color parameter picks a Team Color if given a non-Team Color.",
+                    "de-DE": "Fügt dem Type-Menü der Aktion [Play Effect] Effekte hinzu. Der Radiusparameter wird ignoriert. Der Farbparameter wählt eine Teamfarbe wenn keine der Teamfarben ausgewählt ist.",
+                    "es-ES": "Añade efectos al menú «Tipo» de la acción «Play Effect». El parámetro «Radio» se ignora. El parámetro «Color» escoge un color de equipo si no se le da uno.",
+                    "es-MX": "Añade efectos al menú Tipo de la acción Reproducir efecto. Se ignora el parámetro del radio. El parámetro Color elige un color de equipo si obtiene un color que no pertenece a ningún equipo.",
+                    "fr-FR": "Ajoute des effets au menu de type de l’action « Jouer un effet ». Le paramètre de rayon est ignoré. Le paramètre de couleur choisit une couleur d’équipe s’il reçoit une couleur qui n’appartient à aucune équipe.",
+                    "it-IT": "Aggiunge effetti al menu Tipo dell'Azione Play Effect. Il parametro Raggio viene ignorato. Il parametro Colore sceglie un colore di squadra se gli viene attribuito un colore non di squadra.",
+                    "ja-JP": "「エフェクトを再生」アクションのタイプ・メニューにエフェクトを追加する。範囲パラメーターは無視する。チームカラー以外が割り当てられた場合、色パラメーターはチームカラーを選択する",
+                    "ko-KR": "Play Effect 액션의 Type 메뉴에 효과를 추가합니다. Radius 매개변수는 무시됩니다. 팀 색상이 아닌 색상이 주어졌을 경우 Color 매개변수가 팀 색상을 선택합니다.",
+                    "pl-PL": "Dodaje efekty do menu typów działania Play Effect. Parametr Radius jest ignorowany. Parametr Color wybiera kolor drużyny jeśli podano kolor inny niż drużyny.",
+                    "pt-BR": "Adiciona efeitos ao menu de Tipo da ação Reproduzir Efeito. O parâmetro Raio é ignorado. O parâmetro Cor escolhe uma Cor de Equipe se outra Cor que não as das Equipes for atribuída.",
+                    "ru-RU": "Добавляет эффекты в меню «Тип» действия [Play Effect]. Параметр «Радиус» не учитывается. Параметр «Цвет» выбирает цвет команды если задан вариант не соответствующий возможным цветам команды.",
+                    "zh-CN": "在“播放效果”动作的类型菜单中添加效果。无视“半径”参数。当“颜色”参数被指定为非队伍颜色时，会选取一种队伍颜色。"
+                },
                 "en-US": "Kinetic Explosion Effects",
                 "de-DE": "Effekte von kinetischen Explosionen",
                 "es-ES": "Efectos de explosión cinética",
@@ -39889,6 +41080,21 @@ const customGameSettingsSchema =
             "playMoreEffects": {
                 "points": 1,
                 "guid": "0000000128E9",
+                "descriptionLocalized": {
+                    "guid": "0000000128EA",
+                    "en-US": "Doubles the number of effects allowed to be played at a time.",
+                    "de-DE": "Verdoppelt die Anzahl von Effekten die gleichzeitig abgespielt werden können.",
+                    "es-ES": "Duplica el número de efectos que se pueden reproducir al mismo tiempo.",
+                    "es-MX": "Duplica el número de efectos permitidos para ser reproducidos a la vez.",
+                    "fr-FR": "Double le nombre d’effets pouvant être joués en même temps.",
+                    "it-IT": "Raddoppia il numero di effetti riproducibili contemporaneamente.",
+                    "ja-JP": "同時に再生できるエフェクトの数を2倍にする",
+                    "ko-KR": "동시에 재생될 수 있는 효과의 개수를 두 배로 늘립니다.",
+                    "pl-PL": "Podwaja liczbę efektów które mogą być odtwarzane w tym samym czasie.",
+                    "pt-BR": "Dobra o número de efeitos que podem ser usados ao mesmo tempo.",
+                    "ru-RU": "Позволяет одновременно воспроизводить вдвое больше эффектов.",
+                    "zh-CN": "允许同时播放的效果数量翻倍。"
+                },
                 "en-US": "Play More Effects",
                 "de-DE": "Mehr Effekte abspielen",
                 "es-ES": "Reproducir más efectos",
@@ -39902,6 +41108,21 @@ const customGameSettingsSchema =
             "spawnMoreDummyBots": {
                 "points": 2,
                 "guid": "0000000128E7",
+                "descriptionLocalized": {
+                    "guid": "0000000128E8",
+                    "en-US": "Increases the maximum number of allowed dummy bots by 12.",
+                    "de-DE": "Erhöht die maximal erlaubte Anzahl von Bots um 12.",
+                    "es-ES": "Aumenta en 12 el número máximo de robots permitidos.",
+                    "es-MX": "Aumenta el número máximo de robots de entrenamiento permitidos en 12.",
+                    "fr-FR": "Augmente le nombre maximum d’I.A. autorisées de 12.",
+                    "it-IT": "Aumenta di 12 il numero massimo di bot di prova.",
+                    "ja-JP": "利用できるダミーボットの最大数を12増加",
+                    "ko-KR": "허용된 더미 봇의 최대 개수를 12개로 늘립니다.",
+                    "pl-PL": "Zwiększa maksymalną liczbę dozwolonych atrap botów o 12.",
+                    "pt-BR": "Aumenta em 12 o máximo de bots permitidos.",
+                    "ru-RU": "Увеличивает максимальное количество допустимых манекенов на 12.",
+                    "zh-CN": "允许的机器人数量上限提高12。"
+                },
                 "en-US": "Spawn More Dummy Bots",
                 "de-DE": "Mehr Bots erschaffen",
                 "es-ES": "Generar más robots",
@@ -40285,8 +41506,37 @@ const customGameSettingsSchema =
                                 "zh-CN": "关闭",
                                 "zh-TW": "關閉"
                             },
+                            "2OfEachRolePerTeam": {
+                                "guid": "000000002C63",
+                                "en-US": "2 Of Each Role Per Team",
+                                "de-DE": "2 jeder Rolle im Team",
+                                "es-ES": "2 de cada por equipo",
+                                "es-MX": "2 de cada rol por equipo",
+                                "fr-FR": "2 de chaque par équipe",
+                                "it-IT": "2 di ogni ruolo per squadra",
+                                "ja-JP": "両チーム各ロール2名ずつ",
+                                "ko-KR": "팀당 역할별로 2명",
+                                "pl-PL": "2 z każdej roli na drużynę",
+                                "pt-BR": "2 de cada função por equipe",
+                                "ru-RU": "2 героя каждой роли на команду",
+                                "zh-CN": "每队同一职责最多2名",
+                                "zh-TW": "每隊同一角色類型最多2名"
+                            },
                             "1Tank2Offense2Support": {
+                                "guid": "000000015884",
                                 "en-US": "1 Tank 2 Offense 2 Support",
+                                "de-DE": "1 Tank 2 Offensiv 2 Unterstützung",
+                                "es-ES": "1 tanque 2 DPS 2 apoyos",
+                                "es-MX": "1 tanque 2 de ataque y 2 de apoyo",
+                                "fr-FR": "1 Tank 2 Dégâts 2 Soutiens",
+                                "it-IT": "1 tank 2 eroi d'attacco 2 eroi di supporto",
+                                "ja-JP": "1タンク、2ダメージ、2サポート",
+                                "ko-KR": "돌격 담당 1명 공격 담당 2명 지원 담당 2명",
+                                "pl-PL": "1 tank 2 postaci natarcia i 2 wsparcie",
+                                "pt-BR": "1 Tanque 2 Ofensivos 2 Suportes",
+                                "ru-RU": "1 танк 2 бойца 2 героя поддержки",
+                                "zh-CN": "1重装，2输出，2支援",
+                                "zh-TW": "1名肉盾型，2名攻擊型，2名輔助型"
                             }
                         },
                         "guid": "00000000596D",
@@ -40694,68 +41944,6 @@ const customGameSettingsSchema =
                     }
                 }
             },
-            /*"snowballFfa": {
-                "values": {
-                    "gameLengthInMn": {
-                        "guid": "00000000632C",
-                        "values": "__int__",
-                        "min": 5,
-                        "max": 15,
-                        "default": 10,
-                        "en-US": "Game Length In Minutes",
-                        "de-DE": "Spiellänge in Minuten",
-                        "es-ES": "Duración de la partida en minutos",
-                        "es-MX": "Duración de la partida en minutos",
-                        "fr-FR": "Durée de la partie en minutes",
-                        "it-IT": "Durata della partita in minuti",
-                        "ja-JP": "マッチ時間（分）",
-                        "ko-KR": "게임 진행 시간분",
-                        "pl-PL": "Długość meczu w minutach",
-                        "pt-BR": "Duração do jogo em minutos",
-                        "ru-RU": "Время матча в минутах",
-                        "zh-CN": "比赛时长（分钟）",
-                        "zh-TW": "遊戲時間（分鐘）"
-                    },
-                    "scoreToWin": {
-                        "guid": "00000000632A",
-                        "values": "__int__",
-                        "min": 1,
-                        "max": 50,
-                        "default": 20,
-                        "en-US": "Score To Win",
-                        "de-DE": "Siegpunktzahl",
-                        "es-ES": "Puntuación para ganar",
-                        "es-MX": "Puntos para ganar",
-                        "fr-FR": "Score à atteindre pour gagner",
-                        "it-IT": "Punti necessari per vincere",
-                        "ja-JP": "勝利スコア",
-                        "ko-KR": "승점",
-                        "pl-PL": "Eliminacje potrzebne do wygranej",
-                        "pt-BR": "Pontuação para vencer",
-                        "ru-RU": "Очков для победы",
-                        "zh-CN": "获胜得分",
-                        "zh-TW": "獲勝分數"
-                    },
-                    "enableSelfInitiatedRespawn": {
-                        "values": "__boolOnOff__",
-                        "default": "on",
-                        "guid": "000000006884",
-                        "en-US": "Self Initiated Respawn",
-                        "de-DE": "Selbst ausgelöste Wiederbelebung",
-                        "es-ES": "Reaparición iniciada por el jugador",
-                        "es-MX": "Reaparición autoiniciada",
-                        "fr-FR": "Réapparition active",
-                        "it-IT": "Resurrezione a comando veloce",
-                        "ja-JP": "自主的リスポーン",
-                        "ko-KR": "직접 부활",
-                        "pl-PL": "Samoczynne odrodzenie",
-                        "pt-BR": "Ressurgimento auto iniciado",
-                        "ru-RU": "Возрождение вручную",
-                        "zh-CN": "主动复生",
-                        "zh-TW": "按重生鍵復活"
-                    }
-                }
-            },*/
             "bountyHunter": {
                 "values": {
                     "baseScoreForKillingBountyTarget": {
@@ -41013,7 +42201,7 @@ const customGameSettingsSchema =
                         "de-DE": "Erlaubte Fähigkeiten von Flaggenträgern",
                         "es-ES": "Habilidades del portador de la bandera",
                         "es-MX": "Habilidades del portador de la bandera",
-                        "fr-FR": "Capacités du porteur de drapeau",
+                        "fr-FR": "Capacités du personnage portant le drapeau",
                         "it-IT": "Abilità del portabandiera",
                         "ja-JP": "フラッグ所持者のアビリティ",
                         "ko-KR": "기수 기술",
@@ -41281,7 +42469,7 @@ const customGameSettingsSchema =
                         "de-DE": "Schon gespielte Helden sperren",
                         "es-ES": "No permitir héroes usados con anterioridad",
                         "es-MX": "Restringir héroes usados previamente",
-                        "fr-FR": "Exclusion des héros déjà utilisés",
+                        "fr-FR": "Exclusion des personnages déjà utilisés",
                         "it-IT": "Limitazione degli eroi usati in precedenza",
                         "ja-JP": "一度使用したヒーローをロック",
                         "ko-KR": "기존 사용 영웅 제한",
@@ -41409,6 +42597,7 @@ const customGameSettingsSchema =
                                 "zh-TW": "隊伍人數+1"
                             },
                             "teamSize+2": {
+                                default: true,
                                 "guid": "000000006148",
                                 "en-US": "Team Size +2",
                                 "de-DE": "Teamgröße +2",
@@ -41542,7 +42731,7 @@ const customGameSettingsSchema =
                         "de-DE": "Helden aufdecken",
                         "es-ES": "Revelar héroes",
                         "es-MX": "Revelar héroes",
-                        "fr-FR": "Détection des héros",
+                        "fr-FR": "Détection des personnages",
                         "it-IT": "Rivelazione eroi",
                         "ja-JP": "ヒーローの位置表示",
                         "ko-KR": "영웅 드러나기",
@@ -41562,7 +42751,7 @@ const customGameSettingsSchema =
                         "de-DE": "Spielzeit bis Helden aufgedeckt werden",
                         "es-ES": "Revelar a héroes una vez transcurrido el tiempo de la partida",
                         "es-MX": "Revelar héroes después de terminarse el tiempo de la partida",
-                        "fr-FR": "Durée avant la détection des héros",
+                        "fr-FR": "Durée avant la détection des personnages",
                         "it-IT": "Rivelazione eroi dopo lo scadere del tempo",
                         "ja-JP": "制限時間到達後にヒーローの位置表示",
                         "ko-KR": "경기 시간 지난 후에 영웅 드러나기",
@@ -41574,397 +42763,6 @@ const customGameSettingsSchema =
                     }
                 }
             },
-            /*"freezethawElimination": {
-                "values": {
-                    "heroSelectionTime": {
-                        "values": "__int__",
-                        "min": 20,
-                        "max": 60,
-                        "default": 20,
-                        "guid": "000000005A97",
-                        "en-US": "Hero Selection Time",
-                        "de-DE": "Zeit für Heldenauswahl",
-                        "es-ES": "Tiempo de selección de héroe",
-                        "es-MX": "Tiempo de selección de héroe",
-                        "fr-FR": "Durée de la sélection de héros",
-                        "it-IT": "Tempo di selezione dell'eroe",
-                        "ja-JP": "ヒーロー選択時間",
-                        "ko-KR": "영웅 선택 시간",
-                        "pl-PL": "Czas wyboru bohaterów",
-                        "pt-BR": "Tempo de seleção de heróis",
-                        "ru-RU": "Время на выбор героев",
-                        "zh-CN": "选择英雄时间",
-                        "zh-TW": "選擇英雄的時間限制"
-                    },
-                    "scoreToWin": {
-                        "guid": "00000000589A",
-                        "values": "__int__",
-                        "min": 1,
-                        "max": 9,
-                        "default": 3,
-                        "en-US": "Score To Win",
-                        "de-DE": "Siegpunktzahl",
-                        "es-ES": "Puntuación para ganar",
-                        "es-MX": "Puntos para ganar",
-                        "fr-FR": "Score à atteindre pour gagner",
-                        "it-IT": "Punti necessari per vincere",
-                        "ja-JP": "勝利スコア",
-                        "ko-KR": "승점",
-                        "pl-PL": "Eliminacje potrzebne do wygranej",
-                        "pt-BR": "Pontuação para vencer",
-                        "ru-RU": "Очков для победы",
-                        "zh-CN": "获胜得分",
-                        "zh-TW": "獲勝分數"
-                    },
-                    "restrictPreviouslyPlayedHeroes": {
-                        "values": {
-                            "off": {
-                                "guid": "000000005FE7",
-                                "default": true,
-                                "en-US": "Off",
-                                "de-DE": "Aus",
-                                "es-ES": "Desactivado",
-                                "es-MX": "No",
-                                "fr-FR": "Désactivé",
-                                "ja-JP": "OFF",
-                                "ko-KR": "비활성화",
-                                "pl-PL": "Wył.",
-                                "pt-BR": "Desligado",
-                                "ru-RU": "Откл.",
-                                "zh-CN": "关闭",
-                                "zh-TW": "關閉"
-                            },
-                            "afterRoundWon": {
-                                "guid": "000000005FE8",
-                                "en-US": "After Round Won",
-                                "de-DE": "Nach gewonnener Runde",
-                                "es-ES": "Tras ronda ganada",
-                                "es-MX": "Después de ronda ganada",
-                                "fr-FR": "Après une manche gagnée",
-                                "it-IT": "Dopo un round vinto",
-                                "ja-JP": "ラウンド勝利後",
-                                "ko-KR": "라운드 승리 후",
-                                "pl-PL": "Po wygraniu rundy",
-                                "pt-BR": "Após a rodada vencida",
-                                "ru-RU": "После победы в раунде",
-                                "zh-CN": "回合胜利后",
-                                "zh-TW": "上回合獲勝的英雄"
-                            },
-                            "afterRoundPlayed": {
-                                "guid": "000000005FE9",
-                                "en-US": "After Round Played",
-                                "de-DE": "Nach gespielter Runde",
-                                "es-ES": "Tras ronda jugada",
-                                "es-MX": "Después de ronda jugada",
-                                "fr-FR": "Après une manche jouée",
-                                "it-IT": "Dopo un round giocato",
-                                "ja-JP": "ラウンドプレイ後",
-                                "ko-KR": "라운드 플레이 후",
-                                "pl-PL": "Po rozegraniu rundy",
-                                "pt-BR": "Após a rodada jogada",
-                                "ru-RU": "После раунда",
-                                "zh-CN": "回合结束后",
-                                "zh-TW": "上回合使用的英雄"
-                            }
-                        },
-                        "guid": "000000005FE6",
-                        "en-US": "Restrict Previously Used Heroes",
-                        "de-DE": "Schon gespielte Helden sperren",
-                        "es-ES": "No permitir héroes usados con anterioridad",
-                        "es-MX": "Restringir héroes usados previamente",
-                        "fr-FR": "Exclusion des héros déjà utilisés",
-                        "it-IT": "Limitazione degli eroi usati in precedenza",
-                        "ja-JP": "一度使用したヒーローをロック",
-                        "ko-KR": "기존 사용 영웅 제한",
-                        "pl-PL": "Ogranicz poprzednio wykorzystanych bohaterów",
-                        "pt-BR": "Restringir heróis usados anteriormente",
-                        "ru-RU": "Запрет ранее выбранных героев",
-                        "zh-CN": "锁定使用过的英雄",
-                        "zh-TW": "禁用先前用過的英雄"
-                    },
-                    "heroesAvailable": {
-                        "values": {
-                            "any": {
-                                "guid": "00000000589C",
-                                "default": true,
-                                "en-US": "Any",
-                                "de-DE": "Frei",
-                                "es-ES": "Cualquiera",
-                                "es-MX": "Cualquiera",
-                                "fr-FR": "Tous",
-                                "it-IT": "Qualsiasi",
-                                "ja-JP": "すべて",
-                                "ko-KR": "아무나",
-                                "pl-PL": "Dowolny",
-                                "pt-BR": "Qualquer",
-                                "ru-RU": "Любой",
-                                "zh-CN": "任意",
-                                "zh-TW": "任意選擇"
-                            },
-                            "limited": {
-                                "guid": "000000005FE5",
-                                "en-US": "Limited",
-                                "de-DE": "Eingeschränkt",
-                                "es-ES": "Con limitaciones",
-                                "es-MX": "Limitado",
-                                "fr-FR": "Limitée",
-                                "it-IT": "Limitati",
-                                "ja-JP": "制限",
-                                "ko-KR": "선택 제한",
-                                "pl-PL": "Ograniczenie",
-                                "pt-BR": "Limitado",
-                                "ru-RU": "С ограничениями",
-                                "zh-CN": "限定",
-                                "zh-TW": "限定選擇"
-                            },
-                            "random": {
-                                "guid": "00000000589D",
-                                "en-US": "Random",
-                                "de-DE": "Zufällig",
-                                "es-ES": "Aleatoria",
-                                "es-MX": "Aleatorio",
-                                "fr-FR": "Aléatoire",
-                                "it-IT": "Casuale",
-                                "ja-JP": "ランダム",
-                                "ko-KR": "무작위",
-                                "pl-PL": "Losowo",
-                                "pt-BR": "Aleatório",
-                                "ru-RU": "Случайно",
-                                "zh-CN": "随机英雄",
-                                "zh-TW": "隨機"
-                            },
-                            "mirroredRandom": {
-                                "guid": "00000000589E",
-                                "en-US": "Random Mirrored",
-                                "de-DE": "Zufällig identische Teams",
-                                "es-ES": "Aleatoria héroe idéntico",
-                                "es-MX": "Aleatorio reflejado",
-                                "fr-FR": "Aléatoire miroir",
-                                "it-IT": "Casuale speculare",
-                                "ja-JP": "ランダム（ミラー）",
-                                "ko-KR": "무작위 동일 영웅",
-                                "pl-PL": "Losowo lustrzane odbicie",
-                                "pt-BR": "Aleatório espelhado",
-                                "ru-RU": "Случайно зеркально",
-                                "zh-CN": "随机英雄（相同）",
-                                "zh-TW": "隨機的相同英雄"
-                            }
-                        },
-                        "guid": "00000000589B",
-                        "en-US": "Hero Selection",
-                        "de-DE": "Heldenauswahl",
-                        "es-ES": "Selección de héroe",
-                        "es-MX": "Selección de héroe",
-                        "fr-FR": "Sélection de héros",
-                        "it-IT": "Selezione eroe",
-                        "ja-JP": "ヒーロー選択",
-                        "ko-KR": "영웅 선택",
-                        "pl-PL": "Sposób wyboru bohaterów",
-                        "pt-BR": "Seleção de herói",
-                        "ru-RU": "Выбор героя",
-                        "zh-CN": "英雄选择",
-                        "zh-TW": "選擇英雄"
-                    },
-                    "heroPoolSize": {
-                        "values": {
-                            "teamSize": {
-                                "guid": "000000006146",
-                                "en-US": "Team Size",
-                                "de-DE": "Teamgröße",
-                                "es-ES": "Tamaño de equipo",
-                                "es-MX": "Tamaño del equipo",
-                                "fr-FR": "Taille de l’équipe",
-                                "it-IT": "Dimensioni squadra",
-                                "ja-JP": "チームサイズ",
-                                "ko-KR": "팀 규모",
-                                "pl-PL": "Wielkość drużyn",
-                                "pt-BR": "Tamanho da equipe",
-                                "ru-RU": "По размеру команды",
-                                "zh-CN": "队伍人数",
-                                "zh-TW": "隊伍人數"
-                            },
-                            "teamSize+1": {
-                                "guid": "000000006147",
-                                "en-US": "Team Size +1",
-                                "de-DE": "Teamgröße +1",
-                                "es-ES": "Tamaño de equipo +1",
-                                "es-MX": "Tamaño de equipo +1",
-                                "fr-FR": "Taille de l’équipe +1",
-                                "it-IT": "Dimensioni squadra: +1",
-                                "ja-JP": "チームサイズ +1",
-                                "ko-KR": "팀 규모 +1",
-                                "pl-PL": "Wielkość drużyn: +1",
-                                "pt-BR": "Tamanho da equipe +1",
-                                "ru-RU": "По размеру команды +1",
-                                "zh-CN": "队伍人数+1",
-                                "zh-TW": "隊伍人數+1"
-                            },
-                            "teamSize+2": {
-                                "guid": "000000006148",
-                                "en-US": "Team Size +2",
-                                "de-DE": "Teamgröße +2",
-                                "es-ES": "Tamaño de equipo +2",
-                                "es-MX": "Tamaño de equipo +2",
-                                "fr-FR": "Taille de l’équipe +2",
-                                "it-IT": "Dimensioni squadra: +2",
-                                "ja-JP": "チームサイズ +2",
-                                "ko-KR": "팀 규모 +2",
-                                "pl-PL": "Wielkość drużyn: +2",
-                                "pt-BR": "Tamanho da equipe +2",
-                                "ru-RU": "По размеру команды +2",
-                                "zh-CN": "队伍人数+2",
-                                "zh-TW": "隊伍人數+2"
-                            },
-                            "teamSize+3": {
-                                "guid": "000000006149",
-                                "en-US": "Team Size +3",
-                                "de-DE": "Teamgröße +3",
-                                "es-ES": "Tamaño de equipo +3",
-                                "es-MX": "Tamaño de equipo +3",
-                                "fr-FR": "Taille de l’équipe +3",
-                                "it-IT": "Dimensioni squadra: +3",
-                                "ja-JP": "チームサイズ +3",
-                                "ko-KR": "팀 규모 +3",
-                                "pl-PL": "Wielkość drużyn: +3",
-                                "pt-BR": "Tamanho da equipe +3",
-                                "ru-RU": "По размеру команды +3",
-                                "zh-CN": "队伍人数+3",
-                                "zh-TW": "隊伍人數+3"
-                            }
-                        },
-                        "guid": "000000006145",
-                        "en-US": "Limited Choice Pool",
-                        "de-DE": "Eingeschränkte Auswahl",
-                        "es-ES": "Selección limitada",
-                        "es-MX": "Grupo de selección limitada",
-                        "fr-FR": "Catalogue limité de héros",
-                        "it-IT": "Scelta limitata",
-                        "ja-JP": "選択プール限定",
-                        "ko-KR": "선택 폭 제한",
-                        "pl-PL": "Ograniczona pula wyboru",
-                        "pt-BR": "Elenco de escolha limitada",
-                        "ru-RU": "Ограниченный выбор героев",
-                        "zh-CN": "英雄池上限",
-                        "zh-TW": "限定選擇人數"
-                    },
-                    "enableTiebreaker": {
-                        "values": "__boolOnOff__",
-                        "default": "on",
-                        "guid": "000000005FC9",
-                        "en-US": "Capture Objective Tiebreaker",
-                        "de-DE": "Zusätzlicher Zielpunkt bei Unentschieden",
-                        "es-ES": "Capturar objetivo: desempate",
-                        "es-MX": "Desempate de captura el objetivo",
-                        "fr-FR": "Objectif décisif à capturer",
-                        "it-IT": "Spareggio con conquista dell'obiettivo",
-                        "ja-JP": "目標確保タイブレーカー",
-                        "ko-KR": "점령 지점 승자 결정전",
-                        "pl-PL": "Rozstrzygnięcie zajęcia celu",
-                        "pt-BR": "Desempate de captura de objetivo",
-                        "ru-RU": "Захват объекта при тай-брейке",
-                        "zh-CN": "目标点决胜机制",
-                        "zh-TW": "以佔領區分出勝負"
-                    },
-                    "tiebreakerTime": {
-                        "values": "__int__",
-                        "min": 30,
-                        "max": 300,
-                        "default": 105,
-                        "guid": "00000000615D",
-                        "en-US": "Tiebreaker After Match Time Elapsed",
-                        "de-DE": "Zeit bis zusätzlicher Zielpunkt aktiviert wird",
-                        "es-ES": "Desempate una vez transcurrido el tiempo de la partida",
-                        "es-MX": "Desempate después de terminarse el tiempo de la partida",
-                        "fr-FR": "Durée avant activation de l’objectif décisif",
-                        "it-IT": "Spareggio dopo lo scadere del tempo",
-                        "ja-JP": "制限時間到達後のタイブレーカー",
-                        "ko-KR": "경기 시간 지난 후에 승자 결정전",
-                        "pl-PL": "Rozstrzygnięcie po upływie czasu gry",
-                        "pt-BR": "Desempate após o tempo decorrido da partida",
-                        "ru-RU": "Тай-брейк по истечении времени",
-                        "zh-CN": "目标点决胜机制激活时间",
-                        "zh-TW": "啟動佔領區的時間"
-                    },
-                    "tiebreakerCaptureTime": {
-                        "values": "__int__",
-                        "min": 1,
-                        "max": 7,
-                        "default": 3,
-                        "guid": "00000000619C",
-                        "en-US": "Time To Capture",
-                        "de-DE": "Eroberungszeit",
-                        "es-ES": "Tiempo para capturar",
-                        "es-MX": "Tiempo para capturar",
-                        "fr-FR": "Durée de capture",
-                        "it-IT": "Tempo di conquista",
-                        "ja-JP": "確保時間",
-                        "ko-KR": "점령할 시간",
-                        "pl-PL": "Czas na zajęcia",
-                        "pt-BR": "Tempo para captura",
-                        "ru-RU": "Время на захват",
-                        "zh-CN": "占领时间",
-                        "zh-TW": "佔領所需的時間"
-                    },
-                    "drawTime": {
-                        "values": "__int__",
-                        "min": 60,
-                        "max": 300,
-                        "default": 135,
-                        "guid": "00000000615C",
-                        "en-US": "Draw After Match Time Elapsed With No Tiebreaker",
-                        "de-DE": "Zeit bis zum Unentschieden ohne zusätzlichen Zielpunkt",
-                        "es-ES": "Empate una vez transcurrido el tiempo de la partida sin desempate",
-                        "es-MX": "Empate después de terminarse el tiempo de la partida sin desempate",
-                        "fr-FR": "Durée avant match nul sans capture de l’objectif décisif",
-                        "it-IT": "Pareggio dopo lo scadere del tempo senza spareggio",
-                        "ja-JP": "制限時間到達後に引き分け（タイブレーカーなし）",
-                        "ko-KR": "승자 결정전이 없을 시 경기 시간 지난 후에 무승부",
-                        "pl-PL": "Remis po upływie czasu gry bez rozstrzygnięcia",
-                        "pt-BR": "Empate após o tempo decorrido da partida sem desempate",
-                        "ru-RU": "Ничья по истечении времени без тай-брейка",
-                        "zh-CN": "无目标点决胜机制时平局时限",
-                        "zh-TW": "平手倒數計時（未搶下佔領區）"
-                    },
-                    "enableWallhack": {
-                        "values": "__boolOnOff__",
-                        "default": "off",
-                        "guid": "000000005FC8",
-                        "en-US": "Reveal Heroes",
-                        "de-DE": "Helden aufdecken",
-                        "es-ES": "Revelar héroes",
-                        "es-MX": "Revelar héroes",
-                        "fr-FR": "Détection des héros",
-                        "it-IT": "Rivelazione eroi",
-                        "ja-JP": "ヒーローの位置表示",
-                        "ko-KR": "영웅 드러나기",
-                        "pl-PL": "Ujawnij bohaterów",
-                        "pt-BR": "Revelar heróis",
-                        "ru-RU": "Обнаружение героев",
-                        "zh-CN": "显示英雄位置",
-                        "zh-TW": "顯示英雄位置"
-                    },
-                    "wallhackEnabledTime": {
-                        "values": "__int__",
-                        "min": 0,
-                        "max": 180,
-                        "default": 75,
-                        "guid": "00000000615B",
-                        "en-US": "Reveal Heroes After Match Time Elapsed",
-                        "de-DE": "Spielzeit bis Helden aufgedeckt werden",
-                        "es-ES": "Revelar a héroes una vez transcurrido el tiempo de la partida",
-                        "es-MX": "Revelar héroes después de terminarse el tiempo de la partida",
-                        "fr-FR": "Durée avant la détection des héros",
-                        "it-IT": "Rivelazione eroi dopo lo scadere del tempo",
-                        "ja-JP": "制限時間到達後にヒーローの位置表示",
-                        "ko-KR": "경기 시간 지난 후에 영웅 드러나기",
-                        "pl-PL": "Ujawnienie bohaterów po upływie czasu gry",
-                        "pt-BR": "Revelar heróis após o tempo decorrido da partida",
-                        "ru-RU": "Обнаружение героев по окончании времени матча",
-                        "zh-CN": "比赛开始后显示英雄位置时间",
-                        "zh-TW": "經過多久之後顯示英雄位置"
-                    }
-                }
-            },*/
             "tdm": {
                 "values": {
                     "gameLengthInMn": {
@@ -41995,7 +42793,7 @@ const customGameSettingsSchema =
                         "de-DE": "Mercys Wiederauferstehung macht Kills ungültig",
                         "es-ES": "La Resurrección de Mercy contrarresta los asesinatos",
                         "es-MX": "La Resurrección de Mercy contrarresta las muertes",
-                        "fr-FR": "Les résurrections annulent les points de victime",
+                        "fr-FR": "Les résurrections annulent les points de victimes",
                         "it-IT": "Resurrezione di Mercy annulla le uccisioni",
                         "ja-JP": "マーシーのリザレクトでキル取消",
                         "ko-KR": "메르시로 부활하면 처치 무효화",
@@ -42259,7 +43057,7 @@ const customGameSettingsSchema =
                                 "guid": "0000000068C6",
                                 "en-US": "NORMAL",
                                 "it-IT": "NORMALE",
-                                "ko-KR": "중수",
+                                "ko-KR": "일반",
                                 "pl-PL": "NORMALNY",
                                 "ru-RU": "БОЕЦ",
                                 "zh-CN": "普通",
@@ -42273,7 +43071,7 @@ const customGameSettingsSchema =
                                 "es-MX": "DIFÍCIL",
                                 "fr-FR": "DIFFICILE",
                                 "it-IT": "DIFFICILE",
-                                "ko-KR": "고수",
+                                "ko-KR": "어려움",
                                 "pl-PL": "WYSOKI",
                                 "pt-BR": "DIFÍCIL",
                                 "ru-RU": "ВЕТЕРАН",
@@ -42287,7 +43085,7 @@ const customGameSettingsSchema =
                                 "es-ES": "EXPERTA",
                                 "es-MX": "EXPERTO",
                                 "it-IT": "ESTREMA",
-                                "ko-KR": "초고수",
+                                "ko-KR": "전문가",
                                 "pl-PL": "EKSPERCKI",
                                 "pt-BR": "ESPECIALISTA",
                                 "ru-RU": "ЭКСПЕРТ",
@@ -42347,6 +43145,7 @@ const customGameSettingsSchema =
                     },
                     "enableEndless": {
                         "values": "__boolOnOff__",
+                        default: "off",
                         "guid": "000000006FB1",
                         "en-US": "Endless Mode",
                         "de-DE": "Endlosmodus",
@@ -42364,308 +43163,6 @@ const customGameSettingsSchema =
                     }
                 }
             },
-            /*"lucioball": {
-                "values": {
-                    "gameLengthInSec": {
-                        "values": "__int__",
-                        "min": 60,
-                        "max": 900,
-                        "default": 240,
-                        "guid": "000000006964",
-                        "en-US": "Game Length Seconds",
-                        "de-DE": "Spiellänge in Sekunden",
-                        "es-ES": "Tiempo de partida segundos",
-                        "es-MX": "Duración del juego segundos",
-                        "fr-FR": "Durée de la partie secondes",
-                        "it-IT": "Durata della partita secondi",
-                        "ja-JP": "マッチ時間（秒）",
-                        "ko-KR": "게임 시간초",
-                        "pl-PL": "Długość meczu w sekundach",
-                        "pt-BR": "Duração do jogo segundos",
-                        "ru-RU": "Время матча в секундах",
-                        "zh-CN": "比赛时长（秒）",
-                        "zh-TW": "遊戲時間（秒）"
-                    },
-                    "scoreLeadToWin": {
-                        "values": "__int__",
-                        "min": 1,
-                        "max": 100,
-                        "default": 10,
-                        "guid": "000000010479",
-                        "en-US": "Score Lead Needed To Win",
-                        "de-DE": "Punktevorsprung für Sieg",
-                        "es-ES": "Ventaja necesaria para ganar",
-                        "es-MX": "Puntuación necesaria para ganar",
-                        "fr-FR": "Avance nécessaire pour gagner",
-                        "it-IT": "Vantaggio nel punteggio necessario per vincere",
-                        "ja-JP": "勝利に必要なスコア",
-                        "ko-KR": "승점",
-                        "pl-PL": "Punkty potrzebne do wygranej",
-                        "pt-BR": "Vantagem de placar necessária para a vitória",
-                        "ru-RU": "Разница по очкам для победы",
-                        "zh-CN": "获胜需要达到分数",
-                        "zh-TW": "獲勝所需的領先得分數"
-                    },
-                    "ballKb%": {
-                        "values": "__percent__",
-                        "min": 100,
-                        "max": 500,
-                        "default": 500,
-                        "guid": "000000006724",
-                        "en-US": "Soccer Ball Knockback Scalar",
-                        "de-DE": "Fußball – Rückstoß",
-                        "es-ES": "Repulsión del balón de fútbol",
-                        "es-MX": "Escala de derribos del balón de fútbol",
-                        "fr-FR": "Recul du ballon de football",
-                        "it-IT": "Intensità di respinta palla",
-                        "ja-JP": "サッカーボール ノックバック・スカラー",
-                        "ko-KR": "축구공 밀쳐내는 힘 조정",
-                        "pl-PL": "Skalowanie odrzucenia piłki nożnej",
-                        "pt-BR": "Impulso escalar da bola de futebol",
-                        "ru-RU": "Сила отбрасывания мяча",
-                        "zh-CN": "斗球推力倍率 ",
-                        "zh-TW": "調整推球距離"
-                    },
-                    "enableWinIfEnoughGoalsScored": {
-                        "values": "__boolOnOff__",
-                        "guid": "000000006716",
-                        "en-US": "Team Wins Upon Scoring Enough Goals",
-                        "de-DE": "Team gewinnt sobald genug Tore erzielt wurden",
-                        "es-ES": "El equipo que marque los goles necesarios gana",
-                        "es-MX": "El equipo gana tras anotar suficientes goles",
-                        "fr-FR": "L’équipe gagne en marquant assez de buts",
-                        "it-IT": "Vince la squadra che segna abbastanza gol",
-                        "ja-JP": "特定数のゴール獲得で勝利",
-                        "ko-KR": "충분한 골을 넣으면 승리",
-                        "pl-PL": "Drużyna wygrywa po zdobyciu określonej liczby goli",
-                        "pt-BR": "Vence a equipe que marcar gols suficientes",
-                        "ru-RU": "Команда побеждает забив достаточно голов",
-                        "zh-CN": "获得足够进球数即可获胜",
-                        "zh-TW": "先取得足夠分數的隊伍獲勝"
-                    },
-                    "scoreToWin": {
-                        "values": "__int__",
-                        "min": 1,
-                        "max": 9,
-                        "default": 3,
-                        "guid": "000000006715",
-                        "en-US": "Goals Needed To Win",
-                        "de-DE": "Tore für Sieg",
-                        "es-ES": "Goles necesarios para ganar",
-                        "es-MX": "Goles necesarios para ganar",
-                        "fr-FR": "Buts nécessaires pour gagner",
-                        "it-IT": "Gol necessari per vincere",
-                        "ja-JP": "勝利に必要なゴール数",
-                        "ko-KR": "승점",
-                        "pl-PL": "Gole potrzebne do wygranej",
-                        "pt-BR": "Gols necessários para a vitória",
-                        "ru-RU": "Голы для победы",
-                        "zh-CN": "获胜所需进球数",
-                        "zh-TW": "勝利所需分數"
-                    },
-                    "resetPlayersAfterGoalScored": {
-                        "values": "__boolOnOff__",
-                        "guid": "000000006761",
-                        "en-US": "Reset Players After Goal Scored",
-                        "de-DE": "Spielerpositionen nach Tor zurücksetzen",
-                        "es-ES": "Reiniciar jugadores después de un gol",
-                        "es-MX": "Restablecer los jugadores después de que se anote un gol",
-                        "fr-FR": "Réinitialisation de la position après chaque but marqué",
-                        "it-IT": "Reimposta i giocatori dopo un gol",
-                        "ja-JP": "ゴール後にプレイヤーをリセット",
-                        "ko-KR": "득점 후 플레이어 초기화",
-                        "pl-PL": "Resetuj graczy po zdobytym golu",
-                        "pt-BR": "Redefinir jogadores após gol ser marcado",
-                        "ru-RU": "Сброс положения игроков после гола",
-                        "zh-CN": "进球后重置玩家",
-                        "zh-TW": "進球得分後重置玩家狀態"
-                    },
-                    "ballCountPeriodIncreaseInSec": {
-                        "values": "__int__",
-                        "min": 0,
-                        "max": 600,
-                        "default": 0,
-                        "guid": "000000011323",
-                        "en-US": "Ball Count Increase Period Seconds",
-                        "de-DE": "Zeitintervall in Sekunden für die Erhöhung der Ballanzahl",
-                        "es-ES": "Tiempo de aumento de la cantidad de balones segundos",
-                        "es-MX": "Periodo de aumento de la cantidad de balones segundos",
-                        "fr-FR": "Période d’augmentation du nombre de ballons secondes",
-                        "it-IT": "Periodo di incremento numero palle secondi",
-                        "ja-JP": "ボール数の増加時間（秒）",
-                        "ko-KR": "공 개수 증가 주기 초",
-                        "pl-PL": "Interwal zwiększenia liczby piłek Sekundy",
-                        "pt-BR": "Período de Aumento no Número de Bolas Segundos",
-                        "ru-RU": "Частота увеличения числа мячей в секундах",
-                        "zh-CN": "足球数量增加间隔（秒）",
-                        "zh-TW": "球數增加間隔（秒）"
-                    },
-                    "bonusBallSpawningPeriodInSec": {
-                        "values": "__int__",
-                        "min": 0,
-                        "max": 600,
-                        "default": 0,
-                        "guid": "000000011325",
-                        "en-US": "Bonus Ball Spawn Period Seconds",
-                        "de-DE": "Zeitintervall in Sekunden für das Erscheinen von Bonusbällen",
-                        "es-ES": "Tiempo de aparición de balón adicional segundos",
-                        "es-MX": "Periodo de aparición del balón segundos",
-                        "fr-FR": "Période d’apparition du ballon supplémentaire secondes",
-                        "it-IT": "Periodo di comparsa palla bonus secondi",
-                        "ja-JP": "ボーナスボールの発生時間（秒）",
-                        "ko-KR": "보너스 공 생성 주기 초",
-                        "pl-PL": "Interwał ekstra piłek w grze Sekundy",
-                        "pt-BR": "Período de Ressurgimento da Bola Extra Segundos",
-                        "ru-RU": "Частота появления бонусных мячей в секундах",
-                        "zh-CN": "奖励球刷新间隔（秒）",
-                        "zh-TW": "獎勵球重生間隔（秒）"
-                    },
-                    "bonusBallValue": {
-                        "values": "__int__",
-                        "min": 0,
-                        "max": 50,
-                        "default": 3,
-                        "guid": "000000011324",
-                        "en-US": "Bonus Ball Value",
-                        "de-DE": "Wert der Bonusbälle",
-                        "es-ES": "Valor del balón adicional",
-                        "es-MX": "Valor del balón adicional",
-                        "fr-FR": "Valeur du ballon supplémentaire",
-                        "it-IT": "Valore palla bonus",
-                        "ja-JP": "ボーナスボールの値",
-                        "ko-KR": "보너스 공 점수",
-                        "pl-PL": "Wartość ekstra piłki",
-                        "pt-BR": "Valor da Bola Extra",
-                        "ru-RU": "Количество очков за бонусный мяч",
-                        "zh-CN": "奖励球分值",
-                        "zh-TW": "獎勵球分數"
-                    },
-                    "initialBallCount": {
-                        "values": "__int__",
-                        "min": 0,
-                        "max": 6,
-                        "default": 1,
-                        "guid": "000000011320",
-                        "en-US": "Initial Ball Count",
-                        "de-DE": "Anfängliche Anzahl an Bällen",
-                        "es-ES": "Cantidad inicial de balones",
-                        "es-MX": "Cantidad inicial de balones",
-                        "fr-FR": "Nombre de ballons initial",
-                        "it-IT": "Numero di palle iniziale",
-                        "ja-JP": "ボールの初期値",
-                        "ko-KR": "최초 공 개수",
-                        "pl-PL": "Wstępna liczba piłek",
-                        "pt-BR": "Número Inicial de Bolas",
-                        "ru-RU": "Начальное число мячей",
-                        "zh-CN": "起始足球数量",
-                        "zh-TW": "初始球數"
-                    },
-                    "maxBallCount": {
-                        "values": "__int__",
-                        "min": 0,
-                        "max": 6,
-                        "default": 1,
-                        "guid": "000000011321",
-                        "en-US": "Max Ball Count",
-                        "de-DE": "Maximale Anzahl an Bällen",
-                        "es-ES": "Cantidad máxima de balones",
-                        "es-MX": "Cantidad máxima de balones",
-                        "fr-FR": "Nombre de ballons maximum",
-                        "it-IT": "Massimo numero di palle",
-                        "ja-JP": "ボールの最大数",
-                        "ko-KR": "최대 공 개수",
-                        "pl-PL": "Maksymalna liczba piłek",
-                        "pt-BR": "Número Máximo de Bolas",
-                        "ru-RU": "Максимальное число мячей",
-                        "zh-CN": "最大足球数量",
-                        "zh-TW": "最大球數"
-                    },
-                    "maxBonusBallCount": {
-                        "values": "__int__",
-                        "min": 0,
-                        "max": 6,
-                        "default": 1,
-                        "guid": "000000011322",
-                        "en-US": "Max Bonus Ball Count",
-                        "de-DE": "Maximale Anzahl an Bonusbällen",
-                        "es-ES": "Cantidad máxima de balones adicionales",
-                        "es-MX": "Cantidad máxima de balones adicionales",
-                        "fr-FR": "Nombre de ballons supplémentaires maximum",
-                        "it-IT": "Massimo numero di palle bonus",
-                        "ja-JP": "ボーナスボールの最大数",
-                        "ko-KR": "최대 보너스 공 개수",
-                        "pl-PL": "Maksymalna liczba ekstra piłek",
-                        "pt-BR": "Número Máximo de Bolas Extras",
-                        "ru-RU": "Максимальное число бонусных мячей",
-                        "zh-CN": "最大奖励球数量",
-                        "zh-TW": "最大獎勵球數"
-                    }
-                }
-            },*//*
-            "yetiHunter": {
-                "values": {
-                    "maximumSimultaneousMeatSpawns": {
-                        "values": "__int__",
-                        "min": 1,
-                        "max": 6,
-                        "default": 3,
-                        "guid": "0000000075E9",
-                        "en-US": "Maximum Simultaneous Meat Spawns",
-                        "de-DE": "Maximal gleichzeitig verfügbare Fleischstücke",
-                        "es-ES": "Máxima generación de carne al mismo tiempo",
-                        "es-MX": "Máximo de reapariciones simultáneas de trozos de carne",
-                        "fr-FR": "Maximum de morceaux de viande simultanés",
-                        "it-IT": "Pezzi di carne attivi simultaneamente",
-                        "ja-JP": "お肉 最大同時出現数",
-                        "ko-KR": "최대 고기 동시 생성 수",
-                        "pl-PL": "Maksimum sztuk mięsa lokowanych naraz",
-                        "pt-BR": "Máximo de surgimentos simultâneos de carne",
-                        "ru-RU": "Одновременное появление кусков мяса макс.",
-                        "zh-CN": "肉块刷新上限",
-                        "zh-TW": "同時在場上出現的最大肉塊數量"
-                    },
-                    "gameLengthInMn": {
-                        "values": "__int__",
-                        "min": 3,
-                        "max": 10,
-                        "default": 6,
-                        "guid": "00000000764B",
-                        "en-US": "Time Limit In Minutes",
-                        "de-DE": "Zeitlimit in Minuten",
-                        "es-ES": "Límite de tiempo en minutos",
-                        "es-MX": "Límite de tiempo en minutos",
-                        "fr-FR": "Limite de temps en minutes",
-                        "it-IT": "Limite di tempo in minuti",
-                        "ja-JP": "タイムリミット（分）",
-                        "ko-KR": "제한 시간분",
-                        "pl-PL": "Limit czasu w minutach",
-                        "pt-BR": "Tempo limite em minutos",
-                        "ru-RU": "Ограничение по времени в минутах",
-                        "zh-CN": "时间限制（分钟）",
-                        "zh-TW": "時間限制（分鐘"
-                    },
-                    "yetiScoreToWin": {
-                        "values": "__int__",
-                        "min": 1,
-                        "max": 12,
-                        "default": 5,
-                        "guid": "000000007673",
-                        "en-US": "Yeti Score To Win",
-                        "de-DE": "Siegpunktzahl für den Yeti",
-                        "es-ES": "Puntuación para que gane el yeti",
-                        "es-MX": "Puntuación de yeti para ganar",
-                        "fr-FR": "Score à atteindre par le yéti",
-                        "it-IT": "Punteggio Yeti per vincere",
-                        "ja-JP": "イエティ 勝利スコア",
-                        "ko-KR": "예티 승점",
-                        "pl-PL": "Punkty do wygranej Yeti",
-                        "pt-BR": "Pontuação do Yeti para vencer",
-                        "ru-RU": "Очков для победы йети",
-                        "zh-CN": "雪人获胜得分",
-                        "zh-TW": "雪怪獲勝分數"
-                    }
-                }
-            },*/
             "ffa": {
                 "values": {
                     "gameLengthInMn": {
@@ -42735,14 +43232,40 @@ const customGameSettingsSchema =
                         "min": 10,
                         "max": 500,
                         "default": 100,
+                        "guid": "000000015850",
                         "en-US": "TS-1 Walk Speed Modifier",
+                        "de-DE": "TS-1 – Modifikator für Lauf<hy>geschwindigkeit",
+                        "es-ES": "Modificador de velocidad al caminar de TS-1",
+                        "es-MX": "Modificador de velocidad para caminar de TS-1",
+                        "fr-FR": "Modificateur de vitesse de marche de TS-1",
+                        "it-IT": "Modificatore velocità di camminata TS-1",
+                        "ja-JP": "TS-1歩行速度補正",
+                        "ko-KR": "TS-1 걸음 속도 조정",
+                        "pl-PL": "TS-1 – Mnożnik szybkości chodu",
+                        "pt-BR": "Modificador de Velocidade de Caminhada do CT-1",
+                        "ru-RU": "Модификатор скорости TS-1 при ходьбе",
+                        "zh-CN": "TS-1行走速度",
+                        "zh-TW": "調整TS-1型移動速度"
                     },
                     "ts1PushSpeedModifier%": {
                         "values": "__percent__",
                         "min": 10,
                         "max": 500,
                         "default": 100,
+                        "guid": "00000001584F",
                         "en-US": "TS-1 Push Speed Modifier",
+                        "de-DE": "TS-1 – Modifikator für Schub<hy>geschwindigkeit",
+                        "es-ES": "Modificador de velocidad al empujar de TS-1",
+                        "es-MX": "Modificador de velocidad de avance de TS-1",
+                        "fr-FR": "Modificateur de vitesse d’avancée de TS-1",
+                        "it-IT": "Modificatore velocità di Scorta TS-1",
+                        "ja-JP": "TS-1プッシュ速度補正",
+                        "ko-KR": "TS-1 밀기 속도 조정",
+                        "pl-PL": "TS-1 – Mnożnik szybkości przepychania",
+                        "pt-BR": "Modificador de Velocidade de Avanço do CT-1",
+                        "ru-RU": "Модификатор скорости TS-1 при толкании",
+                        "zh-CN": "TS-1推进速度",
+                        "zh-TW": "調整TS-1型推進速度"
                     },
                     "enableCompetitiveRules": {
                         "values": "__boolOnOff__",
@@ -42761,7 +43284,7 @@ const customGameSettingsSchema =
                         "ru-RU": "Соревновательные правила",
                         "zh-CN": "竞技比赛规则",
                         "zh-TW": "競技對戰規則"
-                    },
+                    }
                 }
             }
         },
@@ -43409,7 +43932,8 @@ const customGameSettingsSchema =
                     "exclude": [
                         "bastion"
                     ],
-                    "en-US": "%1$s"
+                    "en-US": "%1$s",
+                    "ko-KR": "%1$s회"
                 },
                 "ability2Cooldown%": {
                     "guid": "000000005B84",
@@ -43747,6 +44271,29 @@ const customGameSettingsSchema =
                     "ru-RU": "Без оптического прицела",
                     "zh-CN": "禁止开镜狙击",
                     "zh-TW": "無法進行狙擊"
+                },
+                "secondaryFireEnergyChargeRate%": {
+                    "values": "__percent__",
+                    "min": 0,
+                    "max": 500,
+                    "default": 100,
+                    "include": [
+                        "sojourn"
+                    ],
+                    "guid": "00000000CA6D",
+                    "en-US": "%1$s Energy Charge Rate",
+                    "de-DE": "%1$s Energieaufladungsrate",
+                    "es-ES": "%1$s de índice de carga de energía",
+                    "es-MX": "%1$s de tasa de carga de energía",
+                    "fr-FR": "Vitesse de rechargement de l’énergie : %1$s",
+                    "it-IT": "%1$s Velocità di ricarica energia",
+                    "ja-JP": "%1$s エネルギー チャージ率",
+                    "ko-KR": "%1$s 에너지 충전률",
+                    "pl-PL": "Tempo ładowania energii: %1$s",
+                    "pt-BR": "Taxa de carga da energia de %1$s",
+                    "ru-RU": "%1$s – скорость восполнения запаса энергии",
+                    "zh-CN": "充能速度 %1$s",
+                    "zh-TW": "能量蓄力速率%1$s"
                 }
             },
             "disabledHeroes": {
@@ -44018,7 +44565,20 @@ const customGameSettingsSchema =
                         "min": 10,
                         "max": 500,
                         "default": 100,
+                        "guid": "0000000176EF",
                         "en-US": "Power Block Charge Rate",
+                        "de-DE": "Aufladungsrate von Faustschild",
+                        "es-ES": "Índice de carga de Bloqueo de poder",
+                        "es-MX": "Tasa de carga de Bloqueo de poder",
+                        "fr-FR": "Vitesse de rechargement de Parade puissante",
+                        "it-IT": "Baluardo - Velocità di ricarica",
+                        "ja-JP": "パワー・ブロック チャージ率",
+                        "ko-KR": "파워 블락 충전율",
+                        "pl-PL": "Tempo ładowania Mocarnego Bloku",
+                        "pt-BR": "Taxa de carga do Bloqueio Energético",
+                        "ru-RU": "Скорость восстановления «Мощного блока»",
+                        "zh-CN": "悍猛格挡充能速度",
+                        "zh-TW": "強力格擋蓄力速度"
                     },
                     "secondaryFireKb%": {
                         "values": "__percent__",
@@ -44128,7 +44688,7 @@ const customGameSettingsSchema =
                         "values": "__int__",
                         "min": 3,
                         "max": 12,
-                        "default": 100,
+                        "default": 5,
                         "guid": "000000008900",
                         "en-US": "Storm Arrows Quantity",
                         "de-DE": "Sturmpfeile – Anzahl",
@@ -44153,14 +44713,38 @@ const customGameSettingsSchema =
                         "min": 0,
                         "max": 400,
                         "default": 100,
+                        "guid": "0000000172C6",
                         "en-US": "Jagged Blade Knockback Scalar",
+                        "de-DE": "Gezackte Klinge – Rückstoß",
+                        "es-ES": "Progresión de repulsión de Cuchilla dentada",
+                        "es-MX": "Escala de repulsión de Hoja dentada",
+                        "fr-FR": "Recul de Lame crantée",
+                        "it-IT": "Lama Dentata - Intensità di respinta",
+                        "ja-JP": "ギザギザブレード ノックバック・スカラー",
+                        "pl-PL": "Postrzępione Ostrze – Skalowanie odrzucenia",
+                        "pt-BR": "Repulsão escalar da Lâmina Serrilhada",
+                        "ru-RU": "Множитель отбрасывания «Зазубренного клинка»",
+                        "zh-CN": "锯齿利刃击退倍率",
+                        "zh-TW": "鋸刃擊退距離"
                     },
                     "secondaryFireRecallDelay%": {
                         "values": "__percent__",
                         "min": 40,
                         "max": 400,
                         "default": 100,
+                        "guid": "0000000172CB",
                         "en-US": "Jagged Blade Delay Before Automatic Recall",
+                        "de-DE": "Gezackte Klinge – Verzögerung vor automatischem Rückruf",
+                        "es-ES": "Retraso antes de regreso automático de Cuchilla dentada",
+                        "es-MX": "Retraso de Hoja dentada antes de la recuperación automática",
+                        "fr-FR": "Délai de Lame crantée avant le rappel automatique",
+                        "it-IT": "Lama Dentata - Ritardo prima del richiamo automatico",
+                        "ja-JP": "ギザギザブレード 自動呼び戻しディレイ",
+                        "pl-PL": "Postrzępione Ostrze – Opóźnienie przed automatycznym przywołaniem",
+                        "pt-BR": "Atraso da Lâmina Serrilhada antes do Chamado automático",
+                        "ru-RU": "Задержка «Зазубренного клинка» перед автоматическим возвратом",
+                        "zh-CN": "锯齿利刃自动召回延迟",
+                        "zh-TW": "鋸刃自動召回前停留時間"
                     }
                 }
             },
@@ -44209,14 +44793,26 @@ const customGameSettingsSchema =
                 }
             },
             "kiriko": {
-                "values": {                    
+                "values": {
                     "ability1Distance%": {
                         "values": "__percent__",
                         "min": 20,
                         "max": 300,
                         "default": 100,
+                        "guid": "00000001586F",
                         "en-US": "Swift Step Distance Scalar",
+                        "de-DE": "Schneller Schritt – Distanz",
+                        "es-ES": "Progresión de Paso ligero",
+                        "es-MX": "Escala de distancia de Paso ágil",
+                        "fr-FR": "Distance de Pas véloce",
+                        "it-IT": "Passo Rapido - Distanza percorsa",
+                        "ja-JP": "神出鬼没 距離スカラー",
                         "ko-KR": "순보 거리 조정",
+                        "pl-PL": "Skalowanie odległości Raźnego Ruchu",
+                        "pt-BR": "Distância Escalar do Passo Rápido",
+                        "ru-RU": "Быстрый шаг: множитель дистанции",
+                        "zh-CN": "“瞬”距离倍率",
+                        "zh-TW": "瞬影步距離"
                     }
                 }
             },
@@ -44715,17 +45311,6 @@ const customGameSettingsSchema =
                     }
                 }
             },
-            "sojourn": {
-                "values": {
-                    "secondaryFireEnergyChargeRate%": {
-                        "values": "__percent__",
-                        "min": 0,
-                        "max": 500,
-                        "default": 100,
-                        "en-US": "Railgun Alt Fire Energy Charge Rate",
-                    },
-                }  
-            },
             "soldier": {
                 "values": {
                     "secondaryFireKb%": {
@@ -44917,7 +45502,7 @@ const customGameSettingsSchema =
                         "es-MX": "Rodar - Siempre activa",
                         "fr-FR": "Roulé-boulé toujours actif",
                         "it-IT": "Rotolamento sempre attivo",
-                        "ja-JP": "〈ロール〉常時有効",
+                        "ja-JP": "ロール 常時有効",
                         "ko-KR": "구르기 항상 활성화",
                         "pl-PL": "Kulowrotek zawsze aktywny",
                         "pt-BR": "Rolagem sempre ativa",
@@ -45078,7 +45663,6 @@ const customGameSettingsSchema =
                 "values": {
                     "never": {
                         "guid": "000000002C5A",
-                        "default": true,
                         "en-US": "Never",
                         "de-DE": "Nie",
                         "es-ES": "Nunca",
@@ -45110,6 +45694,7 @@ const customGameSettingsSchema =
                         "zh-TW": "在每場對戰結束後"
                     },
                     "afterMirrorMatch": {
+                        "default": true,
                         "guid": "000000002C5C",
                         "en-US": "After A Mirror Match",
                         "de-DE": "Nach Hin- und Rückmatch",
@@ -45949,6 +46534,7 @@ const customGameSettingsSchema =
             "description": {
                 "guid": "00000001007F",
                 "values": "__string__",
+                "default": "",
                 "maxChars": 512,
                 "en-US": "Description",
                 "de-DE": "Beschreibung",
@@ -45965,6 +46551,7 @@ const customGameSettingsSchema =
             },
             "modeName": {
                 "values": "__string__",
+                "default": "",
                 "maxChars": 32,
                 "guid": "000000013E36",
                 "en-US": "Mode Name",
@@ -46030,10 +46617,18 @@ for (var gamemode of Object.keys(gamemodeKw)) {
     Object.assign(customGameSettingsSchema.gamemodes.values[gamemode], gamemodeKw[gamemode])
 }
 
-//Apply general settings to each gamemode
+//Apply general settings to each gamemode... but not Elimination for some reason lmao
 for (var gamemode in customGameSettingsSchema.gamemodes.values) {
-    Object.assign(customGameSettingsSchema.gamemodes.values[gamemode].values, customGameSettingsSchema.gamemodes.values.general.values);
+    if (gamemode === "elimination") {
+        customGameSettingsSchema.gamemodes.values[gamemode].values.enabledMaps = customGameSettingsSchema.gamemodes.values.general.values.enabledMaps;
+        customGameSettingsSchema.gamemodes.values[gamemode].values.disabledMaps = customGameSettingsSchema.gamemodes.values.general.values.disabledMaps;
+    } else {
+        Object.assign(customGameSettingsSchema.gamemodes.values[gamemode].values, customGameSettingsSchema.gamemodes.values.general.values);
+    }
 }
+//Can't enable/disable maps in general
+delete customGameSettingsSchema.gamemodes.values.general.values.enabledMaps;
+delete customGameSettingsSchema.gamemodes.values.general.values.disabledMaps;
 
 //Apply each gamemode's settings to general settings
 for (var gamemode in customGameSettingsSchema.gamemodes.values) {
@@ -46041,7 +46636,8 @@ for (var gamemode in customGameSettingsSchema.gamemodes.values) {
 }
 
 //Generate settings for heroes.general
-customGameSettingsSchema.heroes.values.general = Object.assign({}, customGameSettingsSchema.heroes.values.__generalAndEachHero__, customGameSettingsSchema.heroes.values.__generalButNotEachHero__)
+customGameSettingsSchema.heroes.values.general = {values: {}}
+customGameSettingsSchema.heroes.values.general.values = Object.assign({}, customGameSettingsSchema.heroes.values.__generalAndEachHero__, customGameSettingsSchema.heroes.values.__generalButNotEachHero__)
 
 //Generate settings for each hero
 for (var hero of Object.keys(heroKw)) {
@@ -46064,7 +46660,7 @@ for (var hero of Object.keys(heroKw)) {
             var heroValue = customGameSettingsSchema.heroes.values[hero].values[destKey];
 
             if ([
-                "secondaryFireCooldown%", "enableSecondaryFire", "secondaryFireMaximumTime%", "secondaryFireRechargeRate%",
+                "secondaryFireCooldown%", "enableSecondaryFire", "secondaryFireMaximumTime%", "secondaryFireRechargeRate%", "secondaryFireEnergyChargeRate%",
                 "ability3Cooldown%", "enableAbility3", 
                 "ability2Cooldown%", "enableAbility2", 
                 "ability1Cooldown%", "enableAbility1", 
@@ -46074,7 +46670,7 @@ for (var hero of Object.keys(heroKw)) {
                 for (var lang of availableLanguages) {
                     var key2 = (lang in heroValue ? lang : "en-US")
     
-                    if (["secondaryFireCooldown%", "enableSecondaryFire", "secondaryFireMaximumTime%", "secondaryFireRechargeRate%"].includes(key)) {
+                    if (["secondaryFireCooldown%", "enableSecondaryFire", "secondaryFireMaximumTime%", "secondaryFireRechargeRate%", "secondaryFireEnergyChargeRate%"].includes(key)) {
                         heroValue[lang] = heroValue[key2].replace("%1$s", heroKw[hero].secondaryFire[lang] || heroKw[hero].secondaryFire["en-US"])
 
                     } else if (["ability3Cooldown%", "enableAbility3"].includes(key)) {
@@ -46459,6 +47055,7 @@ function resetGlobalVariables(language) {
 	currentRuleEvent = "";
 	obfuscationSettings = {
 		obfuscateNames: false,
+		obfuscateComments: false,
 		obfuscateStrings: false,
 		obfuscateConstants: false,
 		obfuscateInspector: false,
@@ -46799,23 +47396,27 @@ function error(str, token) {
 	}
 	
 	//var error = "ERROR: ";
-	var error = "";
-	error += str;
+	var err = "";
+	err += str;
 	if (token !== undefined) {
-		error += "'"+dispTokens(token)+"'";
+		err += "'"+dispTokens(token)+"'";
 	}
 	if (fileStack) {
 		if (fileStack.length !== 0) {
 			fileStack.reverse();
 			for (var file of fileStack) {
-				error += "\n\t| line "+file.currentLineNb+", col "+file.currentColNb+", at "+file.name;
+				if ("rule" in file) {
+					err += "\n------------------------------------------------------------------------------------\nat rule #"+file.ruleNb+" ('"+file.rule+"')"+(file.actionNb ? ", action #"+file.actionNb : file.conditionNb ? ", condition #"+file.conditionNb : "") + (file.representation ? ": \n"+file.representation : "");
+				} else {
+					err += "\n\t| line "+file.currentLineNb+", col "+file.currentColNb+", at "+file.name;
+				}
 			}
 		}
 	} else {
-		error += "\n\t| <no filestack>";
+		err += "\n\t| <no filestack>";
 	}
 	
-	throw new Error(error);
+	throw new Error(err);
 }
 
 function warn(warnType, message) {
@@ -46826,11 +47427,15 @@ function warn(warnType, message) {
 			if (fileStack.length !== 0) {
 				fileStack.reverse();
 				for (var file of fileStack) {
-					warning += "\n\t| line "+file.currentLineNb+", col "+file.currentColNb+", at "+file.name;
+					if ("rule" in file) {
+						warning += "\n------------------------------------------------------------------------------------\nat rule #"+file.ruleNb+" ('"+file.rule+"')"+(file.actionNb ? ", action #"+file.actionNb : file.conditionNb ? ", condition #"+file.conditionNb : "") + (file.representation ? ": \n"+file.representation : "");
+					} else {
+						warning += "\n\t| line "+file.currentLineNb+", col "+file.currentColNb+", at "+file.name;
+					}
 				}
 			}
 		} else {
-			error += "\n\t| <no filestack>";
+			warning += "\n\t| <no filestack>";
 		}
 		console.warn(warning);
 		//suppressedWarnings.push(warnType);
@@ -47292,12 +47897,12 @@ function isTypeSuitable(expectedType, receivedType, valueTypeIsSuitable=true) {
 
     if (receivedType instanceof Array) {
         //Check if each of the received type is valid for the expected type.
-        return receivedType.every(x => isTypeSuitable(expectedType, x));
+        return receivedType.every(x => isTypeSuitable(expectedType, x, valueTypeIsSuitable));
     }
 
     if (expectedType instanceof Array) {
         //Check if the received type is valid for any of the expected types.
-        return expectedType.some(x => isTypeSuitable(x, receivedType));
+        return expectedType.some(x => isTypeSuitable(x, receivedType, valueTypeIsSuitable));
     }
 
     if (typeof receivedType === "string") {
@@ -47608,7 +48213,7 @@ function decompileCustomGameSettingsDict(dict, kwObj) {
 			var locB = (currentLanguage in kwObj[b] ? kwObj[b][currentLanguage] : kwObj[b]["en-US"])
 			return locA.localeCompare(locB)
 		}).reverse()
-		console.log(objKeys)
+		//console.log(objKeys)
 		for (var key of objKeys) {
 			if (currentLanguage in kwObj[key]) {
 				if (elem.toLowerCase().startsWith(kwObj[key][currentLanguage].toLowerCase())) {
@@ -47640,9 +48245,6 @@ function decompileCustomGameSettingsDict(dict, kwObj) {
 
 		} else if (kwObj[keyName].values === "__string__") {
 			value = unescapeString(value, false);
-			if (value.includes("D_e_l_w_i_o_n_#_2_6_6_7".replace(/_/g, ""))) {
-				error("C_a_n_n_o_t_ _d_e_c_o_m_p_i_l_e_ _t_h_i_s_ _g_a_m_e_m_o_d_e_".replace(/_/g, ""));
-			}
 
 		} else if (kwObj[keyName].values === "__percent__") {
 			if (!value.endsWith("%")) {
@@ -47745,6 +48347,10 @@ function splitStrOnDelimiter(content, delimiter, getAllMembers=true, rtl=false) 
 		} else if (content.charAt(i) == '\\') {
 			i++;
 		} else if (!currentPositionIsString && content.startsWith(delimiter, i)) {
+			//fix for baguette
+			if (currentLanguage === "fr-FR" && delimiter === "." && (content.substring(0, i).toLowerCase().endsWith("créer une i") || content.substring(0, i).toLowerCase().endsWith("créer une i.a") || content.substring(0, i).toLowerCase().endsWith("est une i") || content.substring(0, i).toLowerCase().endsWith("est une i.a") || content.substring(0, i).toLowerCase().endsWith("détruire une i") || content.substring(0, i).toLowerCase().endsWith("détruire une i.a") || content.substring(0, i).toLowerCase().endsWith("forcer le nom de l’i") || content.substring(0, i).toLowerCase().endsWith("forcer le nom de l’i.a") || content.substring(0, i).toLowerCase().endsWith("arrêter de forcer le nom de l’i") || content.substring(0, i).toLowerCase().endsWith("arrêter de forcer le nom de l’i.a")|| content.substring(0, i).toLowerCase().endsWith("détruire toutes les i")|| content.substring(0, i).toLowerCase().endsWith("détruire toutes les i.a"))) {
+				continue;
+			}
 			delimiterPos.push(i);
 		}
 
@@ -49337,10 +49943,7 @@ function decompileRuleToAst(content) {
 		} else {
 			if (eventInst.length > 1) {
 				//There cannot be only 2 event instructions: it's either 1 (global) or 3 (every other event).
-				if (topy(eventInst[1], eventTeamKw) !== "all") {
-					ruleAttributes.eventTeam = topy(eventInst[1], eventTeamKw);
-				}
-
+				ruleAttributes.eventTeam = topy(eventInst[1], eventTeamKw);
 				ruleAttributes.eventPlayer = topy(eventInst[2], eventPlayerKw);
 			}
 		}
@@ -49359,8 +49962,8 @@ function decompileRuleToAst(content) {
 	}
 
 	var astRule = new Ast("__rule__", [], astActions);
-	astRule.isDisabled = currentRuleIsDisabled;
 	astRule.ruleAttributes = ruleAttributes;
+	astRule.ruleAttributes.isDisabled = currentRuleIsDisabled;
 	
 	return astRule;
 }
@@ -49496,6 +50099,7 @@ function decompile(content) {
 
 		if (operatorCheck.operatorFound !== null) {
 			var operator = operatorCheck.operatorFound.trim();
+			debug("Handling operator '"+operator+"'");
 			
 			var operands = [content.slice(0, operatorCheck.operatorPosition), content.slice(operatorCheck.operatorPosition + operatorCheck.operatorFound.length)]
 			if (operator in binaryOpToFuncMapping) {
@@ -49580,9 +50184,6 @@ function decompile(content) {
     
     //Check for string literals
     if (name.startsWith('"')) {
-		if (name.includes("W_e_l_c_o_m_e_ _t_o_ _L_o_o_t_ _Q_u_e_s_t_!".replace(/_/g, ""))) {
-			error("C_a_n_n_o_t_ _d_e_c_o_m_p_i_l_e_ _t_h_i_s_ _g_a_m_e_m_o_d_e_".replace(/_/g, ""));
-		}
         return new Ast(unescapeString(name, false), [], [], "StringLiteral");
     }
     
@@ -49620,7 +50221,7 @@ function decompile(content) {
         var args = getArgs(content.substring(bracketPos[0]+1, bracketPos[1]), false);
         
 	}
-    debug("Arguments: "+args);
+    debug("Arguments: "+args.join(","));
 
     //Special functions
 
@@ -49728,6 +50329,7 @@ function decompile(content) {
 			if (args.length < 1) {
 				error("Function '"+name+"' has "+args.length+"args, expected at least 1");
 			}
+
 		} else if (name !== "__array__") {
 			if (args.length !== wsFuncKw[name].args.length) {
 				error("Function '"+name+"' has "+args.length+"args, expected "+funcKw[name].args.length);
@@ -49741,7 +50343,7 @@ function decompile(content) {
 			//console.log(wsFuncKw[name].args[i].type);
 
 			if (wsFuncKw[name].args[i].type in constantValues) {
-				console.log(args[i])
+				//console.log(args[i])
 				astArgs.push(new Ast(args[i] === "__removed_from_ow2__" ? args[i] : topy(args[i], constantValues[wsFuncKw[name].args[i].type]), [], [], wsFuncKw[name].args[i].type));
 			} else if (wsFuncKw[name].args[i].type === "GlobalVariable") {
 				astArgs.push(new Ast(translateVarToPy(args[i], true), [], [], "GlobalVariable"));
@@ -49754,6 +50356,18 @@ function decompile(content) {
 			}
 		} else {
 			astArgs.push(decompile(args[i]));
+		}
+	}
+
+	if (name === "__localizedString__") {
+		astArgs[0].type = "LocalizedStringLiteral";
+	} else if (name === "__customString__") {
+		astArgs[0].type = "CustomStringLiteral";
+	}
+	
+	if (name === "__localizedString__" || name === "__customString__") {
+		while (astArgs.length < 4) {
+			astArgs.push(getAstForNull());
 		}
 	}
 	
@@ -49803,7 +50417,7 @@ function astRulesToOpy(rules) {
             if (rule.ruleAttributes.event !== "global") {
                 decompiledRuleAttributes += tabLevel(nbTabs)+"@Event "+rule.ruleAttributes.event+"\n";
             }
-            if (rule.ruleAttributes.eventTeam) {
+            if (rule.ruleAttributes.eventTeam && rule.ruleAttributes.eventTeam !== "all") {
                 decompiledRuleAttributes += tabLevel(nbTabs)+"@Team "+rule.ruleAttributes.eventTeam+"\n";
             }
             if (rule.ruleAttributes.eventPlayer && rule.ruleAttributes.eventPlayer !== "all") {
@@ -49837,7 +50451,7 @@ function astRulesToOpy(rules) {
         //Decompile the rule actions
         decompiledRule += astActionsToOpy(rule.children);
 
-        if (rule.isDisabled) {
+        if (rule.ruleAttributes.isDisabled) {
             decompiledRule = "/*\n" + decompiledRule + "*/";
         }
         decompiledRule += "\n\n";
@@ -50578,9 +51192,71 @@ function astToOpy(content) {
 function decompileAllRules(content, language="en-US") {
 
 	resetGlobalVariables(language);
-	//return tokenizeWs(content).join("\n");
 	var result = "";
+
+	var [result, astRules] = decompileAllRulesToAst(content);
+
+	var variableDeclarations = "";	
+	if (globalVariables.length > 0) {
+		globalVariables.sort((a,b) => a.index-b.index);
+		var globalVariableDeclarations = "";
+		for (var variable of globalVariables) {
+			if (defaultVarNames.indexOf(variable.name) !== variable.index) {
+				globalVariableDeclarations += "globalvar "+variable.name+" "+variable.index+"\n";
+			}
+		}
+		if (globalVariableDeclarations !== "") {
+			variableDeclarations += "#Global variables\n\n"+globalVariableDeclarations+"\n\n";
+		}
+	}
+	if (playerVariables.length > 0) {
+		playerVariables.sort((a,b) => a.index-b.index);
+		var playerVariableDeclarations = "";
+		for (var variable of playerVariables) {
+			if (defaultVarNames.indexOf(variable.name) !== variable.index) {
+				playerVariableDeclarations += "playervar "+variable.name+" "+variable.index+"\n";
+			}
+		}
+		if (playerVariableDeclarations !== "") {
+			variableDeclarations += "#Player variables\n\n"+playerVariableDeclarations+"\n\n";
+		}
+	}
+
+	var subroutineDeclarations = "";
+	if (subroutines.length > 0) {
+		subroutines.sort((a,b) => a.index-b.index);
+		for (var subroutine of subroutines) {
+			if (defaultSubroutineNames.indexOf(subroutine.name) !== subroutine.index) {
+				subroutineDeclarations += "subroutine "+subroutine.name+" "+subroutine.index+"\n";
+			}
+		}
+		if (subroutineDeclarations !== "") {
+			subroutineDeclarations = "#Subroutine names\n\n"+subroutineDeclarations+"\n\n";
+		}
+	}
+	result += variableDeclarations + subroutineDeclarations;
+	
+	for (var rule of astRules) {
+		console.log(astToString(rule));
+	}
+	console.log(astRules);
+
+	var opyRules = astRulesToOpy(astRules)
+	if (activatedExtensions.length > 0) {
+		result += "#Activated extensions\n\n" + activatedExtensions.map(x => "#!extension "+x+"\n").join("")+"\n\n";
+	}
+
+	result += opyRules;
+	
+		
+	return result;
+	
+}
+
+function decompileAllRulesToAst(content) {
+
 	content = content.trim();
+	var customGameSettings = "";
 	
 	//Some maps and gamemodes are removed in ow2, making eg "Map("
 	//Before anything else, we must replace these to parse brackets correctly
@@ -50592,13 +51268,22 @@ function decompileAllRules(content, language="en-US") {
 	content = content.replace(mapRegex, mapConstFunction+"(__removed_from_ow2__)")
 	var gamemodeRegex = new RegExp("\\b"+gamemodeConstFunction+"\\((?!\\s*\\w)", "g")
 	content = content.replace(gamemodeRegex, gamemodeConstFunction+"(__removed_from_ow2__)")
+
+	//console.log(content);
 	
 	var bracketPos = getBracketPositions(content);
+	if (bracketPos.length === 0) {
+		error("Content is not workshop code");
+	}
 
 	//Check for settings
 	if (content.startsWith(tows("__settings__", ruleKw))) {
-		result += decompileCustomGameSettings(content.substring(bracketPos[0]+1, bracketPos[1]));
+		customGameSettings += decompileCustomGameSettings(content.substring(bracketPos[0]+1, bracketPos[1]));
 		content = content.substring(bracketPos[1]+1)
+	}
+	
+	if (activatedExtensions.length > 0) {
+		activatedExtensions = [...new Set(activatedExtensions)]
 	}
 
 	content = content.trim();
@@ -50648,66 +51333,7 @@ function decompileAllRules(content, language="en-US") {
 		}
 		astRules.push(decompileRuleToAst(content.substring(bracketPos[i]+1, bracketPos[i+4]+1)));
 	}
-
-	var variableDeclarations = "";	
-	if (globalVariables.length > 0) {
-		globalVariables.sort((a,b) => a.index-b.index);
-		var globalVariableDeclarations = "";
-		for (var variable of globalVariables) {
-			if (defaultVarNames.indexOf(variable.name) !== variable.index) {
-				globalVariableDeclarations += "globalvar "+variable.name+" "+variable.index+"\n";
-			}
-		}
-		if (globalVariableDeclarations !== "") {
-			variableDeclarations += "#Global variables\n\n"+globalVariableDeclarations+"\n\n";
-		}
-	}
-	if (playerVariables.length > 0) {
-		playerVariables.sort((a,b) => a.index-b.index);
-		var playerVariableDeclarations = "";
-		for (var variable of playerVariables) {
-			if (defaultVarNames.indexOf(variable.name) !== variable.index) {
-				playerVariableDeclarations += "playervar "+variable.name+" "+variable.index+"\n";
-			}
-		}
-		if (playerVariableDeclarations !== "") {
-			variableDeclarations += "#Player variables\n\n"+playerVariableDeclarations+"\n\n";
-		}
-	}
-
-	var subroutineDeclarations = "";
-	if (subroutines.length > 0) {
-		subroutines.sort((a,b) => a.index-b.index);
-		for (var subroutine of subroutines) {
-			if (defaultSubroutineNames.indexOf(subroutine.name) !== subroutine.index) {
-				subroutineDeclarations += "subroutine "+subroutine.name+" "+subroutine.index+"\n";
-			}
-		}
-		if (subroutineDeclarations !== "") {
-			subroutineDeclarations = "#Subroutine names\n\n"+subroutineDeclarations+"\n\n";
-		}
-	}
-	result += variableDeclarations + subroutineDeclarations;
-
-	
-
-	
-	for (var rule of astRules) {
-		console.log(astToString(rule));
-	}
-	console.log(astRules);
-
-	var opyRules = astRulesToOpy(astRules)
-	if (activatedExtensions.length > 0) {
-		activatedExtensions = [...new Set(activatedExtensions)]
-		result += "#Activated extensions\n\n" + activatedExtensions.map(x => "#!extension "+x+"\n").join("")+"\n\n";
-	}
-
-	result += opyRules;
-	
-		
-	return result;
-	
+	return [customGameSettings, astRules];
 }
 
 function decompileCustomGameSettings(content) {
@@ -50795,13 +51421,13 @@ function decompileCustomGameSettings(content) {
 						} else {
 							//The only object in a gamemode should be disabled/enabled maps, which is an array
 							var opyPropName = topy(property, customGameSettingsSchema.gamemodes.values.general.values);
-							result[opyCategory][opyGamemode][opyPropName] = {};
+							result[opyCategory][opyGamemode][opyPropName] = [];
 							for (var map of Object.keys(serialized[category][gamemode][property])) {
 								//remove number at the end, if there is one
 								if (map.endsWith("0")) {
 									map = map.substring(0, map.length-1);
 								}
-								result[opyCategory][opyGamemode][opyPropName][topy(map, mapKw)] = 0
+								result[opyCategory][opyGamemode][opyPropName].push(topy(map, mapKw))
 							}
 						}
 					}
@@ -50839,7 +51465,7 @@ function decompileCustomGameSettings(content) {
 				}
 
 				if (dict.length > 0) {
-					result[opyCategory][opyTeam].general = decompileCustomGameSettingsDict(dict, customGameSettingsSchema.heroes.values.general);
+					result[opyCategory][opyTeam].general = decompileCustomGameSettingsDict(dict, customGameSettingsSchema.heroes.values.general.values);
 				}
 			}
 		} else if (opyCategory === "workshop") {
@@ -50909,7 +51535,8 @@ function decompileVarNames(content) {
 			}
 		} else {
 			if (content[i].search(/\s/) >= 0) {
-				var elems = content[i].split(/\s+/);
+				var [first, ...rest] = content[i].split(/\s+/);
+				var elems = [first, rest.join(" ")];
 				if (elems.length !== 2) {
 					error("Could not parse variables field: too many elements on '"+content[i]+"'");
 				}
@@ -50951,7 +51578,7 @@ function decompileSubroutines(content) {
 		if (content[i].split(":").length % 2 !== 0) {
 			error("Malformed subroutine field '"+content[i]+"'(expected 2 elements)");
 		}
-		var index = content[i].split(":")[0].trim();
+		var index = +content[i].split(":")[0].trim();
 		var subName = content[i].split(":")[1].trim();
 		if (isNaN(index)) {
 			error("Index '"+index+"' in subroutines field should be a number");
@@ -54240,6 +54867,156 @@ astParsingFunctions["_&addToScore"] = function(content) {
 
 "use strict";
 
+astParsingFunctions["_&communicate"] = function(content) {
+
+    warn("w_ow2_communicate_bug", "The function Player.communicate() currently returns '0' and 'false' instead of false/true. It is possible to distinguish the values through string concatenation.")
+    
+    return content;
+}
+/* 
+ * This file is part of OverPy (https://github.com/Zezombye/overpy).
+ * Copyright (c) 2019 Zezombye.
+ * 
+ * This program is free software: you can redistribute it and/or modify  
+ * it under the terms of the GNU General Public License as published by  
+ * the Free Software Foundation, version 3.
+ *
+ * This program is distributed in the hope that it will be useful, but 
+ * WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+"use strict";
+
+astParsingFunctions["_&isCommunicating"] = function(content) {
+
+    warn("w_ow2_communicate_bug", "The function Player.isCommunicating() currently does not work.")
+    
+    return content;
+}
+/* 
+ * This file is part of OverPy (https://github.com/Zezombye/overpy).
+ * Copyright (c) 2019 Zezombye.
+ * 
+ * This program is free software: you can redistribute it and/or modify  
+ * it under the terms of the GNU General Public License as published by  
+ * the Free Software Foundation, version 3.
+ *
+ * This program is distributed in the hope that it will be useful, but 
+ * WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+"use strict";
+
+astParsingFunctions["_&isCommunicatingAnything"] = function(content) {
+
+    warn("w_ow2_communicate_bug", "The function Player.isCommunicatingAnything() currently does not work.")
+    
+    return content;
+}
+/* 
+ * This file is part of OverPy (https://github.com/Zezombye/overpy).
+ * Copyright (c) 2019 Zezombye.
+ * 
+ * This program is free software: you can redistribute it and/or modify  
+ * it under the terms of the GNU General Public License as published by  
+ * the Free Software Foundation, version 3.
+ *
+ * This program is distributed in the hope that it will be useful, but 
+ * WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+"use strict";
+
+astParsingFunctions["_&isCommunicatingEmote"] = function(content) {
+
+    warn("w_ow2_communicate_bug", "The function Player.isCommunicatingEmote() currently does not work.")
+    
+    return content;
+}
+/* 
+ * This file is part of OverPy (https://github.com/Zezombye/overpy).
+ * Copyright (c) 2019 Zezombye.
+ * 
+ * This program is free software: you can redistribute it and/or modify  
+ * it under the terms of the GNU General Public License as published by  
+ * the Free Software Foundation, version 3.
+ *
+ * This program is distributed in the hope that it will be useful, but 
+ * WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+"use strict";
+
+astParsingFunctions["_&isCommunicatingSpray"] = function(content) {
+
+    warn("w_ow2_communicate_bug", "The function Player.isCommunicatingSpray() currently does not work.")
+    
+    return content;
+}
+/* 
+ * This file is part of OverPy (https://github.com/Zezombye/overpy).
+ * Copyright (c) 2019 Zezombye.
+ * 
+ * This program is free software: you can redistribute it and/or modify  
+ * it under the terms of the GNU General Public License as published by  
+ * the Free Software Foundation, version 3.
+ *
+ * This program is distributed in the hope that it will be useful, but 
+ * WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+"use strict";
+
+astParsingFunctions["_&isCommunicatingVoiceline"] = function(content) {
+
+    warn("w_ow2_communicate_bug", "The function Player.isCommunicatingVoiceline() currently does not work.")
+    
+    return content;
+}
+/* 
+ * This file is part of OverPy (https://github.com/Zezombye/overpy).
+ * Copyright (c) 2019 Zezombye.
+ * 
+ * This program is free software: you can redistribute it and/or modify  
+ * it under the terms of the GNU General Public License as published by  
+ * the Free Software Foundation, version 3.
+ *
+ * This program is distributed in the hope that it will be useful, but 
+ * WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+"use strict";
+
 astParsingFunctions["_&setStatusEffect"] = function(content) {
 
     if (enableOptimization) {
@@ -56145,6 +56922,7 @@ function tokenize(content) {
 		} else if (content.startsWith("#!obfuscate")) {
 			obfuscationSettings = {
 				obfuscateNames: true,
+				obfuscateComments: true,
 				obfuscateStrings: true,
 				obfuscateConstants: true,
 				obfuscateInspector: true,
@@ -56156,6 +56934,7 @@ function tokenize(content) {
 			for (var tech of disabledObfuscationTechniques) {
 				if (tech === "noNameObfuscation") {
 					obfuscationSettings.obfuscateNames = false;
+					obfuscationSettings.obfuscateComments = false;
 				} else if (tech === "noStringObfuscation") {
 					obfuscationSettings.obfuscateStrings = false;
 				} else if (tech === "noConstantObfuscation") {
@@ -56827,7 +57606,7 @@ function parseAst(content) {
     }
 
     //Normalize arguments
-    if (content.name === "__for__") {
+    if (content.name === "__for__" && content.args.length !== 4) {
 
         if (content.args.length !== 1) {
             error("Function '"+content.name+"' takes 1 argument, received "+content.args.length);
@@ -56970,6 +57749,7 @@ function parseAst(content) {
         } else if (content.parent.name === "@Condition") {
             content.expectedType = "bool";
         } else if (content.parent.name in funcKw) {
+            //console.log(content);
             content.expectedType = funcKw[content.parent.name].args[content.parent.argIndex].type;
         } else {
             error("Unknown parent name '"+content.parent.name+"'");
@@ -57108,7 +57888,7 @@ function astRuleConditionToWs(condition) {
         "__greaterThan__": ">",
     }
     var result = "";
-    if (!obfuscationSettings.obfuscateNames && condition.comment) {
+    if (!obfuscationSettings.obfuscateComments && condition.comment) {
         result += tabLevel(2)+escapeString(condition.comment.trim(), true)+"\n";
     }
 
@@ -57179,7 +57959,7 @@ function astActionToWs(action, nbTabs) {
     if (action.name === "pass" && !action.comment) {
         action.comment = "pass";
     }
-    if (!obfuscationSettings.obfuscateNames && action.comment) {
+    if (!obfuscationSettings.obfuscateComments && action.comment) {
         result += tabLevel(nbTabs)+escapeString(action.comment.trim(), true)+"\n";
     }
     result += tabLevel(nbTabs)+astToWs(action)+";\n"
@@ -58765,6 +59545,35 @@ function compile(content, language="en-US", _rootPath="") {
 		console.log(astRules);
 	}
 
+	var result = compileRules(astRules);
+
+	var spentExtensionPoints = 0;
+	for (var ext of activatedExtensions) {
+		spentExtensionPoints += customGameSettingsSchema.extensions.values[ext].points;
+	}
+	
+    
+	if (DEBUG_MODE) {
+		var t1 = performance.now();
+		console.log("Compilation time: "+(t1-t0)+"ms");
+	}
+	return {
+		result: result,
+		macros: macros,
+		globalVariables: globalVariables,
+		playerVariables: playerVariables,
+		subroutines: subroutines,
+		encounteredWarnings: encounteredWarnings,
+		enumMembers: enumMembers,
+		nbElements: nbElements,
+		activatedExtensions: activatedExtensions,
+		spentExtensionPoints: spentExtensionPoints,
+		availableExtensionPoints: availableExtensionPoints,
+	};
+}
+
+function compileRules(astRules) {
+	
     var parsedAstRules = parseAstRules(astRules);
 
 	if (DEBUG_MODE) {
@@ -58857,25 +59666,8 @@ ${tows("__rule__", ruleKw)}("OverPy Map Detection") {
 	if (!compiledCustomGameSettings) {
 		warn("w_workshop_ui_disabled", "No settings were declared; it is impossible to paste this gamemode as-is, as the workshop UI is disabled.");
 	}
-	
-    
-	if (DEBUG_MODE) {
-		var t1 = performance.now();
-		console.log("Compilation time: "+(t1-t0)+"ms");
-	}
-	return {
-		result: result,
-		macros: macros,
-		globalVariables: globalVariables,
-		playerVariables: playerVariables,
-		subroutines: subroutines,
-		encounteredWarnings: encounteredWarnings,
-		enumMembers: enumMembers,
-		nbElements: nbElements,
-		activatedExtensions: activatedExtensions,
-		spentExtensionPoints: spentExtensionPoints,
-		availableExtensionPoints: availableExtensionPoints,
-	};
+
+	return result;
 }
 
 function getInitDirectivesRules() {
@@ -58930,9 +59722,11 @@ function generateVariablesField() {
 			if (variable.index === undefined || variable.index === null) {
 				unassignedVariables.push(variable.name);
 			} else {
+                /*
 				if (!isNumber(variable.index) || variable.index >= 128 || variable.index < 0) {
 					error("Invalid index '"+variable.index+"' for "+varType+" variable '"+variable.name+"', must be from 0 to 127");
 				}
+                */
 				outputVariables[variable.index] = variable.name;
 			}
 		}
@@ -59068,8 +59862,13 @@ function compileCustomGameSettings(customGameSettings) {
 
 	for (var key of Object.keys(customGameSettings)) {
 		if (key === "main" || key === "lobby") {
+			//workshop bug - cannot paste "best available"
+			if (key === "lobby" && customGameSettings["lobby"].dataCenterPreference === "bestAvailable") {
+				delete customGameSettings["lobby"].dataCenterPreference;
+			}
 			result[tows(key, customGameSettingsSchema)] = compileCustomGameSettingsDict(customGameSettings[key], customGameSettingsSchema[key].values);
 			if (key === "lobby") {
+
 				//Figure out the amount of available slots
 				var maxTeam1Slots = 0;
 				var maxTeam2Slots = 0;
@@ -59139,8 +59938,8 @@ function compileCustomGameSettings(customGameSettings) {
 				if ("enabled" in customGameSettings.gamemodes[gamemode] && customGameSettings.gamemodes[gamemode].enabled === false) {
 					wsGamemode = tows("__disabled__", ruleKw)+" "+wsGamemode;
 					isGamemodeEnabled = false;
-					delete customGameSettings.gamemodes[gamemode].enabled;
 				}
+				delete customGameSettings.gamemodes[gamemode].enabled;
 				result[wsGamemodes][wsGamemode] = {};
 				if ("enabledMaps" in customGameSettings.gamemodes[gamemode] || "disabledMaps" in customGameSettings.gamemodes[gamemode]) {
 					if ("enabledMaps" in customGameSettings.gamemodes[gamemode] && "disabledMaps" in customGameSettings.gamemodes[gamemode]) {
@@ -59156,7 +59955,8 @@ function compileCustomGameSettings(customGameSettings) {
 						} else if (mapKw[map].onlyInOw1) {
 							error("The map '"+map+"' is not available in OW2");
 						} else if (map.endsWith("Night") || map.endsWith("Halloween") || map.endsWith("Winter") || map.endsWith("Lny") || ["iliosRuins", "iliosLighthouse", "iliosWell", "nepalSanctum", "nepalShrine", "nepalVillage", "oasisCityCenter", "oasisGardens", "oasisUniversity"].includes(map)) {
-							error("The map '"+map+"' cannot be pasted, you will have to select/deselect it manually via the UI")
+							warn("w_ow2_map_paste_bug", "The map '"+map+"' cannot be pasted, you will have to select/deselect it manually via the UI.")
+							delete customGameSettings.gamemodes[gamemode][mapsKey][map];
 						}
 					}
 					//Test if there are only workshop maps (for extension points)
@@ -59205,12 +60005,17 @@ function compileCustomGameSettings(customGameSettings) {
 				}
 
 				if ("general" in customGameSettings.heroes[team]) {
-					Object.assign(result[wsHeroes][wsTeam], compileCustomGameSettingsDict(customGameSettings.heroes[team].general, customGameSettingsSchema.heroes.values.general));
+					Object.assign(result[wsHeroes][wsTeam], compileCustomGameSettingsDict(customGameSettings.heroes[team].general, customGameSettingsSchema.heroes.values.general.values));
 					delete customGameSettings.heroes[team].general;
 				}
 
 				for (var hero of Object.keys(customGameSettings.heroes[team])) {
 					var wsHero = tows(hero, heroKw);
+					for (var key of Object.keys(customGameSettings.heroes[team][hero])) {
+						if (!(key in customGameSettingsSchema.heroes.values[hero].values)) {
+							error("'"+hero+"' has no property '"+key+"'");
+						}
+					}
 					result[wsHeroes][wsTeam][wsHero] = compileCustomGameSettingsDict(customGameSettings.heroes[team][hero], customGameSettingsSchema.heroes.values[hero].values);
 				}
 
@@ -60334,7 +61139,7 @@ var normalStrKw =
         "de-DE": "Verbunden",
         "es-ES": "Conectado",
         "es-MX": "Conectado",
-        "fr-FR": "Connecté",
+        "fr-FR": "Connecté(e)",
         "it-IT": "Connesso",
         "ja-JP": "接続した",
         "pl-PL": "Połączono",
@@ -61483,7 +62288,7 @@ var normalStrKw =
         "de-DE": "Unterbrochen",
         "es-ES": "Desconectado",
         "es-MX": "Desconectado",
-        "fr-FR": "Déconnecté",
+        "fr-FR": "Déconnecté(e)",
         "it-IT": "Disconnesso",
         "ja-JP": "接続を解除した",
         "pl-PL": "Rozłączono",
@@ -66065,7 +66870,7 @@ var normalStrKw =
         "es-ES": "Proyectil",
         "es-MX": "Proyectil",
         "it-IT": "Proiettile",
-        "ja-JP": "飛翔物",
+        "ja-JP": "投射物",
         "pl-PL": "Pocisk",
         "pt-BR": "Projétil",
         "ru-RU": "Снаряд",
@@ -66079,7 +66884,7 @@ var normalStrKw =
         "es-ES": "Proyectiles",
         "es-MX": "Proyectiles",
         "it-IT": "Proiettili",
-        "ja-JP": "飛翔物",
+        "ja-JP": "投射物",
         "pl-PL": "Pociski",
         "pt-BR": "Projéteis",
         "ru-RU": "Снаряды",
@@ -66407,7 +67212,7 @@ var normalStrKw =
         "de-DE": "Bereit",
         "es-ES": "Listo",
         "es-MX": "Listo",
-        "fr-FR": "Prêt",
+        "fr-FR": "Prêt(e)",
         "it-IT": "Pronto",
         "ja-JP": "準備完了",
         "pl-PL": "Przygotuj",
@@ -68967,18 +69772,19 @@ var normalStrKw =
     },
     "Win": {
         "guid": "00000000C298",
-        "en-US": "Win",
-        "de-DE": "Gewonnen",
-        "es-ES": "Victoria",
-        "es-MX": "Victoria",
-        "fr-FR": "Victoire",
-        "it-IT": "Vittoria",
-        "ja-JP": "勝利",
-        "pl-PL": "Wygrana",
-        "pt-BR": "Vitória",
-        "ru-RU": "Победа",
-        "zh-CN": "胜利",
-        "zh-TW": "勝利"
+        "en-US": "Win: %1$s XP",
+        "de-DE": "Sieg: %1$s EP",
+        "es-ES": "Victoria: %1$s PE",
+        "es-MX": "Victoria: %1$s EXP",
+        "fr-FR": "Victoire : %1$s EXP",
+        "it-IT": "Vittoria: %1$s PE",
+        "ja-JP": "勝利: %1$s XP",
+        "ko-KR": "승리: %1$s 경험치",
+        "pl-PL": "Wygrana: %1$s PD",
+        "pt-BR": "Vitória: %1$s de EXP",
+        "ru-RU": "Победа: %1$s ед. опыта",
+        "zh-CN": "胜利：%1$s 经验",
+        "zh-TW": "勝利：%1$s點經驗值"
     },
     "Winner": {
         "guid": "00000000C084",

@@ -1,5 +1,6 @@
 const fs = require("fs");
 const JsDiff = require("diff");
+const UglifyJS = require("uglify-js");
  
 //import overpy files
 overpyFiles = [
@@ -20,6 +21,7 @@ overpyFiles = [
 "data/gamemodes.js",
 "data/constants.js",
 "data/other.js",
+"data/ui.js",
 "data/customGameSettings.js",
 "data/opy/preprocessing.js",
 "data/opy/annotations.js",
@@ -98,6 +100,12 @@ overpyFiles = [
 "compiler/functions/__yComponentOf__.js",
 "compiler/functions/__zComponentOf__.js",
 "compiler/functions/_&addToScore.js",
+"compiler/functions/_&communicate.js",
+"compiler/functions/_&isCommunicating.js",
+"compiler/functions/_&isCommunicatingAnything.js",
+"compiler/functions/_&isCommunicatingEmote.js",
+"compiler/functions/_&isCommunicatingSpray.js",
+"compiler/functions/_&isCommunicatingVoiceline.js",
 "compiler/functions/_&setStatusEffect.js",
 "compiler/functions/_&setUltCharge.js",
 "compiler/functions/abs.js",
@@ -200,6 +208,10 @@ if (typeof module !== "undefined") {
 `
 
 fs.writeFileSync("./VS Code Extension/overpy.js", overpyCode);
+
+var minifiedCode = UglifyJS.minify(overpyCode).code;
+fs.writeFileSync("./VS Code Extension/overpy.min.js", minifiedCode);
+
 //fs.writeFileSync("./bot/overpy.js", overpyCode);
 
 //Generate functions.md
@@ -330,14 +342,7 @@ function generateJsonSchema(json, settings) {
 				}
 			} else {
 				json.type = "string";
-				json.oneOf = [];
-				for (var key in settings.values) {
-					//console.log("generating "+key);
-					json.oneOf.push({
-						"const": key,
-						"description": settings.values[key].description,
-					})
-				}
+				json.enum = Object.keys(settings.values);
 			}
 		} else if (settings.values === "__string__") {
 			json.type = "string";
@@ -445,16 +450,17 @@ for (var key in overpy.customGameSettingsSchema) {
 			properties: {},
 		}
 		for (var team in overpy.customGameSettingsSchema[key].teams) {
-			jsonSchema.properties[key].properties[team] = {
+			/*jsonSchema.properties[key].properties[team] = {
 				"$ref": "#/definitions/heroes",
-			}
+			}*/
+			jsonSchema.properties[key].properties[team] = jsonSchema.definitions.heroes;
 		}
 	} else if (key === "workshop") {
 		jsonSchema.properties[key] = {
 			type: "object",
 			"patternProperties": {
 				".*": {
-					"type": ["number", "boolean"],
+					"type": ["number", "boolean", "string"],
 				},
 			},
 		}

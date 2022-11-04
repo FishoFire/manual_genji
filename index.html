@@ -25,10 +25,10 @@
 <div id="settingsdata">
 	<div class="contentblock"> 
 		<div class="contentblock"> 
-			<label> Display information </label> </br>
-			<textarea rows="1" cols="25" placeholder="map maker" id="maker" style="display:inline-block" onchange="UpdateTop()"></textarea>   
-			<textarea rows="1" cols="25" placeholder="map code" id="code" style="display:inline-block" onchange="UpdateTop()"></textarea> <br/>
-			difficulty <select name="difi" id="dif" onchange="UpdateTop()">
+			<label> <b>Display information</b> </label> </br>
+			<textarea rows="1" cols="25" placeholder="map maker" id="maker" style="display:inline-block" onchange="UpdateTop()"></textarea> |   
+			<textarea rows="1" cols="10" placeholder="map code" id="code" style="display:inline-block" onchange="UpdateTop()"></textarea> 
+			| difficulty <select name="difi" id="dif" onchange="UpdateTop()">
 				<option value="0">beginner</option>
 				<option value="1">easy-</option>
 				<option value="2">easy</option>
@@ -43,19 +43,20 @@
 				<option value="11">very hard</option>
 				<option value="12">very hard+</option>
 				<option value="13">extreme-</option>
-				<option value="14">extreme"</option>
-				 <option value="15">extreme+</option>
-				 <option value="16">hell</option>
-				 <option value="17">don't display</option>
+				<option value="14">extreme</option>
+				<option value="15">extreme+</option>
+				<option value="16">hell</option>
+				<option value="17">don't display</option>
 			</select> 
 		</div>
+		<!--
 		<div class="contentblock">
 			<label id="DashToggleEnabled">Dash addon: disabled |</label>
 			<label id="UltToggleEnabled">| Ult addon: disabled</label>   <br/>
 		</div>
+		-->
 		<div class="contentblock">
-			
-			overwatch text langauge
+			overwatch text language
 			<select id="languageInput">
 				<option value="en-US">English [en-US]</option>
 				<option value="de-DE">Deutsch [de-DE]</option>
@@ -70,10 +71,14 @@
 				<option value="ru-RU">Русский [ru-RU]</option>
 				<option value="zh-CN">简体中文 [zh-CN]</option>
 				<option value="zh-TW">繁體中文 [zh-TW]</option>
-			</select> <br/>
-			<input type="checkbox" id="portalOn" onclick="UpdateTop()" checked="true"> default portals (control maps)
+			</select> 
+			
 		</div>
-		
+		<div class="contentblock">
+			<input type="checkbox" id="portalOn" onclick="UpdateTop()" checked="true"> default portal addon (control maps) <br/>
+			<label id="DashToggleEnabled">dash addon (automatic): disabled |</label>
+			<label id="UltToggleEnabled">| ult addon (automatic): disabled</label>   
+		</div>
 		<div class="contentblock"> <b> Bans (workshop toggles)</b> <br/>
 			<input type="checkbox" id="ban_triple" onclick="UpdateTop()"> triple jump
 			<input type="checkbox" id="ban_multi" onclick="UpdateTop()"> multi climb
@@ -81,6 +86,28 @@
 			<input type="checkbox" id="ban_create" onclick="UpdateTop()"> create bhop
 			<input type="checkbox" id="ban_dbhop" onclick="UpdateTop()"> Deathbhop
 			<input type="checkbox" id="ban_dashstart" onclick="UpdateTop()"> dash start
+		</div>
+
+		<div class="contentblock" id="compdiv" style="background-color:#5F6D7A">
+			
+			<input type="checkbox" id="comptoggle" onclick="UpdateTop()"> <b>Tournament map (Competitive mode)</b><br/>
+			<small><i>sets a time limit and turns off invisible, spectator mode and practice mode </i></small> <br/>
+			<!-- <input type="range" value="24" min="1" max="100" oninput="this.nextElementSibling.value = this.value"> -->
+			<input type="range" id="comptimeslider" value="120" min="1" max="240" oninput="document.getElementById('comptimenumber').value = this.value;UpdateTop()"> 
+			<input type="number" id="comptimenumber" value="120" min="1" max="240" oninput="document.getElementById('comptimeslider').value = this.value;if(this.value > maxtimecomp || this.value < 1){this.value = maxtimecomp};UpdateTop()"> <br/>
+			<input type="number" id="compattempt" value="0" min="0" max="9999" oninput="if(this.value > 9999 || this.value == ''){this.value = 0};UpdateTop()"> attempt limit (0 for infinite)<br/>
+			<input type="checkbox" id="comprestart" onclick="UpdateTop()"> disable restarting mid run <br/>
+			<textarea rows="3" cols="50" placeholder="Rules here" id="compdesc" style="display:inline-block" onchange="UpdateTop()"></textarea> 
+			
+		</div>
+
+		<div class="contentblock" id="titlediv" style="background-color:#5F6D7A">
+			<input type="checkbox" id="titletoggle" onclick="UpdateTop()"> <b>Title addon</b><br/>
+
+			<div id="titlelist"></div>
+
+			<button onclick="AddTitle()" style="width:200px"> + </button>
+		
 		</div>
 
 		<div class="contentblock">
@@ -116,8 +143,6 @@
 			<!-- disabled because it doesnt work (hiden next 2)-->
 			<input type="checkbox" id="CPbanBhop" onclick="UpdateAfterChange()" style="display:none"><!--  ban bhop -->
 			<input type="checkbox" id="CpbanClimb" onclick="UpdateAfterChange()" style="display:none"> <!-- ban wallclimb -->
-
-				
 		
 			<textarea id="CPnotes" name="txtfield" rows="3" onchange="UpdateAfterChange()" placeholder="cp notes"></textarea>
 			<button onclick="RemoveCP()" class="longbutton">  remove checkpoint  </button>
@@ -197,6 +222,7 @@
 		Make sure the langauge in the <i>settings</i> tab matches your overwatch client.<br/>
 		Save the data in the <i>save/load</i> tab for later editing. <br/>
 		Press the big <i>copy map to clipboard</i> button on top. <br/>
+		Do not tab out while compiling! <br/>
 		</p>
 
 		<strong>step 4</strong> <br/>
@@ -217,14 +243,14 @@
 </div>
 
 <textarea id="results" style="display:none"></textarea>
-<div style="text-align:left"><small>version 0.97.5</small></div>
+<div style="text-align:left"><small>version 0.98</small></div>
 
 <input type="hidden" id="overpy-textarea">
 <input type="hidden" id="compiled-textarea">
-
 <script src="overpy-master/VS Code Extension/overpy.js"></script>
 
-<script src="template-1-51.js"></script>
+
+<script src="templates/template-1-62.js"></script>
 
 <script src="manual_script.js"></script>
 </body>

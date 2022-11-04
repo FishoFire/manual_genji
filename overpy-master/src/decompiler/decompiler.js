@@ -22,9 +22,71 @@
 function decompileAllRules(content, language="en-US") {
 
 	resetGlobalVariables(language);
-	//return tokenizeWs(content).join("\n");
 	var result = "";
+
+	var [result, astRules] = decompileAllRulesToAst(content);
+
+	var variableDeclarations = "";	
+	if (globalVariables.length > 0) {
+		globalVariables.sort((a,b) => a.index-b.index);
+		var globalVariableDeclarations = "";
+		for (var variable of globalVariables) {
+			if (defaultVarNames.indexOf(variable.name) !== variable.index) {
+				globalVariableDeclarations += "globalvar "+variable.name+" "+variable.index+"\n";
+			}
+		}
+		if (globalVariableDeclarations !== "") {
+			variableDeclarations += "#Global variables\n\n"+globalVariableDeclarations+"\n\n";
+		}
+	}
+	if (playerVariables.length > 0) {
+		playerVariables.sort((a,b) => a.index-b.index);
+		var playerVariableDeclarations = "";
+		for (var variable of playerVariables) {
+			if (defaultVarNames.indexOf(variable.name) !== variable.index) {
+				playerVariableDeclarations += "playervar "+variable.name+" "+variable.index+"\n";
+			}
+		}
+		if (playerVariableDeclarations !== "") {
+			variableDeclarations += "#Player variables\n\n"+playerVariableDeclarations+"\n\n";
+		}
+	}
+
+	var subroutineDeclarations = "";
+	if (subroutines.length > 0) {
+		subroutines.sort((a,b) => a.index-b.index);
+		for (var subroutine of subroutines) {
+			if (defaultSubroutineNames.indexOf(subroutine.name) !== subroutine.index) {
+				subroutineDeclarations += "subroutine "+subroutine.name+" "+subroutine.index+"\n";
+			}
+		}
+		if (subroutineDeclarations !== "") {
+			subroutineDeclarations = "#Subroutine names\n\n"+subroutineDeclarations+"\n\n";
+		}
+	}
+	result += variableDeclarations + subroutineDeclarations;
+	
+	for (var rule of astRules) {
+		console.log(astToString(rule));
+	}
+	console.log(astRules);
+
+	var opyRules = astRulesToOpy(astRules)
+	if (activatedExtensions.length > 0) {
+		result += "#Activated extensions\n\n" + activatedExtensions.map(x => "#!extension "+x+"\n").join("")+"\n\n";
+	}
+
+	result += opyRules;
+	
+		
+	return result;
+	
+}
+
+function decompileAllRulesToAst(content) {
+
 	content = content.trim();
+	var customGameSettings = "";
 	
 	//Some maps and gamemodes are removed in ow2, making eg "Map("
 	//Before anything else, we must replace these to parse brackets correctly
@@ -36,13 +98,22 @@ function decompileAllRules(content, language="en-US") {
 	content = content.replace(mapRegex, mapConstFunction+"(__removed_from_ow2__)")
 	var gamemodeRegex = new RegExp("\\b"+gamemodeConstFunction+"\\((?!\\s*\\w)", "g")
 	content = content.replace(gamemodeRegex, gamemodeConstFunction+"(__removed_from_ow2__)")
+
+	//console.log(content);
 	
 	var bracketPos = getBracketPositions(content);
+	if (bracketPos.length === 0) {
+		error("Content is not workshop code");
+	}
 
 	//Check for settings
 	if (content.startsWith(tows("__settings__", ruleKw))) {
-		result += decompileCustomGameSettings(content.substring(bracketPos[0]+1, bracketPos[1]));
+		customGameSettings += decompileCustomGameSettings(content.substring(bracketPos[0]+1, bracketPos[1]));
 		content = content.substring(bracketPos[1]+1)
+	}
+	
+	if (activatedExtensions.length > 0) {
+		activatedExtensions = [...new Set(activatedExtensions)]
 	}
 
 	content = content.trim();
@@ -92,66 +163,7 @@ function decompileAllRules(content, language="en-US") {
 		}
 		astRules.push(decompileRuleToAst(content.substring(bracketPos[i]+1, bracketPos[i+4]+1)));
 	}
-
-	var variableDeclarations = "";	
-	if (globalVariables.length > 0) {
-		globalVariables.sort((a,b) => a.index-b.index);
-		var globalVariableDeclarations = "";
-		for (var variable of globalVariables) {
-			if (defaultVarNames.indexOf(variable.name) !== variable.index) {
-				globalVariableDeclarations += "globalvar "+variable.name+" "+variable.index+"\n";
-			}
-		}
-		if (globalVariableDeclarations !== "") {
-			variableDeclarations += "#Global variables\n\n"+globalVariableDeclarations+"\n\n";
-		}
-	}
-	if (playerVariables.length > 0) {
-		playerVariables.sort((a,b) => a.index-b.index);
-		var playerVariableDeclarations = "";
-		for (var variable of playerVariables) {
-			if (defaultVarNames.indexOf(variable.name) !== variable.index) {
-				playerVariableDeclarations += "playervar "+variable.name+" "+variable.index+"\n";
-			}
-		}
-		if (playerVariableDeclarations !== "") {
-			variableDeclarations += "#Player variables\n\n"+playerVariableDeclarations+"\n\n";
-		}
-	}
-
-	var subroutineDeclarations = "";
-	if (subroutines.length > 0) {
-		subroutines.sort((a,b) => a.index-b.index);
-		for (var subroutine of subroutines) {
-			if (defaultSubroutineNames.indexOf(subroutine.name) !== subroutine.index) {
-				subroutineDeclarations += "subroutine "+subroutine.name+" "+subroutine.index+"\n";
-			}
-		}
-		if (subroutineDeclarations !== "") {
-			subroutineDeclarations = "#Subroutine names\n\n"+subroutineDeclarations+"\n\n";
-		}
-	}
-	result += variableDeclarations + subroutineDeclarations;
-
-	
-
-	
-	for (var rule of astRules) {
-		console.log(astToString(rule));
-	}
-	console.log(astRules);
-
-	var opyRules = astRulesToOpy(astRules)
-	if (activatedExtensions.length > 0) {
-		activatedExtensions = [...new Set(activatedExtensions)]
-		result += "#Activated extensions\n\n" + activatedExtensions.map(x => "#!extension "+x+"\n").join("")+"\n\n";
-	}
-
-	result += opyRules;
-	
-		
-	return result;
-	
+	return [customGameSettings, astRules];
 }
 
 function decompileCustomGameSettings(content) {
@@ -239,13 +251,13 @@ function decompileCustomGameSettings(content) {
 						} else {
 							//The only object in a gamemode should be disabled/enabled maps, which is an array
 							var opyPropName = topy(property, customGameSettingsSchema.gamemodes.values.general.values);
-							result[opyCategory][opyGamemode][opyPropName] = {};
+							result[opyCategory][opyGamemode][opyPropName] = [];
 							for (var map of Object.keys(serialized[category][gamemode][property])) {
 								//remove number at the end, if there is one
 								if (map.endsWith("0")) {
 									map = map.substring(0, map.length-1);
 								}
-								result[opyCategory][opyGamemode][opyPropName][topy(map, mapKw)] = 0
+								result[opyCategory][opyGamemode][opyPropName].push(topy(map, mapKw))
 							}
 						}
 					}
@@ -283,7 +295,7 @@ function decompileCustomGameSettings(content) {
 				}
 
 				if (dict.length > 0) {
-					result[opyCategory][opyTeam].general = decompileCustomGameSettingsDict(dict, customGameSettingsSchema.heroes.values.general);
+					result[opyCategory][opyTeam].general = decompileCustomGameSettingsDict(dict, customGameSettingsSchema.heroes.values.general.values);
 				}
 			}
 		} else if (opyCategory === "workshop") {
@@ -353,7 +365,8 @@ function decompileVarNames(content) {
 			}
 		} else {
 			if (content[i].search(/\s/) >= 0) {
-				var elems = content[i].split(/\s+/);
+				var [first, ...rest] = content[i].split(/\s+/);
+				var elems = [first, rest.join(" ")];
 				if (elems.length !== 2) {
 					error("Could not parse variables field: too many elements on '"+content[i]+"'");
 				}
@@ -395,7 +408,7 @@ function decompileSubroutines(content) {
 		if (content[i].split(":").length % 2 !== 0) {
 			error("Malformed subroutine field '"+content[i]+"'(expected 2 elements)");
 		}
-		var index = content[i].split(":")[0].trim();
+		var index = +content[i].split(":")[0].trim();
 		var subName = content[i].split(":")[1].trim();
 		if (isNaN(index)) {
 			error("Index '"+index+"' in subroutines field should be a number");
