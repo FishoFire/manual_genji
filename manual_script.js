@@ -57,6 +57,8 @@ ${titleon}
 ${titlenames}
 ${titlecps}
 ${titlecolors}
+
+${editoron}
 =========================
 */
 
@@ -824,14 +826,15 @@ var titlenames
 var titlecps
 var titlecolors
 
-
+var editoron
 // copy button
 function Copy(){
+    /*
     if (CheckPoints.length <1){
         console.log("length")
         return
     }
-    
+    */
     ShowMsg("compiling - do not tab out");
     CompileError = false
    
@@ -839,7 +842,7 @@ function Copy(){
         function (){
            
             // cp data ==================
-            data_cps = "\n\t\tGlobal.A = Array("
+            data_cps = "\n\t\tGlobal.A = Array( "
             for (let i = 0;  i < CheckPoints.length; i++){
                 if (CheckPoints[i][1]){
                     data_cps += "\n\t\t\tArray(Vector(" + defaultVect(CheckPoints[i][0]) + "), Vector(" + defaultVect(CheckPoints[i][2])+ ")),"
@@ -998,6 +1001,7 @@ function Copy(){
             titlenames = titlenames.slice(0,-2) + "));"
             titlecolors = titlecolors.slice(0,-2) + "));"
             
+            editoron = defaultBool(document.getElementById("editorontoggle").checked)
             // ====== compile and copy ===================
             setdata(); // loaded from data file
       
