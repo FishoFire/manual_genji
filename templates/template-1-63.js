@@ -5,7 +5,7 @@ function setdata(){ //String.raw
 	main
 	{
 		Description: "  ~ The Official Genji Parkour Editor ~\nCode: 54CRY\nAdapted by: nebula#11571/FishoFire#2431"
-		Mode Name: "Genji Parkour v1.0.61"
+		Mode Name: "Genji Parkour v1.6.2"
 	}
 	lobby
 	{
@@ -2418,7 +2418,7 @@ rule ("Checkpoint | Skip | Crouch + Primary/Secondary Fire") {
             If(Compare((Event Player).PracticeToggle, ==, 1));
                 Modify Player Variable(Event Player, PracticeCheckpoint, Subtract, 1);
             End;
-            Wait(0.16, Ignore Condition);
+           
         Else;
             Abort If(Compare((Event Player).A, ==, Subtract(Count Of(Global.A), 1)));
             Set Player Variable(Event Player, LockState, True);
@@ -2429,7 +2429,7 @@ rule ("Checkpoint | Skip | Crouch + Primary/Secondary Fire") {
         End;
         Wait(0.016, Ignore Condition);
         Call Subroutine(checkpointFailReset);
-        Wait(0.016, Ignore Condition);
+        Wait(0.064, Ignore Condition);
         Set Player Variable(Event Player, LockState, False);
         Set Player Variable(Event Player, MovedCheckpoint, True);
         Call Subroutine(UpdateCache);
