@@ -5,7 +5,7 @@ function setdata(){ //String.raw
 	main
 	{
 		Description: "  ~ The Official Genji Parkour Editor ~\nCode: 54CRY\nAdapted by: nebula#11571/FishoFire#2431"
-		Mode Name: "Genji Parkour v1.0.6"
+		Mode Name: "Genji Parkour v1.0.61"
 	}
 	lobby
 	{
