@@ -2418,6 +2418,7 @@ rule ("Checkpoint | Skip | Crouch + Primary/Secondary Fire") {
             If(Compare((Event Player).PracticeToggle, ==, 1));
                 Modify Player Variable(Event Player, PracticeCheckpoint, Subtract, 1);
             End;
+            Wait(0.16, Ignore Condition);
         Else;
             Abort If(Compare((Event Player).A, ==, Subtract(Count Of(Global.A), 1)));
             Set Player Variable(Event Player, LockState, True);
