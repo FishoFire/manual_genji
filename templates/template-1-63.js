@@ -5,7 +5,7 @@ function setdata(){ //String.raw
 	main
 	{
 		Description: "  ~ The Official Genji Parkour Editor ~\nCode: 54CRY\nAdapted by: nebula#11571/FishoFire#2431"
-		Mode Name: "Genji Parkour v1.6.2"
+		Mode Name: "Genji Parkour v1.6.3"
 	}
 	lobby
 	{
@@ -1448,7 +1448,7 @@ rule ("SUB | Checkpoint Fail") {
             Wait(0.1, Ignore Condition);
             Allow Button(Event Player, Button(Jump));
         End;
-        If(Compare((Event Player).A, ==, 0));
+        If(And(Compare((Event Player).A, ==, 0), Not(Compare((Event Player).PracticeToggle, >, 0))));
             Set Player Variable(Event Player, D, 0);
         End;
         If(Is Using Ultimate(Event Player));
