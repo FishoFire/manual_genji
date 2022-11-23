@@ -358,7 +358,7 @@ function ExportJson(){
 }
 
 function UpdateSelection(){
-    document.getElementById("selectedcpnumber").innerHTML  = "Checkpoint: "+ SelectedCp
+    document.getElementById("selectedcpnumber").innerHTML  = "Checkpoint [ "+ SelectedCp + " ]"
     document.getElementById("CPvector").value  =  CheckPoints[parseInt(SelectedCp)][0]
     FieldColorsVect(document.getElementById("CPvector"))
 
@@ -556,7 +556,8 @@ function UpdateOrbs(){
 			let thediv = document.createElement("div");
             thediv.style.textAlign = "left";
 			thediv.id = "orbdiv" + i
-			thediv.innerHTML = "orb "+ i + " | position ";
+			//thediv.innerHTML = "orb "+ i + " | position ";
+            thediv.innerHTML = "bounce | position ";
 			thediv.value = (CheckPoints.length-1)
 			thediv.className = "bounceorb"
 			document.getElementById("orbs-kills").appendChild(thediv);
@@ -635,7 +636,8 @@ function UpdateOrbs(){
 		for (let it = 0;  it < CheckPoints[SelectedCp][7].length; it++) { // orbs
 			let thediv2 = document.createElement("div");
 			thediv2.id = "killdiv" + it
-			thediv2.innerHTML = "kill "+ it + " | position ";
+			//thediv2.innerHTML = "kill "+ it + " | position ";
+            thediv2.innerHTML = "kill | position ";
 			thediv2.value = (CheckPoints.length-1)
 			thediv2.className = "killorb"
 			document.getElementById("orbs-kills").appendChild(thediv2);

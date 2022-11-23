@@ -5,14 +5,17 @@
         width:100%;
         max-width: 1000px;
         vertical-align: middle;
+        border:1px solid black;
         /*width: 1000px;*/
     }
 
     .sidebar{
+        /*
+        width:90%;
+        */
         padding:3px; 
         margin:3px;
-        width:90%;
-        background-color:rgb(60, 60, 60); /*gray*/
+        background-color:rgb(60, 60, 60); 
         border: 1px solid black;
     }
     .sidebarbutton{
@@ -21,9 +24,9 @@
         background-color: darkblue;
         border:1px solid blue;
         */
+        width:15%;
         background-color: gray;
         color: white;
-        width:15%;
     }
 
     button{
@@ -36,11 +39,16 @@
     }
 
     div {
-        margin:10px;
+        margin:5px;
     }
 
     textarea {
         vertical-align: middle
+    }
+
+    hr{
+        border:0;
+        border-bottom: 1px solid black;
     }
 
     #message{
@@ -60,24 +68,31 @@
         margin:5px;
     }
     .contentblock {
+        border-bottom: 1px solid black;
+        padding:2px;
+        padding-top: 1px;
         /*padding: 3px; */
-        padding-top: 6px;
-        padding-bottom: 6px;
+        /*
+        padding-top: 3px;
+        padding-bottom: 3px;
         padding-left: 3px;
         padding-right: 3px;
         margin:3px;
         width:90%;
-        background-color:lightslategray; /*gray*/
+        background-color:lightslategray; 
         border: 1px solid black;
+        */
     }
 
 
     .saveelement {
         /*width:18%; */
-        width:80%;
+        /*
         border: 1px solid black;
         margin:5px; 
         padding:5px;
+        */
+        width:80%;
         display:inline-block;
     }
 
@@ -109,6 +124,7 @@
     }
     #selectedcpnumber {
         font-weight: bold;
+        /*background-color:#92A0AD;*/
     }
     #cpdata{
         display:none;

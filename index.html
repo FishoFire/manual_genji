@@ -7,6 +7,14 @@
 
 <body>
 
+<div class="contentblock"> 
+	<div class="sidebar">
+		<button onclick="changebar(3)" class="sidebarbutton">settings</button> 
+		<button onclick="changebar(0)" class="sidebarbutton">data</button> 
+		<button onclick="changebar(1)" class="sidebarbutton">save/load</button> 
+		<button onclick="changebar(2)" class="sidebarbutton">help</button> 
+	</div>
+</div>
 
 <div class="contentblock"> 
 	<button onclick="Copy()" class="longbutton">  copy map to clipboard </button>
@@ -15,12 +23,7 @@
 <div class="contentblock" style="display:none" id="messageblock"> 
 	<div id="message"></div>
 </div>
-<div class="sidebar">
-	<button onclick="changebar(3)" class="sidebarbutton">settings</button> 
-	<button onclick="changebar(0)" class="sidebarbutton">data</button> 
-	<button onclick="changebar(1)" class="sidebarbutton">save/load</button> 
-	<button onclick="changebar(2)" class="sidebarbutton">help</button> 
-</div>
+
 
 <div id="settingsdata">
 	<div class="contentblock"> 
@@ -79,7 +82,7 @@
 			<label id="DashToggleEnabled">dash addon (automatic): disabled |</label>
 			<label id="UltToggleEnabled">| ult addon (automatic): disabled</label>   
 		</div>
-		<div class="contentblock"> <b> Bans (workshop toggles)</b> <br/>
+		<div class="contentblock"> <b> Ban on all checkpoints (workshop toggles)</b> <br/>
 			<input type="checkbox" id="ban_triple" onclick="UpdateTop()"> triple jump
 			<input type="checkbox" id="ban_multi" onclick="UpdateTop()"> multi climb
 			<input type="checkbox" id="ban_emote" onclick="UpdateTop()" style="display:none"><!-- emote save -->
@@ -125,10 +128,10 @@
 		
 
 		<div id="button div" class="contentblock" > 
+			<button onclick="AddNewCP(1)" >add checkpoint (after current cp)</button>
+			<button onclick="AddNewCP(0)" >add checkpoint (end of cp list)</button>
+			<hr>
 			<div id="cp_buttons"></div>
-			<button onclick="AddNewCP(1)" style="width:40%">add checkpoint (after current cp)</button>
-			<button onclick="AddNewCP(0)" style="width:40%">add checkpoint (end of cp list)</button>
-		
 		</div>   
 
 		<div id="cpdata" class="contentblock"> 
@@ -143,15 +146,38 @@
 			<!-- disabled because it doesnt work (hiden next 2)-->
 			<input type="checkbox" id="CPbanBhop" onclick="UpdateAfterChange()" style="display:none"><!--  ban bhop -->
 			<input type="checkbox" id="CpbanClimb" onclick="UpdateAfterChange()" style="display:none"> <!-- ban wallclimb -->
-		
+			<hr>
+			<b>Bans</b> <br/>
+			triple <input type="checkbox" id="a" onclick="UpdateAfterChange()">
+			multi <input type="checkbox" id="a" onclick="UpdateAfterChange()" >
+			create <input type="checkbox" id="a" onclick="UpdateAfterChange()" >
+			dead <input type="checkbox" id="a" onclick="UpdateAfterChange()">
+			emote <input type="checkbox" id="a" onclick="UpdateAfterChange()">
+			wallclimb <input type="checkbox" id="a" onclick="UpdateAfterChange()" >
+			
+			<hr>
+
+			<input type="checkbox" id="a" onclick="UpdateAfterChange()">
+			HUD text 
+			<textarea id="a" name="txtfield" rows="2" cols="50" onchange="UpdateAfterChange()" placeholder="abc"></textarea> 
+			<br/> <br/>
+
+			<input type="checkbox" id="a" onclick="UpdateAfterChange()">
+			InWorldText | position  
+			<textarea id="a" name="txtfield" rows="1" cols="15" onchange="UpdateAfterChange()" onkeyup="FieldColorsVect(this)" placeholder="0,0,0"></textarea> 
+			| text
+			<textarea id="a" name="txtfield" rows="1" cols="25" onchange="UpdateAfterChange()" placeholder="abc"></textarea> 
+			
+			<hr>
+
 			<textarea id="CPnotes" name="txtfield" rows="3" onchange="UpdateAfterChange()" placeholder="cp notes"></textarea>
-			<button onclick="RemoveCP()" class="longbutton">  remove checkpoint  </button>
+			<button onclick="RemoveCP()">  remove this checkpoint  </button>
 		</div>
 
 
 		<div id="orbs-kills" class="contentblock"> 
-			<button onclick="AddOrb()" >  add bounce orb  </button>
-			<button onclick="AddKill()" >  add kill orb  </button>
+			<button onclick="AddOrb()" style="background-color:greenyellow;border:1px solid green">  add bounce orb  </button>
+			<button onclick="AddKill()" style="background-color:red;border:1px solid darkred">  add kill orb  </button>
 			<label id="orbcounter"> </label>
 		</div>
 	</div>
@@ -164,7 +190,7 @@
 				<button onclick="ImportJson()">import json</button>
 				<textarea id="jsonfield" rows="1" cols="25" placeholder="json pasta here"></textarea>
 			</div>
-			
+			<hr style="width:80%">
 			<div class="saveelement">
 				<b>  Save slot 0</b> <br/> 
 				<textarea id="save0" name="txtfield" style="width:95%" rows="1"> savename</textarea>
@@ -248,7 +274,7 @@
 </div>
 
 <textarea id="results" style="display:none"></textarea>
-<div style="text-align:left"><small>version 0.981</small></div>
+<div style="text-align:left"><small>version 0.99</small></div>
 
 <input type="hidden" id="overpy-textarea">
 <input type="hidden" id="compiled-textarea">
