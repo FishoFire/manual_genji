@@ -1,0 +1,171 @@
+variables
+    map data (1d array)
+        contains settings 
+            0 map maker name
+            1 map code
+            2 notes for the entire map
+
+            9 portal on
+            10 difficulty
+
+            14 title data
+            15 titles on`
+            18 iwt colors
+
+            19 custom dificulty text
+            20 custom dif color
+
+            full bans
+            3 triple
+            4 multi
+            5 emote
+            6 create
+            7 death
+            8 dashstart
+
+            comp
+            11 comptime
+            12 is comp on toggle
+            13 attempt count
+
+            16 restart toggle
+            17 comp instructions
+
+       
+    cp data - 2d array were each entry contains cp data:
+        0 pos vector
+        1 teleport bool
+        2 teleport vector
+        3 dash
+        4 ult
+        5 notes
+        6 kills
+        7 orbs
+        8 bans per cp (old ban bhop)
+        9 texts per cp (old ban climb)
+
+        kills (inside 6)
+            0 pos
+            1 radius
+
+        orb (inside 7)
+            0 pos vector
+            1 dash
+            2 ult
+            3 lock
+            4 strength
+
+        bans (inside 8)
+            0 triple
+            1 multi
+            2 create
+            3 dead
+            4 emote
+            5 climb
+
+        texts (inside 9)
+            0 hud enabled
+            1 hud text
+            2 iwt enabled
+            3 iwt text
+            4 iwt pos
+
+general workings:
+    interface settings get turned into workshop code
+    the variables get inserted into a version of the template
+    this gets copied to clipboard
+    if another client langauge is selected then it first converts it via decompile+recompile in overpy
+
+list of [1] of every cp that has enabled
+
+
+
+
+
+change template:
+    make function setdata = String.raw'data'
+    put the variables in
+    - turn editor to off
+    - replace settings with one were all maps on
+
+    paste the variables in:
+    var data_cps // checkpoints
+    old: - remove :lb comments coz 0
+
+
+    map data
+    ${data_cps}
+    ${data_orb_cp}
+    ${data_orb_pos}
+    ${data_orb_lock} 
+    ${data_orb_dash} 
+    ${data_orb_ult}
+    ${data_orb_strength}
+
+    ${data_kill_pos}
+    ${data_kill_rad}
+    ${data_kill_cp}
+
+    ${mapcode}
+    ${mapmaker}
+
+    // cp bans
+    ${cpbantriple}
+    ${cpbanmulti}
+    ${cpbancreate}
+    ${cpbandead}
+    ${cpbanemote}
+    ${cpclimb}
+  
+
+    ${ban_dashstart}
+
+    ${customdifenabled}
+    ${customdiftxt}
+    #{customdifcolor}
+
+    ${portalon}
+    ${difficultyhud}
+ 
+    ${compdescription[0]}
+    ${compdescription[1]}
+    ${compdescription[2]}
+    ${compdescription[3]}
+
+    ${ban_triple}
+    ${ban_multi}
+    ${ban_create}
+    ${ban_dbhop}
+    ${ban_emote}
+    ${ban_climb}
+
+    ${editoron}
+
+    ${titleon}
+    ${titlenames}
+    ${titlecps}
+    ${titlecolors}
+
+    ${hudeanbled}
+    ${hudtext}
+    ${hudcps}
+
+    ${iwtenabled}
+    ${iwttext}
+    ${iwtcps}
+    ${iwtpos}
+    ${iwtcolor}
+
+    ${ulteanbled}
+    ${ultarray}
+    ${dasheanbled}
+    ${dasharray}
+
+    ${compon}
+    ${comptime}
+    ${compattempt}
+    ${comprestarts}
+
+
+
+        

@@ -17,7 +17,7 @@
 </div>
 
 <div class="contentblock"> 
-	<button onclick="Copy()" class="longbutton">  copy map to clipboard </button>
+	<button onclick="Copy()" class="longbutton" >  copy map to clipboard </button>
 </div>
 
 <div class="contentblock" style="display:none" id="messageblock"> 
@@ -28,10 +28,10 @@
 <div id="settingsdata">
 	<div class="contentblock"> 
 		<div class="contentblock"> 
-			<label> <b>Display information</b> </label> </br>
+			<label> <b>Display information </b> </label> </br>
 			<textarea rows="1" cols="25" placeholder="map maker" id="maker" style="display:inline-block" onchange="UpdateTop()"></textarea> |   
 			<textarea rows="1" cols="10" placeholder="map code" id="code" style="display:inline-block" onchange="UpdateTop()"></textarea> 
-			| difficulty <select name="difi" id="dif" onchange="UpdateTop()">
+			<br/> difficulty <select name="difi" id="dif" onchange="UpdateTop()">
 				<option value="0">beginner</option>
 				<option value="1">easy-</option>
 				<option value="2">easy</option>
@@ -50,7 +50,29 @@
 				<option value="15">extreme+</option>
 				<option value="16">hell</option>
 				<option value="17">don't display</option>
+				<option value="custom">custom</option>
 			</select> 
+			 | 
+			<textarea rows="1" cols="20" placeholder="custom difficulty" id="customdif" onchange="UpdateTop();" disabled="true"></textarea> 
+			color <small>(custom difficulty)</small>
+			<select id="customdifcolor" onchange="UpdateTop();" disabled="true">	
+				<option value="Aqua">Aqua</option>
+				<option value="Black">Black</option>
+				<option value="Blue">Blue</option>
+				<option value="Gray">Gray</option>
+				<option value="Green">Green</option>
+				<option value="Lime Green" selected="selected">Lime Green</option>
+				<option value="Orange">Orange</option>
+				<option value="Purple">Purple</option>
+				<option value="Red">Red</option>
+				<option value="Rose">Rose</option>
+				<option value="Sky Blue">Sky Blue</option>
+				<option value="Turquoise">Turquoise</option>
+				<option value="Violet">Violet</option>
+				<option value="White">White</option>
+				<option value="Yellow">Yellow</option>
+			</select> <br/>
+
 		</div>
 		<!--
 		<div class="contentblock">
@@ -75,37 +97,64 @@
 				<option value="zh-CN">简体中文 [zh-CN]</option>
 				<option value="zh-TW">繁體中文 [zh-TW]</option>
 			</select> 
-			| <input type="checkbox" id="editorontoggle"> Turn editor on
+			<br/>
+			<input type="checkbox" id="editorontoggle"> Turn editor on
+		</div>
+		<div class="contentblock"> <b> Bans </b> <small>(apply to entire map) </small><br/>
+			<input type="checkbox" id="ban_triple" onclick="UpdateTop()"> triple jump |
+			<input type="checkbox" id="ban_multi" onclick="UpdateTop()"> multi climb |
+			<input type="checkbox" id="ban_emote" onclick="UpdateTop()" style="display:none"><!-- emote save -->
+			<input type="checkbox" id="ban_create" onclick="UpdateTop()"> create bhop |
+			<input type="checkbox" id="ban_dbhop" onclick="UpdateTop()"> Deathbhop |
+			<input type="checkbox" id="ban_dashstart" onclick="UpdateTop()"> dash start |
+			<input type="checkbox" id="ban_climb" onclick="UpdateTop()"> wall climb 
 		</div>
 		<div class="contentblock">
-			<input type="checkbox" id="portalOn" onclick="UpdateTop()" checked="true"> default portal addon (control maps) <br/>
+
+			<input type="checkbox" id="portalOn" onclick="UpdateTop()" checked="true"> default portal addon (control maps) 
+			
+			| in world text color
+			<select id="iwtcolor" onchange="MapData[18] = this.value">	
+				<option value="Aqua">Aqua</option>
+				<option value="Black">Black</option>
+				<option value="Blue">Blue</option>
+				<option value="Gray">Gray</option>
+				<option value="Green">Green</option>
+				<option value="Lime Green" selected="selected">Lime Green</option>
+				<option value="Orange">Orange</option>
+				<option value="Purple">Purple</option>
+				<option value="Red">Red</option>
+				<option value="Rose">Rose</option>
+				<option value="Sky Blue">Sky Blue</option>
+				<option value="Turquoise">Turquoise</option>
+				<option value="Violet">Violet</option>
+				<option value="White">White</option>
+				<option value="Yellow">Yellow</option>
+			</select> <br/>
+
+			<!--
 			<label id="DashToggleEnabled">dash addon (automatic): disabled |</label>
 			<label id="UltToggleEnabled">| ult addon (automatic): disabled</label>   
+			<br/>
+			<label id="HudEnabled">hud addon (automatic): disabled |</label>
+			<label id="IwtToggleEnabled">| in world text addon (automatic): disabled</label>  
+			-->
 		</div>
-		<div class="contentblock"> <b> Ban on all checkpoints (workshop toggles)</b> <br/>
-			<input type="checkbox" id="ban_triple" onclick="UpdateTop()"> triple jump
-			<input type="checkbox" id="ban_multi" onclick="UpdateTop()"> multi climb
-			<input type="checkbox" id="ban_emote" onclick="UpdateTop()" style="display:none"><!-- emote save -->
-			<input type="checkbox" id="ban_create" onclick="UpdateTop()"> create bhop
-			<input type="checkbox" id="ban_dbhop" onclick="UpdateTop()"> Deathbhop
-			<input type="checkbox" id="ban_dashstart" onclick="UpdateTop()"> dash start
-		</div>
-
 		<div class="contentblock" id="compdiv" style="background-color:#5F6D7A">
 			
-			<input type="checkbox" id="comptoggle" onclick="UpdateTop()"> <b>Tournament map (Competitive mode)</b><br/>
+			<input type="checkbox" id="comptoggle" onclick="UpdateTop()"> <b>Tournament / Competitive mode</b><br/>
 			<small><i>sets a time limit and turns off invisible, spectator mode and practice mode </i></small> <br/>
 			<!-- <input type="range" value="24" min="1" max="100" oninput="this.nextElementSibling.value = this.value"> -->
 			<input type="range" id="comptimeslider" value="120" min="1" max="240" oninput="document.getElementById('comptimenumber').value = this.value;UpdateTop()"> 
 			<input type="number" id="comptimenumber" value="120" min="1" max="240" oninput="document.getElementById('comptimeslider').value = this.value;if(this.value > maxtimecomp || this.value < 1){this.value = maxtimecomp};UpdateTop()"> <br/>
 			<input type="number" id="compattempt" value="0" min="0" max="9999" oninput="if(this.value > 9999 || this.value == ''){this.value = 0};UpdateTop()"> attempt limit (0 for infinite)<br/>
 			<input type="checkbox" id="comprestart" onclick="UpdateTop()"> disable restarting mid run <br/>
-			<textarea rows="3" cols="50" placeholder="Rules here" id="compdesc" style="display:inline-block" onchange="UpdateTop()"></textarea> 
+			<textarea rows="3" style="width:80%" placeholder="competition rule popup text here" id="compdesc" style="display:inline-block" onchange="UpdateTop()"></textarea> 
 			
 		</div>
 
 		<div class="contentblock" id="titlediv" style="background-color:#5F6D7A">
-			<input type="checkbox" id="titletoggle" onclick="UpdateTop()"> <b>Title addon</b><br/>
+			<input type="checkbox" id="titletoggle" onclick="UpdateTop()"> <b>Title addon</b>
 
 			<div id="titlelist"></div>
 
@@ -114,7 +163,7 @@
 		</div>
 
 		<div class="contentblock">
-			<textarea rows="6" style="width:90%" placeholder="map notes" id="notes" style="display:inline-block" onchange="UpdateTop()"></textarea>
+			<textarea rows="6" style="width:90%" placeholder="map notes - (these don't display ingame)" id="notes" style="display:inline-block" onchange="UpdateTop()"></textarea>
 		</div>
 	</div>
 </div>
@@ -128,8 +177,8 @@
 		
 
 		<div id="button div" class="contentblock" > 
-			<button onclick="AddNewCP(1)" >add checkpoint (after current cp)</button>
-			<button onclick="AddNewCP(0)" >add checkpoint (end of cp list)</button>
+			<button onclick="AddNewCP(1)" >insert checkpoint (after current cp)</button>
+			<button onclick="AddNewCP(0)" >add checkpoint (at the end of cp list)</button>
 			<hr>
 			<div id="cp_buttons"></div>
 		</div>   
@@ -139,8 +188,8 @@
 			position <textarea id="CPvector" name="txtfield" rows="1" cols="25" onchange="UpdateAfterChange()" onkeyup="FieldColorsVect(this)" placeholder="0,0,0"></textarea> <br/>
 			
 
-			<input type="checkbox" id="CPdashenable" onclick="UpdateAfterChange()"> dash
-			<input type="checkbox" id="CPultenable" onclick="UpdateAfterChange()"> ultimate
+			<input type="checkbox" id="CPdashenable" onclick="UpdateAfterChange()"> dash |
+			<input type="checkbox" id="CPultenable" onclick="UpdateAfterChange()"> ultimate |
 			<input type="checkbox" id="CPteleportTF" onclick="UpdateAfterChange()"> teleport <textarea id="CPteleportVect" name="txtfield" onchange="UpdateAfterChange()" onkeyup="FieldColorsVect(this)"  rows="1" cols="25" placeholder="0,0,0"></textarea> 
 			<br/>
 			<!-- disabled because it doesnt work (hiden next 2)-->
@@ -148,30 +197,32 @@
 			<input type="checkbox" id="CpbanClimb" onclick="UpdateAfterChange()" style="display:none"> <!-- ban wallclimb -->
 			<hr>
 			<b>Bans</b> <br/>
-			triple <input type="checkbox" id="a" onclick="UpdateAfterChange()">
-			multi <input type="checkbox" id="a" onclick="UpdateAfterChange()" >
-			create <input type="checkbox" id="a" onclick="UpdateAfterChange()" >
-			dead <input type="checkbox" id="a" onclick="UpdateAfterChange()">
-			emote <input type="checkbox" id="a" onclick="UpdateAfterChange()">
-			wallclimb <input type="checkbox" id="a" onclick="UpdateAfterChange()" >
+			triple <input type="checkbox" id="bantrip" onclick="UpdateAfterChange()">
+			| multi <input type="checkbox" id="banmulti" onclick="UpdateAfterChange()" >
+			| create <input type="checkbox" id="bancrea" onclick="UpdateAfterChange()" >
+			| deadhop <input type="checkbox" id="bandead" onclick="UpdateAfterChange()">
+			| emote <input type="checkbox" id="banemote" onclick="UpdateAfterChange()">
+			| wallclimb <input type="checkbox" id="banclimb" onclick="UpdateAfterChange()" >
 			
 			<hr>
 
-			<input type="checkbox" id="a" onclick="UpdateAfterChange()">
+			<input type="checkbox" id="hudeanbledbox" onclick="UpdateAfterChange()">
 			HUD text 
-			<textarea id="a" name="txtfield" rows="2" cols="50" onchange="UpdateAfterChange()" placeholder="abc"></textarea> 
-			<br/> <br/>
-
-			<input type="checkbox" id="a" onclick="UpdateAfterChange()">
+			<textarea id="hudtxt" name="txtfield" rows="2" cols="50" onchange="UpdateAfterChange()" placeholder="abc"></textarea> 
+			<br/>
+			<input type="checkbox" id="iwteanbledbox" onclick="UpdateAfterChange()">
 			InWorldText | position  
-			<textarea id="a" name="txtfield" rows="1" cols="15" onchange="UpdateAfterChange()" onkeyup="FieldColorsVect(this)" placeholder="0,0,0"></textarea> 
+			<textarea id="iwtpos" name="txtfield" rows="1" cols="15" onchange="UpdateAfterChange()" onkeyup="FieldColorsVect(this)" placeholder="0,0,0"></textarea> 
 			| text
-			<textarea id="a" name="txtfield" rows="1" cols="25" onchange="UpdateAfterChange()" placeholder="abc"></textarea> 
+			<textarea id="iwttext" name="txtfield" rows="1" cols="25" onchange="UpdateAfterChange()" placeholder="abc"></textarea> 
 			
 			<hr>
 
-			<textarea id="CPnotes" name="txtfield" rows="3" onchange="UpdateAfterChange()" placeholder="cp notes"></textarea>
-			<button onclick="RemoveCP()">  remove this checkpoint  </button>
+		
+			<textarea id="CPnotes" name="txtfield" rows="2"  onchange="UpdateAfterChange()" placeholder="cp notes"></textarea>
+		
+			<button onclick="RemoveCP()">  delete this checkpoint  </button>
+		
 		</div>
 
 
@@ -184,62 +235,24 @@
 </div>
 
 <div id="savebar">
-	<div class="contentblock"> <!-- savebar  --> <!-- contentblock  -->
-			<div class="saveelement">
-				<button onclick="ExportJson()">export current data as json</button>
-				<button onclick="ImportJson()">import json</button>
-				<textarea id="jsonfield" rows="1" cols="25" placeholder="json pasta here"></textarea>
-			</div>
-			<hr style="width:80%">
+	
+		<div class="saveelement">
+			<button onclick="ExportJsonCopy()">copy data json to clipboard</button>
+			<button onclick="ExportJsonFile()">download as json file</button>
+			<br/>
+			<button onclick="ImportJson()">import json</button>
+			<textarea id="jsonfield" rows="1" cols="25" placeholder="json pasta for import here"></textarea>
+		</div>
+
+			<!--
 			<div class="saveelement">
 				<b>  Save slot 0</b> <br/> 
 				<textarea id="save0" name="txtfield" style="width:95%" rows="1"> savename</textarea>
 				<button onclick="Save(0)" style="width:95%"> Save </button> 
-				<button onclick="Load(0)" style="width:95%">Load </button>
+				<button onclick="LoadSave(0)" style="width:95%">Load </button>
 			</div>
-			
-			<div class="saveelement">
-				<b>  Save slot 1</b> <br/> 
-				<textarea id="save1" name="txtfield" style="width:95%" rows="1"> savename</textarea> <br/>
-				<button onclick="Save(1)" style="width:95%"> Save </button> <br/>
-				<button onclick="Load(1)" style="width:95%">Load </button>
-			</div>
-
-			<div class="saveelement">
-				<b>  Save slot 2</b> <br/> 
-				<textarea id="save2" name="txtfield" style="width:95%" rows="1"> savename</textarea> <br/>
-				<button onclick="Save(2)" style="width:95%"> Save </button> <br/>
-				<button onclick="Load(2)" style="width:95%">Load </button>
-			</div>
-			
-			<div class="saveelement">
-				<b>  Save slot 3</b> <br/> 
-				<textarea id="save3" name="txtfield" style="width:95%" rows="1"> savename</textarea> <br/>
-				<button onclick="Save(3)" style="width:95%"> Save </button> <br/>
-				<button onclick="Load(3)" style="width:95%">Load </button>
-			</div>
-
-			<div class="saveelement">
-				<b>  Save slot 4</b> <br/> 
-				<textarea id="save4" name="txtfield" style="width:95%" rows="1"> savename</textarea> <br/>
-				<button onclick="Save(4)" style="width:95%"> Save </button> <br/>
-				<button onclick="Load(4)" style="width:95%">Load </button>
-			</div>
-
-			<div class="saveelement">
-				<b>  Save slot 5</b> <br/> 
-				<textarea id="save5" name="txtfield" style="width:95%" rows="1"> savename</textarea> <br/>
-				<button onclick="Save(5)" style="width:95%"> Save </button> <br/>
-				<button onclick="Load(5)" style="width:95%">Load </button>
-			</div>
-
-			<div class="saveelement">
-				<b>  Save slot 6</b> <br/> 
-				<textarea id="save6" name="txtfield" style="width:95%" rows="1"> savename</textarea> <br/>
-				<button onclick="Save(6)" style="width:95%"> Save </button> <br/>
-				<button onclick="Load(6)" style="width:95%">Load </button>
-			</div>
-	</div>
+			-->
+	
 </div>
 
 
@@ -295,10 +308,14 @@
 <script src="overpy-master/VS Code Extension/overpy.js"></script>
 
 
-<script src="templates/template-1-63.js"></script>
+<script src="templates/template 1-7_beta1.js"></script>
+<!-- <script src="templates/template-1-63.js"></script> -->
+<!-- <script src="templates/template_debug.js"></script> -->
 
-<script src="generate_things.js"></script>
-<script src="manual_script.js"></script>
+<script src="js_generate_things.js"></script>
+<script src="js_manual_script.js"></script>
+<script src="js_copy_button.js"></script>
+<script src="js_save.js"></script>
 
 
 </body>

@@ -1,22 +1,3 @@
-function AddTitle(){
-    
-    MapData[14].push(
-        [
-        0,
-        "bunny",
-        "White"
-        ]
-    )
-    MakeTitles()
-}
-
-function RemoveTitle(x){
-    if (MapData[14].length > 1){
-        MapData[14].splice(x,1)
-    }
-    MakeTitles()
-}
-
 function RemoveCP(){
     if (CheckPoints.length > 1){
         
@@ -38,7 +19,6 @@ function RemoveCP(){
     }
 }
 
-
 function AddNewCP(x){
     document.getElementById("cpdata").style.display = "block"
     document.getElementById("orbs-kills").style.display = "block"
@@ -54,10 +34,11 @@ function AddNewCP(x){
             "", //5 notes
             [], //6 orb
             [], //7 kill
-            false, //8 ban bhop
-            false // 9 ban climb
+            [false,false,false,false,false,false], //8 bans
+            [false,"",false,"",""] // 9 text
             ]
         )
+        
         SelectedCp = CheckPoints.length -1
 
     } else { // add after current
@@ -73,15 +54,34 @@ function AddNewCP(x){
             "", //5 notes
             [], //6 orb
             [], //7 kill
-            false, //8 ban bhop
-            false // 9 ban climb
+            [false,false,false,false,false,false], //8 bans
+            [false,"",false,"",""] // 9 text
             ]
         )
         SelectedCp ++
     }
-    UpdateSelection()
     CpButtons()   
+    UpdateSelection()
 }
+
+function CpButtons(){ // generate all cp buttons
+    const cpbuttons = document.querySelectorAll('.cpbuttonclass');
+    cpbuttons.forEach(cpbuttons => {
+        cpbuttons.remove();
+    });
+    for(let i=0; i < CheckPoints.length; i++){
+        let btn = document.createElement("button");
+        btn.innerHTML = ("CP " + (i));
+        btn.id = "CPBUTTON" + (i)
+        btn.value = (i)
+        btn.className = "cpbuttonclass"
+        btn.onclick = function(){SelectedCp = parseInt(btn.value);UpdateSelection()};
+        document.getElementById("cp_buttons").appendChild(btn);
+    }
+}
+
+
+// orbs =============================================
 
 function AddOrb(){
     CheckPoints[SelectedCp][6].push(
@@ -254,7 +254,26 @@ function UpdateOrbs(){
 
 }
 
+// titles =============================================
 
+function AddTitle(){
+    
+    MapData[14].push(
+        [
+        0,
+        "bunny",
+        "White"
+        ]
+    )
+    MakeTitles()
+}
+
+function RemoveTitle(x){
+    if (MapData[14].length > 1){
+        MapData[14].splice(x,1)
+    }
+    MakeTitles()
+}
 
 function MakeTitles(){
     const titles = document.querySelectorAll('.titles');
@@ -297,8 +316,7 @@ function MakeTitles(){
         titlecolor.id = "titlecolor" + i
         titlecolor.onchange = function(){MapData[14][i][2] = titlecolor.value}
         var colorsvar = ["Aqua","Black","Blue","Gray","Green","Lime Green","Orange","Purple","Red","Rose","Sky Blue","Turquoise","Violet","White","Yellow"]
-        
-        
+                
         for (var i2 = 0; i2 < colorsvar.length; i2++){
             var opt = document.createElement('option');
             opt.value = colorsvar[i2];
@@ -318,3 +336,13 @@ function MakeTitles(){
 
     }
 }
+
+
+
+
+
+
+
+
+
+

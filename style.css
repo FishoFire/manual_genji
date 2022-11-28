@@ -1,14 +1,25 @@
     body {
         background-color:lightslategray; 
-        float:left; 
+        /*float:left; */
+
+        
         text-align:center;
         width:100%;
-        max-width: 1000px;
+        max-width: 900px;
         vertical-align: middle;
         border:1px solid black;
         /*width: 1000px;*/
     }
-
+    .cpbuttonclass{
+        background-color: #fcfcfcab;
+        border: 1px solid black;
+        border-radius: 4px;
+        padding:5px; 
+        margin:2px;
+    }
+    .cpbuttonclass:hover {
+        background-color: #fcfcfc50;
+    }
     .sidebar{
         /*
         width:90%;
@@ -17,6 +28,7 @@
         margin:3px;
         background-color:rgb(60, 60, 60); 
         border: 1px solid black;
+        border-radius: 6px;
     }
     .sidebarbutton{
         /*
@@ -24,6 +36,7 @@
         background-color: darkblue;
         border:1px solid blue;
         */
+        border-radius: 6px;
         width:15%;
         background-color: gray;
         color: white;
@@ -35,7 +48,8 @@
     }
 
     textarea {
-        padding:5px;
+        padding:3px;
+        margin:3px;
     }
 
     div {
@@ -66,11 +80,16 @@
     .longbutton {
         width:90%; 
         margin:5px;
+        border-radius: 4px;
+        border-color: #4B5258;
+        font-weight: bold;
     }
     .contentblock {
         border-bottom: 1px solid black;
         padding:2px;
         padding-top: 1px;
+        padding-bottom: 3px;
+        border-radius: 2px;
         /*padding: 3px; */
         /*
         padding-top: 3px;
@@ -88,11 +107,12 @@
     .saveelement {
         /*width:18%; */
         /*
-        border: 1px solid black;
         margin:5px; 
-        padding:5px;
         */
-        width:80%;
+    
+        padding:5px;
+        border: 1px solid black;
+        width:70%;
         display:inline-block;
     }
 
@@ -119,7 +139,7 @@
     }
 
     #CPnotes {
-        width:90%;
+        width:70%;
         margin-bottom: 3px;
     }
     #selectedcpnumber {

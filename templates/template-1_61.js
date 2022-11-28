@@ -3000,6 +3000,7 @@ disabled rule ("custom portals - function") {
     }
     actions {
         Set Player Variable(Event Player, PortalLoop, 0);
+        "Esperança map"
         For Player Variable(Event Player, PortalLoop, 0, Count Of(Global.CustomPortalStart), 1);
             If(And(Compare(Distance Between(Add(Position Of(Event Player), Vector(0, 0.2, 0)), Value In Array(Global.CustomPortalStart, (Event Player).PortalLoop)), <, 1.3), Array Contains(Array(999, (Event Player).A), Value In Array(Global.CustomPortalCP, (Event Player).PortalLoop))));
                 Teleport(Event Player, Value In Array(Global.CustomPortalEndpoint, (Event Player).PortalLoop));
