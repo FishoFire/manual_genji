@@ -290,6 +290,7 @@ function Copy(){
             await window.navigator.clipboard.readText()), 3000)
             navigator.clipboard.writeText(resultthing.value);
             */
+            
             setTimeout(async()=>console.log(
                 await window.navigator.clipboard.readText()), 3000
             )

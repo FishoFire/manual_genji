@@ -851,7 +851,6 @@ rule ("Editor | delete cp/orb") {
                 Skip(2);
             End;
             Modify Player Variable(Host Player, A, Subtract, 1);
-            //lbl_0:
             Call Subroutine(RebuildKillOrbs);
             Call Subroutine(RebuildBounceOrbs);
             Small Message(All Players(All Teams), Custom String("   Checkpoint has been deleted", Null, Null, Null));
@@ -863,7 +862,6 @@ rule ("Editor | delete cp/orb") {
             Modify Global Variable(K, Remove From Array By Index, Value In Array((Host Player).KillIndex_Cache, Global.J));
             Skip If(Compare(Global.J, <=, 0), 1);
             Modify Global Variable(J, Subtract, 1);
-            //lbl_1:
             Call Subroutine(UpdateCache);
             Call Subroutine(RebuildKillOrbs);
             Set Global Variable(L, Value In Array(Global.H, Value In Array((Host Player).KillIndex_Cache, Global.J)));
@@ -878,7 +876,6 @@ rule ("Editor | delete cp/orb") {
             Modify Global Variable(pinballnumber, Remove From Array By Index, Value In Array((Host Player).BounceIndex_Cache, Global.TQ1));
             Skip If(Compare(Global.TQ1, <=, 0), 1);
             Modify Global Variable(TQ1, Subtract, 1);
-            //lbl_2:
             Call Subroutine(UpdateCache);
             Call Subroutine(RebuildBounceOrbs);
             Set Global Variable(TQ3, Value In Array(Global.TQ, Value In Array((Host Player).BounceIndex_Cache, Global.TQ1)));
@@ -1490,7 +1487,6 @@ rule ("SUB | Leaderboard Update") {
                 End;
             End;
         End;
-        //lb_a:
     }
 }
 
@@ -1523,7 +1519,6 @@ rule ("SUB | Checkpoint Fail") {
         Start Rule(CheckDash, Restart Rule);
     }
 }
-
 rule ("SUB | Checkpoint Effects") {
     event {
         Subroutine;
@@ -1540,7 +1535,7 @@ rule ("SUB | Checkpoint Effects") {
         Create Icon(If-Then-Else((Event Player).NotOnLastCp, Event Player, Null), Add(Value In Array(Global.A, Add((Event Player).A, 1)), Up), Arrow: Down, Visible To and Position, Color(Sky Blue), True);
         Set Player Variable At Index(Event Player, B, 3, Last Created Entity);
         "createInWorldText(eventPlayer if eventPlayer.NotOnLastCp else null, \"Come here\", CheckpointPositions[eventPlayer.CurrentCheckpoint + 1], 1.5, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_AND_STRING, Color.WHITE, SpecVisibility.DEFAULT)"
-        Create In-World Text(If-Then-Else((Event Player).NotOnLastCp, Event Player, Null), If-Then-Else(And((Event Player).BounceLockMax_Cache, Compare(Count Of((Event Player).LockCollected), <, (Event Player).BounceLockMax_Cache)), Custom String("{0} Come here {0}", Icon String(Warning), Null, Null), Custom String("Come here", Null, Null, Null)), Value In Array(Global.A, Add((Event Player).A, 1)), 1.5, Do Not Clip, Visible To Position and String, Color(White), Default Visibility);
+        Create In-World Text(If-Then-Else((Event Player).NotOnLastCp, Event Player, Null), If-Then-Else(And((Event Player).BounceLockMax_Cache, Compare(Count Of((Event Player).LockCollected), <, (Event Player).BounceLockMax_Cache)), Custom String("{0} collect orbs first", Icon String(Warning), Null, Null), Custom String("Come here", Null, Null, Null)), Value In Array(Global.A, Add((Event Player).A, 1)), 1.5, Do Not Clip, Visible To Position and String, Color(White), Default Visibility);
         Set Player Variable At Index(Event Player, B, 4, Last Text ID);
     }
 }
@@ -1718,7 +1713,6 @@ rule ("Arrive | Ground reset | traces") {
                 Call Subroutine(checkpointFailReset);
             End;
         End;
-        //lbla:
         Wait(0.048, Ignore Condition);
         Loop If Condition Is True;
     }
@@ -1830,7 +1824,6 @@ rule ("Player Leaves") {
         Else;
             Skip If(Or(Compare(Value In Array(Global.SaveCp, Index Of Array Value(Global.SaveEnt, Event Player)), >=, Subtract(Count Of(Global.A), 1)), Value In Array(Global.SavePauseEnabled, Index Of Array Value(Global.SaveEnt, Event Player))), 1);
             Set Global Variable At Index(SaveTimer, Index Of Array Value(Global.SaveEnt, Event Player), Add(Subtract(Subtract(Total Time Elapsed, Value In Array(Global.SaveElapsed, Index Of Array Value(Global.SaveEnt, Event Player))), Value In Array(Global.SavePauseTime, Index Of Array Value(Global.SaveEnt, Event Player))), Value In Array(Global.SaveTimer, Index Of Array Value(Global.SaveEnt, Event Player))));
-            //lbl_a:
             Set Global Variable At Index(SavePauseTime, Index Of Array Value(Global.SaveEnt, Event Player), 0);
             Set Global Variable At Index(SavePauseEnabled, Index Of Array Value(Global.SaveEnt, Event Player), False);
     }
@@ -2331,7 +2324,6 @@ rule ("Subroutine CheckUlt") {
             Skip(2);
         Else If(And(Array Contains(Global.Dao, (Event Player).A), Compare(Distance Between(Event Player, Last Of(Value In Array(Global.A, (Event Player).A))), <=, 1.4)));
             Small Message(Event Player, Custom String("   Ultimate is ready", Null, Null, Null));
-            //lbl_a:
             Wait(0.016, Ignore Condition);
             Set Ultimate Ability Enabled(Event Player, True);
             Set Ultimate Charge(Event Player, 100);
@@ -2357,7 +2349,6 @@ rule ("Subroutine CheckDash") {
             Skip(2);
         Else If(And(Array Contains(Global.SHIFT, (Event Player).A), Compare(Distance Between(Event Player, Last Of(Value In Array(Global.A, (Event Player).A))), <=, 1.4)));
             Small Message(Event Player, Custom String("   Dash is ready", Null, Null, Null));
-            //lbl_a:
             Wait(0.016, Ignore Condition);
             Set Ability 1 Enabled(Event Player, True);
         "seeprate so msg stil plays"

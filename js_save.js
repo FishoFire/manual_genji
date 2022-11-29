@@ -178,7 +178,7 @@ function LoadData(){
 
 // load save names
 if(localStorage.getItem('savenames') != null){
-    var SaveNames = JSON.parse(localStorage.getItem('savenames'))
+    SaveNames = JSON.parse(localStorage.getItem('savenames'))
 } 
 
 // generate the buttons

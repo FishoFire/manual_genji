@@ -84,7 +84,8 @@ list of [1] of every cp that has enabled
 
 change template:
     make function setdata = String.raw'data'
-    put the variables in
+    put the variables in.
+    some are only true/false while others  are the full  line
     - turn editor to off
     - replace settings with one were all maps on
 

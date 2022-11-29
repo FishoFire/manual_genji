@@ -1,7 +1,10 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
 <header>
-<title>manual cp maker</title>
-<link rel="stylesheet" href="style.css">
+	<title>manual cp maker</title>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" href="style.css">
 </header>
 
 
@@ -103,11 +106,11 @@
 		<div class="contentblock"> <b> Bans </b> <small>(apply to entire map) </small><br/>
 			<input type="checkbox" id="ban_triple" onclick="UpdateTop()"> triple jump |
 			<input type="checkbox" id="ban_multi" onclick="UpdateTop()"> multi climb |
-			<input type="checkbox" id="ban_emote" onclick="UpdateTop()" style="display:none"><!-- emote save -->
 			<input type="checkbox" id="ban_create" onclick="UpdateTop()"> create bhop |
-			<input type="checkbox" id="ban_dbhop" onclick="UpdateTop()"> Deathbhop |
+			<input type="checkbox" id="ban_dbhop" onclick="UpdateTop()"> Deathbhop <br/>
 			<input type="checkbox" id="ban_dashstart" onclick="UpdateTop()"> dash start |
-			<input type="checkbox" id="ban_climb" onclick="UpdateTop()"> wall climb 
+			<input type="checkbox" id="ban_climb" onclick="UpdateTop()"> wall climb |
+			<input type="checkbox" id="ban_emote" onclick="UpdateTop()"> emote <small>(not working until blizzard fixes)</small>
 		</div>
 		<div class="contentblock">
 
@@ -197,12 +200,12 @@
 			<input type="checkbox" id="CpbanClimb" onclick="UpdateAfterChange()" style="display:none"> <!-- ban wallclimb -->
 			<hr>
 			<b>Bans</b> <br/>
-			triple <input type="checkbox" id="bantrip" onclick="UpdateAfterChange()">
-			| multi <input type="checkbox" id="banmulti" onclick="UpdateAfterChange()" >
-			| create <input type="checkbox" id="bancrea" onclick="UpdateAfterChange()" >
-			| deadhop <input type="checkbox" id="bandead" onclick="UpdateAfterChange()">
-			| emote <input type="checkbox" id="banemote" onclick="UpdateAfterChange()">
-			| wallclimb <input type="checkbox" id="banclimb" onclick="UpdateAfterChange()" >
+			<input type="checkbox" id="bantrip" onclick="UpdateAfterChange()"> triple |
+			<input type="checkbox" id="banmulti" onclick="UpdateAfterChange()" >  multi |
+			<input type="checkbox" id="bancrea" onclick="UpdateAfterChange()" > create |
+			<input type="checkbox" id="bandead" onclick="UpdateAfterChange()"> deadhop |
+			<input type="checkbox" id="banclimb" onclick="UpdateAfterChange()" > wallclimb |
+			<input type="checkbox" id="banemote" onclick="UpdateAfterChange()"> emote <small>(not working until blizzard fixes)</small>
 			
 			<hr>
 

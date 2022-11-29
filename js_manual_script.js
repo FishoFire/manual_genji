@@ -2,6 +2,7 @@
 // defaults and initialize ##############################################################
 
 changebar(3) // initial page
+var SaveNames = []
 var SelectedCp = -1
 var CheckPoints = []
 var maxtimecomp = 240
@@ -134,7 +135,7 @@ function UpdateTop(){
 
     MapData[3] = document.getElementById("ban_triple").checked
     MapData[4] = document.getElementById("ban_multi").checked
-    MapData[5] = document.getElementById("ban_emote" ).checked
+    MapData[5] = document.getElementById("ban_emote").checked
     MapData[6] = document.getElementById("ban_create").checked
     MapData[7] = document.getElementById("ban_dbhop" ).checked
     MapData[8] = document.getElementById("ban_dashstart" ).checked
