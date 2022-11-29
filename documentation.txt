@@ -90,8 +90,7 @@ change template:
     - replace settings with one were all maps on
 
     paste the variables in:
-    var data_cps // checkpoints
-    old: - remove :lb comments coz 0
+    old: - remove :lb comments because they get fcked when put back in overpy for translation, search for //
 
 
     map data
