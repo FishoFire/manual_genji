@@ -83,15 +83,19 @@ list of [1] of every cp that has enabled
 
 
 change template:
-    make function setdata = String.raw'data'
-    put the variables in.
-    some are only true/false while others  are the full  line
-    - turn editor to off
-    - replace settings with one were all maps on
-
-    paste the variables in:
-    old: - remove :lb comments because they get fcked when put back in overpy for translation, search for //
-
+    1) add a new file for it in the template folder
+    2) paste the data for the template in the file
+    3) replace map settings to allow all skirmrish maps
+    4) remove all // comments, overpy puts these on :lbl for some reason this bugs overpy so just remove them
+    5) put all the variables in:
+        - syntax is:   ${variable name}
+            - some variables only contain true,false or a color etc
+            - other variables contain the full line of code that sets a variable
+            - there is also variables that just add "disabled " to a rule that is suposed ot be on or off
+        - the best way to find what it does, is to jsut look at the last template
+    6) in index.html near the end, change the old template file loading to the new template
+    
+    note: overpy only translates when going in a different langauge, make sure you also test if the translations dont give errors
 
     map data
     ${data_cps}
@@ -101,13 +105,17 @@ change template:
     ${data_orb_dash} 
     ${data_orb_ult}
     ${data_orb_strength}
-
     ${data_kill_pos}
     ${data_kill_rad}
     ${data_kill_cp}
 
     ${mapcode}
     ${mapmaker}
+
+    ${compon}
+    ${comptime}
+    ${compattempt}
+    ${comprestarts}
 
     // cp bans
     ${cpbantriple}
@@ -116,8 +124,6 @@ change template:
     ${cpbandead}
     ${cpbanemote}
     ${cpclimb}
-  
-
     ${ban_dashstart}
 
     ${customdifenabled}
@@ -132,6 +138,7 @@ change template:
     ${compdescription[2]}
     ${compdescription[3]}
 
+    // full bans
     ${ban_triple}
     ${ban_multi}
     ${ban_create}
@@ -141,6 +148,7 @@ change template:
 
     ${editoron}
 
+    // addons
     ${titleon}
     ${titlenames}
     ${titlecps}
@@ -161,10 +169,6 @@ change template:
     ${dasheanbled}
     ${dasharray}
 
-    ${compon}
-    ${comptime}
-    ${compattempt}
-    ${comprestarts}
 
 
 
