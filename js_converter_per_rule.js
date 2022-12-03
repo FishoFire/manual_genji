@@ -1,108 +1,132 @@
 
 var pasta = ""
 var rulepasta = ""
-var Positions = []
-var ruleskiped = []
+
+
+
 
              /*
             \nrule = rule
             /*\nrule = disabled rule
             */
-           
+function GrabWaits(ind, past) {   // index of item before wich all waits should be taken, pasta to search   
+    var waitcount = 0;
+    var waitcounter = past.substring(0,ind)
+    if (waitcounter.includes("wait(")){
+        while (waitcounter.includes("wait(")){
+            var curentwait = waitcounter.substring(waitcounter.indexOf("wait(")+5)
+            curentwait = curentwait.substring(0, curentwait.indexOf(")"))
+            if(isNaN(curentwait)){
+                curentwait = 0
+            }
+            waitcount += Number(curentwait)
+            waitcounter = waitcounter.replace("wait(","")
+        }
+    }
+    return waitcount
+}
+
+function waitcheck(checkvar,inde){ // variable, index of wait
+
+    while(checkvar.length > 1){ // if more entries
+        if(checkvar[0][inde] == checkvar[1][inde]){// if waits are equal
+            // delete first, keep overwrite
+            checkvar.splice(0,1)
+        }else{
+            // delete one with lower wait. keep the higher wait since its overwrite the lower one
+            if(checkvar[0][inde] > checkvar[1][inde]){
+                checkvar.splice(1,1)
+            }else{
+                checkvar.splice(0,1)
+            }
+
+        }
+
+    }
+    checkvar = checkvar[checkvar.length-1][0] // make it a normal var instead of array
+    checkvar = checkvar.replaceAll(" ","").replaceAll("\n","").replaceAll("\t","") // take out the fluf to make it easier to search
+    return checkvar
+}   
+
 
 function Converter(){
-    try {
-       
+    var convert_positions = []
+    var convert_credits = []
 
+    try {   
         pasta =  decompileAllRules(document.getElementById("converterdata").value , document.getElementById("lang_convert").value );
         //pasta = temppast  // stored in console for now 
         pasta = pasta.substring( pasta.indexOf('rule "'))
         
         Positions = []
         
-        while (pasta.includes('\nrule "')){
+        while (pasta.includes('\nrule "')){ // loop torugh eahc rule
             
             if(pasta.indexOf('/*\nrule "') == pasta.indexOf('\nrule "') - 2){ // check if rule is disabled
                 var skiprule = true
             } else {
                 var skiprule = false
-
             }
       
             pasta = pasta.substring( pasta.indexOf('rule "')+5)
-           
             if (pasta.includes('rule "')){
                 rulepasta =  pasta.substring(0,pasta.indexOf('rule "'))
             } else {
                 rulepasta = pasta
             }
             
-
-
             if (skiprule == false && rulepasta.includes("@Event eachPlayer") == false){
           
-                if (rulepasta.includes("A = [") ){
-                    //Positions.push(rulepasta)
-                    // keeps setting the index to last match until no matches then while ends and var is index
+                if (rulepasta.includes("A = [") ){ // if the rule declares A
                     var indexfind = 0;
-                    const re = /\bA = \[/g
-                       while ((match = re.exec(rulepasta)) !== null) {
-                        indexfind = match.index
-                    } 
-         
                     
-                    Positions.push(   
+                    // regex
+                    const re = /\bA = \[/g
+                       while ((match = re.exec(rulepasta)) !== null) { // while there is regex matches
+                        indexfind = match.index
+                    } // match until last index is found, remember last index in indexfind
+                    // add the data to positions
+                    
+                    //for each wait before
+                    
+                    var waitcount = GrabWaits(indexfind,rulepasta)
+                    
+                    
+                    convert_positions.push(   
+                        [
                         rulepasta.substring(
                             indexfind + "A = [".length, // start without declare only the vectors
                             indexfind + rulepasta.substring(indexfind).indexOf("]\n") // end of list
-                        )
-
-                        )
-                     
-
+                        ),
+                        waitcount
+                        ]
                         
-                    // substr . index + indexfind?
-
+                    )
+                }   
+                // credits and code
+                if (rulepasta.toLowerCase().includes("made by:") && rulepasta.toLowerCase().includes("code:") && rulepasta.toLowerCase().includes("guidence text") == false){             
+                    var tempcredits = rulepasta.substring(rulepasta.toLowerCase().indexOf("made"))
+                    tempcredits = tempcredits.substring(tempcredits.toLowerCase().indexOf(":")+1)
+                    tempcredits = tempcredits.substring(0, tempcredits.indexOf('"'))
                     
-                    
-                    /*
-                    
-                    if regex match in
-                        find last regix match for it
-                        store but dont take it appart yet
-                        note any waits before it
-                        note array order
-                        delte the entry from the temp because TQ and TQ5 etc or write the regex to deal with that
+                    convert_credits[0] = tempcredits
+                    tempcredits = rulepasta.substring(rulepasta.toLowerCase().indexOf("code:"))
+                    tempcredits = tempcredits.substring(tempcredits.toLowerCase().indexOf(":")+1)
+                    tempcredits = tempcredits.substring(0, tempcredits.indexOf('"'))
 
-                    same but for other vars
-                    make function for what regix to match
+                    convert_credits[1] = tempcredits 
+                
+    
 
-
-                    
-
-                    var indexfind = 0;
-                    const re = /bar/g,
-                    str = "foobarfoobarbarbar";
-                    while ((match = re.exec(str)) !== null) {
-                        console.log(match.index);
-                        indexfind = match.index
-                    }
-
-                    this keeps finding the match in string and ends on last
-                    the /g at end seems neesesary
-
-                    */
-
-
-                } else {
-                    ruleskiped.push(rulepasta) // store disabled rules for debug
                 }
+                
+            } 
 
   
                
-            }
-            
         }
+       
+        
 
 
         defaultdata() // remove checkpoints and map data and set defaults
@@ -112,8 +136,35 @@ function Converter(){
         */
         // take data apart
 
-        Positions = Positions[Positions.length-1] // later enter waits in the equasion
-        while(Positions.includes("vect")){
+        //Positions = Positionsbackup // temppppppppppppp
+
+
+        // take last entry
+        /*
+          while(convert_positions.length > 1){ // if more entries
+            if(convert_positions[0][1] == convert_positions[1][1]){// if waits are equal
+                // delete first, keep overwrite
+                convert_positions.splice(0,1)
+            }else{
+                // delete one with lower wait. keep the higher wait since its overwrite the lower one
+                if(convert_positions[0][1] > convert_positions[1][1]){
+                    convert_positions.splice(1,1)
+                }else{
+                    convert_positions.splice(0,1)
+                }
+
+            }
+
+        }
+        convert_positions = convert_positions[convert_positions.length-1][0] // make it a normal var instead of array
+        convert_positions = convert_positions.replaceAll(" ","").replaceAll("\n","").replaceAll("\t","") // take out the fluf to make it easier to search
+        */
+
+  
+
+    convert_positions = waitcheck(convert_positions, 1)
+        
+        while(convert_positions.includes("vect")){
             CheckPoints.push(
                 [
                 "0,0,0", //0 pos
@@ -128,58 +179,30 @@ function Converter(){
                 [false,"",false,"",""] // 9 text
             ]
             )
+    
             var thiscp = CheckPoints.length-1
-            if(Positions[0] == "["){ // teleport
-                Positions = Positions.substring(1)
-                CheckPoints[thiscp][0] = defaultVect( Positions.substring("vect(".length,Positions.indexOf(")")) )                
-                Positions = Positions.substring(Positions.indexOf("), ")+3)
+            if(convert_positions[0] == "["){ // teleport
+                convert_positions = convert_positions.substring(1)
+                CheckPoints[thiscp][0] = defaultVect( convert_positions.substring("vect(".length,convert_positions.indexOf(")")) )                
+                convert_positions = convert_positions.substring(convert_positions.indexOf("),")+2)
                 CheckPoints[thiscp][1] = true
-                CheckPoints[thiscp][2] =  defaultVect( Positions.substring("vect(".length,Positions.indexOf(")")) )                
-                Positions = Positions.substring(Positions.indexOf(")], ")+4)
+                CheckPoints[thiscp][2] =  defaultVect( convert_positions.substring("vect(".length,convert_positions.indexOf(")")) )                
+                convert_positions = convert_positions.substring(convert_positions.indexOf(")],")+3)
                 
             }else{
-                CheckPoints[thiscp][0] = defaultVect( Positions.substring("vect(".length,Positions.indexOf(")")) )
+                CheckPoints[thiscp][0] = defaultVect( convert_positions.substring("vect(".length,convert_positions.indexOf(")")) )
                 
 
-                Positions = Positions.substring(Positions.indexOf("), ")+3) // cut out
+                convert_positions = convert_positions.substring(convert_positions.indexOf("),")+2) // cut out
             }
-            /*
-            add defaults, take into acount teleport
-            tele is tele
-            if tele then tele else 
-            */
+
+            
         }
-        /*
-        defaults
-         "0,0,0", //0 pos
-            false, //1 teleport t/f
-            "0,0,0", //2 teleport pos
-            false, //3 dash
-            false, //4 ult
-            "", //5 notes
-            [], //6 orb
-            [], //7 kill
-            [false,false,false,false,false,false], //8 bans
-            [false,"",false,"",""] // 9 text
-        */
-
-        // while length in cps
-        //if first is vector then add vector as cp
-        //if first is list then add vector and teleport  and teleport bool both
-        //rest default cp settings
-  
-        // orbs
-        // if any orbs
-        // 2d array them
-        // while orbs, push them into the right cp
-
-
-        // etc
-
-    
+        MapData[0] = convert_credits[0]
+        MapData[1] = convert_credits[1]
         LoadData()
-        ShowMsg("Loaded?")
-    
+        ShowMsg("done")
+        
     } catch(e){
         ShowMsg("Couldnt load, check log for details")
         console.log(e)

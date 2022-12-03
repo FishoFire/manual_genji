@@ -16,7 +16,7 @@
 		<button onclick="changebar(0)" class="sidebarbutton">data</button> 
 		<button onclick="changebar(1)" class="sidebarbutton">save/load</button> 
 		<button onclick="changebar(2)" class="sidebarbutton">help</button> 
-		<button onclick="changebar(4)" class="sidebarbutton">(beta) convert map</button> 
+		<!--<button onclick="changebar(4)" class="sidebarbutton">(beta) convert map</button> -->
 	</div>
 </div>
 
@@ -91,7 +91,7 @@
 				<option value="de-DE">Deutsch [de-DE]</option>
 				<option value="es-ES">Español (EU) [es-ES]</option>
 				<option value="es-MX">Español (AL) [es-MX]</option>
-				<option value="fr-FR">Français [fr-FR]</option>
+				<!--<option value="fr-FR">Français [fr-FR]</option>-->
 				<option value="it-IT">Italiano [it-IT]</option>
 				<option value="ja-JP">日本語 [ja-JP]</option>
 				<option value="ko-KR">한국어 [ko-KR]</option>
@@ -305,15 +305,39 @@
 </div>
 
 <div id="convert">
-	<div class="contentblock">
+	<div class="contentblock" style="display:none">
+	
+	<div>
+		<label>
+		Converter is still in beta and doesnt transfere much yet. <br/>
+		Double check the data and test ingame <br/>
+		</label>
+		<label class="converterthing" style="color:darkgreen;">
+		<b>Converts</b><br/>
+		Checkpoint positions </br>
+		Teleports </br>
+		</label>
 
+		<label class="converterthing" style="color:orange;">
+		<b>Sometimes</b><br/>
+		Names
+		</label>
+
+		<label class="converterthing" style="color:darkred;">
+		<b>Doesn't</b><br/>
+		Everythng else
+		</label>
+
+		<br/>
+	</div>
+	<hr>
 	<button onclick="Converter()"> convert </button>
 	<select id="lang_convert">
 				<option  selected="selected" value="en-US">English [en-US]</option>
 				<option value="de-DE">Deutsch [de-DE]</option>
 				<option value="es-ES">Español (EU) [es-ES]</option>
 				<option value="es-MX">Español (AL) [es-MX]</option>
-				<option value="fr-FR">Français [fr-FR]</option>
+				<!--<option value="fr-FR">Français [fr-FR]</option> -->
 				<option value="it-IT">Italiano [it-IT]</option>
 				<option value="ja-JP">日本語 [ja-JP]</option>
 				<option value="ko-KR">한국어 [ko-KR]</option>
@@ -338,7 +362,7 @@
 <script src="overpy-master/VS Code Extension/overpy.js"></script>
 
 
-<script src="templates/template 1-7_beta4.js"></script>
+<script src="templates/template 1-7_beta.js"></script>
 <!-- <script src="templates/template-1-63.js"></script> -->
 <!-- <script src="templates/template_debug.js"></script> -->
 

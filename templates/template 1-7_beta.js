@@ -54,8 +54,8 @@ settings
 				Spawn With Ultimate Ready: On
 				Swift Strike Cooldown Time: 0%
 				Ultimate Duration: 25%
-				Ultimate Generation - Passive Dragonblade: 500%
-				Ultimate Generation Dragonblade: 500%
+				Ultimate Generation - Passive Dragonblade: 0%
+				Ultimate Generation Dragonblade: 10%
 			}
 			enabled heroes
 			{
@@ -140,7 +140,6 @@ variables {
         86: BanBhop
     player:
         0: A
-        1: B
         2: C
         3: D
         4: E
@@ -182,6 +181,7 @@ variables {
         56: BounceLock_Cache
         57: BounceIndex_Cache
         58: KillIndex_Cache
+        59: bouncetouchedlast
         60: EffectSizeArray
         61: EffectSizeToggle
         65: CompDone
@@ -203,32 +203,30 @@ variables {
         85: CH
 }
 subroutines {
-    0: Sub0
+    0: Leaderboardupdate
     1: Sub1
-    2: Leaderboardupdate
+    2: CreateLeaderBoard
     3: KILLBALL
     4: pinball
     5: BuildPortals
-    6: CreateLeaderBoard
-    7: UpdateTitle
-    8: DashUltGive
-    9: CheckUlt
-    10: CheckDash
-    11: DeleteSave
-    12: MakeSave
-    13: StartPauseTimer
-    14: StopPauseTimer
-    15: RebuildBounceOrbs
-    16: RebuildKillOrbs
-    17: UpdateCache
-    18: checkpointFailReset
+    6: UpdateTitle
+    7: DashUltGive
+    8: CheckUlt
+    9: CheckDash
+    10: DeleteSave
+    11: MakeSave
+    12: StartPauseTimer
+    13: StopPauseTimer
+    14: RebuildBounceOrbs
+    15: RebuildKillOrbs
+    16: UpdateCache
+    17: checkpointFailReset
 }
 disabled rule ("------------------------------------------------------------------------ Map pasta ------------------------------------------------------------------------ ") {
     event {
         Ongoing - Global;
     }
 }
-
 
 rule ("Map Data     <---- INSERT YOUR MAP DATA HERE") {
     event {
@@ -270,14 +268,8 @@ rule ("Map Data     <---- INSERT YOUR MAP DATA HERE") {
 		"orb locks checkpoint - True or False"
 		${data_orb_lock}
 		
-		"======= others - DONT CHANGE =========================="	
-		Global.TimeRemaining = 263;
-		Global.LeaderBoardFull = Empty Array;
-		Global.Difficultyhud = 2;
-
 	}
 }
-
 rule ("Credits here <---- INSERT YOUR NAME HERE") {
     event {
         Ongoing - Global;
@@ -327,6 +319,7 @@ ${customdifenabled}rule ("Custom difficulty hud") {
     }
 }
 
+
 disabled rule ("Display World Record") {
     event {
         Ongoing - Global;
@@ -372,6 +365,7 @@ rule ("Comp Mode instruction message") {
         Set Global Variable At Index(instructiontext, 3, Custom String("${compdescription[3]}", Null, Null, Null));
     }
 }
+
 
 disabled rule ("------------------------------------------------------------------------  General functions ------------------------------------------------------------------------ ") {
     event {
@@ -1141,7 +1135,7 @@ rule ("Setup and Variables") {
         Set Global Variable(CompMode, Workshop Setting Toggle(Custom String("Competitive mode", Null, Null, Null), Custom String("Turn on competitive mode", Null, Null, Null), ${compon}, 100));
         If(Global.CompMode);
             "-! comp minutes !- \r\n 5-240"
-            Set Global Variable(CompTime, Workshop Setting Integer(Custom String("Competitive mode", Null, Null, Null), Custom String("time limit", Null, Null, Null), ${comptime}, 1, 240, 101));
+            Set Global Variable(CompTime, Workshop Setting Integer(Custom String("Competitive mode", Null, Null, Null), Custom String("time limit", Null, Null, Null),  ${comptime}, 1, 240, 101));
             "-! comp attempt count !-"
             Set Global Variable(CompAtmpNum, Workshop Setting Integer(Custom String("Competitive mode", Null, Null, Null), Custom String("attempt count", Null, Null, Null), ${compattempt}, 0, 500, 102));
             "-! comp restartlimiter !-"
@@ -1265,7 +1259,7 @@ rule ("Player Initialize and game HUD") {
     }
     actions {
         "Turn Editor On"
-        Set Player Variable(Event Player, EditorOn, Workshop Setting Toggle(Custom String("Editor", Null, Null, Null), Custom String("Editor mode", Null, Null, Null),  ${editoron}, 0));
+        Set Player Variable(Event Player, EditorOn, Workshop Setting Toggle(Custom String("Editor", Null, Null, Null), Custom String("Editor mode", Null, Null, Null), ${editoron}, 0));
         Set Player Variable(Event Player, K, (Event Player).EditorOn);
         Disable Game Mode HUD(Event Player);
         Enable Death Spectate All Players(Event Player);
@@ -1275,8 +1269,18 @@ rule ("Player Initialize and game HUD") {
         Set Player Variable(Event Player, F, False);
         "Climbing the wall prompts the HUD"
         Set Player Variable(Event Player, J, False);
-        "make sure everything loaded, specialy things like comp mode"
-        Wait(2, Ignore Condition);
+        Set Player Variable(Event Player, TY, 0);
+        Set Player Variable(Event Player, bouncetouchedlast, -1);
+        "big waits first for about 1 second before loading, to make sure things like comp mode are fully loaded and configured, load fx in meanwhile"
+        Wait(1, Ignore Condition);
+        Create Effect(Event Player, Ring, Color(Sky Blue), Last Of(Value In Array(Global.A, (Event Player).A)), 1, Position and Radius);
+        Create Effect(If-Then-Else((Event Player).NotOnLastCp, Event Player, Null), Ring, Color(Lime Green), Value In Array(Global.A, Add((Event Player).A, 1)), 1, Visible To Position and Radius);
+        Wait(0.5, Ignore Condition);
+        Create Effect(If-Then-Else((Event Player).NotOnLastCp, Event Player, Null), Light Shaft, Color(White), Value In Array(Global.A, Add((Event Player).A, 1)), 1, Visible To Position and Radius);
+        Create Icon(If-Then-Else((Event Player).NotOnLastCp, Event Player, Null), Add(Value In Array(Global.A, Add((Event Player).A, 1)), Up), Arrow: Down, Visible To and Position, Color(Sky Blue), True);
+        Wait(0.5, Ignore Condition);
+        Create In-World Text(If-Then-Else((Event Player).NotOnLastCp, Event Player, Null), If-Then-Else(And((Event Player).BounceLockMax_Cache, Compare(Count Of((Event Player).LockCollected), <, (Event Player).BounceLockMax_Cache)), Custom String("{0} collect orbs first", Icon String(Warning), Null, Null), Custom String("Come here", Null, Null, Null)), Value In Array(Global.A, Add((Event Player).A, 1)), 1.5, Do Not Clip, Visible To Position and String, Color(White), Default Visibility);
+        Wait(1, Ignore Condition);
         If(Not(Is Dummy Bot(Event Player)));
             Start Forcing Player To Be Hero(Event Player, Hero(Genji));
         "only do the things on genji test bots"
@@ -1317,9 +1321,6 @@ rule ("Player Initialize and game HUD") {
         Wait(0.016, Ignore Condition);
         "initialization of the game"
         Call Subroutine(Sub1);
-        Wait(0.016, Ignore Condition);
-        "CheckpointEffect_Sub is the checkpoint effect display"
-        Call Subroutine(Sub0);
     }
 }
 
@@ -1519,26 +1520,6 @@ rule ("SUB | Checkpoint Fail") {
         Start Rule(CheckDash, Restart Rule);
     }
 }
-rule ("SUB | Checkpoint Effects") {
-    event {
-        Subroutine;
-        Sub0;
-    }
-    actions {
-        Abort If(Compare(First Of((Event Player).B), !=, Null));
-        Create Effect(Event Player, Ring, Color(Sky Blue), Last Of(Value In Array(Global.A, (Event Player).A)), 1, Position and Radius);
-        Set Player Variable At Index(Event Player, B, 0, Last Created Entity);
-        Create Effect(If-Then-Else((Event Player).NotOnLastCp, Event Player, Null), Ring, Color(Lime Green), Value In Array(Global.A, Add((Event Player).A, 1)), 1, Visible To Position and Radius);
-        Set Player Variable At Index(Event Player, B, 1, Last Created Entity);
-        Create Effect(If-Then-Else((Event Player).NotOnLastCp, Event Player, Null), Light Shaft, Color(White), Value In Array(Global.A, Add((Event Player).A, 1)), 1, Visible To Position and Radius);
-        Set Player Variable At Index(Event Player, B, 2, Last Created Entity);
-        Create Icon(If-Then-Else((Event Player).NotOnLastCp, Event Player, Null), Add(Value In Array(Global.A, Add((Event Player).A, 1)), Up), Arrow: Down, Visible To and Position, Color(Sky Blue), True);
-        Set Player Variable At Index(Event Player, B, 3, Last Created Entity);
-        "createInWorldText(eventPlayer if eventPlayer.NotOnLastCp else null, \"Come here\", CheckpointPositions[eventPlayer.CurrentCheckpoint + 1], 1.5, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_AND_STRING, Color.WHITE, SpecVisibility.DEFAULT)"
-        Create In-World Text(If-Then-Else((Event Player).NotOnLastCp, Event Player, Null), If-Then-Else(And((Event Player).BounceLockMax_Cache, Compare(Count Of((Event Player).LockCollected), <, (Event Player).BounceLockMax_Cache)), Custom String("{0} collect orbs first", Icon String(Warning), Null, Null), Custom String("Come here", Null, Null, Null)), Value In Array(Global.A, Add((Event Player).A, 1)), 1.5, Do Not Clip, Visible To Position and String, Color(White), Default Visibility);
-        Set Player Variable At Index(Event Player, B, 4, Last Text ID);
-    }
-}
 
 rule ("SUB | Start Game") {
     event {
@@ -1553,11 +1534,13 @@ rule ("SUB | Start Game") {
             Kill(Event Player, Null);
             Abort;
         End;
-        Call Subroutine(UpdateTitle);
         If(Is Using Ultimate(Event Player));
             Kill(Event Player, Null);
         End;
         If(Compare(Count Of(Global.A), !=, 0));
+            "restarting reset t itle even if non on cp 0"
+            Destroy In-World Text((Event Player).TitleStore);
+            "load saved progres"
             If(Array Contains(Global.SaveName, Custom String("{0}", Event Player, Null, Null)));
                 Set Global Variable At Index(SaveEnt, Index Of Array Value(Global.SaveName, Custom String("{0}", Event Player, Null, Null)), Event Player);
                 Set Player Variable(Event Player, A, Value In Array(Global.SaveCp, Index Of Array Value(Global.SaveEnt, Event Player)));
@@ -1566,6 +1549,11 @@ rule ("SUB | Start Game") {
                 Set Global Variable At Index(SavePauseTime, Index Of Array Value(Global.SaveEnt, Event Player), 0);
                 Set Global Variable At Index(SavePauseEnabled, Index Of Array Value(Global.SaveEnt, Event Player), False);
                 Teleport(Event Player, Add(Value In Array(Global.A, (Event Player).A), Up));
+                "if any title data, find last cp"
+                If(And(And(Compare(Global.TitleData, !=, Null), Is True For Any(Filtered Array(First Of(Global.TitleData), Compare(Current Array Element, <=, (Event Player).A)), Current Array Element)), Not((Event Player).EditorOn)));
+                    Create In-World Text(If-Then-Else((Event Player).invis, Null, All Players(All Teams)), Value In Array(Value In Array(Global.TitleData, 1), Index Of Array Value(First Of(Global.TitleData), First Of(Sorted Array(Filtered Array(First Of(Global.TitleData), Compare(Current Array Element, <=, (Event Player).A)), Multiply(Current Array Element, -1))))), Event Player, 1.1, Clip Against Surfaces, Visible To and Position, Value In Array(Value In Array(Global.TitleData, 2), Index Of Array Value(First Of(Global.TitleData), First Of(Sorted Array(Filtered Array(First Of(Global.TitleData), Compare(Current Array Element, <=, (Event Player).A)), Multiply(Current Array Element, -1))))), Default Visibility);
+                    Set Player Variable(Event Player, TitleStore, Last Text ID);
+                End;
             Else;
                 Teleport(Event Player, Add(First Of(Global.A), Up));
                 Set Player Variable(Event Player, A, 0);
@@ -1573,6 +1561,7 @@ rule ("SUB | Start Game") {
                 Stop Chasing Player Variable(Event Player, ztjs);
                 Set Player Variable(Event Player, ztjs, 0);
                 Call Subroutine(MakeSave);
+                Call Subroutine(UpdateTitle);
             End;
         End;
         Set Player Variable(Event Player, splittime, 0);
@@ -1688,7 +1677,7 @@ rule ("Arrive | Ground reset | traces") {
                     Stop Chasing Player Variable(Event Player, D);
                     Stop Chasing Player Variable(Event Player, practicetimer);
                     Wait(0.016, Ignore Condition);
-                    Big Message(All Players(All Teams), Custom String("Mission complete! Time {0}", Custom String("{0} sec", (Event Player).D, Null, Null), Null, Null));
+                    Big Message(All Players(All Teams), Custom String("{0} Mission complete! Time {1}", Event Player, Custom String("{0} sec", (Event Player).D, Null, Null), Null));
                     Call Subroutine(DeleteSave);
                     Call Subroutine(Leaderboardupdate);
                     If(And(Global.CompMode, Compare(Global.CompAtmpNum, >, 0)));
@@ -1735,7 +1724,7 @@ rule ("Kill Orb | Activate") {
     }
 }
 
-rule ("Bounce Ball | Activate") {
+rule ("Bounce Ball / Orb | Activate") {
     event {
         Ongoing - Each Player;
         All;
@@ -1743,11 +1732,21 @@ rule ("Bounce Ball | Activate") {
     }
     conditions {
         (Event Player).BouncePosition_Cache != Empty Array;
-        "@Condition eventPlayer.NotOnLastCp"
+        "@Condition eventPlayer.NotOnLastCp # disabled coz editor"
         Is True For Any((Event Player).BouncePosition_Cache, Compare(Distance Between(Current Array Element, Add(Position Of(Event Player), Vector(0, 0.7, 0))), <, 1.4)) == True;
     }
     actions {
         Set Player Variable(Event Player, bouncetouched, Index Of Array Value((Event Player).BouncePosition_Cache, First Of(Sorted Array(Filtered Array((Event Player).BouncePosition_Cache, And(Compare(Distance Between(Add(Event Player, Vector(0, 0.7, 0)), Current Array Element), <, 1.4), Not(Array Contains((Event Player).LockCollected, Current Array Element)))), Distance Between(Event Player, Current Array Element)))));
+        "prevent same one trigering twice in a row"
+        If(Compare((Event Player).bouncetouched, ==, (Event Player).bouncetouchedlast));
+            Wait(0.24, Ignore Condition);
+            "-1 because null becomes 0 and thats a legit index"
+            Set Player Variable(Event Player, bouncetouchedlast, -1);
+            Loop If Condition Is True;
+            "only return if no others in radius"
+            Abort;
+        End;
+        Set Player Variable(Event Player, bouncetouchedlast, (Event Player).bouncetouched);
         If(Compare(Value In Array((Event Player).BounceStrength_Cache, (Event Player).bouncetouched), !=, 0));
             Apply Impulse(Event Player, Up, Value In Array((Event Player).BounceStrength_Cache, (Event Player).bouncetouched), To World, Cancel Contrary Motion);
         End;
@@ -1774,6 +1773,7 @@ rule ("Bounce Ball | Activate") {
         End;
         Wait(0.24, Ignore Condition);
         Loop If Condition Is True;
+        Set Player Variable(Event Player, bouncetouchedlast, -1);
     }
 }
 
@@ -2009,7 +2009,7 @@ rule ("Enter Spectate | Hold Interact") {
         Wait(1, Abort When False);
         "editor has interact combos"
         If((Event Player).EditorOn);
-            Wait(0.5, Abort When False);
+            Wait(1, Abort When False);
         End;
         Small Message(Event Player, Custom String("   Hold Interact again to turn off spectate mode", Null, Null, Null));
         If((Event Player).F);
@@ -2107,7 +2107,7 @@ rule ("Toggle Practice Mode | Melee + Ultimate") {
     }
     actions {
         If((Event Player).C);
-            Small Message(Event Player, Custom String("   Cannot leave practice mode while also in invincible mode", Null, Null, Null));
+            Small Message(Event Player, Custom String("   Cannot toggle practice mode while in invincible", Null, Null, Null));
             Wait(0.016, Ignore Condition);
             Abort;
         End;
@@ -2331,8 +2331,10 @@ rule ("Subroutine CheckUlt") {
             Wait(0.016, Ignore Condition);
             Set Ultimate Ability Enabled(Event Player, True);
             Set Ultimate Charge(Event Player, 100);
-        Else;
+        "used to be just else, but have to deal with multi ult orbs"
+        Else If(Or(Compare(Distance Between(Event Player, Last Of(Value In Array(Global.A, (Event Player).A))), <=, 2), Compare(Ultimate Charge Percent(Event Player), <, 100)));
             Set Ultimate Ability Enabled(Event Player, False);
+            Set Ultimate Charge(Event Player, 0);
         End;
     }
 }
@@ -2384,7 +2386,8 @@ rule ("Checking | Bhop in the air") {
     conditions {
         (Event Player).TY == 0;
         Is In Air(Event Player) == True;
-        Is Button Held(Event Player, Button(Jump)) == True;
+        "?????? why wasnt this as fales"
+        Is Button Held(Event Player, Button(Jump)) == False;
     }
     actions {
         Set Player Variable(Event Player, O, False);
@@ -2416,6 +2419,7 @@ rule ("Checking | Triple jump") {
         (Event Player).TY == 1;
     }
     actions {
+        "actualy just checks if you been in the air for atleast 0.1 seconds"
         Wait(0.1, Abort When False);
         Set Player Variable(Event Player, TY, 2);
     }
@@ -2476,16 +2480,16 @@ rule ("Checking | Create Bhop") {
     }
     conditions {
         Is Button Held(Event Player, Button(Crouch)) == True;
+        Is Crouching(Event Player) == True;
         Is In Air(Event Player) == True;
         Is On Wall(Event Player) == False;
         Is Button Held(Event Player, Button(Jump)) == False;
         Is Jumping(Event Player) == False;
         Is On Ground(Event Player) == False;
-        Is Crouching(Event Player) == True;
     }
     actions {
         Set Player Variable(Event Player, O, False);
-        If(And(And(Compare(Global.kaxiaotiao, ==, True), Compare((Event Player).C, ==, False)), Compare((Event Player).A, <, Subtract(Count Of(Global.A), 1))));
+        If(And(And((Event Player).ban_create, Compare((Event Player).C, ==, False)), Compare((Event Player).A, <, Subtract(Count Of(Global.A), 1))));
             Small Message(Event Player, Custom String("   Create Bhop ♂ is banned!", Null, Null, Null));
             Call Subroutine(checkpointFailReset);
             Abort;
@@ -2841,7 +2845,5 @@ rule ("Ms. Destructo | Destroys Breakable Objects On All Maps") {
         Set Global Variable(MsDestructo, 0);
     }
 }
-
-
 `
 }
