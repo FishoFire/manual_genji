@@ -2740,49 +2740,6 @@ disabled rule ("----------------------------------------------------------------
     }
 }
 
-rule ("Ban | Wallclimb for specific CPs <---- EDIT ME") {
-    event {
-        Ongoing - Each Player;
-        All;
-        All;
-    }
-    conditions {
-        Workshop Setting Toggle(Custom String("Ban Switch", Null, Null, Null), Custom String("Ban Wallclimb for specific CPs", Null, Null, Null), ${ban_wallclimbEnabled}, 2) == True;
-        (Event Player).C == 0;
-        (Event Player).A < Subtract(Count Of(Global.A), 1);
-        "Change \"-1\" to certain Checkpoints' number"
-        ${ban_wallclimbCp}
-        "If all checkpoints need this function, enable this rule and disable Rule: \"Array Contains\" \r\n@Condition eventPlayer.A < len(A) - 1"
-        Distance Between(Event Player, Value In Array(Global.A, Add((Event Player).A, 1))) <= 2;
-    }
-    actions {
-        If(Compare((Event Player).J, ==, 1));
-            Call Subroutine(checkpointFailReset);
-            Small Message(Event Player, Custom String("   Climb is banned!", Null, Null, Null));
-    }
-}
-
-rule ("Ban | Bhop for specific CPs      <---- EDIT ME") {
-    event {
-        Ongoing - Each Player;
-        All;
-        All;
-    }
-    conditions {
-        Workshop Setting Toggle(Custom String("Ban Switch", Null, Null, Null), Custom String("Ban Bhop for specific CPs", Null, Null, Null),  ${ban_bhopEnabled}, 3) == True;
-        (Event Player).C == 0;
-        (Event Player).A < Subtract(Count Of(Global.A), 1);
-        "Change \"-1\" to certain Checkpoints' number"
-        ${ban_bhopsCp}
-        "If all checkpoints need this function, enable this rule and disable Rule: \"Array Contains\" \r\n@Condition eventPlayer.A < len(A) - 1"
-        Distance Between(Event Player, Value In Array(Global.A, Add((Event Player).A, 1))) <= 2;
-    }
-    actions {
-        If(Compare((Event Player).O, ==, 1));
-            Call Subroutine(checkpointFailReset);
-            Small Message(Event Player, Custom String("   Bhop is banned!", Null, Null, Null));
-    }
-}
 
 rule ("Ban | Triple Jump") {
     event {
@@ -3036,5 +2993,85 @@ disabled rule ("custom portals - function") {
     }
 }
 
+
+rule ("Ms. Destructo | Destroys Breakable Objects On All Maps") {
+    event {
+        Ongoing - Global;
+    }
+    conditions {
+        "Credit: nebula#11571"
+        Is Game In Progress == True;
+    }
+    actions {
+        Wait Until(Is True For Any(All Players(All Teams), Has Spawned(Current Array Element)), 99999);
+        "Init dummy at arbitrary location"
+        Create Dummy Bot(Hero(D.Va), Team Of(First Of(Filtered Array(All Players(All Teams), And(Has Spawned(Current Array Element), Not(Is Dummy Bot(Current Array Element)))))), -1, Vector(0, 200, 0), Vector(0, 0, 0));
+        Set Global Variable(MsDestructo, Last Created Entity);
+        
+        Wait(1, Ignore Condition);
+        
+        Set Player Variable(Global.MsDestructo, MapVectorArray, Array(Array(0, Map(Hanamura), Map(Horizon Lunar Colony), Map(Paris), Map(Temple of Anubis), Map(Dorado), Map(Havana), Map(Junkertown), Map(Rialto), Map(Route 66), Map(Watchpoint: Gibraltar), Map(Blizzard World), Map(Eichenwalde), Map(Hollywood), Map(King's Row), Map(Numbani), Map(Ayutthaya), Map(Black Forest), Map(Castillo), Map(Ecopoint: Antarctica), Map(Château Guillard), Map(Kanezaka), Map(Necropolis), Map(Petra), Map(Volskaya Industries), Map(Practice Range), Map(Ilios), Map(Busan), Map(Lijiang Tower), Map(Nepal), Map(Oasis), Map(Malevento), Map(Circuit Royal), Map(Esperança), Map(New Queen Street), Map(Paraíso), Map(Colosseo), Map(Midtown)), Array(Vector(15.759, 30.576, -27.201)), Array(Vector(31.759, 40.003, -59.476)), Array(Vector(-54.508, 40.179, -10.866)), Array(Vector(-26.78, 23.366, 40.284)), Array(Vector(69.418, 42.103, -17.712)), Array(Vector(9.382, 38.635, -81.276)), Array(Vector(9.382, 38.635, -81.276)), Array(Vector(9.756, 30.753, -41.395)), Array(Vector(30.313, 28.237, -16.925)), Array(Vector(73.985, 26.198, -109.338)), Array(Vector(-21.03, 35.127, 88.381)), Array(Vector(54.798, 40.964, -82.78)), Array(Vector(-0.355, 28.167, -22.396)), Array(Vector(-56.869, 24.061, -32.132)), Array(Vector(105.299, 22.764, 14.89)), Array(Vector(16.965, 26.541, -7.13)), Array(Vector(-9.622, 44.751, 5.635)), Array(Vector(-100.828, 76.566, 60.021)), Array(Vector(-6.186, 35.564, 1.378)), Array(Vector(200.414, 82.412, 78.813)), Array(Vector(-36.319, 32.305, 0.472)), Array(Vector(-1.144, 47.168, -2.946)), Array(Vector(9.678, 28.313, 13.4)), Array(Vector(-49.147, 22.344, 76.844)), Array(Vector(54.948, 50.769, 3.93)), Array(Vector(322.988, 40, -37.732), Vector(27.711, 100, -161.298), Vector(-223.895, 50, 0.89)), Array(Vector(51.885, 37.172, -113.654), Vector(-329.934, 56.136, 149.839), Vector(227.21, 43.353, 252.64)), Array(Vector(-5.808, 324.398, 282.523), Vector(-0.414, 156.197, 148.681), Vector(-0.381, 53.736, -33.335)), Array(Vector(83.1, 178.926, 0.593), Vector(-49.803, 63.29, -0.413), Vector(-184.659, -38.73, -0.783)), Array(Vector(150.125, 30.619, 251.966), Vector(134.888, 36.76, -240.736), Vector(-195.549, 60.35, -0.098)), Array(Vector(17.808, 35.955, 17.505)), Array(Vector(13, 61, -37)), Array(Vector(0, 50, 0)), Array(Vector(0, 35, 25), Vector(0, 8, 23.77)), Array(Vector(-29, 40, -36.9)), Array(Vector(0, 40, 0)), Array(Vector(49.3, 45, -2.83))));
+        For Player Variable(Global.MsDestructo, ArrayIterator, 0, Count Of(Value In Array((Global.MsDestructo).MapVectorArray, Index Of Array Value(First Of((Global.MsDestructo).MapVectorArray), Current Map))), 1);
+            Start Forcing Player Position(Global.MsDestructo, Value In Array(Value In Array((Global.MsDestructo).MapVectorArray, Index Of Array Value((Global.MsDestructo).MapVectorArray, Current Map)), (Global.MsDestructo).ArrayIterator), True);
+            Start Scaling Player(Global.MsDestructo, 20, True);
+            Disable Movement Collision With Environment(Global.MsDestructo, True);
+            Set Ultimate Ability Enabled(Global.MsDestructo, True);
+            Set Ultimate Charge(Global.MsDestructo, 100);
+            Wait(3, Ignore Condition);
+            Start Holding Button(Global.MsDestructo, Button(Ultimate));
+            Wait(5, Ignore Condition);
+            Respawn(Global.MsDestructo);
+            Wait(3, Ignore Condition);
+        End;
+        Destroy Dummy Bot(Team Of(Global.MsDestructo), Slot Of(Global.MsDestructo));
+        "Remove MsDestructo data when done"
+        Set Player Variable(Global.MsDestructo, MapVectorArray, 0);
+        Set Player Variable(Global.MsDestructo, ArrayIterator, 0);
+        Set Global Variable(MsDestructo, 0);
+    }
+}
 `
 }
+
+
+/*
+
+rule ("Ms. Destructo | Destroys Breakable Objects On All Maps") {
+    event {
+        Ongoing - Global;
+    }
+    conditions {
+        "Credit: nebula#11571"
+        Is Game In Progress == True;
+    }
+    actions {
+        Wait Until(Is True For Any(All Players(All Teams), Has Spawned(Current Array Element)), 99999);
+        "Init dummy at arbitrary location"
+        Create Dummy Bot(Hero(D.Va), Team Of(First Of(Filtered Array(All Players(All Teams), And(Has Spawned(Current Array Element), Not(Is Dummy Bot(Current Array Element)))))), -1, Vector(0, 200, 0), Vector(0, 0, 0));
+        Set Global Variable(MsDestructo, Last Created Entity);
+        Start Forcing Dummy Bot Name(Global.MsDestructo, Custom String("Ms. Destructo", Null, Null, Null));
+        Wait(1, Ignore Condition);
+        Set Invisible(Global.MsDestructo, All);
+        Set Player Variable(Global.MsDestructo, MapVectorArray, Array(Array(0, Map(Hanamura), Map(Horizon Lunar Colony), Map(Paris), Map(Temple of Anubis), Map(Dorado), Map(Havana), Map(Junkertown), Map(Rialto), Map(Route 66), Map(Watchpoint: Gibraltar), Map(Blizzard World), Map(Eichenwalde), Map(Hollywood), Map(King's Row), Map(Numbani), Map(Ayutthaya), Map(Black Forest), Map(Castillo), Map(Ecopoint: Antarctica), Map(Château Guillard), Map(Kanezaka), Map(Necropolis), Map(Petra), Map(Volskaya Industries), Map(Practice Range), Map(Ilios), Map(Busan), Map(Lijiang Tower), Map(Nepal), Map(Oasis), Map(Malevento)), Array(Vector(15.759, 30.576, -27.201)), Array(Vector(31.759, 40.003, -59.476)), Array(Vector(-54.508, 40.179, -10.866)), Array(Vector(-26.78, 23.366, 40.284)), Array(Vector(69.418, 42.103, -17.712)), Array(Vector(9.382, 38.635, -81.276)), Array(Vector(9.382, 38.635, -81.276)), Array(Vector(9.756, 30.753, -41.395)), Array(Vector(30.313, 28.237, -16.925)), Array(Vector(73.985, 26.198, -109.338)), Array(Vector(-21.03, 35.127, 88.381)), Array(Vector(54.798, 40.964, -82.78)), Array(Vector(-0.355, 28.167, -22.396)), Array(Vector(-56.869, 24.061, -32.132)), Array(Vector(105.299, 22.764, 14.89)), Array(Vector(16.965, 26.541, -7.13)), Array(Vector(-9.622, 44.751, 5.635)), Array(Vector(-100.828, 76.566, 60.021)), Array(Vector(-6.186, 35.564, 1.378)), Array(Vector(200.414, 82.412, 78.813)), Array(Vector(-36.319, 32.305, 0.472)), Array(Vector(-1.144, 47.168, -2.946)), Array(Vector(9.678, 28.313, 13.4)), Array(Vector(-49.147, 22.344, 76.844)), Array(Vector(54.948, 50.769, 3.93)), Array(Vector(322.988, 40, -37.732), Vector(27.711, 100, -161.298), Vector(-223.895, 50, 0.89)), Array(Vector(51.885, 37.172, -113.654), Vector(-329.934, 56.136, 149.839), Vector(227.21, 43.353, 252.64)), Array(Vector(-5.808, 324.398, 282.523), Vector(-0.414, 156.197, 148.681), Vector(-0.381, 53.736, -33.335)), Array(Vector(83.1, 178.926, 0.593), Vector(-49.803, 63.29, -0.413), Vector(-184.659, -38.73, -0.783)), Array(Vector(150.125, 30.619, 251.966), Vector(134.888, 36.76, -240.736), Vector(-195.549, 60.35, -0.098)), Array(Vector(17.808, 35.955, 17.505))));
+        For Player Variable(Global.MsDestructo, ArrayIterator, 0, Count Of(Value In Array((Global.MsDestructo).MapVectorArray, Index Of Array Value(First Of((Global.MsDestructo).MapVectorArray), Current Map))), 1);
+            Start Forcing Player Position(Global.MsDestructo, Value In Array(Value In Array((Global.MsDestructo).MapVectorArray, Index Of Array Value((Global.MsDestructo).MapVectorArray, Current Map)), (Global.MsDestructo).ArrayIterator), True);
+            Start Scaling Player(Global.MsDestructo, 20, True);
+            Disable Movement Collision With Environment(Global.MsDestructo, True);
+            Set Ultimate Ability Enabled(Global.MsDestructo, True);
+            Set Ultimate Charge(Global.MsDestructo, 100);
+            Wait(3, Ignore Condition);
+            Start Holding Button(Global.MsDestructo, Button(Ultimate));
+            Wait(5, Ignore Condition);
+            Respawn(Global.MsDestructo);
+            Wait(3, Ignore Condition);
+        End;
+        Destroy Dummy Bot(Team Of(Global.MsDestructo), Slot Of(Global.MsDestructo));
+        "Remove MsDestructo data when done"
+        Set Player Variable(Global.MsDestructo, MapVectorArray, 0);
+        Set Player Variable(Global.MsDestructo, ArrayIterator, 0);
+        Set Global Variable(MsDestructo, 0);
+    }
+}
+`
+}
+*/

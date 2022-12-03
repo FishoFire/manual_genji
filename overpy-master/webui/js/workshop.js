@@ -1,3 +1,4 @@
+"use strict";
 
 console.debug = function() {}
 Vue.component('v-select', VueSelect.VueSelect);
@@ -21,7 +22,8 @@ var app = new Vue({
         textToDecompile: null,
         displayDeleteConfirmationFor: null,
         deleteForRule: null,
-        displayInfo: !window.location.pathname.startsWith("/C:"),
+        displayInfo: false,
+        hasPassedWelcomeScreen: localStorage.hasPassedWelcomeScreen,
         displayMetrics: false,
         displayVariableEditor: false,
         displaySubroutineEditor: false,
@@ -38,11 +40,10 @@ var app = new Vue({
         nbElements: 0,
         clipboard: {},
         compiledGamemode: null,
+        projectToImportToId: null,
+        currentProjectId: null,
+        projects: [],
         customGameSettings: {
-            "main": {
-                "description": "Some awesome game mode",
-                "modeName": "GameMode v1.0"
-            },
             "gamemodes": {
                 "skirmish": {
                     "heroLimit": "off",
@@ -58,90 +59,23 @@ var app = new Vue({
         "rules": [],
 
         uiAvailableSettings: {
-            optimization: {
-                name: "Optimization",
-                values: {
-                    none: "No optimization",
-                    speed: "Optimize for speed (default)",
-                    size: "Optimize for size (reduce element count)",
-                }
-            },
-            language: {
-                name: "UI Language",
-                values: {
-                    "en-US": "🍔 English [en-US]",
-                    "de-DE": "🍺 Deutsch [de-DE]",
-                    "es-ES": "🐂 Español (EU) [es-ES]",
-                    "es-MX": "🌮 Español (AL) [es-MX]",
-                    "fr-FR": "🥖 Français [fr-FR]",
-                    "it-IT": "🤌 Italiano [it-IT]",
-                    "ja-JP": "🥷 日本語 [ja-JP]",
-                    "ko-KR": "🎮 한국어 [ko-KR]",
-                    "pl-PL": "🇵🇱 Polski [pl-PL]",
-                    "pt-BR": "🧱 Português [pt-BR]",
-                    "ru-RU": "🇷🇺 Русский [ru-RU]",
-                    "zh-CN": "🇨🇳 简体中文 [zh-CN]",
-                    "zh-TW": "🇹🇼 繁體中文 [zh-TW]",
-                }
-            },
-            compilationLanguage: {
-                name: "Compilation Language",
-                values: {
-                    "en-US": "🍔 English [en-US]",
-                    "de-DE": "🍺 Deutsch [de-DE]",
-                    "es-ES": "🐂 Español (EU) [es-ES]",
-                    "es-MX": "🌮 Español (AL) [es-MX]",
-                    "fr-FR": "🥖 Français [fr-FR]",
-                    "it-IT": "🤌 Italiano [it-IT]",
-                    "ja-JP": "🥷 日本語 [ja-JP]",
-                    "ko-KR": "🎮 한국어 [ko-KR]",
-                    "pl-PL": "🇵🇱 Polski [pl-PL]",
-                    "pt-BR": "🧱 Português [pt-BR]",
-                    "ru-RU": "🇷🇺 Русский [ru-RU]",
-                    "zh-CN": "🇨🇳 简体中文 [zh-CN]",
-                    "zh-TW": "🇹🇼 繁體中文 [zh-TW]",
-                }
-            },
-            background: {
-                name: "Background",
-                values: {
-                    "random": "Random",
-                    "blizzard_world.jpg": "Blizzard World #1",
-                    "blizzard_world_2.jpg": "Blizzard World #2",
-                    "busan.jpg": "Busan",
-                    "chateau_halloween.jpg": "Château Halloween",
-                    "dorado.jpg": "Dorado",
-                    "eichenwalde.jpg": "Eichenwalde",
-                    "eichenwalde_halloween.jpg": "Eichenwalde Halloween #1",
-                    "eichenwalde_halloween_2.jpg": "Eichenwalde Halloween #2",
-                    "hanamura.jpg": "Hanamura",
-                    "kings_row.jpg": "King's Row",
-                    "monte_carlo.jpg": "Monte Carlo #1",
-                    "monte_carlo_2.jpg": "Monte Carlo #2",
-                    "new_queen_street.jpg": "New Queen Street",
-                    "oasis.jpg": "Oasis",
-                    "paraiso.jpg": "Paraiso",
-                    "paris.jpg": "Paris",
-                    "rialto.jpg": "Rialto",
-                    "temple_of_anubis.jpg": "Temple of Anubis",
-                    "volskaya.jpg": "Volskaya",
-                    "tf2.jpg": "TF2 #1",
-                    "tf2_2.jpg": "TF2 #2",
-                    "portal_2.jpg": "Portal 2",
-                    "workshop.jpg": "Workshop",
-                    "forge.jpg": "Forge",
-    }
-            }
+            optimization: ["none", "speed", "size"],
+            language: ["en-US", "de-DE", "es-ES", "es-MX", "fr-FR", "it-IT", "ja-JP", "ko-KR", "pl-PL", "pt-BR", "ru-RU", "zh-CN", "zh-TW"],
+            compilationLanguage: ["en-US", "de-DE", "es-ES", "es-MX", "fr-FR", "it-IT", "ja-JP", "ko-KR", "pl-PL", "pt-BR", "ru-RU", "zh-CN", "zh-TW"],
+            background: ["random", "blizzard_world.jpg", "blizzard_world_2.jpg", "busan.jpg", "chateau_halloween.jpg", "dorado.jpg", "eichenwalde.jpg", "eichenwalde_halloween.jpg", "eichenwalde_halloween_2.jpg", "hanamura.jpg", "kings_row.jpg", "monte_carlo.jpg", "monte_carlo_2.jpg", "new_queen_street.jpg", "oasis.jpg", "paraiso.jpg", "paris.jpg", "rialto.jpg", "temple_of_anubis.jpg", "volskaya.jpg", "tf2.jpg", "tf2_2.jpg", "portal_2.jpg", "workshop.jpg", "forge.jpg"],
+            disabledWarnings: null,
         },
         uiSettings: {
             optimization: "speed",
             language: "en-US",
             compilationLanguage: "en-US",
             background: "random",
+            disabledWarnings: "",
         },
 
         ruleAttributesDisplayNamesKw,
         workshopUiKw,
+        workshopUiCustomKw,
         eventKw,
         eventTeamKw,
         eventPlayerKw,
@@ -168,7 +102,7 @@ var app = new Vue({
     computed: {
         background: function() {
             if (this.uiSettings.background === "random") {
-                var availableBackgrounds = Object.keys(this.uiAvailableSettings.background.values).filter(x => x !== "random")
+                var availableBackgrounds = this.uiAvailableSettings.background.filter(x => x !== "random")
                 return availableBackgrounds[Math.floor(Math.random() * availableBackgrounds.length)];
             } else {
                 return this.uiSettings.background;
@@ -180,7 +114,7 @@ var app = new Vue({
             oldConsoleInfo(str);
             Toastify({
                 text: str,
-                duration: 4000,
+                duration: 5000,
                 gravity: "bottom", // `top` or `bottom`
                 position: "left", // `left`, `center` or `right`
                 stopOnFocus: true, // Prevents dismissing of toast on hover
@@ -191,7 +125,7 @@ var app = new Vue({
             oldConsoleWarn(str);
             Toastify({
                 text: str,
-                duration: 5000,
+                duration: 10000,
                 gravity: "bottom", // `top` or `bottom`
                 position: "left", // `left`, `center` or `right`
                 stopOnFocus: true, // Prevents dismissing of toast on hover
@@ -206,7 +140,7 @@ var app = new Vue({
             }
             Toastify({
                 text: str,
-                duration: 5000,
+                duration: 10000,
                 gravity: "bottom", // `top` or `bottom`
                 position: "left", // `left`, `center` or `right`
                 stopOnFocus: true, // Prevents dismissing of toast on hover
@@ -218,6 +152,7 @@ var app = new Vue({
                 throw new Error("Invalid keywordobj for '"+keyword+"'");
             }
             if (!(keyword in keywordObj)) {
+                console.log(keywordObj);
                 throw new Error("Could not translate '"+keyword+"'");
             }
             var result = null;
@@ -244,93 +179,117 @@ var app = new Vue({
             } else if (type === "Subroutine") {
                 return this.subroutines.slice().sort((a,b) => (a.index - b.index)).map(x => ({label: x.name, code: x.index}));
             }
-            keywordObj = null
+            var keywordObj = null
+            var sort = true
             if (type === "void") {
                 keywordObj = this.actionKw;
             } else if (type in this.constantValues) {
                 keywordObj = this.constantValues[type];
+                sort = false;
+            } else if (type === "LocalizedStringLiteral") {
+                keywordObj = this.stringKw;
             } else if (type === "event") {
                 keywordObj = this.eventKw;
+                sort = false;
             } else if (type === "eventPlayer") {
                 keywordObj = this.eventPlayerKw;
+                sort = false;
             } else if (type === "eventTeam") {
                 keywordObj = this.eventTeamKw;
+                sort = false;
+            } else if (type === "BoolLiteral") {
+                keywordObj = {"true": this.valueFuncKw.true, "false": this.valueFuncKw.false};
             } else {
                 keywordObj = this.valueFuncKw;
             }
-            return this.getDropdownOptionsForKeywordObj(keywordObj);
+            return this.getDropdownOptionsForKeywordObj(keywordObj, sort);
         },
-        getDropdownOptionsForKeywordObj: function(keywordObj) {
-
-            return Object.keys(keywordObj).filter(x => typeof keywordObj[x] === "object" && !keywordObj[x].onlyInOw1 && x !== "__global__").map(x => ({"label": this.uiSettings.language in keywordObj[x] ? keywordObj[x][this.uiSettings.language] : keywordObj[x]["en-US"], "code": x})).slice().sort((a,b) => (a.label.localeCompare(b.label)))
+        getDropdownOptionsForKeywordObj: function(keywordObj, sort=true) {
+            var result = Object.keys(keywordObj).filter(x => typeof keywordObj[x] === "object" && !keywordObj[x].onlyInOw1 && x !== "__global__").map(x => ({"label": this.uiSettings.language in keywordObj[x] ? keywordObj[x][this.uiSettings.language] : keywordObj[x]["en-US"], "code": x})).slice()
+            if (sort) {
+                result = result.sort((a,b) => (a.label.localeCompare(b.label)))
+            }
+            return result;
         },
         decompile: function(content) {
-            try {
-
-                resetGlobalVariables(this.decompilationLanguage);
-                [customGameSettings, rules] = decompileAllRulesToAst(content);
-                if (!customGameSettings) {
-                    console.error("Gamemode must have settings");
+            if (this.projectToImportToId !== null) {
+                this.loadProject(this.projectToImportToId);
+            } else {
+                try {
+                    if (!content) {
+                        console.error(this.translate("cannotImportEmptyGamemode", this.workshopUiCustomKw));
+                        return;
+                    }
+    
+                    resetGlobalVariables(this.decompilationLanguage);
+                    var [customGameSettings, rules] = decompileAllRulesToAst(content);
+                    if (!customGameSettings) {
+                        console.error(this.translate("gamemodeMustHaveSettings", this.workshopUiCustomKw));
+                        return;
+                    }
+                    console.log(customGameSettings);
+                    console.log(rules);
+                    this.customGameSettings = JSON.parse(customGameSettings.replace("settings {", "{"));
+                    this.globalVariables = globalVariables;
+                    this.playerVariables = playerVariables;
+                    this.subroutines = subroutines;
+                    this.activatedExtensions = [...activatedExtensions];
+                    //Add default var names (if eg there are no player variables, then adding a player variable will error because we cannot select one)
+                    //Plus, we need var names to be in order for the UI
+                    for (var i = 0; i < 128; i++) {
+                        if (!this.globalVariables.map(x => x.index).includes(i)) {
+                            this.globalVariables.push({index: i, name: defaultVarNames[i]})
+                        }
+                        if (!this.playerVariables.map(x => x.index).includes(i)) {
+                            this.playerVariables.push({index: i, name: defaultVarNames[i]})
+                        }
+                        if (!this.subroutines.map(x => x.index).includes(i)) {
+                            this.subroutines.push({index: i, name: defaultSubroutineNames[i]})
+                        }
+                    }
+                    for (var rule of rules) {
+                        if ("conditions" in rule.ruleAttributes) {
+                            for (var i = 0; i < rule.ruleAttributes.conditions.length; i++) {
+                                rule.ruleAttributes.conditions[i] = this.adjustAstForWorkshop(rule.ruleAttributes.conditions[i]);
+                                rule.ruleAttributes.conditions[i].parent = rule;
+                                rule.ruleAttributes.conditions[i].isSelected = false;
+                                rule.ruleAttributes.conditions[i].isDisabled ||= false;
+                            }
+                        } else {
+                            rule.ruleAttributes.conditions = [];
+                        }
+                        if ("subroutineName" in rule.ruleAttributes) {
+                            rule.ruleAttributes.subroutineName = this.subroutines.filter(x => x.name === rule.ruleAttributes.subroutineName)[0].index;
+                        }
+                        for (var i = 0; i < rule.children.length; i++) {
+                            rule.children[i] = this.adjustAstForWorkshop(rule.children[i]);
+                            rule.children[i].parent = rule;
+                            rule.children[i].isSelected = false;
+                            rule.children[i].isDisabled ||= false;
+                        }
+    
+                        if (rules.length > 50) {
+                            rule.isCollapsed = true;
+                        } else {
+                            rule.isCollapsed = false;
+                        }
+                        rule.isSelected = false;
+                    }
+                    this.rules = rules;
+                    this.globalVariables.sort((a,b) => (a.index - b.index))
+                    this.playerVariables.sort((a,b) => (a.index - b.index))
+                    this.subroutines.sort((a,b) => (a.index - b.index))
+                    this.textToDecompile = null;
+                    this.setCurrentProject(this.projectToImportToId);
+    
+                } catch (err) {
+                    console.error(err + ", " + this.translate("contactZez", this.workshopUiCustomKw));
                     return;
                 }
-                console.log(customGameSettings);
-                console.log(rules);
-                this.customGameSettings = JSON.parse(customGameSettings.replace("settings {", "{"));
-                this.globalVariables = globalVariables;
-                this.playerVariables = playerVariables;
-                this.subroutines = subroutines;
-                this.activatedExtensions = [...activatedExtensions];
-                //Add default var names (if eg there are no player variables, then adding a player variable will error because we cannot select one)
-                //Plus, we need var names to be in order for the UI
-                for (var i = 0; i < 128; i++) {
-                    if (!this.globalVariables.map(x => x.index).includes(i)) {
-                        this.globalVariables.push({index: i, name: defaultVarNames[i]})
-                    }
-                    if (!this.playerVariables.map(x => x.index).includes(i)) {
-                        this.playerVariables.push({index: i, name: defaultVarNames[i]})
-                    }
-                    if (!this.subroutines.map(x => x.index).includes(i)) {
-                        this.subroutines.push({index: i, name: defaultSubroutineNames[i]})
-                    }
-                }
-                for (var rule of rules) {
-                    if ("conditions" in rule.ruleAttributes) {
-                        for (var i = 0; i < rule.ruleAttributes.conditions.length; i++) {
-                            rule.ruleAttributes.conditions[i] = this.adjustAstForWorkshop(rule.ruleAttributes.conditions[i]);
-                            rule.ruleAttributes.conditions[i].parent = rule;
-                            rule.ruleAttributes.conditions[i].isSelected = false;
-                            rule.ruleAttributes.conditions[i].isDisabled ||= false;
-                        }
-                    } else {
-                        rule.ruleAttributes.conditions = [];
-                    }
-                    if ("subroutineName" in rule.ruleAttributes) {
-                        rule.ruleAttributes.subroutineName = this.subroutines.filter(x => x.name === rule.ruleAttributes.subroutineName)[0].index;
-                    }
-                    for (var i = 0; i < rule.children.length; i++) {
-                        rule.children[i] = this.adjustAstForWorkshop(rule.children[i]);
-                        rule.children[i].parent = rule;
-                        rule.children[i].isSelected = false;
-                        rule.children[i].isDisabled ||= false;
-                    }
-
-                    if (rules.length > 50) {
-                        rule.isCollapsed = true;
-                    } else {
-                        rule.isCollapsed = false;
-                    }
-                    rule.isSelected = false;
-                }
-                this.rules = rules;
-                this.globalVariables.sort((a,b) => (a.index - b.index))
-                this.playerVariables.sort((a,b) => (a.index - b.index))
-                this.subroutines.sort((a,b) => (a.index - b.index))
-                console.info("Successfully imported!");
-                this.textToDecompile = null;
-                this.displayImport = false;
-            } catch (e) {
-                console.error(e + ", contact Zezombye about this");
             }
+            console.info(this.translate("successfullyImported", this.workshopUiCustomKw));
+            this.projectToImportToId = null;
+            this.displayImport = false;
             this.compileGamemode();
         },
         adjustAstForWorkshop: function(ast) {
@@ -444,7 +403,7 @@ var app = new Vue({
                 if (rule.children.length === 0) {
                     rule.ruleAttributes.isDelimiter = true;
                 }
-                rule.fileStack = [{ruleNb: ruleIdx, rule: rule.ruleAttributes.name}]
+                rule.fileStack = [{ruleNb: ruleIdx+1, rule: rule.ruleAttributes.name}]
                 for (var i = 0; i < rule.children.length; i++) {
                     var comment = rule.children[i].comment;
                     if (rule.children[i].isDisabled) {
@@ -460,7 +419,7 @@ var app = new Vue({
                     rule.children[i].comment = comment;
                     rule.children[i].parent = rule;
 
-                    recursivelySetFilestack(rule.children[i], [{ruleNb: ruleIdx, rule: rule.ruleAttributes.name, actionNb: i+1}])
+                    recursivelySetFilestack(rule.children[i], [{ruleNb: ruleIdx+1, rule: rule.ruleAttributes.name, actionNb: i+1}])
 
                 }
 
@@ -500,7 +459,7 @@ var app = new Vue({
                     rule.ruleAttributes.conditionComments.push(rule.ruleAttributes.conditions[i].comment);
                     rule.ruleAttributes.conditions[i] = decompile(this.displayAst(rule.ruleAttributes.conditions[i], false));
                     rule.ruleAttributes.conditions[i].parent = new Ast("@Condition", [], [], "__Annotation__");
-                    recursivelySetFilestack(rule.ruleAttributes.conditions[i], [{ruleNb: ruleIdx, rule: rule.ruleAttributes.name, conditionNb: i+1}])
+                    recursivelySetFilestack(rule.ruleAttributes.conditions[i], [{ruleNb: ruleIdx+1, rule: rule.ruleAttributes.name, conditionNb: i+1}])
                 }
                 
                 if ("subroutineName" in rule.ruleAttributes) {
@@ -519,9 +478,10 @@ var app = new Vue({
             }
             activatedExtensions = this.activatedExtensions;
             compileCustomGameSettings(structuredClone(this.customGameSettings));
-            globalVariables = structuredClone(this.globalVariables);
-            playerVariables = structuredClone(this.playerVariables);
-            subroutines = structuredClone(this.subroutines);
+            globalVariables = structuredClone(this.globalVariables).filter(x => x.name !== defaultVarNames[x.index]);
+            playerVariables = structuredClone(this.playerVariables).filter(x => x.name !== defaultVarNames[x.index]);
+            subroutines = structuredClone(this.subroutines).filter(x => x.name !== defaultSubroutineNames[x.index]);
+            globalSuppressedWarnings = this.uiSettings.disabledWarnings.split(",").map(x => x.trim());
 
             return compileRules(rules)
             
@@ -532,12 +492,13 @@ var app = new Vue({
             } else {
                 var result = this.compileGamemode();
             }
+            this.saveProject();
             navigator.clipboard.writeText(result).then(() => {
                 this.compiledGamemode = null;
-                console.info("Successfully compiled! (copied into clipboard)");
+                console.info(this.translate("successfullyCompiled", this.workshopUiCustomKw));
             }).catch((e) => {
                 this.compiledGamemode = result;
-                this.error("Compilation took too long, please click again to copy.");
+                this.error(this.translate("compilationTooLong", this.workshopUiCustomKw));
             });
         },
         displayHtml: function(str, actuallyDisplayHtml=true, category) {
@@ -548,18 +509,82 @@ var app = new Vue({
             }
         },
         displayAst: function(ast, useHtml=true) {
-            const funcToOpMapping = {
+            const modifyVarFuncToOpMapping = {
                 "__add__": "+=",
                 "__subtract__": "-=",
                 "__multiply__": "*=",
                 "__divide__": "/=",
                 "__modulo__": "%=",
-                "__raiseToPower__": "**=",
+                "__raiseToPower__": "^=",
+            }
+            const funcToOpMapping = {
+                "__add__": "+",
+                "__subtract__": "-",
+                "__multiply__": "*",
+                "__divide__": "/",
+                "__modulo__": "%",
+                "__raiseToPower__": "^",
+                "__and__": "&&",
+                "__or__": "||",
+            }
+            const astOperatorPrecedence = {
+                "__ifThenElse__": 2,
+                "__or__": 3,
+                "__and__": 4,
+                "__compare__": 5,
+                "__add__": 6,
+                "__subtract__": 6,
+                "__multiply__": 7,
+                "__divide__": 7,
+                "__modulo__": 7, 
+                "__raiseToPower__": 8,
+                "__not__": 9,
             }
             var result = "";
-            if (ast.name === "__compare__" && ast.parent.name === "__rule__") {
-                return ast.args.map(x => this.displayAst(x, useHtml)).join(" ")
+            if (ast.name in funcToOpMapping && ast.args.length === 2) {
+                var op1 = this.displayAst(ast.args[0], useHtml);
+                if (ast.args[0].name in astOperatorPrecedence && astContainsFunctions(ast.args[0], Object.keys(astOperatorPrecedence).filter(x => astOperatorPrecedence[x] < astOperatorPrecedence[ast.name] + (ast.name === "__raiseToPower__" ? 1 : 0)))) {
+                    op1 = "("+op1+")";
+                }
+                var op2 = this.displayAst(ast.args[1], useHtml);
+                
+                if (ast.args[1].name in astOperatorPrecedence && astContainsFunctions(ast.args[1], Object.keys(astOperatorPrecedence).filter(x => astOperatorPrecedence[x] <= astOperatorPrecedence[ast.name] - (ast.name === "__raiseToPower__" ? 1 : 0)))) {
+                    op2 = "("+op2+")";
+                }
+                return op1+" "+this.displayHtml(funcToOpMapping[ast.name], useHtml, "operator")+" "+op2;
 
+            } else if (ast.name === "__compare__") {
+                var op1 = this.displayAst(ast.args[0], useHtml);
+                if (ast.args[0].name in astOperatorPrecedence && astContainsFunctions(ast.args[0], Object.keys(astOperatorPrecedence).filter(x => astOperatorPrecedence[x] < astOperatorPrecedence[ast.name] + 0.5))) {
+                    op1 = "("+op1+")";
+                }
+                var op2 = this.displayAst(ast.args[2], useHtml);
+                
+                if (ast.args[2].name in astOperatorPrecedence && astContainsFunctions(ast.args[2], Object.keys(astOperatorPrecedence).filter(x => astOperatorPrecedence[x] <= astOperatorPrecedence[ast.name] + 0.5))) {
+                    op2 = "("+op2+")";
+                }
+                return op1+" "+this.displayHtml(ast.args[1].name, useHtml, "operator")+" "+op2;
+
+            } else if (ast.name === "__ifThenElse__") {
+                var opThen = this.displayAst(ast.args[1], useHtml);
+                if (ast.args[1].name in astOperatorPrecedence && astContainsFunctions(ast.args[1], Object.keys(astOperatorPrecedence))) {
+                    opThen = "("+opThen+")";
+                }
+                var opIf = this.displayAst(ast.args[0], useHtml);
+                if (ast.args[0].name in astOperatorPrecedence && astContainsFunctions(ast.args[0], Object.keys(astOperatorPrecedence))) {
+                    opIf = "("+opIf+")";
+                }
+                var opElse = this.displayAst(ast.args[2], useHtml);
+                if (ast.args[2].name in astOperatorPrecedence && astContainsFunctions(ast.args[2], Object.keys(astOperatorPrecedence))) {
+                    opElse = "("+opElse+")";
+                }
+                return opIf+" ? "+opThen+" : "+opElse;
+            } else if (ast.name === "__not__") {
+                var op1 = this.displayAst(ast.args[0], useHtml);
+                if (ast.args[0].name in astOperatorPrecedence && astContainsFunctions(ast.args[0], Object.keys(astOperatorPrecedence).filter(x => astOperatorPrecedence[x] < astOperatorPrecedence[ast.name]))) {
+                    op1 = "("+op1+")";
+                }
+                return "!"+op1;
             } else if (ast.type === "GlobalVariable") {
                 result += this.displayHtml(this.globalVariables.filter(x => x.index === +ast.name)[0].name, useHtml, "var");
             } else if (ast.type === "PlayerVariable") {
@@ -570,16 +595,16 @@ var app = new Vue({
             } else if (ast.name === "__team__") {
                 return this.displayAst(ast.args[0], useHtml);
 
-            } else if (["CustomStringLiteral","FullwidthStringLiteral", "BigLettersStringLiteral"].includes(ast.type)) {
+            } else if (["CustomStringLiteral", "FullwidthStringLiteral", "BigLettersStringLiteral"].includes(ast.type)) {
                 result += this.displayHtml(this.escapeString(ast.name, true), useHtml, "string");
             } else if (ast.type === "LocalizedStringLiteral") {
-                result += this.displayHtml(this.escapeString(tows(ast.name, this.stringKw), true), useHtml, "var");
-
-            } else if (ast.name === "__team__") {
-                return this.displayAst(ast.args[0], useHtml);
+                result += this.displayHtml(this.escapeString(tows(ast.name, this.stringKw), true), useHtml, "string");
 
             } else if (ast.name === "__number__") {
                 return this.displayHtml((+ast.args[0].name)+"", useHtml, "var");
+
+            } else if (["FloatLiteral", "IntLiteral", "UnsignedIntLiteral"].includes(ast.type)) {
+                return this.displayHtml((+ast.name)+"", useHtml, "var");
 
             } else if (ast.name === "__globalVar__") {
                 return this.displayHtml(this.translate("__global__", this.valueKw), useHtml, "var")+"."+this.displayAst(ast.args[0], useHtml);
@@ -587,12 +612,50 @@ var app = new Vue({
             } else if (ast.name === "__setGlobalVariable__") {
                 return this.displayHtml(this.translate("__global__", this.valueKw), useHtml, "var")+"."+this.displayAst(ast.args[0], useHtml)+" = "+this.displayAst(ast.args[1], useHtml);
 
-            } else if (ast.name === "__modifyGlobalVariable__" && ast.args[1].name in funcToOpMapping) {
-                return this.displayHtml(this.translate("__global__", this.valueKw), useHtml, "var")+"."+this.displayAst(ast.args[0], useHtml)+" "+funcToOpMapping[ast.args[1].name]+" "+this.displayAst(ast.args[2], useHtml);
+            } else if (ast.name === "__modifyGlobalVariable__" && ast.args[1].name in modifyVarFuncToOpMapping) {
+                return this.displayHtml(this.translate("__global__", this.valueKw), useHtml, "var")+"."+this.displayAst(ast.args[0], useHtml)+" "+modifyVarFuncToOpMapping[ast.args[1].name]+" "+this.displayAst(ast.args[2], useHtml);
                 
             } else if (ast.name === "__setGlobalVariableAtIndex__") {
                 return this.displayHtml(this.translate("__global__", this.valueKw), useHtml, "var")+"."+this.displayAst(ast.args[0], useHtml)+"["+this.displayAst(ast.args[1], useHtml)+"] = "+this.displayAst(ast.args[2], useHtml);
 
+            } else if (ast.name === "__modifyGlobalVariableAtIndex__" && ast.args[2].name in modifyVarFuncToOpMapping) {
+                return this.displayHtml(this.translate("__global__", this.valueKw), useHtml, "var")+"."+this.displayAst(ast.args[0], useHtml)+" ["+this.displayAst(ast.args[1], useHtml)+"] "+modifyVarFuncToOpMapping[ast.args[2].name]+" "+this.displayAst(ast.args[3], useHtml);
+                
+            } else if (ast.name === "__playerVar__") {
+                var result = this.displayAst(ast.args[0], useHtml);
+                if (ast.args[0].name in astOperatorPrecedence && astContainsFunctions(ast.args[0], Object.keys(astOperatorPrecedence))) {
+                    result = "("+result+")";
+                }
+                return result+"."+this.displayAst(ast.args[1], useHtml);
+
+            } else if (ast.name === "__setPlayerVariable__") {
+                var op1 = this.displayAst(ast.args[0], useHtml);
+                if (ast.args[0].name in astOperatorPrecedence && astContainsFunctions(ast.args[0], Object.keys(astOperatorPrecedence))) {
+                    op1 = "("+op1+")";
+                }
+                return op1+"."+this.displayAst(ast.args[1], useHtml)+" = "+this.displayAst(ast.args[2], useHtml);
+
+            } else if (ast.name === "__modifyPlayerVariable__" && ast.args[2].name in modifyVarFuncToOpMapping) {
+                var op1 = this.displayAst(ast.args[0], useHtml);
+                if (ast.args[0].name in astOperatorPrecedence && astContainsFunctions(ast.args[0], Object.keys(astOperatorPrecedence))) {
+                    op1 = "("+op1+")";
+                }
+                return op1+"."+this.displayAst(ast.args[1], useHtml)+" "+modifyVarFuncToOpMapping[ast.args[2].name]+" "+this.displayAst(ast.args[3], useHtml);
+                
+            } else if (ast.name === "__setPlayerVariableAtIndex__") {
+                var op1 = this.displayAst(ast.args[0], useHtml);
+                if (ast.args[0].name in astOperatorPrecedence && astContainsFunctions(ast.args[0], Object.keys(astOperatorPrecedence))) {
+                    op1 = "("+op1+")";
+                }
+                return op1+"."+this.displayAst(ast.args[1], useHtml)+"["+this.displayAst(ast.args[2], useHtml)+"] = "+this.displayAst(ast.args[3], useHtml);
+
+            } else if (ast.name === "__modifyPlayerVariableAtIndex__" && ast.args[3].name in modifyVarFuncToOpMapping) {
+                var op1 = this.displayAst(ast.args[0], useHtml);
+                if (ast.args[0].name in astOperatorPrecedence && astContainsFunctions(ast.args[0], Object.keys(astOperatorPrecedence))) {
+                    op1 = "("+op1+")";
+                }
+                return op1+"."+this.displayAst(ast.args[1], useHtml)+"["+this.displayAst(ast.args[2], useHtml)+"] "+modifyVarFuncToOpMapping[ast.args[3].name]+" "+this.displayAst(ast.args[4], useHtml);
+                
             } else if (ast.type === "void") {
                 result += this.displayHtml(this.translate(ast.name, this.actionKw), useHtml, "operator");
 
@@ -600,16 +663,21 @@ var app = new Vue({
                 result += this.displayHtml(this.translate(ast.name, this.valueKw), useHtml, "value");
 
             } else if (ast.type in this.constantValues) {
-                if (!(ast.name in this.constantValues[ast.type])) {
-                    throw new Error("Unknown "+ast.type.replace("Literal", "").toLowerCase()+" '"+ast.name+"'");
+                if (ast.name === "__removed_from_ow2__") {
+                    result += this.displayHtml(ast.name, useHtml, (ast.type === "__Operator__" ? "operator" : "value"));
+                } else {
+
+                    if (!(ast.name in this.constantValues[ast.type])) {
+                        throw new Error("Unknown "+ast.type.replace("Literal", "").toLowerCase()+" '"+ast.name+"'");
+                    }
+                    result += this.displayHtml(this.translate(ast.name, this.constantValues[ast.type]), useHtml, (ast.type === "__Operator__" ? "operator" : "value"));
                 }
-                result += this.displayHtml(this.translate(ast.name, this.constantValues[ast.type]), useHtml, (ast.type === "__Operator__" ? "operator" : "value"));
             } else {
                 throw new Error("Unknown type '"+ast.type+"' of '"+ast.name+"'");
             }
             if (ast.args.length > 0) {
                 if (ast.name === "__customString__" || ast.name === "__localizedString__") {
-                    maxStrArg = ast.args[0].name.includes("{2}") ? 3 : ast.args[0].name.includes("{1}") ? 2 : ast.args[0].name.includes("{0}") ? 1 : 0
+                    var maxStrArg = ast.args[0].name.includes("{2}") ? 3 : ast.args[0].name.includes("{1}") ? 2 : ast.args[0].name.includes("{0}") ? 1 : 0
                     result += "(" + ast.args.slice(0, maxStrArg+1).map(x => this.displayAst(x, useHtml)).join(", ") + ")";
                 } else {
                     result += "(" + ast.args.map(x => this.displayAst(x, useHtml)).join(", ") + ")";
@@ -681,36 +749,187 @@ var app = new Vue({
             this.compileGamemode();
         },
         rebuildAst: function(ast) {
-            console.log("Rebuilding AST: "+ast.name);
+            //console.log("Rebuilding AST: '"+ast.name+"'");
             //When selecting a new function, recreate its arguments using defaults
-            if (ast.type in this.constantValues || ["FloatLiteral", "GlobalVariable", "PlayerVariable", "Subroutine"].includes(ast.type)) {
+            if (ast.type in this.constantValues || ["FloatLiteral", "IntLiteral", "UnsignedIntLiteral", "GlobalVariable", "PlayerVariable", "Subroutine", "CustomStringLiteral", "LocalizedStringLiteral"].includes(ast.type)) {
                 return; //no args
             }
+            var astDefaultsToOverpy = {
+                "==": "==",
+                "0": 0,
+                "99999": 99999,
+                "ADD": "__add__",
+                "All Damage Dealt": "DAMAGE_DEALT",
+                "All Players": "getPlayers",
+                "ALL PLAYERS": "getPlayers",
+                "All": "ALL",
+                "ALL": "ALL",
+                "Armor": "ARMOR",
+                "Array": "__array__",
+                "ARROW: DOWN": "ARROW_DOWN",
+                "Assisters and Targets": "ASSISTERS_AND_TARGETS",
+                "BARRIERS DO NOT BLOCK LOS": "PASS_THROUGH_BARRIERS",
+                "Button": "__button__",
+                "BUTTON": "__button__",
+                "CANCEL CONTRARY MOTION": "CANCEL_CONTRARY_MOTION",
+                "CLIP AGAINST SURFACES": "SURFACES",
+                "COLOR": "__color__",
+                "COMPARE": "__compare__",
+                "COUNT OF": "len",
+                "CURRENT ARRAY ELEMENT": "__currentArrayElement__",
+                "Custom String": "__customString__",
+                "CUSTOM STRING": "__customString__",
+                "Default Visibility": "DEFAULT",
+                "DEFAULT VISIBILITY": "DEFAULT",
+                "DEFAULT": "DEFAULT",
+                "DESTINATION AND DURATION": "DESTINATION_AND_DURATION",
+                "DESTINATION AND RATE": "DESTINATION_AND_RATE",
+                "DIRECTION AND MAGNITUDE": "DIRECTION_AND_MAGNITUDE",
+                "DIRECTION AND TURN RATE": "DIRECTION_AND_TURN_RATE",
+                "DIRECTION, RATE, AND MAX SPEED": "DIRECTION_RATE_AND_MAX_SPEED",
+                "Event Player": "eventPlayer",
+                "EVENT PLAYER": "eventPlayer",
+                "false": "false",
+                "Global Variable": "__globalVar__",
+                "GLOBAL VARIABLE": "__globalVar__",
+                "GOOD BEAM": "GOOD",
+                "GOOD EXPLOSION": "GOOD_EXPLOSION",
+                "HACKED": "HACKED",
+                "HEALTH": "NORMAL",
+                "HELLO": "Hello",
+                "Hero": "__hero__",
+                "HERO": "__hero__",
+                "IGNORE CONDITION": "IGNORE_CONDITION",
+                "Last Assist ID": "getLastAssistID",
+                "LAST CREATED ENTITY": "getLastCreatedEntity",
+                "Last Created Health Pool": "getLastCreatedHealthPool",
+                "LAST DAMAGE MODIFICATION ID": "getLastDamageModification",
+                "LAST DAMAGE OVER TIME ID": "getLastDoT",
+                "LAST HEALING MODIFICATION ID": "getLastHoT",
+                "Last Text ID": "getLastCreatedText",
+                "LAST TEXT ID": "getLastCreatedText",
+                "Left": "LEFT",
+                "LEFT": "LEFT",
+                "NULL": "null",
+                "NUMBER": "__number__",
+                "OFF": "OFF",
+                "PLAYER VARIABLE": "__playerVar__",
+                "Position Of": "_&getPosition",
+                "PRIMARY FIRE": "PRIMARY_FIRE",
+                "RECEIVERS, DAMAGERS, AND DAMAGE PERCENT": "RECEIVERS_DAMAGERS_AND_DMGPERCENT",
+                "RECEIVERS, HEALERS, AND HEALING PERCENT": "RECEIVERS_HEALERS_AND_HEALPERCENT",
+                "REPLACE EXISTING THROTTLE": "REPLACE_EXISTING",
+                "RESTART RULE": "RESTART",
+                "ROTATION": "ROTATION",
+                "SPHERE": "SPHERE",
+                "STRING": "__customString__",
+                "Team": "__team__",
+                "TEAM": "__team__",
+                "TO WORLD": "TO_WORLD",
+                "true": "true",
+                "TRUE": "true",
+                "UP": "__roundUp__",
+                "Vector": "vect",
+                "VECTOR": "vect",
+                "VISIBLE TO AND POSITION": "VISIBILITY_AND_POSITION",
+                "VISIBLE TO AND STRING": "VISIBILITY_AND_STRING",
+                "VISIBLE TO, POSITION, AND RADIUS": "VISIBILITY_POSITION_AND_RADIUS",
+                "VISIBLE TO, POSITION, AND STRING": "VISIBILITY_POSITION_AND_STRING",
+                "Visible To, Values, and Color": "VISIBILITY_VALUES_AND_COLOR",
+                "VOICE LINE UP": "VOICE_LINE_UP",
+                "White": "WHITE",
+                "WHITE": "WHITE",
+                0: 0,
+                1: 1,
+                100: 100,
+                255: 255,
+                null: "null",
+                true: "true",
+            }
             ast.args = [];
-            keywordObj = (ast.type === "void" ? this.actionKw : this.valueFuncKw);
+            var keywordObj = (ast.type === "void" ? this.actionKw : this.valueFuncKw);
             if (keywordObj[ast.name].args !== null) {
                 for (var arg of keywordObj[ast.name].args) {
                     var astType = arg.type;
                     if (astType in this.constantValues) {
-                        var astName = Object.keys(constantValues[astType])[0];
-                    } else if (astType === "FloatLiteral") {
-                        var astName = "0";
+                        if (arg.default && arg.default in astDefaultsToOverpy) {
+                            if (!(astDefaultsToOverpy[arg.default] in constantValues[astType])) {
+                                console.error(astDefaultsToOverpy[arg.default]+" doesn't exist, please tell Zezombye about it");
+                                var astName = astType === "TeamLiteral" ? "ALL" : Object.keys(constantValues[astType])[0];
+                            } else {
+                                var astName = astDefaultsToOverpy[arg.default];
+                            }
+                        } else {
+                            var astName = astType === "TeamLiteral" ? "ALL" : Object.keys(constantValues[astType])[0];
+                        }
+                    } else if (astType === "FloatLiteral" || astType === "IntLiteral" || astType === "UnsignedIntLiteral") {
+                        if (arg.default) {
+                            var astName = ""+arg.default;
+                        } else {
+                            var astName = "0";
+                        }
+                    } else if (arg.default && arg.default in astDefaultsToOverpy) {
+                        console.log("Setting default: "+arg.default);
+                        var astName = astDefaultsToOverpy[arg.default];
                     } else if (astType === "GlobalVariable") {
                         var astName = this.globalVariables[0].index;
                     } else if (astType === "PlayerVariable") {
                         var astName = this.playerVariables[0].index;
                     } else if (astType === "Subroutine") {
                         var astName = this.subroutines[0].index;
+                    } else if (astType === "CustomStringLiteral") {
+                        var astName = "";
+                    } else if (astType === "Player") {
+                        var astName = "eventPlayer";
+                    } else if (astType === "Hero" || ""+ast.type === "[object Object]" && ast.type.Array === "Hero") {
+                        var astName = "__hero__";
+                    } else if (astType === "Button") {
+                        var astName = "__button__";
+                    } else if (astType === "Map") {
+                        var astName = "__map__";
+                    } else if (astType === "Gamemode") {
+                        var astName = "__gamemode__";
+                    } else if (astType === "Team") {
+                        var astName = "__team__";
+                    } else if (astType === "Color") {
+                        var astName = "__color__";
+                    } else if (astType === "DamageModificationId") {
+                        var astName = "getLastDamageModification";
+                    } else if (astType === "DotId") {
+                        var astName = "getLastDoT";
+                    } else if (astType === "EntityId") {
+                        var astName = "getLastCreatedEntity";
+                    } else if (astType === "HealingModificationId") {
+                        var astName = "getLastHealingModification";
+                    } else if (astType === "HealthPoolId") {
+                        var astName = "getLastCreatedHealthPool";
+                    } else if (astType === "HotId") {
+                        var astName = "getLastHoT";
+                    } else if (astType === "String") {
+                        var astName = "__customString__";
+                    } else if (astType === "Array" || ""+astType === "[object Object]") {
+                        var astName = "__array__";
+                    } else if (astType === "bool" || astType === "BoolLiteral") {
+                        var astName = "true";
+                    } else if (astType === "Direction" || astType === "Position" || astType === "Vector") {
+                        var astName = "vect";
+                    } else if (Array.isArray(astType) && astType.includes("Player")) {
+                        var astName = "getPlayers";
                     } else {
                         var astName = "__number__";
                         astType = "float";
                     }
-                    var astArg = new Ast(""+astName, [], [], astType);
-                    if (["GlobalVariable", "PlayerVariable", "Subroutine"].includes(astType)) {
-                        astArg.name = +astArg.name;
+                    if (isNumber(astName) && !["GlobalVariable", "PlayerVariable", "Subroutine", "FloatLiteral", "IntLiteral", "UnsignedIntLiteral"].includes(astType)) {
+                        var astArg = getAstForNumber(+astName);
+                        astArg.parent = ast;
+                    } else {
+                        var astArg = new Ast(""+astName, [], [], astType);
+                        if (["GlobalVariable", "PlayerVariable", "Subroutine"].includes(astType)) {
+                            astArg.name = +astArg.name;
+                        }
+                        astArg.parent = ast;
+                        this.rebuildAst(astArg);
                     }
-                    astArg.parent = ast;
-                    this.rebuildAst(astArg);
                     ast.args.push(astArg);
 
                 }
@@ -875,19 +1094,37 @@ var app = new Vue({
         },
         moveSelected(array, moveUp) {
             if (moveUp) {
-                for (var i = 1; i < array.length; i++) {
-                    if (array[i].isSelected && !array[i-1].isSelected) {
-                        var elem = array[i];
-                        array.splice(i, 1);
-                        array.splice(i-1, 0, elem);
+                var arrayStop = array.length;
+                for (var i = 0; i < arrayStop; i++) {
+                    if (array[i].isSelected) {
+                        if (i === 0) {
+                            var elem = array[i];
+                            array.shift();
+                            array.push(elem);
+                            arrayStop--;
+                            i--;
+                        } else if (!array[i-1].isSelected) {
+                            var elem = array[i];
+                            array.splice(i, 1);
+                            array.splice(i-1, 0, elem);
+                        }
                     }
                 }
             } else {
-                for (var i = array.length - 2; i >= 0; i--) {
-                    if (array[i].isSelected && !array[i+1].isSelected) {
-                        var elem = array[i];
-                        array.splice(i, 1);
-                        array.splice(i+1, 0, elem);
+                var arrayStop = 0
+                for (var i = array.length - 1; i >= arrayStop; i--) {
+                    if (array[i].isSelected) {
+                        if (i === array.length - 1) {
+                            var elem = array[i];
+                            array.pop();
+                            array.unshift(elem);
+                            arrayStop++;
+                            i++;
+                        } else if (!array[i+1].isSelected) {
+                            var elem = array[i];
+                            array.splice(i, 1);
+                            array.splice(i+1, 0, elem);
+                        }
                     }
                 }
             }
@@ -916,7 +1153,7 @@ var app = new Vue({
             array.args.splice(i, 1);
         },
         addToArray(array) {
-            arg = new Ast("null");
+            var arg = new Ast("null");
             arg.parent = array;
             array.args.push(arg);
         },
@@ -1017,26 +1254,26 @@ var app = new Vue({
         calculateDropdownPosition: function(dropdownList, component, {width}) {
             dropdownList.style.width = width;
             const popper = Popper.createPopper(component.$refs.toggle, dropdownList, {
-            placement: "bottom",
-            modifiers: [
-                {
-                name: 'offset',
-                options: {
-                    offset: [0, -1],
-                },
-                },
-                {
-                name: 'toggleClass',
-                enabled: true,
-                phase: 'write',
-                fn({ state }) {
-                    component.$el.classList.toggle(
-                    'drop-up',
-                    state.placement === 'top'
-                    )
-                },
-                },
-            ],
+                placement: "bottom",
+                modifiers: [
+                    {
+                    name: 'offset',
+                    options: {
+                        offset: [0, -1],
+                    },
+                    },
+                    {
+                    name: 'toggleClass',
+                    enabled: true,
+                    phase: 'write',
+                    fn({ state }) {
+                        component.$el.classList.toggle(
+                        'drop-up',
+                        state.placement === 'top'
+                        )
+                    },
+                    },
+                ],
             })
             return () => popper.destroy()
         },
@@ -1137,6 +1374,8 @@ var app = new Vue({
                         editedCustomGameSettings.gamemodes[gamemode].enabledMaps = editedCustomGameSettings.gamemodes[gamemode].enabledMaps.filter(x => !editedCustomGameSettings.gamemodes[gamemode].disabledMaps.includes(x));
                         delete editedCustomGameSettings.gamemodes[gamemode].disabledMaps;
                     }
+                } else if (!(gamemode in editedCustomGameSettings.gamemodes)) {
+                    editedCustomGameSettings.gamemodes[gamemode] = {};
                 }
                 fillMissingKeys(editedCustomGameSettings.gamemodes[gamemode], customGameSettingsSchema.gamemodes.values[gamemode].values);
                 editedCustomGameSettings.gamemodes[gamemode].isCollapsed = true;
@@ -1216,7 +1455,7 @@ var app = new Vue({
                 if ("enabledMaps" in this.editedCustomGameSettings.gamemodes[gamemode] && this.editedCustomGameSettings.gamemodes[gamemode].enabledMaps.length === Object.keys(mapKw).filter(x => mapKw[x].gamemodes.includes(gamemode) && !mapKw[x].onlyInOw1).length) {
                     delete this.editedCustomGameSettings.gamemodes[gamemode].enabledMaps;
                 }
-                if (!this.editedCustomGameSettings.gamemodes[gamemode].enabled && Object.keys(this.editedCustomGameSettings.gamemodes[gamemode]).length === 1) {
+                if (!this.editedCustomGameSettings.gamemodes[gamemode].enabled && Object.keys(this.editedCustomGameSettings.gamemodes[gamemode]).length <= 1) {
                     delete this.editedCustomGameSettings.gamemodes[gamemode];
                 }
             }
@@ -1252,12 +1491,258 @@ var app = new Vue({
             this.displaySettings = false;
             this.compileGamemode();
         },
+        loadProjects: async function() {
+            //var projects = await fetch("https://workshop.codes/api/owo");
+            var projects = [];
 
-        displayExportScreen: function() {
-            //todo: allow the user to select a project to save to, and to change which project it is saved to
-            //once this is done, modify the compileGamemode() function to save to the cloud(tm)
-            throw new Error("Not implemented yet!");
+            if (projects.length === 0) {
+                //If user has no projects, create a project for them
+                this.createNewProject("Untitled");
+                //projects = await fetch("https://workshop.codes/api/owo");
+                projects = [{id: "fdsmio-ameoi-qdfpskl", name: "Gengu Parkour (3) final (true final) (1)"}]
+            }
+            if (window.location.pathname.startsWith("/C:")) {
+                this.currentProjectId = projects[0].id;
+            } else {
+                var currentProjectId = window.location.pathname.split("/")[window.location.pathname.split("/").length-1];
+                if (currentProjectId === "workshop-ui") {
+                    //User is currently not in a project. Redirect him to the first project
+                    this.currentProjectId = projects[0].id;
+                    this.setUrl();
+                } else {
+                    this.currentProjectId = projects.filter(x => x.id === currentProjectId)[0].id;
+                }
+            }
+            this.projects = projects;
+        },
+        createNewProject: async function(projectName) {
+            //var projectId = await fetch("https://workshop.codes/api/owo/"+this.currentProjectId, {method: "post"});
+            var projectId = "mljljkmqsdf-ezaioroi-dsqfosi";
+            this.projects.push({name: projectName, id: projectId});
+            return projectId; //the id of the project
+        },
+        setUrl: function() {
+            if (window.location.pathname.startsWith("/C:")) {
+                window.location.hash = this.currentProjectId;
+            } else {
+                //note: it has to not reload the page somehow
+                window.location = "https://workshop.codes/workshop-ui/" + this.currentProjectId;
+            }
+        },
+        setCurrentProject: async function(projectId) {
+            if (projectId === null) {
+                projectId = await this.createNewProject("Untitled Project");
+            }
+            this.currentProjectId = this.projects.filter(x => x.id === projectId)[0].id;
+        },
+        loadProject: function(projectId) {
+            //var projectData = fetch("htts://workshop.codes/api/owo/"+this.currentProjectId);
+            var projectData = {
+                rules: [
+                    {
+                        "name": "__rule__",
+                        "args": [],
+                        "children": [
+                            {
+                                "name": "__setGlobalVariable__",
+                                "args": [
+                                    {
+                                        "name": 0,
+                                        "args": [],
+                                        "children": [],
+                                        "type": "GlobalVariable",
+                                        "argIndex": 0,
+                                        "childIndex": 0,
+                                        "wasParsed": false
+                                    },
+                                    {
+                                        "name": "__number__",
+                                        "args": [
+                                            {
+                                                "name": "0",
+                                                "args": [],
+                                                "children": [],
+                                                "type": "UnsignedIntLiteral",
+                                                "numValue": 0,
+                                                "argIndex": 0,
+                                                "childIndex": 0,
+                                                "wasParsed": false
+                                            }
+                                        ],
+                                        "children": [],
+                                        "type": "int",
+                                        "argIndex": 0,
+                                        "childIndex": 0,
+                                        "wasParsed": false
+                                    }
+                                ],
+                                "children": [],
+                                "type": "void",
+                                "argIndex": 0,
+                                "childIndex": 0,
+                                "wasParsed": false,
+                                "isSelected": true,
+                                "isDisabled": true,
+                                "indent": 0
+                            },
+                            {
+                                "name": "__setGlobalVariable__",
+                                "args": [
+                                    {
+                                        "name": 0,
+                                        "args": [],
+                                        "children": [],
+                                        "type": "GlobalVariable",
+                                        "fileStack": null,
+                                        "argIndex": 0,
+                                        "childIndex": 0,
+                                        "wasParsed": false
+                                    },
+                                    {
+                                        "name": "__number__",
+                                        "args": [
+                                            {
+                                                "name": "0",
+                                                "args": [],
+                                                "children": [],
+                                                "type": "UnsignedIntLiteral",
+                                                "numValue": 0,
+                                                "fileStack": null,
+                                                "argIndex": 0,
+                                                "childIndex": 0,
+                                                "wasParsed": false
+                                            }
+                                        ],
+                                        "children": [],
+                                        "type": "int",
+                                        "fileStack": null,
+                                        "argIndex": 0,
+                                        "childIndex": 0,
+                                        "wasParsed": false
+                                    }
+                                ],
+                                "children": [],
+                                "type": "void",
+                                "fileStack": null,
+                                "argIndex": 0,
+                                "childIndex": 0,
+                                "wasParsed": false,
+                                "isSelected": false,
+                                "isDisabled": false,
+                                "indent": 0
+                            }
+                        ],
+                        "type": "void",
+                        "argIndex": 0,
+                        "childIndex": 0,
+                        "wasParsed": false,
+                        "isSelected": true,
+                        "isCollapsed": false,
+                        "ruleAttributes": {
+                            "conditions": [],
+                            "event": "global",
+                            "name": "Rule 1",
+                            "isDisabled": false
+                        }
+                    }
+                ],
+                customGameSettings: {
+                    "main": {
+                        "description": "Some awesome game mode",
+                        "modeName": "GameMode v1.0"
+                    },
+                    "gamemodes": {
+                        "skirmish": {
+                            "heroLimit": "off",
+                            "respawnTime%": 30
+                        }
+                    },
+                },
+                globalVariables: defaultVarNames.map((x, i) => ({name: x, index: i})),
+                playerVariables: defaultVarNames.map((x, i) => ({name: x, index: i})),
+                subroutines: defaultSubroutineNames.map((x, i) => ({name: x, index: i})),
+                activatedExtensions: [],
+                disabledWarnings: "",
+                optimization: "speed",
+            }
+
+            function addParent(ast) {
+                for (var arg of ast.args) {
+                    arg.parent = ast;
+                    addParent(arg);
+                }
+                for (var child of ast.children) {
+                    child.parent = ast;
+                    addParent(child);
+                }
+                if (ast.name === "__rule__") {
+                    for (var cond of ast.ruleAttributes.conditions) {
+                        cond.parent = ast;
+                        addParent(cond);
+                    }
+                }
+            }
+            for (var rule of projectData.rules) {
+                addParent(rule);
+            }
+
+            this.rules = projectData.rules;
+            this.customGameSettings = projectData.customGameSettings;
+            this.globalVariables = projectData.globalVariables;
+            this.playerVariables = projectData.playerVariables;
+            this.subroutines = projectData.subroutines;
+            this.activatedExtensions = projectData.activatedExtensions;
+            this.uiSettings.disabledWarnings = projectData.disabledWarnings;
+            this.uiSettings.optimization = projectData.optimization;
+
+            this.currentProjectId = this.projects.filter(x => x.id === projectId)[0].id;
+            this.setUrl();
+        },
+        saveProject: async function() {
+            return;
+            await fetch("https://workshop.codes/owo/"+this.currentProjectId, {
+                method: "post", 
+                body: JSON.stringify({
+                    rules: this.rules,
+                    customGameSettings: this.customGameSettings,
+                    globalVariables: this.globalVariables,
+                    playerVariables: this.playerVariables,
+                    subroutines: this.subroutines,
+                    activatedExtensions: this.activatedExtensions,
+                    name: this.customGameSettings?.main?.modeName || "<Untitled mode>"
+                })
+            });
+        },
+        loadUiSettings: async function() {
+            if (localStorage.uiSettings) {
+                var uiSettings = JSON.parse(localStorage.uiSettings);
+                
+                this.uiSettings.background = uiSettings.background;
+                this.uiSettings.language = uiSettings.language;
+                this.uiSettings.compilationLanguage = uiSettings.compilationLanguage;
+                this.decompilationLanguage = uiSettings.compilationLanguage;
+            }
+        },
+        saveUiSettings: async function() {
+            localStorage.uiSettings = JSON.stringify({
+                background: this.uiSettings.background,
+                language: this.uiSettings.language,
+                compilationLanguage: this.uiSettings.compilationLanguage,
+            })
+            localStorage.hasPassedWelcomeScreen = this.hasPassedWelcomeScreen;
+        },
+        filterDropdownOptions: function(options, search) {
+            search = search.toLocaleLowerCase().replace(/[-:' ]/g, "");
+            return options.filter(option => {
+                let label = option.label.toLocaleLowerCase().replace(/[-:' ]/g, "");
+                return label.includes(search);
+            }).sort((a, b) => a.label.toLocaleLowerCase().replace(/[-:' ]/g, "").startsWith(search) && !b.label.toLocaleLowerCase().replace(/[-:' ]/g, "").startsWith(search) ? -1 : !a.label.toLocaleLowerCase().replace(/[-:' ]/g, "").startsWith(search) && b.label.toLocaleLowerCase().replace(/[-:' ]/g, "").startsWith(search) ? 1 : a.label.localeCompare(b.label))
         }
+    },
+
+    created: function() {
+        this.loadUiSettings();
+        this.loadProjects();
     },
     
     watch: {

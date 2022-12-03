@@ -1,0 +1,194 @@
+variables
+    map data (1d array)
+        contains settings 
+            0 map maker name
+            1 map code
+            2 notes for the entire map
+
+            9 portal on
+            10 difficulty
+
+            14 title data
+            15 titles on`
+            18 iwt colors
+
+            19 custom dificulty text
+            20 custom dif color
+
+            full bans
+            3 triple
+            4 multi
+            5 emote
+            6 create
+            7 death
+            8 dashstart
+
+            comp
+            11 comptime
+            12 is comp on toggle
+            13 attempt count
+
+            16 restart toggle
+            17 comp instructions
+
+       
+    cp data - 2d array were each entry contains cp data:
+        0 pos vector
+        1 teleport bool
+        2 teleport vector
+        3 dash
+        4 ult
+        5 notes
+        6 kills
+        7 orbs
+        8 bans per cp (old ban bhop)
+        9 texts per cp (old ban climb)
+
+        kills (inside 6)
+            0 pos
+            1 radius
+
+        orb (inside 7)
+            0 pos vector
+            1 dash
+            2 ult
+            3 lock
+            4 strength
+
+        bans (inside 8)
+            0 triple
+            1 multi
+            2 create
+            3 dead
+            4 emote
+            5 climb
+
+        texts (inside 9)
+            0 hud enabled
+            1 hud text
+            2 iwt enabled
+            3 iwt text
+            4 iwt pos
+
+general workings:
+    interface settings get turned into workshop code
+    the variables get inserted into a version of the template
+    this gets copied to clipboard
+    if another client langauge is selected then it first converts it via decompile+recompile in overpy
+
+list of [1] of every cp that has enabled
+
+
+update overpy version:
+    during my troubleshooting i found that for some reason overpy cant check variable indexes on my code
+    it trows errors at variable numbers
+    note that it will only trow the error on using overpy, thus not if you compile english
+    so compile in diferent langague to check it
+    it might only trow error itn the console log. note that this is catched so it doesnt apear red like most errors.
+
+    to fix this, go into the overpy.js file that the web interface uses and disable the check
+            find the line by searching for "Invalid index" find the one for variables,
+            disable it for both subroutines and variables, by comenting out the error the line that returns the error
+            it looks like this:
+
+                if (!isNumber(variable.index) || variable.index >= 128 || variable.index < 0) {
+                    error("Invalid index '"+variable.index+"' for "+varType+" variable '"+variable.name+"', must be from 0 to 127");
+                }
+
+            comment out the line that starts with "error"
+
+    note that we only need overpy.js the rest of files can be deleted
+    but make sure you point to it via the index.html's script loading
+
+change template:
+    1) add a new file for it in the template folder
+    2) paste the data for the template in the file
+    3) replace map settings to allow all skirmrish maps
+    4) remove all // comments, overpy puts these on :lbl for some reason this bugs overpy so just remove them
+    5) put all the variables in:
+        - syntax is:   ${variable name}
+            - some variables only contain true,false or a color etc
+            - other variables contain the full line of code that sets a variable
+            - there is also variables that just add "disabled " to a rule that is suposed ot be on or off
+        - the best way to find what it does, is to jsut look at the last template
+        - you should probly verify the count of ${ is the same as in last template
+    6) in index.html near the end, change the old template file loading to the new template
+    
+    note: overpy only translates when going in a different langauge, make sure you also test if the translations dont give errors
+
+    map data
+    ${data_cps}
+    ${data_orb_cp}
+    ${data_orb_pos}
+    ${data_orb_lock} 
+    ${data_orb_dash} 
+    ${data_orb_ult}
+    ${data_orb_strength}
+    ${data_kill_pos}
+    ${data_kill_rad}
+    ${data_kill_cp}
+
+    ${mapcode}
+    ${mapmaker}
+
+    ${compon}
+    ${comptime}
+    ${compattempt}
+    ${comprestarts}
+
+    // cp bans
+    ${cpbantriple}
+    ${cpbanmulti}
+    ${cpbancreate}
+    ${cpbandead}
+    ${cpbanemote}
+    ${cpclimb}
+    ${ban_dashstart}
+
+    ${customdifenabled}
+    ${customdiftxt}
+    #{customdifcolor}
+
+    ${portalon}
+    ${difficultyhud}
+ 
+    ${compdescription[0]}
+    ${compdescription[1]}
+    ${compdescription[2]}
+    ${compdescription[3]}
+
+    // full bans
+    ${ban_triple}
+    ${ban_multi}
+    ${ban_create}
+    ${ban_dbhop}
+    ${ban_emote}
+    ${ban_climb}
+
+    ${editoron}
+
+    // addons
+    ${titleon}
+    ${titlenames}
+    ${titlecps}
+    ${titlecolors}
+
+    ${hudeanbled}
+    ${hudtext}
+    ${hudcps}
+
+    ${iwtenabled}
+    ${iwttext}
+    ${iwtcps}
+    ${iwtpos}
+    ${iwtcolor}
+
+    ${ulteanbled}
+    ${ultarray}
+    ${dasheanbled}
+    ${dasharray}
+
+
+
+
+        

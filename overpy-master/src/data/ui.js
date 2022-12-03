@@ -174,7 +174,7 @@ const workshopUiKw =
         "de-DE": "Fehler: Globale Variable [%1$s] steht in Konflikt mit einer anderen Variable.",
         "es-ES": "Error: La variable global «%1$s» entra en conflicto con otra variable.",
         "es-MX": "Error: La variable global '%1$s' está en conflicto con otra variable",
-        "fr-FR": "Erreur : la variable globale « %1$s » entre en conflit avec une autre variable",
+        "fr-FR": "Erreur : la variable globale « %1$s » entre en conflit avec une autre variable",
         "it-IT": "Errore: la Variabile Globale '%1$s' è in conflitto con un'altra variabile",
         "ja-JP": "エラー: グローバル変数「%1$s」が他の変数と矛盾しています",
         "ko-KR": "오류: 전역 변수 '%1$s'이(가) 다른 변수와 충돌합니다.",
@@ -190,7 +190,7 @@ const workshopUiKw =
         "de-DE": "Fehler: Spielervariable [%1$s] steht in Konflikt mit einer anderen Variable.",
         "es-ES": "Error: La variable de jugador «%1$s» entra en conflicto con otra variable.",
         "es-MX": "Error: La variable de jugador '%1$s' está en conflicto con otra variable",
-        "fr-FR": "Erreur : la variable de joueur « %1$s » entre en conflit avec une autre variable",
+        "fr-FR": "Erreur : la variable de joueur « %1$s » entre en conflit avec une autre variable",
         "it-IT": "Errore: la Variabile Giocatore '%1$s' è in conflitto con un'altra variabile",
         "ja-JP": "エラー: プレイヤー変数「%1$s」が他の変数と矛盾しています",
         "ko-KR": "오류: 플레이어 변수 '%1$s'이(가) 다른 변수와 충돌합니다.",
@@ -206,7 +206,7 @@ const workshopUiKw =
         "de-DE": "Fehler: Subroutine [%1$s] steht in Konflikt mit einer anderen Subroutine.",
         "es-ES": "Error: La subrutina «%1$s» entra en conflicto con otra.",
         "es-MX": "Error: La subrutina '%1$s' está en conflicto con otra subrutina",
-        "fr-FR": "Erreur : le sous-programme « %1$s » est en conflit avec un autre sous-programme",
+        "fr-FR": "Erreur : le sous-programme « %1$s » est en conflit avec un autre sous-programme",
         "it-IT": "Errore: la Subroutine '%1$s' è in conflitto con un'altra subroutine",
         "ja-JP": "エラー: サブルーチン「%1$s」が他のサブルーチンと矛盾しています",
         "ko-KR": "오류: '%1$s' 서브루틴이 다른 서브루틴과 충돌합니다.",
@@ -222,7 +222,7 @@ const workshopUiKw =
         "de-DE": "(%1$s) |RplAktion:Aktionen; löschen?",
         "es-ES": "¿Eliminar (%1$s) |Rplacción:acciones;?",
         "es-MX": "¿Deseas eliminar (%1$s) |Rpl la acción:las acciones?",
-        "fr-FR": "Supprimer %1$s |Rplaction:actions; ?",
+        "fr-FR": "Supprimer %1$s |Rplaction:actions; ?",
         "it-IT": "Eliminare (%1$s) |Rplazione:azioni;?",
         "ja-JP": "（%1$s）個のアクションを削除しますか？",
         "ko-KR": "Action (%1$s)개를 삭제하시겠습니까?",
@@ -238,7 +238,7 @@ const workshopUiKw =
         "de-DE": "(%1$s) |RplBedingung:Bedingungen; löschen?",
         "es-ES": "¿Eliminar (%1$s) |Rplcondición:condiciones;?",
         "es-MX": "¿Deseas eliminar (%1$s) |Rpl la condición:las condiciones?",
-        "fr-FR": "Supprimer %1$s |Rplcondition:conditions; ?",
+        "fr-FR": "Supprimer %1$s |Rplcondition:conditions; ?",
         "it-IT": "Eliminare (%1$s) |Rplcondizione:condizioni;?",
         "ja-JP": "（%1$s）個の条件を削除しますか？",
         "ko-KR": "Condition (%1$s)개를 삭제하시겠습니까?",
@@ -254,7 +254,7 @@ const workshopUiKw =
         "de-DE": "%1$s |RplRegel:Regeln; löschen?",
         "es-ES": "¿Eliminar (%1$s) |Rplregla:reglas;?",
         "es-MX": "¿Deseas eliminar (%1$s) |Rpl la regla:las reglas?",
-        "fr-FR": "Supprimer %1$s |Rplrègle:règles; ?",
+        "fr-FR": "Supprimer %1$s |Rplrègle:règles; ?",
         "it-IT": "Eliminare (%1$s) |Rplregola:regole;?",
         "ja-JP": "（%1$s）個のルールを削除しますか？",
         "ko-KR": "Rule (%1$s)개를 삭제하시겠습니까?",
@@ -366,7 +366,7 @@ const workshopUiKw =
         "de-DE": "Fehler: Globale Variable [%1$s] benötigt einen Namen.",
         "es-ES": "Error: La variable global «%1$s» requiere un nombre.",
         "es-MX": "Error: La variable global '%1$s' requiere un nombre",
-        "fr-FR": "Erreur : la variable globale « %1$s » doit être nommée",
+        "fr-FR": "Erreur : la variable globale « %1$s » doit être nommée",
         "it-IT": "Errore: la Variabile Globale '%1$s' richiede un nome",
         "ja-JP": "エラー: グローバル変数「%1$s」の名前が必要です",
         "ko-KR": "오류: 전역 변수 '%1$s'에 이름이 필요합니다.",
@@ -382,7 +382,7 @@ const workshopUiKw =
         "de-DE": "Fehler: Spielervariable [%1$s] benötigt einen Namen.",
         "es-ES": "Error: La variable de jugador «%1$s» requiere un nombre.",
         "es-MX": "Error: La variable de jugador '%1$s' requiere un nombre",
-        "fr-FR": "Erreur : la variable de joueur « %1$s » doit être nommée",
+        "fr-FR": "Erreur : la variable de joueur « %1$s » doit être nommée",
         "it-IT": "Errore: la Variabile Giocatore '%1$s' richiede un nome",
         "ja-JP": "エラー: プレイヤー変数「%1$s」の名前が必要です",
         "ko-KR": "오류: 플레이어 변수 '%1$s'에 이름이 필요합니다.",
@@ -398,7 +398,7 @@ const workshopUiKw =
         "de-DE": "Fehler: Subroutine [%1$s] benötigt einen Namen.",
         "es-ES": "Error: La subrutina «%1$s» requiere un nombre.",
         "es-MX": "Error: La subrutina '%1$s' requiere un nombre",
-        "fr-FR": "Erreur : le sous-programme « %1$s » requiert un nom",
+        "fr-FR": "Erreur : le sous-programme « %1$s » requiert un nom",
         "it-IT": "Errore: la Subroutine '%1$s' richiede un nome",
         "ja-JP": "エラー: サブルーチン「%1$s」の名前が必要です",
         "ko-KR": "오류: '%1$s' 서브루틴에 이름이 필요합니다.",
@@ -478,7 +478,7 @@ const workshopUiKw =
         "de-DE": "Fehler: Globale Variable [%1$s] enthält einen ungültigen Namen.",
         "es-ES": "Error: La variable global «%1$s» contiene un nombre no válido.",
         "es-MX": "Error: La variable global '%1$s' contiene un nombre no válido",
-        "fr-FR": "Erreur : la variable globale « %1$s » contient un nom invalide",
+        "fr-FR": "Erreur : la variable globale « %1$s » contient un nom invalide",
         "it-IT": "Errore: la Variabile Globale '%1$s' contiene un nome non valido",
         "ja-JP": "エラー: グローバル変数「%1$s」に無効な名前が含まれています",
         "ko-KR": "오류: 전역 변수 '%1$s'이(가) 유효하지 않은 이름을 포함하고 있습니다.",
@@ -494,7 +494,7 @@ const workshopUiKw =
         "de-DE": "Fehler: Spielervariable [%1$s] enthält einen ungültigen Namen.",
         "es-ES": "Error: La variable de jugador «%1$s» contiene un nombre no válido.",
         "es-MX": "Error: La variable de jugador '%1$s' contiene un nombre no válido",
-        "fr-FR": "Erreur : la variable de joueur « %1$s » contient un nom invalide",
+        "fr-FR": "Erreur : la variable de joueur « %1$s » contient un nom invalide",
         "it-IT": "Errore: la Variabile Giocatore '%1$s' contiene un nome non valido",
         "ja-JP": "エラー: プレイヤー変数「%1$s」に無効な名前が含まれています",
         "ko-KR": "오류: 플레이어 변수 '%1$s'이(가) 유효하지 않은 이름을 포함하고 있습니다.",
@@ -510,7 +510,7 @@ const workshopUiKw =
         "de-DE": "Fehler: Subroutine [%1$s] enthält einen ungültigen Namen.",
         "es-ES": "Error: La subrutina «%1$s» contiene un nombre no válido.",
         "es-MX": "Error: La subrutina '%1$s' contiene un nombre no válido",
-        "fr-FR": "Erreur : le sous-programme « %1$s » contient un nom invalide",
+        "fr-FR": "Erreur : le sous-programme « %1$s » contient un nom invalide",
         "it-IT": "Errore: la Subroutine '%1$s' contiene un nome non valido",
         "ja-JP": "エラー: サブルーチン「%1$s」に無効な名前が含まれています",
         "ko-KR": "오류: '%1$s' 서브루틴에 유효하지 않은 이름이 포함되어 있습니다.",
@@ -574,7 +574,7 @@ const workshopUiKw =
         "de-DE": "Fehler: Zu viele Erweiterungspunkte verwendet. Bitte entferne eine oder mehr Erweiterungen.",
         "es-ES": "Error: Se han empleado demasiados puntos de extensión del Taller. Elimina una o más extensiones.",
         "es-MX": "Error: Demasiados puntos de extensión del Workshop gastados; elimina una o más extensiones.",
-        "fr-FR": "Erreur : trop de points d’extension de la Forge dépensés ; veuillez supprimer une ou plusieurs extensions.",
+        "fr-FR": "Erreur : trop de points d’extension de la Forge dépensés ; veuillez supprimer une ou plusieurs extensions.",
         "it-IT": "Errore: hai speso troppi punti estensione Workshop. Rimuovi una o più estensioni.",
         "ja-JP": "エラー: 消費拡張ポイントが多すぎます。拡張を1つ以上削除してください",
         "ko-KR": "경고: 사용한 워크샵 확장 포인트가 너무 많습니다. 하나 이상의 확장을 제거하십시오.",
@@ -681,7 +681,7 @@ const workshopUiKw =
         "de-DE": "Fehler: Globale Variable [%1$s] enthält einen zu langen Namen.",
         "es-ES": "Error: La variable global «%1$s» contiene un nombre demasiado largo.",
         "es-MX": "Error: La variable global '%1$s' contiene un nombre que es demasiado largo",
-        "fr-FR": "Erreur : la variable globale « %1$s » contient un nom trop long",
+        "fr-FR": "Erreur : la variable globale « %1$s » contient un nom trop long",
         "it-IT": "Errore: la Variabile Globale '%1$s' contiene un nome troppo lungo",
         "ja-JP": "エラー: グローバル変数「%1$s」に含まれる名前が長すぎます",
         "ko-KR": "오류: 전역 변수 '%1$s'이(가) 너무 긴 이름을 포함하고 있습니다.",
@@ -697,7 +697,7 @@ const workshopUiKw =
         "de-DE": "Fehler: Spielervariable [%1$s] enthält einen zu langen Namen.",
         "es-ES": "Error: La variable de jugador «%1$s» contiene un nombre demasiado largo.",
         "es-MX": "Error: La variable de jugador '%1$s' contiene un nombre que es demasiado largo",
-        "fr-FR": "Erreur : la variable de joueur « %1$s » contient un nom trop long",
+        "fr-FR": "Erreur : la variable de joueur « %1$s » contient un nom trop long",
         "it-IT": "Errore: la Variabile Giocatore '%1$s' contiene un nome troppo lungo",
         "ja-JP": "エラー: プレイヤー変数「%1$s」に含まれる名前が長すぎます",
         "ko-KR": "오류: 플레이어 변수 '%1$s'이(가) 너무 긴 이름을 포함하고 있습니다.",
@@ -713,7 +713,7 @@ const workshopUiKw =
         "de-DE": "Fehler: Subroutine [%1$s] enthält einen zu langen Namen.",
         "es-ES": "Error: La subrutina «%1$s» contiene un nombre demasiado largo.",
         "es-MX": "Error: La subrutina '%1$s' contiene un nombre que es demasiado largo",
-        "fr-FR": "Erreur : le sous-programme « %1$s » contient un nom trop long",
+        "fr-FR": "Erreur : le sous-programme « %1$s » contient un nom trop long",
         "it-IT": "Errore: la Subroutine '%1$s' contiene un nome troppo lungo",
         "ja-JP": "エラー: サブルーチン「%1$s」に含まれる名前が長すぎます",
         "ko-KR": "오류: '%1$s' 서브루틴에 너무 긴 이름이 포함되어 있습니다.",
@@ -757,3 +757,458 @@ const workshopUiKw =
     }
 }
 //end-json
+
+const workshopUiCustomKw = {
+    "zezWorkshopUiRecreation": {
+        "en-US": "Zez's workshop UI recreation",
+        "zh-CN": "Zez的工坊编辑器再现",
+        "zh-TW": "Zez的工坊編輯器再現",
+        "pt-BR": "Réplica da IU do workshop do Zez",
+    },
+    "untitledMode": {
+        "en-US": "<Untitled mode>",
+        "zh-CN": "未命名的工坊",
+        "zh-TW": "未命名的工坊",
+        "pt-BR": "<Modo sem título>",
+    },
+    "pressButtonToImport1": {
+        "en-US": "Press the",
+        "fr-FR": "Appuyez sur le bouton",
+        "zh-CN": "点击",
+        "zh-TW": "點擊",
+        "pt-BR": "Clique no botão",
+    },
+    "pressButtonToImport2": {
+        "en-US": "button to import an existing gamemode",
+        "fr-FR": "pour importer un mode existant",
+        "zh-CN": "按钮导入模式",
+        "zh-TW": "按鈕導入模式",
+        "pt-BR": "para importar um modo existente",
+    },
+    "sizeOfLargestRule": {
+        "en-US": "Size of largest rule",
+        "zh-CN": "最大规则的大小",
+        "zh-TW": "最大規則的大小",
+        "pt-BR": "Tamanho da maior regra",
+    },
+    "idk": {
+        "en-US": "IDK",
+        "zh-CN": "未知",
+        "zh-TW": "未知",
+        "pt-BR": "SLA",
+    },
+    "howTheFuck": {
+        "en-US": "How the fuck do you calculate this shit?",
+        "zh-CN": "这鬼东西你怎么算?",
+        "zh-TW": "這鬼東西你怎麼算?",
+        "pt-BR": "Como caralhos você calcula essa merda?",
+    },
+    "hoursSpent": {
+        "en-US": "Hours spent making this UI",
+        "zh-CN": "制作这个UI花费的小时数",
+        "zh-TW": "製作這個UI花費的小時數",
+        "pt-BR": "Horas gastas fazendo essa IU",
+    },
+    "flexboxMaster": {
+        "en-US": "I am now a master at FlexBox",
+        "zh-CN": "现在我是个网页大师",
+        "zh-TW": "現在我是個網頁大師",
+        "pt-BR": "Agora eu sou mestre em FlexBox",
+    },
+    "para1": {
+        "en-US": "The UI was tested on Firefox with a resolution of 1920x1080. You can zoom or dezoom if the UI is not adapted to your screen resolution.",
+        "zh-CN": "本UI已在火狐浏览器1920x1080分辨率测试过. 如果本UI不符合你屏幕的分辨率你可以进行缩放大小.",
+        "zh-TW": "本UI已在火狐瀏覽器1920x1080分辨率測試過. 如果本UI不符合你屏幕的分辨率你可以進行縮放大小.",
+        "pt-BR": "A IU foi testada no Firefox com uma resolução de 1920x1080. Você pode aumentar ou diminuir o zoom se a IU não se adaptar à resolução da sua tela.",
+    },
+    "para2": {
+        "en-US": "You can save manually by clicking on the Save button:",
+        "zh-CN": "你可以点击保存按钮手动保存:",
+        "zh-TW": "你可以點擊保存按鈕手動保存:",
+        "pt-BR": "Você pode salvar manualmente ao clicar no botão de Salvar:",
+    },
+    "para3": {
+        "en-US": "Then, you can paste into Overwatch by clicking on the button below:",
+        "zh-CN": "然后可以在守望先锋中点击如下按钮粘贴到游戏:",
+        "zh-TW": "然後可以在守望先鋒中點擊如下按鈕黏貼到遊戲:",
+        "pt-BR": "Então, você pode importar ao jogo clicando no botão abaixo:",
+    },
+    "para4": {
+        "en-US": "This workshop UI uses OverPy to decompile and compile. The only known limitation is that disabled actions and conditions cannot be outputted; they will be replaced by useless actions. Some errors use the OverPy syntax for functions.",
+        "zh-CN": "此工坊界面使用OverPy(为工坊脚本制作的一个high-level脚本语言)工作. 已知问题只有被禁用的条件与动作会被忽略, 不会被输出; 和工坊的原有脚本错误提示会用overpy的格式来提示.",
+        "zh-TW": "此工坊界面使用OverPy(為工坊腳本製作的一個high-level腳本語言)工作. 已知問題只有被禁用的條件與動作會被忽略, 不會被輸出; 和工坊的原有腳本錯誤提示會用overpy的格式來提示.",
+        "pt-BR": "Essa IU do workshop usa OverPy para descompilar e compilar. A única limitação conhecida é que ações e condições desativadas não podem ser exportadas; elas serão substituídas por ações inúteis. Alguns erros usam a sintaxe do OverPy para funções.",
+    },
+    "para5": {
+        "en-US": "Below, you can configure some settings for the UI and for OverPy:",
+        "zh-CN": "下方, 你可以调整一些界面设置和Overpy设置",
+        "zh-TW": "下方, 你可以調整一些界面設置和Overpy設置",
+        "pt-BR": "Abaixo, você pode configurar algumas opções para a IU e pro OverPy:",
+    },
+    "para6": {
+        "en-US": "Feel free to join the discord if you have any questions or feedback!",
+        "zh-CN": "如果有任何问题和反馈欢迎加入discord频道!",
+        "zh-TW": "如果有任何問題和反饋歡迎加入discord頻道!",
+        "pt-BR": "Sinta-se livre para se juntar ao discord se você tiver qualquer pergunta ou feedback!",
+    },
+    "para7": {
+        "en-US": "Made by Zezombye, with help from Mitsiee",
+        "zh-CN": "Zezombye制作, 和Mitsiee帮助",
+        "zh-TW": "Zezombye製作, 和Mitsiee幫助",
+        "pt-BR": "Feito por Zezombye, com ajuda de Mitsiee",
+    },
+    "importGamemode": {
+        "en-US": "Import Gamemode",
+        "zh-CN": "导入游戏脚本",
+        "zh-TW": "導入遊戲腳本",
+        "pt-BR": "Importar Modo",
+    },
+    "importProject": {
+        "en-US": "Import project:",
+        "zh-CN": "导入游戏脚本:",
+        "zh-TW": "導入遊戲腳本:",
+        "pt-BR": "Importar projeto:",
+    },
+    "pasteGamemodeHere": {
+        "en-US": "Paste your gamemode here",
+        "zh-CN": "粘贴你的游戏脚本到下方",
+        "zh-TW": "黏貼你的遊戲腳本到下方",
+        "pt-BR": "Cole seu modo aqui",
+    },
+    "language": {
+        "en-US": "Language",
+        "zh-CN": "语言",
+        "zh-TW": "語言",
+        "pt-BR": "Idioma",
+    },
+    "note1": {
+        "en-US": "Note: this will erase the existing rules.",
+        "zh-CN": "注意: 这操作会清除现有规则.",
+        "zh-TW": "注意: 這操作會清除現有規則.",
+        "pt-BR": "Nota: isso irá apagar as regras existentes.",
+    },
+    "note2": {
+        "en-US": "The gamemode has to be copied straight from Overwatch.",
+        "zh-CN": "游戏脚本需要直接从守望先锋中复制",
+        "zh-TW": "遊戲腳本需要直接從守望先鋒中複製",
+        "pt-BR": "O modo deve ser copiado direto do Overwatch.",
+    },
+    "setting-optimization": {
+        "en-US": "Optimization",
+        "zh-CN": "优化",
+        "zh-TW": "優化",
+        "pt-BR": "Otimização",
+    },
+    "setting-optimization-none": {
+        "en-US": "No optimization",
+        "zh-CN": "不优化",
+        "zh-TW": "不優化",
+        "pt-BR": "Sem otimização",
+    },
+    "setting-optimization-speed": {
+        "en-US": "Optimize for speed (default)",
+        "zh-CN": "优化速度 (默认)",
+        "zh-TW": "優化速度 (默認)",
+        "pt-BR": "Otimizar velocidade (padrão)",
+    },
+    "setting-optimization-size": {
+        "en-US": "Optimize for size (reduce element count)",
+        "zh-CN": "优化大小 (减少元素数量)",
+        "zh-TW": "優化大小 (減少元素數量)",
+        "pt-BR": "Otimizar tamanho (reduzir quantidade de elementos)",
+    },
+    "setting-language": {
+        "en-US": "UI Language",
+        "zh-CN": "界面语言",
+        "zh-TW": "界面語言",
+        "pt-BR": "Idioma da IU",
+    },
+    "setting-compilationLanguage": {
+        "en-US": "Compilation Language",
+        "zh-CN": "输出脚本语言",
+        "zh-TW": "輸出腳本語言",
+        "pt-BR": "Idioma de Compilação",
+    },
+    "setting-language-en-US": {
+        "en-US": "🍔 English [en-US]",
+    },
+    "setting-language-de-DE": {
+        "en-US": "🍺 Deutsch [de-DE]",
+    },
+    "setting-language-es-ES": {
+        "en-US": "🐂 Español (EU) [es-ES]",
+    },
+    "setting-language-es-MX": {
+        "en-US": "🌮 Español (AL) [es-MX]",
+    },
+    "setting-language-fr-FR": {
+        "en-US": "🥖 Français [fr-FR]",
+    },
+    "setting-language-it-IT": {
+        "en-US": "🤌 Italiano [it-IT]",
+    },
+    "setting-language-ja-JP": {
+        "en-US": "🥷 日本語 [ja-JP]",
+    },
+    "setting-language-ko-KR": {
+        "en-US": "🎮 한국어 [ko-KR]",
+    },
+    "setting-language-pl-PL": {
+        "en-US": "🇵🇱 Polski [pl-PL]",
+    },
+    "setting-language-pt-BR": {
+        "en-US": "🧱 Português [pt-BR]",
+    },
+    "setting-language-ru-RU": {
+        "en-US": "🇷🇺 Русский [ru-RU]",
+    },
+    "setting-language-zh-CN": {
+        "en-US": "🇨🇳 简体中文 [zh-CN]",
+    },
+    "setting-language-zh-TW": {
+        "en-US": "🇹🇼 繁體中文 [zh-TW]",
+    },
+    "setting-compilationLanguage-en-US": {
+        "en-US": "🍔 English [en-US]",
+    },
+    "setting-compilationLanguage-de-DE": {
+        "en-US": "🍺 Deutsch [de-DE]",
+    },
+    "setting-compilationLanguage-es-ES": {
+        "en-US": "🐂 Español (EU) [es-ES]",
+    },
+    "setting-compilationLanguage-es-MX": {
+        "en-US": "🌮 Español (AL) [es-MX]",
+    },
+    "setting-compilationLanguage-fr-FR": {
+        "en-US": "🥖 Français [fr-FR]",
+    },
+    "setting-compilationLanguage-it-IT": {
+        "en-US": "🤌 Italiano [it-IT]",
+    },
+    "setting-compilationLanguage-ja-JP": {
+        "en-US": "🥷 日本語 [ja-JP]",
+    },
+    "setting-compilationLanguage-ko-KR": {
+        "en-US": "🎮 한국어 [ko-KR]",
+    },
+    "setting-compilationLanguage-pl-PL": {
+        "en-US": "🇵🇱 Polski [pl-PL]",
+    },
+    "setting-compilationLanguage-pt-BR": {
+        "en-US": "🧱 Português [pt-BR]",
+    },
+    "setting-compilationLanguage-ru-RU": {
+        "en-US": "🇷🇺 Русский [ru-RU]",
+    },
+    "setting-compilationLanguage-zh-CN": {
+        "en-US": "🇨🇳 简体中文 [zh-CN]",
+    },
+    "setting-compilationLanguage-zh-TW": {
+        "en-US": "🇹🇼 繁體中文 [zh-TW]",
+    },
+    "setting-background": {
+        "en-US": "Background",
+        "zh-CN": "背景",
+        "zh-TW": "背景",
+        "pt-BR": "Plano de fundo",
+    },
+    "setting-background-random": {
+        "en-US": "Random",
+        "zh-CN": "随机",
+        "zh-TW": "隨機",
+        "pt-BR": "Aleatório",
+    },
+    "setting-background-blizzard_world.jpg": {
+        "en-US": "Blizzard World #1",
+        "zh-CN": "暴雪世界#1",
+        "zh-TW": "暴雪世界#1"
+    },
+    "setting-background-blizzard_world_2.jpg": {
+        "en-US": "Blizzard World #2",
+        "zh-CN": "暴雪世界#2",
+        "zh-TW": "暴雪世界#2"
+    },
+    "setting-background-busan.jpg": {
+        "en-US": "Busan",
+        "zh-CN": "釜山",
+        "zh-TW": "釜山"
+    },
+    "setting-background-chateau_halloween.jpg": {
+        "en-US": "Château Halloween",
+        "zh-CN": "万圣节吉拉德堡",
+        "zh-TW": "萬聖節吉拉德堡"
+    },
+    "setting-background-dorado.jpg": {
+        "en-US": "Dorado",
+        "zh-CN": "多伦多",
+        "zh-TW": "多倫多"
+    },
+    "setting-background-eichenwalde.jpg": {
+        "en-US": "Eichenwalde",
+        "zh-CN": "艾兴瓦尔德",
+        "zh-TW": "艾興瓦爾德"
+    },
+    "setting-background-eichenwalde_halloween.jpg": {
+        "en-US": "Eichenwalde Halloween #1",
+        "zh-CN": "万圣节艾兴瓦尔德#1",
+        "zh-TW": "萬聖節艾興瓦爾德#1"
+    },
+    "setting-background-eichenwalde_halloween_2.jpg": {
+        "en-US": "Eichenwalde Halloween #2",
+        "zh-CN": "万圣节艾兴瓦尔德#2",
+        "zh-TW": "萬聖節艾興瓦爾德#2"
+    },
+    "setting-background-hanamura.jpg": {
+        "en-US": "Hanamura",
+        "zh-CN": "花村",
+        "zh-TW": "花村"
+    },
+    "setting-background-kings_row.jpg": {
+        "en-US": "King's Row",
+        "zh-CN": "国王大道",
+        "zh-TW": "國王大道"
+    },
+    "setting-background-monte_carlo.jpg": {
+        "en-US": "Monte Carlo #1",
+        "zh-CN": "皇家赛道#1",
+        "zh-TW": "皇家賽道#1"
+    },
+    "setting-background-monte_carlo_2.jpg": {
+        "en-US": "Monte Carlo #2",
+        "zh-CN": "皇家赛道#2",
+        "zh-TW": "皇家賽道#2"
+    },
+    "setting-background-new_queen_street.jpg": {
+        "en-US": "New Queen Street",
+        "zh-CN": "新皇后街",
+        "zh-TW": "新皇后街"
+    },
+    "setting-background-oasis.jpg": {
+        "en-US": "Oasis",
+        "zh-CN": "绿洲",
+        "zh-TW": "綠洲"
+    },
+    "setting-background-paraiso.jpg": {
+        "en-US": "Paraiso",
+        "zh-CN": "帕拉伊苏",
+        "zh-TW": "帕拉伊蘇"
+    },
+    "setting-background-paris.jpg": {
+        "en-US": "Paris",
+        "zh-CN": "巴黎",
+        "zh-TW": "巴黎"
+    },
+    "setting-background-rialto.jpg": {
+        "en-US": "Rialto",
+        "zh-CN": "里阿尔托",
+        "zh-TW": "裡阿爾托"
+    },
+    "setting-background-temple_of_anubis.jpg": {
+        "en-US": "Temple of Anubis",
+        "zh-CN": "阿努比斯神殿",
+        "zh-TW": "阿努比斯神殿"
+    },
+    "setting-background-volskaya.jpg": {
+        "en-US": "Volskaya",
+        "zh-CN": "沃斯卡娅工业区",
+        "zh-TW": "沃斯卡婭工業區"
+    },
+    "setting-background-tf2.jpg": {
+        "en-US": "TF2 #1",
+    },
+    "setting-background-tf2_2.jpg": {
+        "en-US": "TF2 #2",
+    },
+    "setting-background-portal_2.jpg": {
+        "en-US": "Portal 2",
+    },
+    "setting-background-workshop.jpg": {
+        "en-US": "Workshop",
+        "zh-CN": "工作间",
+        "zh-TW": "工作間"
+    },
+    "setting-background-forge.jpg": {
+        "en-US": "Forge",
+        "zh-CN": "铁匠铺",
+        "zh-TW": "鐵匠鋪"
+    },
+    "setting-disabledWarnings": {
+        "en-US": "Disabled warnings (separate by commas)",
+        "zh-CN": "禁用警告 (逗号分隔)",
+        "zh-TW": "禁用警告 (逗號分隔)",
+        "pt-BR": "Avisos desativados (separe com vírgulas)",
+    },
+    "cannotImportEmptyGamemode": {
+        "en-US": "Cannot import an empty gamemode",
+        "zh-CN": "无法导入空游戏脚本",
+        "zh-TW": "無法導入空遊戲腳本",
+        "pt-BR": "Não é possível importar um modo vazio",
+    },
+    "gamemodeMustHaveSettings": {
+        "en-US": "Gamemode must have settings",
+        "zh-CN": "游戏脚本中必须有\"设置\"段落",
+        "zh-TW": "遊戲腳本中必須有\"設置\"段落",
+        "pt-BR": "Modo deve possuir configurações",
+    },
+    "contactZez": {
+        "en-US": "contact Zezombye about this",
+        "zh-CN": "此问题联系Zezombye",
+        "zh-TW": "此問題聯繫Zezombye",
+        "pt-BR": "contate Zezombye sobre isso",
+    },
+    "successfullyImported": {
+        "en-US": "Successfully imported!",
+        "zh-CN": "导入成功!",
+        "zh-TW": "導入成功!",
+        "pt-BR": "Importado com sucesso!",
+    },
+    "successfullyCompiled": {
+        "en-US": "Successfully compiled! (copied into clipboard)",
+        "zh-CN": "输出成功! (已复制到剪贴板)",
+        "zh-TW": "輸出成功! (已複製到剪貼板)",
+        "pt-BR": "Compilado com sucesso! (copiado para área de transferência)",
+    },
+    "compilationTooLong": {
+        "en-US": "Compilation took too long, please click again to copy.",
+        "zh-CN": "生成用时过久, 请重新点击复制",
+        "zh-TW": "生成用時過久, 請重新點擊複製",
+        "pt-BR": "Compilação demorou muito. Por favor, clique novamente para copiar.",
+    },
+    "modeWillNotBeSaved": {
+        "en-US": "You are not signed in and nothing you do will be saved to your account.",
+        "zh-CN": "你没有登录, 你的操作不会被保存到你的本站账户.",
+        "zh-TW": "你沒有登錄, 你的操作不會被保存到你的本站賬戶.",
+        "pt-BR": "Você não está logado e nada será salvo à sua conta.",
+    },
+    "pleaseSignIn": {
+        "en-US": "Please sign in",
+        "zh-CN": "请登录",
+        "zh-TW": "請登錄",
+        "pt-BR": "Por favor, entre em sua conta",
+    },
+    "youAreNotSignedIn": {
+        "en-US": "You are not signed in and your mode will not be saved. It is still copied to your clipboard.",
+        "zh-CN": "你没有登录, 你的工坊不会被保存. 但一样复制到了你的剪贴板.",
+        "zh-TW": "你沒有登錄, 你的工坊不會被保存. 但一樣複製到了你的剪貼板.",
+        "pt-BR": "Você não está logado e seu modo não será salvo. O modo foi copiado para a área de transferência.",
+    },
+    "youDoNotOwnThisProject": {
+        "en-US": "You do not own this project and your changes will not be saved. It is still copied to your clipboard.",
+        "zh-CN": "你没拥有这个项目, 你的改动不会被保存. 但一样复制到了你的剪贴板.",
+        "zh-TW": "你沒擁有這個項目, 你的改動不會被保存. 但一樣複製到了你的剪貼板.",
+        "pt-BR": "Você não é dono(a) desse projeto e suas mudanças não serão salvas. O modo foi copiado para a área de transferência.",
+    },
+    "errorWhenSaving": {
+        "en-US": "Error when saving, try again.",
+        "zh-CN": "保存出现错误, 请重试.",
+        "zh-TW": "保存出現錯誤, 請重試.",
+        "pt-BR": "Erro ao salvar, tente novamente.",
+    },
+    "youDoNotOwnThisProject2": {
+        "en-US": "You do not own this project, changes will not be saved.",
+        "zh-CN": "你没拥有这个项目, 改动不会被保存.",
+        "zh-TW": "你沒擁有這個項目, 改動不會被保存.",
+        "pt-BR": "Você não é dono(a) desse projeto, mudanças não serão salvas.",
+    },
+}

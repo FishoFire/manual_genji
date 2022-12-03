@@ -3603,8 +3603,7 @@ disabled rule("custom portals - function")
 		Wait(1, Ignore Condition);
 	}
 }
-`
-/*
+
 rule("Ms. Destructo | Destroys Breakable Objects On All Maps")
 {
 	event
@@ -3676,5 +3675,6 @@ rule("Ms. Destructo | Destroys Breakable Objects On All Maps")
 		Global.MsDestructo = 0;
 	}
 }
-*/
+
+`
 }
