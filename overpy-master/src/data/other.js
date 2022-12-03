@@ -100,7 +100,7 @@ const customGameSettingsKw =
         "en-US": "Team 1",
         "es-ES": "Equipo 1",
         "es-MX": "Equipo 1",
-        "fr-FR": "Équipe 1",
+        "fr-FR": "Équipe 1",
         "it-IT": "Squadra 1",
         "ja-JP": "チーム1",
         "ko-KR": "1팀",
@@ -115,7 +115,7 @@ const customGameSettingsKw =
         "en-US": "Team 2",
         "es-ES": "Equipo 2",
         "es-MX": "Equipo 2",
-        "fr-FR": "Équipe 2",
+        "fr-FR": "Équipe 2",
         "it-IT": "Squadra 2",
         "ja-JP": "チーム2",
         "ko-KR": "2팀",
@@ -279,15 +279,14 @@ const ruleKw =
 const eventKw = 
 //begin-json
 {
-    "__subroutine__": {
-        "guid": "00000000FFF6",
-        "en-US": "Subroutine",
-        "es-ES": "Subrutina",
-        "es-MX": "Subrutina",
-        "fr-FR": "Sous-programme",
-        "ja-JP": "サブルーチン",
-        "pt-BR": "Sub-rotina",
-        "zh-CN": "子程序"
+    "global": {
+        "guid": "000000007895",
+        "en-US": "Ongoing - Global",
+        "es-MX": "En curso - Global",
+        "fr-FR": "Toute la partie - Tout le monde",
+        "ja-JP": "進行中 - グローバル",
+        "pt-BR": "Em andamento - Global",
+        "zh-CN": "持续 - 全局"
     },
     "eachPlayer": {
         "guid": "000000007897",
@@ -297,15 +296,6 @@ const eventKw =
         "ja-JP": "進行中 - 各プレイヤー",
         "pt-BR": "Em andamento - Cada Jogador",
         "zh-CN": "持续 - 每名玩家"
-    },
-    "global": {
-        "guid": "000000007895",
-        "en-US": "Ongoing - Global",
-        "es-MX": "En curso - Global",
-        "fr-FR": "Toute la partie - Tout le monde",
-        "ja-JP": "進行中 - グローバル",
-        "pt-BR": "Em andamento - Global",
-        "zh-CN": "持续 - 全局"
     },
     "playerDealtDamage": {
         "guid": "00000000B52D",
@@ -411,6 +401,16 @@ const eventKw =
         "pt-BR": "Jogador Recebeu Dano",
         "ru-RU": "Player took damage",
         "zh-CN": "玩家受到伤害"
+    },
+    "__subroutine__": {
+        "guid": "00000000FFF6",
+        "en-US": "Subroutine",
+        "es-ES": "Subrutina",
+        "es-MX": "Subrutina",
+        "fr-FR": "Sous-programme",
+        "ja-JP": "サブルーチン",
+        "pt-BR": "Sub-rotina",
+        "zh-CN": "子程序"
     }
 }
 //end-json
@@ -454,11 +454,11 @@ const eventTeamKw =
 const slotKw = 
 //begin-json
 {
+    "guid": "00000000C231",
     "en-US": "Slot %1$s",
     "es-ES": "Ranura %1$s",
     "es-MX": "Puesto %1$s",
     "fr-FR": "Emplacement %1$s",
-    "guid": "00000000C231",
     "ja-JP": "スロット%1$s",
     "pl-PL": "Miejsce %1$s",
     "pt-BR": "Espaço %1$s",

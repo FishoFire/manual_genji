@@ -79,8 +79,26 @@ general workings:
 list of [1] of every cp that has enabled
 
 
+update overpy version:
+    during my troubleshooting i found that for some reason overpy cant check variable indexes on my code
+    it trows errors at variable numbers
+    note that it will only trow the error on using overpy, thus not if you compile english
+    so compile in diferent langague to check it
+    it might only trow error itn the console log. note that this is catched so it doesnt apear red like most errors.
 
+    to fix this, go into the overpy.js file that the web interface uses and disable the check
+            find the line by searching for "Invalid index" find the one for variables,
+            disable it for both subroutines and variables, by comenting out the error the line that returns the error
+            it looks like this:
 
+                if (!isNumber(variable.index) || variable.index >= 128 || variable.index < 0) {
+                    error("Invalid index '"+variable.index+"' for "+varType+" variable '"+variable.name+"', must be from 0 to 127");
+                }
+
+            comment out the line that starts with "error"
+
+    note that we only need overpy.js the rest of files can be deleted
+    but make sure you point to it via the index.html's script loading
 
 change template:
     1) add a new file for it in the template folder
@@ -93,6 +111,7 @@ change template:
             - other variables contain the full line of code that sets a variable
             - there is also variables that just add "disabled " to a rule that is suposed ot be on or off
         - the best way to find what it does, is to jsut look at the last template
+        - you should probly verify the count of ${ is the same as in last template
     6) in index.html near the end, change the old template file loading to the new template
     
     note: overpy only translates when going in a different langauge, make sure you also test if the translations dont give errors

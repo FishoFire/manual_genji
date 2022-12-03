@@ -23,6 +23,7 @@ function AddNewCP(x){
     document.getElementById("cpdata").style.display = "block"
     document.getElementById("orbs-kills").style.display = "block"
     
+     // new cps can also be added via conversion btw incase you change defaults keep in mind
     if(x == 0){ // add end
         CheckPoints.push(
             [
@@ -60,6 +61,7 @@ function AddNewCP(x){
         )
         SelectedCp ++
     }
+   
     CpButtons()   
     UpdateSelection()
 }

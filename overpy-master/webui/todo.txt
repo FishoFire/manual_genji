@@ -1,8 +1,0 @@
-
-- translate argument names
-- dropdown tooltips
-- local storage
-- switching between projects
-- display operators
-- put defaults
-- add icons on dropdowns for icons + colors

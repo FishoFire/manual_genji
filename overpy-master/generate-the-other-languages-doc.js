@@ -9,6 +9,7 @@ var overwatchPath = "C:\\Program Files\\Overwatch"
 var outputFolder = "strings"
 var guids = {};
 var removeParentheses = true;
+var fuzzyMatch = false;
 
 async function generateStringFiles() {
     const { execSync } = require('child_process');
@@ -58,13 +59,6 @@ function replaceJsonObjectsInFile(path) {
         if (line === "//end-json") {
             isInJsonObject = false;
             tmpObj = iterateOnObject(eval("("+currentJsonStr+")"))
-            tmpObj = Object.keys(tmpObj).sort().reduce(
-                (obj, key) => { 
-                    obj[key] = tmpObj[key]; 
-                    return obj;
-                }, 
-                {}
-            );
             result += JSON.stringify(tmpObj, null, 4)+"\n";
             currentJsonStr = "";
         }
@@ -79,42 +73,6 @@ function replaceJsonObjectsInFile(path) {
     }
     fs.writeFileSync(path, result.substring(0, result.length-1));
 }
-/*
-function replaceJsonObjectsInFile(path) {
-    console.log("Processing "+path)
-    var content = ""+fs.readFileSync(path);
-    var result = "";
-    var currentJsonStr = "";
-    var isInJsonObject = false;
-    for (var line of content.split("\n")) {
-        if (line === "//end-json") {
-            isInJsonObject = false;
-            tmp = eval("("+currentJsonStr+")");
-            for (var key in tmp) {
-                console.log(key);
-                if (tmp[key]["args"]) {
-                    for (var arg of tmp[key]["args"]) {
-                        console.log(JSON.stringify(arg));
-                        addTranslations(arg.descriptionLocalized)
-                    }
-                }
-            }
-            
-            result += JSON.stringify(tmp, null, 4)+"\n";
-
-            currentJsonStr = "";
-        }
-        if (!isInJsonObject) {
-            result += line+"\n";
-        } else {
-            currentJsonStr += line+"\n";
-        }
-        if (line === "//begin-json") {
-            isInJsonObject = true;
-        }
-    }
-    fs.writeFileSync(path, result.substring(0, result.length-1));
-}*/
 
 function iterateOnObject(content) {
     if (content.onlyInOw1) {
@@ -124,11 +82,25 @@ function iterateOnObject(content) {
         content = addTranslations(content);
     }
 
+    /*if ("description" in content && !("descriptionLocalized" in content)) {
+        content["descriptionLocalized"] = {"en-US": content["description"]}
+    }*/
+
     for (var key of Object.keys(content)) {
         if (typeof content[key] === "object" && content[key] !== null) {
             //Skip the comparison operators as they must not be translated.
             if (key !== "__Operator__" && key !== "descriptionLocalized") {
+                if (key === "nameLocalized" || key === "descriptionLocalized") {
+                    oldRemoveParentheses = removeParentheses;
+                    removeParentheses = false;
+                    fuzzyMatch = true;
+                } else {
+                    fuzzyMatch = false;
+                }
                 content[key] = iterateOnObject(content[key]);
+                if (key === "nameLocalized" || key === "descriptionLocalized") {
+                    removeParentheses = oldRemoveParentheses;
+                }
             }
         }
     }
@@ -137,12 +109,16 @@ function iterateOnObject(content) {
 }
 
 function addTranslations(content) {
-    //Find the guid, if it isn't already added
-    if (content.guid === "<unknown guid>") return;
-    if (!("guid" in content)) {
+    if (!("guid" in content) || content.guid === "<unknown guid>") {
         var matchingGuids = [];
         for (var elem of guids["en-US"]) {
-            if (elem.string === content["en-US"]) {
+            var guidStr = elem.string;
+            var contentStr = content["en-US"];
+            if (fuzzyMatch) {
+                guidStr = guidStr.replace(/[\.,;'\s()-]/g, "").toLowerCase();
+                contentStr = contentStr.replace(/[\.,;'\s()-]/g, "").toLowerCase();
+            }
+            if (guidStr === contentStr) {
                 matchingGuids.push(elem.guid);
             }
         }
@@ -191,19 +167,20 @@ function normalizeName(content) {
 
 
 
-/*generateStringFiles();*/
+//generateStringFiles();
 getGuids();
-//replaceJsonObjectsInFile(docFolder+"actions.js");
-//replaceJsonObjectsInFile(docFolder+"values.js");
-//replaceJsonObjectsInFile(docFolder+"constants.js");
-//replaceJsonObjectsInFile(docFolder+"heroes.js");
-//replaceJsonObjectsInFile(docFolder+"maps.js");
-//replaceJsonObjectsInFile(docFolder+"gamemodes.js");
-//replaceJsonObjectsInFile(docFolder+"customGameSettings.js");
+replaceJsonObjectsInFile(docFolder+"actions.js");
+replaceJsonObjectsInFile(docFolder+"values.js");
+replaceJsonObjectsInFile(docFolder+"constants.js");
+replaceJsonObjectsInFile(docFolder+"heroes.js");
+replaceJsonObjectsInFile(docFolder+"maps.js");
+replaceJsonObjectsInFile(docFolder+"gamemodes.js");
+replaceJsonObjectsInFile(docFolder+"customGameSettings.js");
 removeParentheses = false;
 replaceJsonObjectsInFile(docFolder+"ui.js");
-//replaceJsonObjectsInFile(docFolder+"localizedStrings.js");
-//replaceJsonObjectsInFile(docFolder+"other.js");
+replaceJsonObjectsInFile(docFolder+"argnames.js");
+replaceJsonObjectsInFile(docFolder+"localizedStrings.js");
+replaceJsonObjectsInFile(docFolder+"other.js");
 
 function sleep(ms){
     return new Promise(resolve=>{

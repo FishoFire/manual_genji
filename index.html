@@ -16,6 +16,7 @@
 		<button onclick="changebar(0)" class="sidebarbutton">data</button> 
 		<button onclick="changebar(1)" class="sidebarbutton">save/load</button> 
 		<button onclick="changebar(2)" class="sidebarbutton">help</button> 
+		<button onclick="changebar(4)" class="sidebarbutton">(beta) convert map</button> 
 	</div>
 </div>
 
@@ -303,6 +304,32 @@
 	</div>
 </div>
 
+<div id="convert">
+	<div class="contentblock">
+
+	<button onclick="Converter()"> convert </button>
+	<select id="lang_convert">
+				<option  selected="selected" value="en-US">English [en-US]</option>
+				<option value="de-DE">Deutsch [de-DE]</option>
+				<option value="es-ES">Español (EU) [es-ES]</option>
+				<option value="es-MX">Español (AL) [es-MX]</option>
+				<option value="fr-FR">Français [fr-FR]</option>
+				<option value="it-IT">Italiano [it-IT]</option>
+				<option value="ja-JP">日本語 [ja-JP]</option>
+				<option value="ko-KR">한국어 [ko-KR]</option>
+				<option value="pl-PL">Polski [pl-PL]</option>
+				<option value="pt-BR">Português [pt-BR]</option>
+				<option value="ru-RU">Русский [ru-RU]</option>
+				<option value="zh-CN">简体中文 [zh-CN]</option>
+				<option value="zh-TW">繁體中文 [zh-TW]</option>
+			</select> 
+	</br>
+	<textarea id="converterdata" placeholder="mapdata here" rows="5" style="width:90%;"> </textarea>
+
+	</div>
+</div>
+
+
 <textarea id="results" style="display:none"></textarea>
 <div style="text-align:left"><small>version 0.99</small></div>
 
@@ -311,7 +338,7 @@
 <script src="overpy-master/VS Code Extension/overpy.js"></script>
 
 
-<script src="templates/template 1-7_beta3.js"></script>
+<script src="templates/template 1-7_beta4.js"></script>
 <!-- <script src="templates/template-1-63.js"></script> -->
 <!-- <script src="templates/template_debug.js"></script> -->
 
@@ -319,7 +346,7 @@
 <script src="js_manual_script.js"></script>
 <script src="js_copy_button.js"></script>
 <script src="js_save.js"></script>
-
+<script src="js_converter_per_rule.js"></script>
 
 </body>
 </html>

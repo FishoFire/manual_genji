@@ -4,46 +4,53 @@
 changebar(3) // initial page
 var SaveNames = []
 var SelectedCp = -1
-var CheckPoints = []
 var maxtimecomp = 240
-var MapData = [
-    "", // maker
-    "", // code
-    "", // notes
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    true,
-    "0",
-    120, // 11 time limit 
-    false, // 12 comp mode on
-    0, //13 attempt limit
-    [ 
-        [0,"bunny","Lime Green"],
-        [10,"jumper","White"],
-        [20,"Ninja","Yellow"],
-        [30,"pro","Orange"],
-        [40,"expert","Purple"],
-        [50,"master","Red"]   
-     ], // 14 title data
-    false,// 15 title on
-    false, //16 comp disable restart mid run (late because i forgot)
-    "",//17comp description
-    "Lime Green",// 18 iwt color
-    "", // custom dif text
-    "Lime Green" // custom dif color
-    ]
+var CheckPoints = []
+var MapData = []
+
+defaultdata()
 MakeTitles()
 
 
 // functions ##############################################################
 
+function defaultdata(){
+    CheckPoints = []
+    MapData = [
+        "", // maker
+        "", // code
+        "", // notes
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        "0",
+        120, // 11 time limit 
+        false, // 12 comp mode on
+        0, //13 attempt limit
+        [ 
+            [0,"bunny","Lime Green"],
+            [10,"jumper","White"],
+            [20,"Ninja","Yellow"],
+            [30,"pro","Orange"],
+            [40,"expert","Purple"],
+            [50,"master","Red"]   
+        ], // 14 title data
+        false,// 15 title on
+        false, //16 comp disable restart mid run (late because i forgot)
+        "",//17comp description
+        "Lime Green",// 18 iwt color
+        "", // custom dif text
+        "Lime Green" // custom dif color
+        ]
+}
+
 function ShowMsg(x){
     
-    document.getElementById("message").innerHTML = CompileError ? "error" : x
+    document.getElementById("message").innerHTML = CompileError ? "compile error" : x
     document.getElementById("messageblock").style.display = "block"
     document.getElementById("message").style.backgroundColor = CompileError ? "red" : "cyan" 
     setTimeout(() => {
@@ -125,6 +132,8 @@ function changebar(x){
     document.getElementById("savebar").style.display = x == 1 ? "block" : "none"
     document.getElementById("helpbar").style.display = x == 2 ? "block" : "none"
     document.getElementById("settingsdata").style.display = x == 3 ? "block" : "none"
+    document.getElementById("convert").style.display = x == 4 ? "block" : "none"
+    
 }
 
 // settings

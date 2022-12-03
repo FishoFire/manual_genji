@@ -110,29 +110,30 @@ function LoadData(){
         MapData[20] =  MapData[20] ?  MapData[20] :  "Lime Green"
         MapData[21] =  MapData[21] ?  MapData[21] :  false
        
-        
+        if (CheckPoints.length > 0){
         // per cp things
-        for(let i=0;i < CheckPoints.length;i++){
-            //CheckPoints[i][8] = CheckPoints[i][8]  ?  CheckPoints[i][8]  : false
-            //CheckPoints[i][9] = CheckPoints[i][9]  ?  CheckPoints[i][9]  : false
-            
-            CheckPoints[i][8] = CheckPoints[i][8]  && CheckPoints[i][8] != false ?  CheckPoints[i][8]  : [
-                false, // triple
-                false, // multi
-                false, // create
-                false, // dead
-                false, // emote
-                false // climb
+            for(let i=0;i < CheckPoints.length;i++){
+                //CheckPoints[i][8] = CheckPoints[i][8]  ?  CheckPoints[i][8]  : false
+                //CheckPoints[i][9] = CheckPoints[i][9]  ?  CheckPoints[i][9]  : false
+                
+                CheckPoints[i][8] = CheckPoints[i][8]  && CheckPoints[i][8] != false ?  CheckPoints[i][8]  : [
+                    false, // triple
+                    false, // multi
+                    false, // create
+                    false, // dead
+                    false, // emote
+                    false // climb
 
-            ]
-            CheckPoints[i][9] = CheckPoints[i][9]  && CheckPoints[i][9] != false ?  CheckPoints[i][9]  : [
-                false, // hud enabled
-                "", // hud text
-                false, // iwt enabled
-                "", // iwt text
-                "" // iwt pos
-            ]
+                ]
+                CheckPoints[i][9] = CheckPoints[i][9]  && CheckPoints[i][9] != false ?  CheckPoints[i][9]  : [
+                    false, // hud enabled
+                    "", // hud text
+                    false, // iwt enabled
+                    "", // iwt text
+                    "" // iwt pos
+                ]
 
+            }
         }
 
         // show first tab
@@ -160,13 +161,17 @@ function LoadData(){
         document.getElementById("customdif").value  = MapData[19] 
         document.getElementById("customdifcolor").value =  MapData[20]
         document.getElementById("ban_climb").checked =  MapData[21]
-        
-
-      
+             
         // load things in the tab
         SelectedCp = 0
         CpButtons()
-        UpdateSelection()
+        if (CheckPoints.length > 0){ 
+            UpdateSelection()
+        } else {
+            document.getElementById("cpdata").style.display = "none"
+            document.getElementById("orbs-kills").style.display = "none"
+            SelectedCp = -1
+        }
         UpdateTop()
         MakeTitles()
         changebar(0)
