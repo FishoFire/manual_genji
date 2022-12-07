@@ -161,6 +161,9 @@ function UpdateTop(){
     MapData[19] =  document.getElementById("customdif").value
     MapData[20] =  document.getElementById("customdifcolor").value
     MapData[21] =  document.getElementById("ban_climb").checked
+    
+    MapData[22] = document.getElementById("teamselect").value
+        
 
     document.getElementById("customdif").disabled = document.getElementById("dif").value != "custom" 
     document.getElementById("customdifcolor").disabled = document.getElementById("dif").value != "custom" 

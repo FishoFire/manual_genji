@@ -7,6 +7,7 @@ var convert_ult = []
 var convert_dash = []
 var convert_bounces = []
 var convert_kills = []
+var convert_team
 /*
 \nrule = rule
 /*\nrule = disabled rule
@@ -113,9 +114,18 @@ function Converter(){
     convert_kills[0] = []
     convert_kills[1] = []
     convert_kills[2] = []
+
+    convert_team = "team1"
+
     try {   
         pasta =  decompileAllRules(document.getElementById("converterdata").value , document.getElementById("lang_convert").value );
-        //pasta = temppast  // stored in console for now 
+      
+        // grab team
+         //"team2Slots": 0,
+        
+        convert_team = pasta.includes('team1Slots": 0,') ? 'team2' : 'team1'
+
+        // cut out rest of settings til first rule
         pasta = pasta.substring( pasta.indexOf('rule "'))
         
            
@@ -230,10 +240,12 @@ function Converter(){
                 }
             } 
         }
-        // and and < len checkpoints
+        
+        
+
         if(convert_credits[0]){MapData[0] = convert_credits[0].trim()}
         if(convert_credits[1]){MapData[1] = convert_credits[1].trim()}
-       
+        MapData[22] = convert_team
  
         // bounce orbs ====================
         // 0 pos vector 1 dash 2 ult 3 lock 4 strength 5 cp (not in web)
