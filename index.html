@@ -105,13 +105,13 @@
 			<input type="checkbox" id="editorontoggle"> Turn editor on
 		</div>
 		<div class="contentblock"> <b> Bans </b> <small>(apply to entire map) </small><br/>
-			<input type="checkbox" id="ban_triple" onclick="UpdateTop()"> triple jump |
-			<input type="checkbox" id="ban_multi" onclick="UpdateTop()"> multi climb |
-			<input type="checkbox" id="ban_create" onclick="UpdateTop()"> create bhop |
-			<input type="checkbox" id="ban_dbhop" onclick="UpdateTop()"> Deathbhop <br/>
+			<input type="checkbox" id="ban_triple" onclick="UpdateTop()">▲ triple |
+			<input type="checkbox" id="ban_multi" onclick="UpdateTop()">∞ multi climb |
+			<input type="checkbox" id="ban_create" onclick="UpdateTop()">♂ create bhop |
+			<input type="checkbox" id="ban_dbhop" onclick="UpdateTop()">X Deathbhop <br/>
 			<input type="checkbox" id="ban_dashstart" onclick="UpdateTop()"> dash start |
-			<input type="checkbox" id="ban_climb" onclick="UpdateTop()"> wall climb |
-			<input type="checkbox" id="ban_emote" onclick="UpdateTop()"> emote <small>(not working until blizzard fixes)</small>
+			<input type="checkbox" id="ban_climb" onclick="UpdateTop()">↑ wall climb |
+			<input type="checkbox" id="ban_emote" onclick="UpdateTop()">♥ emote <small>(not working until blizzard fixes)</small>
 		</div>
 		<div class="contentblock">
 
@@ -201,12 +201,12 @@
 			<input type="checkbox" id="CpbanClimb" onclick="UpdateAfterChange()" style="display:none"> <!-- ban wallclimb -->
 			<hr>
 			<b>Bans</b> <br/>
-			<input type="checkbox" id="bantrip" onclick="UpdateAfterChange()"> triple |
-			<input type="checkbox" id="banmulti" onclick="UpdateAfterChange()" >  multi |
-			<input type="checkbox" id="bancrea" onclick="UpdateAfterChange()" > create |
-			<input type="checkbox" id="bandead" onclick="UpdateAfterChange()"> deadhop |
-			<input type="checkbox" id="banclimb" onclick="UpdateAfterChange()" > wallclimb |
-			<input type="checkbox" id="banemote" onclick="UpdateAfterChange()"> emote <small>(not working until blizzard fixes)</small>
+			<input type="checkbox" id="bantrip" onclick="UpdateAfterChange()">▲ triple |
+			<input type="checkbox" id="banmulti" onclick="UpdateAfterChange()"> ∞ multi |
+			<input type="checkbox" id="bancrea" onclick="UpdateAfterChange()" >♂ create |
+			<input type="checkbox" id="bandead" onclick="UpdateAfterChange()">X deadhop |
+			<input type="checkbox" id="banclimb" onclick="UpdateAfterChange()" >↑ wallclimb |
+			<input type="checkbox" id="banemote" onclick="UpdateAfterChange()">♥ emote <small>(not working until blizzard fixes)</small>
 			
 			<hr>
 
@@ -305,33 +305,42 @@
 </div>
 
 <div id="convert">
-	<div class="contentblock" style="display:none">
+	<div class="contentblock">
 	
 	<div>
 		<label>
 		Converter is still in beta and doesnt transfere much yet. <br/>
 		Double check the data and test ingame <br/>
+		<u>I canno't garantee that all data will be scraped perfectly, use this at your own risk. always double check.</u><br/>
 		</label>
 		<label class="converterthing" style="color:darkgreen;">
-		<b>Converts</b><br/>
-		Checkpoint positions </br>
-		Teleports </br>
+		<b>Converted</b><br/>
+		- Checkpoint positions </br>
+		- Teleports </br>
+		- bounce orbs </br>
+		- kill orbs </br>
+		- ult and dash plugin </br>
 		</label>
 
 		<label class="converterthing" style="color:orange;">
-		<b>Sometimes</b><br/>
-		Names
+		<b>Kinda</b><br/>
+		- Names (detected only in some cases) </br>
+		- Sky cp's (will load but won't work coz ground checks) </br>
 		</label>
 
 		<label class="converterthing" style="color:darkred;">
 		<b>Doesn't</b><br/>
-		Everythng else
+		- Custom added code </br>
+		- hud text and in world texts </br>
+		- Some bans </br>
+		- Everythng else
 		</label>
 
 		<br/>
 	</div>
 	<hr>
-	<button onclick="Converter()"> convert </button>
+	<button onclick="Converter()" style="width:50%"> convert </button> <br/>
+	Client langauge: 
 	<select id="lang_convert">
 		<option  selected="selected" value="en-US">English [en-US]</option>
 		<option value="de-DE">Deutsch [de-DE]</option>
@@ -348,7 +357,8 @@
 		<option value="zh-TW">繁體中文 [zh-TW]</option>
 	</select> 
 	</br>
-	<textarea id="converterdata" placeholder="mapdata here" rows="5" style="width:90%;"> </textarea>
+
+	<textarea id="converterdata" placeholder="mapdata here" rows="15" style="width:90%;"> </textarea>
 
 	</div>
 </div>
@@ -362,8 +372,8 @@
 <script src="overpy-master/VS Code Extension/overpy.js"></script>
 
 
-<script src="templates/template 1-7_beta.js"></script>
-<!-- <script src="templates/template-1-63.js"></script> -->
+<!-- <script src="templates/template 1-7_beta.js"></script> -->
+<script src="templates/template 1-7-1.js"></script>
 <!-- <script src="templates/template_debug.js"></script> -->
 
 <script src="js_generate_things.js"></script>

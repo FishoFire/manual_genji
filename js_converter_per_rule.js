@@ -1,17 +1,28 @@
-
 var pasta = ""
 var rulepasta = ""
 
+var convert_positions = []
+var convert_credits = []
+var convert_ult = []
+var convert_dash = []
+var convert_bounces = []
+var convert_kills = []
+/*
+\nrule = rule
+/*\nrule = disabled rule
 
 
+const re = /[^#]\SHIFT = \[/g
+// use ^# to not have comented out
+// /b no other leters infront of it
+// A = \[    is just A = [  the \ to cancel out [ being regex
+// /g needs to be at the end to make it work
 
-             /*
-            \nrule = rule
-            /*\nrule = disabled rule
-            */
+*/
 function GrabWaits(ind, past) {   // index of item before wich all waits should be taken, pasta to search   
     var waitcount = 0;
     var waitcounter = past.substring(0,ind)
+    waitcounter = waitcounter.replaceAll("#wait","disabled") // deal with disabled by just not having them
     if (waitcounter.includes("wait(")){
         while (waitcounter.includes("wait(")){
             var curentwait = waitcounter.substring(waitcounter.indexOf("wait(")+5)
@@ -27,8 +38,12 @@ function GrabWaits(ind, past) {   // index of item before wich all waits should 
 }
 
 function waitcheck(checkvar,inde){ // variable, index of wait
+    // compares the waits fo difernt entries and keeps the one with highest wait
 
     while(checkvar.length > 1){ // if more entries
+        
+        checkvar[0][inde] = checkvar[0][inde] ? checkvar[0][inde] : 0
+        
         if(checkvar[0][inde] == checkvar[1][inde]){// if waits are equal
             // delete first, keep overwrite
             checkvar.splice(0,1)
@@ -41,25 +56,69 @@ function waitcheck(checkvar,inde){ // variable, index of wait
             }
 
         }
-
     }
-    checkvar = checkvar[checkvar.length-1][0] // make it a normal var instead of array
-    checkvar = checkvar.replaceAll(" ","").replaceAll("\n","").replaceAll("\t","") // take out the fluf to make it easier to search
+    if(checkvar.length > 0){
+        checkvar = checkvar[checkvar.length - 1][0] // make it a normal var instead of array
+        checkvar = String(checkvar).replaceAll(" ","").replaceAll("\n","").replaceAll("\t","") // take out the fluf to make it easier to search
+    }
     return checkvar
 }   
 
+function FindArray(pastahere, arrayName,regexthing, arraytopaste) {
+    // looks for the array in the pasta
+    // regex to take the variable only if its not comented out etc
+    // returns the array with or without modifications
+    //convert_positions
+    if (pastahere.includes(`${arrayName} = [`) ){ 
+        var indexfind = -1;
+        while ((match = regexthing.exec(pastahere)) !== null) { // while there is regex matches
+            indexfind = match.index
+        } // match until last found index i, so if mukltiple declares, only take last
+        if (indexfind != -1){ // will be -1 if no regex matches, wich would be because for example dvA = [] having A = []
+            var waitcount = GrabWaits(indexfind,rulepasta) // check how many waits are infront of it
+            arraytopaste.push(   
+                [
+                pastahere.substring(
+                    indexfind + `${arrayName} = [`.length +1, // start without declare only the vectors
+                    indexfind + pastahere.substring(indexfind).indexOf("]\n") // end of list. the /n should make it only triger at last and not count array in array
+                ),
+                waitcount
+                ] 
+            )
+            
+        } 
+        
+        
+    }
+    return arraytopaste
+}
+
+
 
 function Converter(){
-    var convert_positions = []
-    var convert_credits = []
-
+    convert_positions = []
+    convert_credits = []
+    convert_ult = []
+    convert_dash = []
+    convert_bounces = []
+    
+    convert_bounces[0] = []
+    convert_bounces[1] = []
+    convert_bounces[2] = []
+    convert_bounces[3] = []
+    convert_bounces[4] = []
+    convert_bounces[5] = []
+    
+    convert_kills = []
+    convert_kills[0] = []
+    convert_kills[1] = []
+    convert_kills[2] = []
     try {   
         pasta =  decompileAllRules(document.getElementById("converterdata").value , document.getElementById("lang_convert").value );
         //pasta = temppast  // stored in console for now 
         pasta = pasta.substring( pasta.indexOf('rule "'))
         
-        Positions = []
-        
+           
         while (pasta.includes('\nrule "')){ // loop torugh eahc rule
             
             if(pasta.indexOf('/*\nrule "') == pasta.indexOf('\nrule "') - 2){ // check if rule is disabled
@@ -74,97 +133,54 @@ function Converter(){
             } else {
                 rulepasta = pasta
             }
-            
+ 
+
             if (skiprule == false && rulepasta.includes("@Event eachPlayer") == false){
-          
-                if (rulepasta.includes("A = [") ){ // if the rule declares A
-                    var indexfind = 0;
-                    
-                    // regex
-                    const re = /\bA = \[/g
-                       while ((match = re.exec(rulepasta)) !== null) { // while there is regex matches
-                        indexfind = match.index
-                    } // match until last index is found, remember last index in indexfind
-                    // add the data to positions
-                    
-                    //for each wait before
-                    
-                    var waitcount = GrabWaits(indexfind,rulepasta)
-                    
-                    
-                    convert_positions.push(   
-                        [
-                        rulepasta.substring(
-                            indexfind + "A = [".length, // start without declare only the vectors
-                            indexfind + rulepasta.substring(indexfind).indexOf("]\n") // end of list
-                        ),
-                        waitcount
-                        ]
-                        
-                    )
-                }   
+
+                convert_positions = FindArray(rulepasta, "A", /[^#]\bA = \[/g, convert_positions)
+                
+                convert_ult = FindArray(rulepasta, "Dao", /[^#]\bDao = \[/g, convert_ult)
+                convert_dash = FindArray(rulepasta, "SHIFT", /[^#]\bSHIFT = \[/g, convert_dash)
+
+                convert_bounces[0] = FindArray(rulepasta, "TQ", /[^#]\bTQ = \[/g, convert_bounces[0]) // pos
+                convert_bounces[1] = FindArray(rulepasta, "TQ6", /[^#]\bTQ6 = \[/g, convert_bounces[1]) // dash
+                convert_bounces[2] = FindArray(rulepasta, "TQ5", /[^#]\bTQ5 = \[/g, convert_bounces[2]) // ult
+                convert_bounces[3] = FindArray(rulepasta, "BounceToggleLock", /[^#]\bBounceToggleLock = \[/g, convert_bounces[3]) // lock
+                convert_bounces[4] = FindArray(rulepasta, "EditMode", /[^#]\bEditMode = \[/g, convert_bounces[4]) // stregth
+                convert_bounces[5] = FindArray(rulepasta, "pinballnumber", /[^#]\bpinballnumber = \[/g, convert_bounces[5]) // cp
+
+                convert_kills[0] = FindArray(rulepasta, "H", /[^#]\bH = \[/g, convert_kills[0]) // lock
+                convert_kills[1] = FindArray(rulepasta, "I", /[^#]\bI = \[/g, convert_kills[1]) // stregth
+                convert_kills[2] = FindArray(rulepasta, "killballnumber", /[^#]\bkillballnumber = \[/g, convert_kills[2]) // cp
                 // credits and code
-                if (rulepasta.toLowerCase().includes("made by:") && rulepasta.toLowerCase().includes("code:") && rulepasta.toLowerCase().includes("guidence text") == false){             
+                if (rulepasta.toLowerCase().includes("made by:") && rulepasta.toLowerCase().includes("map code:") && rulepasta.toLowerCase().includes("guidence text") == false){             
                     var tempcredits = rulepasta.substring(rulepasta.toLowerCase().indexOf("made"))
                     tempcredits = tempcredits.substring(tempcredits.toLowerCase().indexOf(":")+1)
                     tempcredits = tempcredits.substring(0, tempcredits.indexOf('"'))
-                    
                     convert_credits[0] = tempcredits
+
                     tempcredits = rulepasta.substring(rulepasta.toLowerCase().indexOf("code:"))
                     tempcredits = tempcredits.substring(tempcredits.toLowerCase().indexOf(":")+1)
                     tempcredits = tempcredits.substring(0, tempcredits.indexOf('"'))
 
                     convert_credits[1] = tempcredits 
-                
-    
+   
 
                 }
+                
                 
             } 
 
   
                
         }
-       
-        
 
-
-        defaultdata() // remove checkpoints and map data and set defaults
-        
-        /*
-        'vect(101.27, -1, -73.46), vect(101.86, -1, -62.58), vect(86.22, -0.26, -54.51), vect(76.73, 1.01, -53), vect(67.08, 0.74, -57.19), vect(61.64, 2.46, -62.82), [vect(50.06, -2.53, -78.83), vect(54.31, -3, -64.84)], vect(37.38, -1.72, -64.14), vect(33.46, 0, -48.18), vect(20.38, -0.92, -38.9), vect(12.23, 5.5, -45.55), vect(-4.61, 0.81, -51.28), vect(-13.68, 5.5, -42.87), vect(-23.85, 3.08, -26.19), vect(-16.41, -3.01, -33.57), vect(-19.97, -5.9, -50.4), vect(-19.83, -6.13, -67.82), vect(-21.62, -6, -71.35), vect(-23.42, -6, -76.37), vect(-34.34, -4.48, -78.03), vect(-49.99, -2.5, -77.73), vect(-66.69, 0.86, -58.75), vect(-71.55, 1.02, -50.01), vect(-76.32, 1.02, -53.11), vect(-85.42, -0.13, -55.28), vect(-63.35, 0.76, -56.44), vect(-42.16, -5.97, -60.4), vect(-32.04, 0, -61.13), vect(-15.32, -6, -55.81), vect(-19.13, -0.96, -38.92), vect(-17.64, 5.26, -36.68), vect(-13.09, 5.5, -35), vect(10.36, 3, -44.29), vect(20.38, 3, -25.82), vect(27.54, 2, -14.31), vect(9.79, -2.13, -15.97), vect(21.14, 3, -28.76), vect(32.41, 0.02, -48.28), vect(32.04, 0, -61.12), vect(14.41, -6, -49.48), vect(51.35, -5.78, -61.81), vect(55.37, -4, -77.76), vect(71.36, 1.02, -62.42), vect(92.7, -3, -68.81)'
-        */
-        // take data apart
-
-        //Positions = Positionsbackup // temppppppppppppp
-
-
-        // take last entry
-        /*
-          while(convert_positions.length > 1){ // if more entries
-            if(convert_positions[0][1] == convert_positions[1][1]){// if waits are equal
-                // delete first, keep overwrite
-                convert_positions.splice(0,1)
-            }else{
-                // delete one with lower wait. keep the higher wait since its overwrite the lower one
-                if(convert_positions[0][1] > convert_positions[1][1]){
-                    convert_positions.splice(1,1)
-                }else{
-                    convert_positions.splice(0,1)
-                }
-
-            }
-
-        }
-        convert_positions = convert_positions[convert_positions.length-1][0] // make it a normal var instead of array
-        convert_positions = convert_positions.replaceAll(" ","").replaceAll("\n","").replaceAll("\t","") // take out the fluf to make it easier to search
-        */
-
-  
-
+    //return
+    defaultdata() // remove checkpoints and map data and set defaults
+            
     convert_positions = waitcheck(convert_positions, 1)
-        
-        while(convert_positions.includes("vect")){
+    
+    while(convert_positions.includes("vect")){
             CheckPoints.push(
                 [
                 "0,0,0", //0 pos
@@ -191,23 +207,125 @@ function Converter(){
                 
             }else{
                 CheckPoints[thiscp][0] = defaultVect( convert_positions.substring("vect(".length,convert_positions.indexOf(")")) )
-                
-
                 convert_positions = convert_positions.substring(convert_positions.indexOf("),")+2) // cut out
             }
-
             
         }
-        MapData[0] = convert_credits[0]
-        MapData[1] = convert_credits[1]
+        
+        if (convert_ult.length > 0){
+            convert_ult = waitcheck(convert_ult, 1)
+            convert_ult = convert_ult.split(",")
+            for (var i = 0; i < convert_ult.length; i++) {
+                if (convert_ult[i] != '' && !isNaN(convert_ult[i]) && convert_ult[i] >= 0 && convert_ult[i] < CheckPoints.length -1){
+                CheckPoints[Number(convert_ult[i])][4] = true 
+                }
+            } 
+        }
+        if (convert_dash.length > 0){
+            convert_dash = waitcheck(convert_dash, 1)
+            convert_dash = convert_dash.split(",")
+            for (var i = 0; i < convert_dash.length; i++) {
+                if (convert_dash[i] != '' && !isNaN(convert_dash[i]) && convert_dash[i] >= 0 && convert_dash[i] < CheckPoints.length -1){
+                CheckPoints[Number(convert_dash[i])][3] = true 
+                }
+            } 
+        }
+        // and and < len checkpoints
+        if(convert_credits[0]){MapData[0] = convert_credits[0].trim()}
+        if(convert_credits[1]){MapData[1] = convert_credits[1].trim()}
+       
+ 
+        // bounce orbs ====================
+        // 0 pos vector 1 dash 2 ult 3 lock 4 strength 5 cp (not in web)
+        
+        if(convert_bounces[5].length > 0){
+            convert_bounces[5] = waitcheck(convert_bounces[5], 1).split(",")
+        }
+        if(convert_bounces[5].length > 0 && convert_bounces[5] != ''){
+            
+            convert_bounces[0] = waitcheck(convert_bounces[0], 1) //.split(",")
+            // for 0 extract vectors first              
+            var tempbounce = convert_bounces[0]
+            convert_bounces[0] = []
+            while(tempbounce.includes("vect")){
+                convert_bounces[0].push(defaultVect(tempbounce.substring( "vect(".length, tempbounce.indexOf(")") ) ) )
+                tempbounce = tempbounce.substring(tempbounce.indexOf(")")+2)
+            }
+            convert_bounces[1] = convert_bounces[1].length > 0 ? waitcheck(convert_bounces[1], 1).split(",") : []
+            convert_bounces[2] = convert_bounces[2].length > 0 ? waitcheck(convert_bounces[2], 1).split(",") : []
+            convert_bounces[3] = convert_bounces[3].length > 0 ? waitcheck(convert_bounces[3], 1).split(",") : []
+            convert_bounces[4] = convert_bounces[4].length > 0 ? waitcheck(convert_bounces[4], 1).split(",") : []
+
+            for (var i = 0; i < convert_bounces[5].length; i++) {
+            
+                convert_bounces[0][i] = convert_bounces[0][i] ? convert_bounces[0][i] : "0,0,0" // vect
+                convert_bounces[1][i] = convert_bounces[1][i] ? convert_bounces[1][i] : "false" // dash
+                convert_bounces[2][i] = convert_bounces[2][i] ? convert_bounces[2][i] : "false" // ult
+                convert_bounces[3][i] = convert_bounces[3][i] ? convert_bounces[3][i] : "false" // lock
+                convert_bounces[4][i] = convert_bounces[4][i] ? convert_bounces[4][i] : 0 // strenfth
+                convert_bounces[5][i] = convert_bounces[5][i] ? convert_bounces[5][i] : -500 // cp
+                
+                convert_bounces[1][i] = convert_bounces[1][i].toString().toLowerCase() == "true" ? true : false
+                convert_bounces[2][i] = convert_bounces[2][i].toString().toLowerCase() == "true" ? true : false
+                convert_bounces[3][i] = convert_bounces[3][i].toString().toLowerCase() == "true" ? true : false   
+
+                if( convert_bounces[5][i] >= 0 &&  convert_bounces[5][i] < CheckPoints.length -1 &&  convert_bounces[5][i] != -500 ){
+                    CheckPoints[Number(convert_bounces[5][i])][6].push( [
+                        defaultVect(convert_bounces[0][i]),
+                        Boolean(convert_bounces[1][i]),
+                        Boolean(convert_bounces[2][i]),
+                        Boolean(convert_bounces[3][i]),
+                        Number(convert_bounces[4][i])
+                    ]
+                    )
+
+                }
+            }
+        }
+
+        // kills ====================
+        if(convert_kills[2].length > 0){
+            convert_kills[2] = waitcheck(convert_kills[2], 1).split(",")
+        }
+        if(convert_kills[2].length > 0 && convert_kills[2] != ''){
+            convert_kills[0] = waitcheck(convert_kills[0], 1) //.split(",")
+            // for 0 extract vectors first              
+            var tempkills = convert_kills[0]
+            convert_kills[0] = []
+            while(tempkills.includes("vect")){
+                convert_kills[0].push(defaultVect(tempkills.substring( "vect(".length, tempkills.indexOf(")") ) ) )
+                tempkills = tempkills.substring(tempkills.indexOf(")")+2)
+            }
+            
+            convert_kills[1] = convert_kills[1].length > 0 ? waitcheck(convert_kills[1], 1).split(",") : []
+            //convert_kills[2] = convert_kills[2].length > 0 ? waitcheck(convert_kills[2], 1).split(",") : []
+            for (var i = 0; i < convert_kills[2].length; i++) {
+            
+                convert_kills[0][i] = convert_kills[0][i] ? convert_kills[0][i] : "0,0,0" // vect
+                convert_kills[1][i] = convert_kills[1][i] ? convert_kills[1][i] : "1" // radius
+                convert_kills[2][i] = convert_kills[2][i] ? convert_kills[2][i] : "-500" // cp
+                 
+                if( convert_kills[2][i] >= 0 &&  convert_kills[2][i] < CheckPoints.length -1 &&  convert_kills[2][i] != "-500" ){
+                    CheckPoints[Number(convert_kills[2][i])][7].push( [
+                        defaultVect(convert_kills[0][i]),
+                        String(convert_kills[1][i]),
+                        String(convert_kills[2][i])
+                    ]
+                    )
+                }
+            }
+        }
+        
         LoadData()
         ShowMsg("done")
-        
+
+       
     } catch(e){
-        ShowMsg("Couldnt load, check log for details")
+        ShowMsg("Couldnt load, check browser console log for details")
         console.log(e)
 
     }
+    
 
 }
 /*

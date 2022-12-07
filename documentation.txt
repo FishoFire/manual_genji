@@ -39,21 +39,23 @@ variables
         3 dash
         4 ult
         5 notes
-        6 kills
-        7 orbs
+        6 orbs
+        7 kills
         8 bans per cp (old ban bhop)
         9 texts per cp (old ban climb)
 
-        kills (inside 6)
-            0 pos
-            1 radius
+ 
 
-        orb (inside 7)
+        orb (inside 6)
             0 pos vector
             1 dash
             2 ult
             3 lock
             4 strength
+
+        kills (inside 7)
+            0 pos
+            1 radius
 
         bans (inside 8)
             0 triple
