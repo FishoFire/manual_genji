@@ -1035,7 +1035,7 @@ rule ("Editor | cp add teleport") {
         Wait Until(Or(Is Button Held(Host Player, Button(Melee)), Not(And(Is Button Held(Host Player, Button(Interact)), Is Button Held(Host Player, Button(Reload))))), 0.5);
         Abort If(Or(Is Button Held(Host Player, Button(Melee)), And(Is Button Held(Host Player, Button(Interact)), Is Button Held(Host Player, Button(Reload)))));
         Set Global Variable At Index(A, (Host Player).A, Array(If-Then-Else(Compare(Count Of(Value In Array(Global.A, (Host Player).A)), !=, 0), First Of(Value In Array(Global.A, (Host Player).A)), Value In Array(Global.A, (Host Player).A)), Position Of(Host Player)));
-        Small Message(All Players(All Teams), Custom String("   Teleport has been added for checkpoint {0}", (Host Player).A, Null, Null));
+        Small Message(Host Player, Custom String("   Teleport has been added for checkpoint {0}", (Host Player).A, Null, Null));
         Wait(0.016, Ignore Condition);
     }
 }
@@ -1055,7 +1055,7 @@ rule ("Editor | move cp once") {
     actions {
         "smallMessage(getAllPlayers(), \"   Checkpoint {0} has been deleted\".format(hostPlayer.CurrentCheckpoint) if len(CheckpointPositions[hostPlayer.CurrentCheckpoint]) != 0 else \"\")"
         Set Global Variable At Index(A, (Host Player).A, Subtract(Position Of(Event Player), Vector(0, 0, 0)));
-        Small Message(All Players(All Teams), Custom String("   Checkpoint has been moved to your position", Null, Null, Null));
+        Small Message(Host Player, Custom String("   Checkpoint has been moved to your position", Null, Null, Null));
         Wait(0.016, Ignore Condition);
     }
 }
@@ -1103,7 +1103,7 @@ rule ("Setup and Variables") {
         If(True);
             Disable Inspector Recording;
         End;
-        "version 1.7"
+        "version 1.7.1"
         Disable Built-In Game Mode Completion;
         Disable Built-In Game Mode Scoring;
         Disable Built-In Game Mode Music;
