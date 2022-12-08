@@ -85,6 +85,8 @@ var dasharray
 var ulteanbled
 var ultarray
 
+var team1players
+var team2players
 // copy
 var CompileError
 function Copy(){
@@ -262,6 +264,10 @@ function Copy(){
             titlecolors = titlecolors.slice(0,-2) + "));"
             
             editoron = defaultBool(document.getElementById("editorontoggle").checked)
+
+            team1players = MapData[22] == 'team2' ? 0 : 11 
+            team2players = MapData[22] == 'team2' ? 11 : 0 
+      
             // ====== compile and copy ===================
             setdata(); // loaded from data file
       

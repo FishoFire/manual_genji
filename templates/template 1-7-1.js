@@ -12,8 +12,8 @@ settings
 		Allow Players Who Are In Queue: Yes
 		Match Voice Chat: Enabled
 		Max Spectators: 3
-		Max Team 1 Players: 11
-		Max Team 2 Players: 0
+		Max Team 1 Players: ${team1players}
+		Max Team 2 Players: ${team2players}
 		Return To Lobby: Never
 		Swap Teams After Match: No
 	}

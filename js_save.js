@@ -1,3 +1,13 @@
+setInterval(function() {
+    localStorage.setItem('headerdata-auto', JSON.stringify(MapData));
+    localStorage.setItem('checkpoints-auto', JSON.stringify(CheckPoints));
+    
+    //let curtime= new Date();
+    //curtime = Date().getHours() + ":" + Date().getMinutes()
+    console.log("auto saved at "+Date())
+
+}, 60 * 1000)
+
 function Save(x){
     localStorage.setItem('headerdata'+x, JSON.stringify(MapData));
     localStorage.setItem('checkpoints'+x, JSON.stringify(CheckPoints));
@@ -109,7 +119,8 @@ function LoadData(){
         MapData[19] =  MapData[19] ?  MapData[19] :  ""
         MapData[20] =  MapData[20] ?  MapData[20] :  "Lime Green"
         MapData[21] =  MapData[21] ?  MapData[21] :  false
-       
+        MapData[22] =  MapData[22] ?  MapData[22] :  'team1'
+
         if (CheckPoints.length > 0){
         // per cp things
             for(let i=0;i < CheckPoints.length;i++){
@@ -161,7 +172,7 @@ function LoadData(){
         document.getElementById("customdif").value  = MapData[19] 
         document.getElementById("customdifcolor").value =  MapData[20]
         document.getElementById("ban_climb").checked =  MapData[21]
-             
+        document.getElementById("teamselect").value = MapData[22]
         // load things in the tab
         SelectedCp = 0
         CpButtons()

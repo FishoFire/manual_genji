@@ -16,7 +16,7 @@
 		<button onclick="changebar(0)" class="sidebarbutton">data</button> 
 		<button onclick="changebar(1)" class="sidebarbutton">save/load</button> 
 		<button onclick="changebar(2)" class="sidebarbutton">help</button> 
-		<!--<button onclick="changebar(4)" class="sidebarbutton">(beta) convert map</button> -->
+		<button onclick="changebar(4)" class="sidebarbutton">(beta) convert map</button>
 	</div>
 </div>
 
@@ -56,9 +56,11 @@
 				<option value="17">don't display</option>
 				<option value="custom">custom</option>
 			</select> 
-			 | 
+			
+			| 
 			<textarea rows="1" cols="20" placeholder="custom difficulty" id="customdif" onchange="UpdateTop();" disabled="true"></textarea> 
-			color <small>(custom difficulty)</small>
+			
+			| color <small>(custom difficulty)</small>
 			<select id="customdifcolor" onchange="UpdateTop();" disabled="true">	
 				<option value="Aqua">Aqua</option>
 				<option value="Black">Black</option>
@@ -75,7 +77,9 @@
 				<option value="Violet">Violet</option>
 				<option value="White">White</option>
 				<option value="Yellow">Yellow</option>
-			</select> <br/>
+			</select> 
+
+
 
 		</div>
 		<!--
@@ -84,6 +88,7 @@
 			<label id="UltToggleEnabled">| Ult addon: disabled</label>   <br/>
 		</div>
 		-->
+		
 		<div class="contentblock">
 			overwatch text language
 			<select id="languageInput">
@@ -102,7 +107,15 @@
 				<option value="zh-TW">繁體中文 [zh-TW]</option>
 			</select> 
 			<br/>
-			<input type="checkbox" id="editorontoggle"> Turn editor on
+			<input type="checkbox" id="editorontoggle"> Turn editor on	
+		</div>
+
+			<div class="contentblock">
+			player team: <select id="teamselect" onchange="MapData[22] = this.value">	
+				<option value="team1">Team 1</option>
+				<option value="team2">Team 2</option>
+			</select>
+
 		</div>
 		<div class="contentblock"> <b> Bans </b> <small>(apply to entire map) </small><br/>
 			<input type="checkbox" id="ban_triple" onclick="UpdateTop()">▲ triple |
@@ -113,6 +126,7 @@
 			<input type="checkbox" id="ban_climb" onclick="UpdateTop()">↑ wall climb |
 			<input type="checkbox" id="ban_emote" onclick="UpdateTop()">♥ emote <small>(not working until blizzard fixes)</small>
 		</div>
+
 		<div class="contentblock">
 
 			<input type="checkbox" id="portalOn" onclick="UpdateTop()" checked="true"> default portal addon (control maps) 
@@ -247,6 +261,11 @@
 			<button onclick="ImportJson()">import json</button>
 			<textarea id="jsonfield" rows="1" cols="25" placeholder="json pasta for import here"></textarea>
 		</div>
+		<div class="saveelement">
+			<b>autosave</b> (every minute)
+			<button onclick="LoadSave('-auto')" style="width:95%">Load </button>
+		</div>
+
 
 			<!--
 			<div class="saveelement">
@@ -306,40 +325,45 @@
 
 <div id="convert">
 	<div class="contentblock">
-	
+		<img src="copybutton.png" alt="picture of copy button" style="width:100px;height:50px;float:right"> 
 	<div>
-		<label>
-		Converter is still in beta and doesnt transfere much yet. <br/>
-		Double check the data and test ingame <br/>
-		<u>I canno't garantee that all data will be scraped perfectly, use this at your own risk. always double check.</u><br/>
-		</label>
-		<label class="converterthing" style="color:darkgreen;">
-		<b>Converted</b><br/>
-		- Checkpoint positions </br>
-		- Teleports </br>
-		- bounce orbs </br>
-		- kill orbs </br>
-		- ult and dash plugin </br>
-		</label>
-
-		<label class="converterthing" style="color:orange;">
-		<b>Kinda</b><br/>
-		- Names (detected only in some cases) </br>
-		- Sky cp's (will load but won't work coz ground checks) </br>
-		</label>
-
-		<label class="converterthing" style="color:darkred;">
-		<b>Doesn't</b><br/>
-		- Custom added code </br>
-		- hud text and in world texts </br>
-		- Some bans </br>
-		- Everythng else
-		</label>
-
-		<br/>
+		Expirimental feature that attemps to load mapdata from map pasta. </br>
+		Copy the entire mode pasta in the text field, select your client langauge and press convert. </br>
+		<u> This is might not import everything and it's on you to check your map for mistakes in converting </u> </br>
 	</div>
 	<hr>
-	<button onclick="Converter()" style="width:50%"> convert </button> <br/>
+	<table style="width:100%;">
+		<tr>
+			<th style="color:darkgreen;">Yes</th>
+			<th style="color:orange;">Maybe</th>
+			<th style="color:darkred;">No</th>
+		</tr>
+		<tr>
+			<td>
+			- Checkpoint positions </br>
+			- Teleports </br>
+			- bounce /kill orbs (per cp) </br>
+			- ult and dash plugin </br>
+			</td>
+			<td>
+			- Names (detected only in some cases) </br>
+			- Sky cp's (will load, won't function) </br>
+			- Teams in some modes and numbers </br>
+			</td>
+			<td>
+			- orbs / kills that work for entire map </br>
+			- Custom added code </br>
+			- hud text and in world texts </br>
+			- bans </br>
+			- custom portals </br>
+			- titles </br>
+			- if's, returns or aborts in rule data</br>
+			- everything else
+			</td>
+  	</tr>
+	</table>
+	<hr>
+	
 	Client langauge: 
 	<select id="lang_convert">
 		<option  selected="selected" value="en-US">English [en-US]</option>
@@ -356,9 +380,12 @@
 		<option value="zh-CN">简体中文 [zh-CN]</option>
 		<option value="zh-TW">繁體中文 [zh-TW]</option>
 	</select> 
+	| 
+	<button onclick="Converter()" style="width:50%"> convert data</button> 
+
 	</br>
 
-	<textarea id="converterdata" placeholder="mapdata here" rows="15" style="width:90%;"> </textarea>
+	<textarea id="converterdata" placeholder="mapdata here" rows="15" style="width:90%;"></textarea>
 
 	</div>
 </div>
