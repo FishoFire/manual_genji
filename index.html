@@ -320,41 +320,45 @@
 
 <div id="convert">
 	<div class="contentblock">
-	
+		<img src="copybutton.png" alt="picture of copy button" style="width:100px;height:50px;float:right"> 
 	<div>
-		<label>
-		Converter is still in beta and doesnt transfere much yet. <br/>
-		Double check the data and test ingame <br/>
-		<u>I canno't garantee that all data will be scraped perfectly, use this at your own risk. always double check.</u><br/>
-		</label>
-		<label class="converterthing" style="color:darkgreen;">
-		<b>Converted</b><br/>
-		- Checkpoint positions </br>
-		- Teleports </br>
-		- bounce orbs </br>
-		- kill orbs </br>
-		- ult and dash plugin </br>
-		</label>
-
-		<label class="converterthing" style="color:orange;">
-		<b>Kinda</b><br/>
-		- Names (detected only in some cases) </br>
-		- Sky cp's (will load but won't work coz ground checks) </br>
-		- Teams in some modes and numbers </br>
-		</label>
-
-		<label class="converterthing" style="color:darkred;">
-		<b>Doesn't</b><br/>
-		- Custom added code </br>
-		- hud text and in world texts </br>
-		- Some bans </br>
-		- Everythng else
-		</label>
-
-		<br/>
+		Expirimental feature that attemps to load mapdata from map pasta. </br>
+		Copy the entire mode pasta in the text field, select your client langauge and press convert. </br>
+		<u> This is might not import everything and it's on you to check your map for mistakes in converting </u> </br>
 	</div>
 	<hr>
-	<button onclick="Converter()" style="width:50%"> convert </button> <br/>
+	<table style="width:100%;">
+		<tr>
+			<th style="color:darkgreen;">Yes</th>
+			<th style="color:orange;">Maybe</th>
+			<th style="color:darkred;">No</th>
+		</tr>
+		<tr>
+			<td>
+			- Checkpoint positions </br>
+			- Teleports </br>
+			- bounce /kill orbs (per cp) </br>
+			- ult and dash plugin </br>
+			</td>
+			<td>
+			- Names (detected only in some cases) </br>
+			- Sky cp's (will load, won't function) </br>
+			- Teams in some modes and numbers </br>
+			</td>
+			<td>
+			- orbs / kills that work for entire map </br>
+			- Custom added code </br>
+			- hud text and in world texts </br>
+			- bans </br>
+			- custom portals </br>
+			- titles </br>
+			- if's, returns or aborts in rule data</br>
+			- everything else
+			</td>
+  	</tr>
+	</table>
+	<hr>
+	
 	Client langauge: 
 	<select id="lang_convert">
 		<option  selected="selected" value="en-US">English [en-US]</option>
@@ -371,9 +375,12 @@
 		<option value="zh-CN">简体中文 [zh-CN]</option>
 		<option value="zh-TW">繁體中文 [zh-TW]</option>
 	</select> 
+	| 
+	<button onclick="Converter()" style="width:50%"> convert data</button> 
+
 	</br>
 
-	<textarea id="converterdata" placeholder="mapdata here" rows="15" style="width:90%;"> </textarea>
+	<textarea id="converterdata" placeholder="mapdata here" rows="15" style="width:90%;"></textarea>
 
 	</div>
 </div>

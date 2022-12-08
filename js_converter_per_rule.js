@@ -8,6 +8,7 @@ var convert_dash = []
 var convert_bounces = []
 var convert_kills = []
 var convert_team
+var convert_bans = []
 /*
 \nrule = rule
 /*\nrule = disabled rule
@@ -115,16 +116,53 @@ function Converter(){
     convert_kills[1] = []
     convert_kills[2] = []
 
+    convert_bans = [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+    ]
+
     convert_team = "team1"
 
     try {   
         pasta =  decompileAllRules(document.getElementById("converterdata").value , document.getElementById("lang_convert").value );
       
-        // grab team
-         //"team2Slots": 0,
-        
-        convert_team = pasta.includes('team1Slots": 0,') ? 'team2' : 'team1'
+  
+        var settingstr = pasta.substring(0, pasta.indexOf('rule "'))
 
+        convert_team = settingstr.includes('team1Slots": 0,') ? 'team2' : 'team1'
+        
+        /*          
+        if(settingstr.includes('"Ban Triple Jump": true')){
+        //Ban Triple Jump on all cps
+            convert_bans[1] = true}  //triple
+          
+        if(settingstr.includes('"Ban Multiclimb": true')){
+            convert_bans[1] = true}  //multi
+       
+        if(settingstr.includes('"Ban Emote": true') || settingstr.includes('"Ban Emote Savehop": true')){
+            convert_bans[2] = true}  //emote
+            
+     
+        if(settingstr.includes('"Ban Double Bhop": true') || settingstr.includes('"Ban Createbhop on all cps": true')){ // aaaaaaaaa create
+            convert_bans[3] = true} //create
+
+        if(settingstr.includes('"Ban bhop from reset": true') || settingstr.includes('"Ban Deathbhop": true')){ 
+            convert_bans[4] = true} //death
+  
+
+        if(settingstr.includes('"Ban ": true')){
+            convert_bans[5] = true} //dashstart
+        
+        if(settingstr.includes('"Ban ": true')){
+            convert_bans[7] = true} convert_bans[6]//ban climb
+        */
+
+    
         // cut out rest of settings til first rule
         pasta = pasta.substring( pasta.indexOf('rule "'))
         
@@ -247,6 +285,16 @@ function Converter(){
         if(convert_credits[1]){MapData[1] = convert_credits[1].trim()}
         MapData[22] = convert_team
  
+        /*
+        MapData[3] = convert_bans[0]//triple
+        MapData[4] = convert_bans[1]//multi
+        MapData[5] = convert_bans[2]//emote
+        MapData[6] = convert_bans[3]//create
+        MapData[7] = convert_bans[4]//death
+        MapData[8] = convert_bans[5]//dashstart
+        MapData[21] = convert_bans[6]//ban climb
+        */
+        
         // bounce orbs ====================
         // 0 pos vector 1 dash 2 ult 3 lock 4 strength 5 cp (not in web)
         
