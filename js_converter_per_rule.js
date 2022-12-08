@@ -294,7 +294,7 @@ function Converter(){
         MapData[8] = convert_bans[5]//dashstart
         MapData[21] = convert_bans[6]//ban climb
         */
-        
+
         // bounce orbs ====================
         // 0 pos vector 1 dash 2 ult 3 lock 4 strength 5 cp (not in web)
         
@@ -381,7 +381,7 @@ function Converter(){
 
        
     } catch(e){
-        ShowMsg("Couldnt load, check browser console log for details")
+        ShowMsg("Couldnt load data")
         console.log(e)
 
     }

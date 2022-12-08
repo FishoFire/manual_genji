@@ -1,3 +1,13 @@
+setInterval(function() {
+    localStorage.setItem('headerdata-auto', JSON.stringify(MapData));
+    localStorage.setItem('checkpoints-auto', JSON.stringify(CheckPoints));
+    
+    //let curtime= new Date();
+    //curtime = Date().getHours() + ":" + Date().getMinutes()
+    console.log("auto saved at "+Date())
+
+}, 60 * 1000)
+
 function Save(x){
     localStorage.setItem('headerdata'+x, JSON.stringify(MapData));
     localStorage.setItem('checkpoints'+x, JSON.stringify(CheckPoints));
