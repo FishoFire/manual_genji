@@ -304,7 +304,7 @@ rule ("Ban per CP <---- edit me") {
         "ban  climb >"
         ${cpclimb}
         "======================\r\n dash exploit (via toggles don't edit)"
-        Set Global Variable(DashExploitToggle, Workshop Setting Toggle(Custom String("Ban Switch", Null, Null, Null), Custom String("Ban Create Bhop", Null, Null, Null), ${ban_dashstart}, 2));
+        Set Global Variable(DashExploitToggle, Workshop Setting Toggle(Custom String("Ban Switch", Null, Null, Null), Custom String("Ban Dash start", Null, Null, Null), ${ban_dashstart}, 2));
     }
 }
 
