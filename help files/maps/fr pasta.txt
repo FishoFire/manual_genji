@@ -1,0 +1,4144 @@
+paramètres
+{
+	principal
+	{
+		Description: "  ~ The Official Genji Parkour Editor ~\nCode: 54CRY\nAdapted by: nebula#11571/FishoFire#2431"
+		Nom du mode: "Genji Parkour v1.6.2"
+	}
+
+	salon
+	{
+		Autoriser les joueurs en file d’attente: Oui
+		Discussion audio de partie: Activé
+		Inversion des équipes après une partie: Non
+		Joueurs max. dans Équipe 1.: 11
+		Joueurs max. dans Équipe 2.: 0
+		Retour au salon: Jamais
+		Spectateurs max.: 3
+	}
+
+	modes
+	{
+		Combat à mort par équipe
+		{
+			Durée de la partie en minutes: 15
+			Les résurrections annulent les points de victimes: Désactivé
+			Réapparition active: Désactivé
+
+			cartes activées
+			{
+			}
+		}
+
+		Échauffement
+		{
+			cartes activées
+			{
+				Esperança 0
+			}
+		}
+
+		Général
+		{
+			Apparition des kits de soins: Désactivé
+			Barres de vie adverses: Désactivé
+			Changement de héros: Désactivé
+			Derniers instants: Désactivé
+			Début de la partie: Immédiatement
+			Journal d’action: Désactivé
+			Limite de héros: Désactivé
+			Réapparition en héros aléatoire: Activé
+			Temps de réapparition: 0%
+		}
+	}
+
+	héros
+	{
+		Général
+		{
+			Genji
+			{
+				Apparition avec la capacité ultime prête: Activé
+				Durée de la capacité ultime: 25%
+				Génération de capacité ultime - Passif Lame du dragon: 500%
+				Génération de capacité ultime Lame du dragon: 500%
+				Munitions illimitées: Activé
+				Riposte: Désactivé
+				Temps de recharge de Frappe du vent: 0%
+			}
+
+			héros activés
+			{
+				Genji
+			}
+		}
+	}
+
+	extensions
+	{
+		Jouer plus d’effets
+	}
+}
+
+variables
+{
+	globale:
+		0: A
+		1: B
+		2: C
+		4: TimeRemaining
+		7: H
+		8: I
+		9: J
+		10: K
+		11: L
+		12: Dao
+		13: SHIFT
+		15: P
+		18: TQ
+		19: TQ1
+		20: TQ2
+		21: TQ3
+		22: EditMode
+		23: TQ5
+		24: TQ6
+		25: BounceToggleLock
+		26: killballnumber
+		27: pinballnumber
+		28: deathjump
+		30: save
+		32: LeaderBoardFull
+		33: LeaderBoardHuds
+		34: LeaderBoardRemake
+		35: kaxiaotiao
+		38: NANBA
+		39: DashExploitToggle
+		40: PortalNames
+		41: PortalLoc
+		42: PortalDest
+		43: PortalOn
+		44: Difficultyhud
+		45: CustomPortalStart
+		46: CustomPortalEndpoint
+		47: CustomPortalCP
+		50: CompMode
+		51: CompTime
+		52: CompAtmpNum
+		53: CompAtmpSaveNames
+		54: CompAtmpSaveCount
+		55: CompRestartLimit
+		56: instructiontext
+		57: TitleData
+
+	de joueur:
+		0: A
+		1: B
+		2: C
+		3: D
+		4: E
+		5: F
+		7: H
+		9: J
+		10: K
+		11: LockState
+		12: ztjs
+		13: Temp
+		14: O
+		15: MovedCheckpoint
+		16: PracticeCheckpoint
+		17: PracticeToggle
+		19: LeaderboardToggle
+		26: TY
+		28: paqiang
+		31: quick_restart
+		32: climbNum
+		38: PreviewsArray
+		39: PreviewsI
+		40: invis
+		41: flytoggle
+		42: savemaphud
+		43: TracesOff
+		45: EditorOn
+		46: LockCollected
+		47: bouncetouched
+		48: PortalLoop
+		49: BounceLockMax_Cache
+		50: KillPosition_Cache
+		51: KillRadii_Cache
+		52: BouncePosition_Cache
+		53: BounceStrength_Cache
+		54: BounceUlt_Cache
+		55: BounceDash_Cache
+		56: BounceLock_Cache
+		57: BounceIndex_Cache
+		58: KillIndex_Cache
+		60: EffectSizeArray
+		61: EffectSizeToggle
+		65: CompDone
+		66: AttemptCount
+		67: instructionhud
+		68: TitleStore
+		85: CH
+}
+
+sous-programmes
+{
+	0: Sub0
+	1: Sub1
+	2: Leaderboardupdate
+	3: KILLBALL
+	4: pinball
+	5: BuildPortals
+	6: CreateLeaderBoard
+	7: UpdateTitle
+	8: RebuildBounceOrbs
+	9: RebuildKillOrbs
+	10: UpdateCache
+	11: checkpointFailReset
+}
+
+désactivé règle("------------------------------------------------------------------------ Map pasta ------------------------------------------------------------------------ ")
+{
+	évènement
+	{
+		Toute la partie - Tout le monde;
+	}
+}
+
+règle("Map Data     <---- INSERT YOUR MAP DATA HERE")
+{
+	évènement
+	{
+		Toute la partie - Tout le monde;
+	}
+
+	actions
+	{
+		"======= Checkpoint data ==========================\r\n		Checkpoints positions - Vector(123.456,123.456,123.456) - The order is the checkpoint number.  The first Vector here is checkpoint 0"
+		Global.A = Tableau(Vecteur(101.270, -1, -73.460), Vecteur(101.860, -1, -62.580), Vecteur(86.220, -0.260, -54.510), Vecteur(76.730,
+			1.010, -53), Vecteur(67.080, 0.740, -57.190), Vecteur(61.640, 2.460, -62.820), Vecteur(50.060, -2.530, -78.830), Vecteur(
+			54.310, -3, -64.840), Vecteur(37.380, -1.720, -64.140), Vecteur(33.460, 0, -48.180), Vecteur(20.380, -0.920, -38.900), Vecteur(
+			12.230, 5.500, -45.550), Vecteur(-4.610, 0.810, -51.280), Vecteur(-13.680, 5.500, -42.870), Vecteur(-23.850, 3.080, -26.190),
+			Vecteur(-16.410, -3.010, -33.570), Vecteur(-19.970, -5.900, -50.400), Vecteur(-19.830, -6.130, -67.820), Vecteur(-21.620, -6,
+			-71.350), Vecteur(-23.420, -6, -76.370), Vecteur(-34.340, -4.480, -78.030), Vecteur(-49.990, -2.500, -77.730), Vecteur(-66.690,
+			0.860, -58.750), Vecteur(-71.550, 1.020, -50.010), Vecteur(-76.320, 1.020, -53.110), Vecteur(-85.420, -0.130, -55.280),
+			Vecteur(-63.350, 0.760, -56.440), Vecteur(-42.160, -5.970, -60.400), Vecteur(-32.040, 0, -61.130), Vecteur(-15.320, -6,
+			-55.810), Vecteur(-19.130, -0.960, -38.920), Vecteur(-17.640, 5.260, -36.680), Vecteur(-13.090, 5.500, -35), Vecteur(10.360, 3,
+			-44.290), Vecteur(20.380, 3, -25.820), Vecteur(27.540, 2, -14.310), Vecteur(9.790, -2.130, -15.970), Vecteur(21.140, 3,
+			-28.760), Vecteur(32.410, 0.020, -48.280), Vecteur(32.040, 0, -61.120), Vecteur(14.410, -6, -49.480), Vecteur(51.350, -5.780,
+			-61.810), Vecteur(55.370, -4, -77.760), Vecteur(71.360, 1.020, -62.420), Vecteur(92.700, -3, -68.810));
+		"======= killballs ==========================\r\n		Killball level number - Number 123 - Number of the checkpoint (in position array starting count with 0)"
+		Global.killballnumber = Tableau(11, 35);
+		"killball positions - Vector(123.456,123.456,123.456)"
+		Global.H = Tableau(Vecteur(8.040, 4.500, -47.830), Vecteur(25.220, 4, -18.390));
+		"killball radius - Vector(123.456,123.456,123.456)"
+		Global.I = Tableau(2, 2);
+		"======= orbs ==========================\r\n		orb checkpoint number - Number 123 - Number of the checkpoint (in position array starting count with 0)"
+		Global.pinballnumber = Tableau(3, 16, 21, 40, 40);
+		"orb position - Vector(123.456,123.456,123.456)"
+		Global.TQ = Tableau(Vecteur(69.950, 4.090, -53.080), Vecteur(-19.920, 3, -57.250), Vecteur(-59.620, 3, -70.870), Vecteur(19.550,
+			-2.220, -62.900), Vecteur(31.180, 1.160, -70.710));
+		"orb bounce strength - Number 123.456 - default bounce is 10 - 0 means dont bounce"
+		Global.EditMode = Tableau(0, 0, 0, 0, 0);
+		"orb gives ult - True or False"
+		Global.TQ5 = Tableau(Faux, Faux, Faux, Faux, Faux);
+		"orb gives dash - True or False"
+		Global.TQ6 = Tableau(Faux, Faux, Vrai, Vrai, Vrai);
+		"orb locks checkpoint - True or False"
+		Global.BounceToggleLock = Tableau(Vrai, Vrai, Faux, Vrai, Vrai);
+		"======= others - DONT CHANGE =========================="
+		Global.TimeRemaining = 263;
+		Global.LeaderBoardFull = Tableau vide;
+		Global.Difficultyhud = 2;
+	}
+}
+
+règle("Credits here <---- INSERT YOUR NAME HERE")
+{
+	évènement
+	{
+		Toute la partie - Tout le monde;
+	}
+
+	actions
+	{
+		Créer du texte d’interface(Tous les joueurs(Toutes les équipes), Non applicable, Non applicable, Chaîne personnalisée(
+			"made by: FishoFire"), Gauche, -15, Non applicable, Non applicable, Couleur(Mauve), Visible pour, Visibilité par défaut);
+		Créer du texte d’interface(Tous les joueurs(Toutes les équipes), Non applicable, Non applicable, Chaîne personnalisée(
+			"map code: HTYBM"), Gauche, -14, Non applicable, Non applicable, Couleur(Bleu ciel), Visible pour, Visibilité par défaut);
+		Créer du texte d’interface(Tous les joueurs(Toutes les équipes), Non applicable, Non applicable, Chaîne personnalisée(
+			"Discord: dsc.gg/genjiparkour"), Gauche, -13, Non applicable, Non applicable, Couleur(Cyan), Visible pour,
+			Visibilité par défaut);
+	}
+}
+
+désactivé règle("Custom difficulty hud")
+{
+	évènement
+	{
+		Toute la partie - Tout le monde;
+	}
+
+	actions
+	{
+		"1) workshop settings > difficulty > set to \"dont display\"\r\n2) enable this rule\r\n3) type your difficulty in the hud below"
+		Créer du texte d’interface(Tous les joueurs(Toutes les équipes), Non applicable, Chaîne personnalisée("Difficulty: custom"),
+			Non applicable, Haut, -24, Non applicable, Couleur(Vert), Non applicable, Visible pour, Visibilité par défaut);
+	}
+}
+
+désactivé règle("Display World Record")
+{
+	évènement
+	{
+		Toute la partie - Tout le monde;
+	}
+
+	actions
+	{
+		"1) enable this rule\r\n2) type your entry in the textfield that says \"name and time here\""
+		Créer du texte d’interface(Joueur hôte.EditorOn ? Non applicable : Tous les joueurs(Toutes les équipes), Non applicable,
+			Chaîne personnalisée(" \n{0} world record {0}", Chaîne d’icône(Flamme)), Chaîne personnalisée("name and time here"), Droite,
+			-1, Couleur(Rose), Couleur(Rose), Couleur(Rose), Visible pour, Visibilité par défaut);
+	}
+}
+
+règle("Friend Title <----  DISPLAY MESSAGE HERE (ON PLAYER)")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Apparition(Joueur exécutant) == Vrai;
+	}
+
+	actions
+	{
+		"In the field custom string your nickname"
+		Si(Chaîne personnalisée("your nickname <-------") == Chaîne personnalisée("{0}", Joueur exécutant));
+			Message en grand(Tous les joueurs(Toutes les équipes), Chaîne personnalisée("Message to the whole room"));
+			Créer du texte en jeu(Tous les joueurs(Toutes les équipes), Chaîne personnalisée(
+				"Title <---------------The inscription that will be displayed on you"), Joueur exécutant, 1.500, Masquer derrière les surfaces,
+				Visible pour Position et Chaîne de texte, Couleur(Orange), Visibilité par défaut);
+		Fin;
+		"Fill in the blank with your friend's name"
+		Si(Chaîne personnalisée("your nickname <-------") == Chaîne personnalisée("{0}", Joueur exécutant));
+			Message en grand(Tous les joueurs(Toutes les équipes), Chaîne personnalisée("Message to the whole room"));
+			Créer du texte en jeu(Tous les joueurs(Toutes les équipes), Chaîne personnalisée(
+				"Title <---------------The inscription that will be displayed on you"), Joueur exécutant, 1.500, Masquer derrière les surfaces,
+				Visible pour Position et Chaîne de texte, Couleur(Orange), Visibilité par défaut);
+	}
+}
+
+règle("Comp Mode instruction message")
+{
+	évènement
+	{
+		Toute la partie - Tout le monde;
+	}
+
+	actions
+	{
+		"There is a limit to how much text a hud can have. For this reason 4 huds are available. Spread message over the 4 huds. Empty them if they are not needed."
+		Global.instructiontext[0] = Chaîne personnalisée("");
+		Global.instructiontext[1] = Chaîne personnalisée("");
+		Global.instructiontext[2] = Chaîne personnalisée("");
+		Global.instructiontext[3] = Chaîne personnalisée("");
+	}
+}
+
+règle("SUB | Rebuild Bounce Orbs")
+{
+	évènement
+	{
+		Sous-programme;
+		RebuildBounceOrbs;
+	}
+
+	actions
+	{
+		Détruire un effet(Global.TQ2);
+		Global.TQ2 = Tableau vide;
+		Pour variable globale(NANBA, 0, Décompte de(Global.pinballnumber), 1);
+			Créer un effet(Tableau filtré(Ajouter au tableau(Tous les joueurs(Toutes les équipes), Non applicable),
+				Élément de tableau actuel.A == Global.pinballnumber[Évaluer une fois(Global.NANBA)] && !Contenu du tableau(
+				Élément de tableau actuel.LockCollected, Évaluer une fois(Global.TQ[Évaluer une fois(Global.NANBA)]))), Orbe,
+				Global.BounceToggleLock[Évaluer une fois(Global.NANBA)] ? Couleur(Orange) : Couleur(Vert), Global.TQ[Évaluer une fois(
+				Global.NANBA)], 1, Visible pour Position Rayon et Couleur);
+			Modifier une variable globale(TQ2, Ajouter au tableau, Dernière entité créée);
+			Attente(0.016, Ignorer la condition);
+		Fin;
+	}
+}
+
+règle("SUB | Rebuild Kill Orbs")
+{
+	évènement
+	{
+		Sous-programme;
+		RebuildKillOrbs;
+	}
+
+	actions
+	{
+		Détruire un effet(Global.K);
+		Global.K = Tableau vide;
+		Pour variable globale(NANBA, 0, Décompte de(Global.killballnumber), 1);
+			Créer un effet(Tableau filtré(Ajouter au tableau(Tous les joueurs(Toutes les équipes), Non applicable),
+				Élément de tableau actuel.A == Global.killballnumber[Évaluer une fois(Global.NANBA)]), Sphère, Couleur(Bleu),
+				Global.H[Évaluer une fois(Global.NANBA)], Global.I[Évaluer une fois(Global.NANBA)], Visible pour Position et Rayon);
+			Modifier une variable globale(K, Ajouter au tableau, Dernière entité créée);
+			Attente(0.016, Ignorer la condition);
+		Fin;
+	}
+}
+
+règle("SUB | Rebuild Portals")
+{
+	évènement
+	{
+		Sous-programme;
+		BuildPortals;
+	}
+
+	actions
+	{
+		"custom portals"
+		Si(Global.CustomPortalStart);
+			Pour variable globale(NANBA, 0, Décompte de(Global.CustomPortalStart), 1);
+				Créer un effet(Tableau filtré(Tous les joueurs(Toutes les équipes),
+					Élément de tableau actuel.A == Global.CustomPortalCP[Évaluer une fois(Global.NANBA)] || Global.CustomPortalCP[Évaluer une fois(
+					Global.NANBA)] == 999), Bonne aura, Couleur(Blanc), Global.CustomPortalStart[Évaluer une fois(Global.NANBA)], 0.600,
+					Visible pour);
+				Attente(0.160, Ignorer la condition);
+			Fin;
+		Fin;
+		"pre-set portals"
+		Si(Global.PortalDest);
+			Pour variable globale(NANBA, 0, Décompte de(Global.PortalLoc), 1);
+				Créer un effet(Tableau filtré(Tous les joueurs(Toutes les équipes),
+					Élément de tableau actuel.C || Élément de tableau actuel.A == Décompte de(Global.A) - 1), Mauvaise aura, Évaluer une fois(
+					Global.NANBA) % 2 == 1 ? Couleur(Cyan) : Couleur(Orange), Global.PortalLoc[Évaluer une fois(Global.NANBA)], 0.600,
+					Visible pour);
+				Créer du texte en jeu(Tableau filtré(Tous les joueurs(Toutes les équipes),
+					Élément de tableau actuel.C || Élément de tableau actuel.A == Décompte de(Global.A) - 1), Chaîne personnalisée("{0}",
+					Global.PortalNames[Évaluer une fois(Global.NANBA)]), Global.PortalLoc[Évaluer une fois(Global.NANBA)] + Vecteur(0, 1, 0), 1,
+					Masquer derrière les surfaces, Visible pour, Couleur(Blanc), Visibilité par défaut);
+			Fin;
+		Fin;
+	}
+}
+
+règle("SUB | Update Effect Cache")
+{
+	évènement
+	{
+		Sous-programme;
+		UpdateCache;
+	}
+
+	actions
+	{
+		Joueur exécutant.BouncePosition_Cache = Tableau filtré(Global.TQ,
+			Global.pinballnumber[Index de tableau actuel] == Joueur exécutant.A);
+		Joueur exécutant.BounceStrength_Cache = Tableau filtré(Global.EditMode,
+			Global.pinballnumber[Index de tableau actuel] == Joueur exécutant.A);
+		Joueur exécutant.BounceUlt_Cache = Tableau filtré(Global.TQ5, Global.pinballnumber[Index de tableau actuel] == Joueur exécutant.A);
+		Joueur exécutant.BounceDash_Cache = Tableau filtré(Global.TQ6,
+			Global.pinballnumber[Index de tableau actuel] == Joueur exécutant.A);
+		Joueur exécutant.BounceLock_Cache = Tableau filtré(Global.BounceToggleLock,
+			Global.pinballnumber[Index de tableau actuel] == Joueur exécutant.A);
+		Joueur exécutant.KillPosition_Cache = Tableau filtré(Global.H,
+			Global.killballnumber[Index de tableau actuel] == Joueur exécutant.A);
+		Joueur exécutant.KillRadii_Cache = Tableau filtré(Global.I, Global.killballnumber[Index de tableau actuel] == Joueur exécutant.A);
+		Joueur exécutant.BounceLockMax_Cache = Décompte de(Tableau filtré(Joueur exécutant.BounceLock_Cache, Élément de tableau actuel));
+		Interrompre si(!Joueur hôte.EditorOn);
+		Détruire un effet(Joueur exécutant.EffectSizeArray);
+		Joueur exécutant.EffectSizeArray = Tableau vide;
+		Créer un effet(Joueur exécutant.EffectSizeToggle ? Joueur exécutant : Non applicable, Sphère, Couleur(Blanc),
+			Global.A[Joueur exécutant.A], 1.400, Visible pour Position et Rayon);
+		Modifier une variable de joueur(Joueur exécutant, EffectSizeArray, Ajouter au tableau, Dernière entité créée);
+		Créer un effet(Joueur exécutant.EffectSizeToggle && Joueur exécutant.A < Décompte de(Global.A)
+			- 1 ? Joueur exécutant : Non applicable, Sphère, Couleur(Blanc), Global.A[Joueur exécutant.A + 1], 1.400,
+			Visible pour Position et Rayon);
+		Modifier une variable de joueur(Joueur exécutant, EffectSizeArray, Ajouter au tableau, Dernière entité créée);
+		Joueur exécutant.BounceIndex_Cache = Tableau filtré(Tableau appliqué(Global.pinballnumber,
+			Élément de tableau actuel == Joueur exécutant.A ? Index de tableau actuel : -1), Élément de tableau actuel >= 0);
+		Joueur exécutant.KillIndex_Cache = Tableau filtré(Tableau appliqué(Global.killballnumber,
+			Élément de tableau actuel == Joueur exécutant.A ? Index de tableau actuel : -1), Élément de tableau actuel >= 0);
+		Si(Joueur exécutant.MovedCheckpoint && Joueur exécutant == Joueur hôte);
+			Global.B = Joueur exécutant.A;
+			Global.J = Joueur exécutant.KillIndex_Cache ? 0 : 99999;
+			Global.L = Décompte de(Joueur exécutant.KillIndex_Cache) ? Global.H[Joueur exécutant.KillIndex_Cache[Global.J]] : Vecteur(0, 0, 0);
+			Global.TQ1 = Joueur exécutant.BounceIndex_Cache ? 0 : 99999;
+			Global.TQ3 = Décompte de(Joueur exécutant.BounceIndex_Cache) ? Global.TQ[Joueur exécutant.BounceIndex_Cache[Global.TQ1]] : Vecteur(
+				0, 0, 0);
+			Joueur exécutant.MovedCheckpoint = Faux;
+		Fin;
+	}
+}
+
+désactivé règle("------------------------------------------------------------------------  Editor ------------------------------------------------------------------------")
+{
+	évènement
+	{
+		Toute la partie - Tout le monde;
+	}
+}
+
+règle("HUD | Clear Excess Data & Save Map")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Joueur hôte.EditorOn != Faux;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Mêlée)) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Interaction)) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Rechargement)) == Vrai;
+		Joueur exécutant == Joueur hôte;
+	}
+
+	actions
+	{
+		Attente(0.500, Interrompre quand faux);
+		Global.B = 0;
+		Global.C = 0;
+		"Portal1PlayerList = 0\r\nPortal2PlayerList = 0"
+		Global.J = 0;
+		Global.K = 0;
+		Global.L = 0;
+		Global.Dao = 0;
+		Global.SHIFT = 0;
+		Global.P = 0;
+		Global.TQ1 = 0;
+		Global.NANBA = 0;
+		Global.TQ2 = 0;
+		Global.TQ3 = 0;
+		Global.save = 0;
+		Global.LeaderBoardFull = Tableau vide;
+		Global.PortalOn = Faux;
+		Activer l’enregistrement du contrôleur;
+		Créer du texte d’interface(Joueur exécutant, Chaîne personnalisée(
+			"　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　\n   0. clear excess data:\n Automatically done when opening this window\n\n   1. Copy da{0}",
+			Chaîne personnalisée(
+			"ta:\n Open Workshop Inspector → Set variable target as global\n click the [x]\n\n   2. Insert data:\n Paste the data in the rul{0}",
+			Chaîne personnalisée(
+			"e named 'map data pasta' (first rule)\n\n   3. Workshop settings:\n ESC→SHOW LOBBY→SETTINGS→ workshop settings →\n toggle 'Edi{0}",
+			Chaîne personnalisée("tor mode' off\n Select display difficulty\n")))), Non applicable, Non applicable, Haut, -99, Couleur(
+			Citron vert), Non applicable, Non applicable, Aucune, Visibilité par défaut);
+		Joueur exécutant.savemaphud[0] = Dernier identifiant de texte;
+		Créer du texte d’interface(Joueur exécutant, Chaîne personnalisée(
+			"　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　\n   4. Create initial sharecode:\n ESC→SHOW LOBBY→SETTINGS→SHARE CODE→\n CREATE NEW COD{0}",
+			Chaîne personnalisée(
+			"E→COPY CODE\n\n   5. Add credits:\n Enter your name & map code in the 'Credits here' rule\n (second rule) \n\n   6. Update for c{0}",
+			Chaîne personnalisée(
+			"redits:\n ESC→SHOW LOBBY→SETTINGS→SHARE CODE→\n UPLOAD TO EXISTING CODE→ PASTE THE CODE YOU CREATED IN STEP 4\n"))),
+			Non applicable, Non applicable, Haut, -98, Couleur(Citron vert), Non applicable, Non applicable, Aucune,
+			Visibilité par défaut);
+		Joueur exécutant.savemaphud[1] = Dernier identifiant de texte;
+		Créer du texte d’interface(Joueur exécutant, Chaîne personnalisée("    > Press Interact to close this window <    "),
+			Non applicable, Non applicable, Haut, -97, Couleur(Citron vert), Non applicable, Non applicable, Aucune,
+			Visibilité par défaut);
+		Joueur exécutant.savemaphud[2] = Dernier identifiant de texte;
+		Attendre jusqu’à(!Bouton maintenu enfoncé(Joueur exécutant, Bouton(Interaction)), 9999);
+		Attendre jusqu’à(Bouton maintenu enfoncé(Joueur exécutant, Bouton(Interaction)), 9999);
+		Détruire du texte d’interface(Premier de(Joueur exécutant.savemaphud));
+		Détruire du texte d’interface(Joueur exécutant.savemaphud[1]);
+		Détruire du texte d’interface(Joueur exécutant.savemaphud[2]);
+	}
+}
+
+règle("HUD | Show/Hide Guide | Hold Melee")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Joueur hôte.EditorOn != Faux;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Mêlée)) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Interaction)) == Faux;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Rechargement)) == Faux;
+		Joueur exécutant == Joueur hôte;
+		Joueur exécutant.E >= 1;
+	}
+
+	actions
+	{
+		Attente(0.800, Interrompre quand faux);
+		Interrompre si(Bouton maintenu enfoncé(Joueur exécutant, Bouton(Interaction)) || Bouton maintenu enfoncé(Joueur exécutant, Bouton(
+			Rechargement)));
+		Jouer un effet(Joueur exécutant, Son d’impact d’amélioration, Couleur(Blanc), Joueur exécutant, 100);
+		Si(Joueur exécutant.K == 1);
+			Joueur exécutant.K = 2;
+			Message en petit(Joueur exécutant, Chaîne personnalisée("   Guide is hidden"));
+		Sinon;
+			Joueur exécutant.K = 1;
+			Message en petit(Joueur exécutant, Chaîne personnalisée("   Guide is open"));
+	}
+}
+
+règle("HUD | Show Guide On Spawn")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Joueur hôte.EditorOn != Faux;
+		Apparition(Joueur exécutant) == Vrai;
+	}
+
+	actions
+	{
+		Joueur exécutant.E = 1;
+		Joueur exécutant.K = 1;
+	}
+}
+
+règle("HUD | Guide")
+{
+	évènement
+	{
+		Toute la partie - Tout le monde;
+	}
+
+	actions
+	{
+		"@Condition hostPlayer.EditorOn\r\n condition messes up if host player leaves"
+		Attendre jusqu’à(Apparition(Joueur hôte), 90);
+		Attente(5, Ignorer la condition);
+		Interrompre si(!Joueur hôte.EditorOn);
+		Créer du texte d’interface(Joueur hôte.K == 1 ? Joueur hôte : Non applicable, Non applicable, Non applicable, Chaîne personnalisée(
+			" \n{0}", Tableau(Chaîne personnalisée("{0} + {1} | Create New Checkpoint\n{2}", Chaîne de liaison d’entrée(Bouton(
+			Interaction)), Chaîne de liaison d’entrée(Bouton(Tir principal)), Chaîne personnalisée(
+			"{0} + {1} | Delete selected Checkpoint\n{2}", Chaîne de liaison d’entrée(Bouton(Interaction)), Chaîne de liaison d’entrée(
+			Bouton(Tir secondaire)), Chaîne personnalisée("{0} + {1} | Add teleport to Checkpoint\n{2}", Chaîne de liaison d’entrée(Bouton(
+			Interaction)), Chaîne de liaison d’entrée(Bouton(Rechargement)), Chaîne personnalisée(
+			"{0} + {1} | Set Checkpoint to current position\n{0} + {2} | Toggle Checkpoint Hitbox", Chaîne de liaison d’entrée(Bouton(
+			Interaction)), Chaîne de liaison d’entrée(Bouton(Capacité ultime)), Chaîne de liaison d’entrée(Bouton(Capacité 1)))))),
+			Chaîne personnalisée("{0} + {1} | Create new kill orb\n{2}", Chaîne de liaison d’entrée(Bouton(Interaction)),
+			Chaîne de liaison d’entrée(Bouton(Tir principal)), Chaîne personnalisée("{0} + {1} | Delete selected orb\n{2}",
+			Chaîne de liaison d’entrée(Bouton(Interaction)), Chaîne de liaison d’entrée(Bouton(Tir secondaire)), Chaîne personnalisée(
+			"{0} + {1} | Select previous orb\n{2}", Chaîne de liaison d’entrée(Bouton(Interaction)), Chaîne de liaison d’entrée(Bouton(
+			S’accroupir)), Chaîne personnalisée("{0} + {1} | Select next orb\n{2}", Chaîne de liaison d’entrée(Bouton(Interaction)),
+			Chaîne de liaison d’entrée(Bouton(Sauter)), Chaîne personnalisée("{0} + {1} | Increase orb size\n{2}",
+			Chaîne de liaison d’entrée(Bouton(Capacité 2)), Chaîne de liaison d’entrée(Bouton(Sauter)), Chaîne personnalisée(
+			"{0} + {1} | Decrease orb size\n{2}", Chaîne de liaison d’entrée(Bouton(Capacité 2)), Chaîne de liaison d’entrée(Bouton(
+			S’accroupir)), Chaîne personnalisée("{0} + {1} | Move orb forward\n{0} + {2} | Move orb Backward", Chaîne de liaison d’entrée(
+			Bouton(Capacité 2)), Chaîne de liaison d’entrée(Bouton(Tir principal)), Chaîne de liaison d’entrée(Bouton(
+			Tir secondaire))))))))), Chaîne personnalisée("{0} + {1} | Create new Bounce orb\n{2}", Chaîne de liaison d’entrée(Bouton(
+			Interaction)), Chaîne de liaison d’entrée(Bouton(Tir principal)), Chaîne personnalisée("{0} + {1} | Delete selected orb\n{2}",
+			Chaîne de liaison d’entrée(Bouton(Interaction)), Chaîne de liaison d’entrée(Bouton(Tir secondaire)), Chaîne personnalisée(
+			"{0} + {1} | Select previous orb\n{2}", Chaîne de liaison d’entrée(Bouton(Interaction)), Chaîne de liaison d’entrée(Bouton(
+			S’accroupir)), Chaîne personnalisée("{0} + {1} | Select next orb\n{2}", Chaîne de liaison d’entrée(Bouton(Interaction)),
+			Chaîne de liaison d’entrée(Bouton(Sauter)), Chaîne personnalisée("{0} + {1} | Increase orb strength\n{2}",
+			Chaîne de liaison d’entrée(Bouton(Capacité 2)), Chaîne de liaison d’entrée(Bouton(Sauter)), Chaîne personnalisée(
+			"{0} + {1} | Decrease orb strength\n{2}", Chaîne de liaison d’entrée(Bouton(Capacité 2)), Chaîne de liaison d’entrée(Bouton(
+			S’accroupir)), Chaîne personnalisée("{0} + {1} | Move orb forward\n{0} + {2} | Move orb back", Chaîne de liaison d’entrée(
+			Bouton(Capacité 2)), Chaîne de liaison d’entrée(Bouton(Tir principal)), Chaîne de liaison d’entrée(Bouton(
+			Tir secondaire))))))))))[Joueur hôte.E - 1]), Droite, 10, Non applicable, Non applicable, Couleur(Jaune),
+			Visible pour et Chaîne de texte, Visibilité par défaut);
+		Créer du texte d’interface(Joueur hôte, Non applicable, Non applicable, Joueur hôte.K == 1 ? Chaîne personnalisée(
+			" \n{0} + {1} | Next checkpoint\n{2}", Chaîne de liaison d’entrée(Bouton(S’accroupir)), Chaîne de liaison d’entrée(Bouton(
+			Tir principal)), Chaîne personnalisée("{0} + {1} | Prev checkpoint\n{2}", Chaîne de liaison d’entrée(Bouton(S’accroupir)),
+			Chaîne de liaison d’entrée(Bouton(Tir secondaire)), Chaîne personnalisée(
+			"{0} | Fly (checkpoint mode only)\nHold {1} | toggle guide\n", Chaîne de liaison d’entrée(Bouton(Capacité 2)),
+			Chaîne de liaison d’entrée(Bouton(Mêlée))))) : Chaîne personnalisée("Hold {0} | toggle guide", Chaîne de liaison d’entrée(
+			Bouton(Mêlée))), Droite, 11, Non applicable, Non applicable, Joueur hôte.K == 1 ? Couleur(Vert) : Couleur(Orange),
+			Visible pour Chaîne de texte et Couleur, Visibilité par défaut);
+		Créer du texte d’interface(Joueur hôte.K == 1 ? Joueur hôte : Non applicable, Non applicable, Non applicable, Chaîne personnalisée(
+			"save map: hold {0} + {1} + {2} and follow instructions", Chaîne de liaison d’entrée(Bouton(Interaction)),
+			Chaîne de liaison d’entrée(Bouton(Mêlée)), Chaîne de liaison d’entrée(Bouton(Rechargement))), Gauche, -12, Non applicable,
+			Non applicable, Couleur(Jaune), Visible pour et Chaîne de texte, Visibilité par défaut);
+		Créer du texte d’interface(Tous les joueurs(Toutes les équipes), Joueur local == Joueur hôte ? Chaîne personnalisée(
+			"Current mode: {0}", Tableau(Chaîne personnalisée("Checkpoints"), Chaîne personnalisée("Kill Orb"), Chaîne personnalisée(
+			"Bounce Orb"))[Joueur hôte.E - 1]) : Chaîne personnalisée("Current editor/host: {0}", Joueur hôte), Non applicable,
+			Non applicable, Droite, -60, Couleur(Rouge), Couleur(Rouge), Couleur(Rouge), Visible pour et Chaîne de texte,
+			Visibilité par défaut);
+		Créer du texte d’interface(Joueur hôte, Non applicable, Non applicable, Chaîne personnalisée("Hold {0} to change mode\n",
+			Chaîne de liaison d’entrée(Bouton(Capacité 1))), Droite, -59, Couleur(Rouge), Couleur(Rouge), Couleur(Rouge),
+			Visible pour et Chaîne de texte, Visibilité par défaut);
+		Créer du texte d’interface(Joueur hôte.E == 3 ? Joueur hôte : Non applicable, Non applicable, Non applicable, Chaîne personnalisée(
+			"{0} + {1} | orb give ultimate | {2}", Chaîne de liaison d’entrée(Bouton(Capacité ultime)), Chaîne de liaison d’entrée(Bouton(
+			Tir principal)), Global.TQ5[Joueur hôte.BounceIndex_Cache[Global.TQ1]] != 0 ? Chaîne personnalisée("on")
+			: Chaîne personnalisée("off")), Haut, -18, Non applicable, Non applicable,
+			Global.TQ5[Joueur hôte.BounceIndex_Cache[Global.TQ1]] != 0 ? Couleur(Vert) : Couleur(Orange),
+			Visible pour Chaîne de texte et Couleur, Visibilité par défaut);
+		Créer du texte d’interface(Joueur hôte.E == 3 ? Joueur hôte : Non applicable, Non applicable, Non applicable, Chaîne personnalisée(
+			"{0} + {1} | orb gives dash | {2}", Chaîne de liaison d’entrée(Bouton(Capacité ultime)), Chaîne de liaison d’entrée(Bouton(
+			Tir secondaire)), Global.TQ6[Joueur hôte.BounceIndex_Cache[Global.TQ1]] != 0 ? Chaîne personnalisée("on")
+			: Chaîne personnalisée("off")), Haut, -17, Non applicable, Non applicable,
+			Global.TQ6[Joueur hôte.BounceIndex_Cache[Global.TQ1]] != 0 ? Couleur(Vert) : Couleur(Orange),
+			Visible pour Chaîne de texte et Couleur, Visibilité par défaut);
+		Créer du texte d’interface(Joueur hôte.E == 3 ? Joueur hôte : Non applicable, Non applicable, Non applicable, Chaîne personnalisée(
+			"{0} + {1} | orb unlocks checkpoint | {2}\n", Chaîne de liaison d’entrée(Bouton(Capacité ultime)), Chaîne de liaison d’entrée(
+			Bouton(Capacité 2)), Global.BounceToggleLock[Joueur hôte.BounceIndex_Cache[Global.TQ1]] != 0 ? Chaîne personnalisée("on")
+			: Chaîne personnalisée("off")), Haut, -16, Non applicable, Non applicable,
+			Global.BounceToggleLock[Joueur hôte.BounceIndex_Cache[Global.TQ1]] != 0 ? Couleur(Vert) : Couleur(Orange),
+			Visible pour Chaîne de texte et Couleur, Visibilité par défaut);
+		Créer du texte d’interface(Joueur hôte.K == 1 ? Joueur hôte : Non applicable, Chaîne personnalisée("{0}",
+			Joueur hôte.E == 1 ? Chaîne personnalisée(" Selected Checkpoint \n Vector: {0}{1} ", Global.A[Global.B], Décompte de(
+			Global.A[Global.B]) < 2 ? Chaîne personnalisée("") : Chaîne personnalisée("\nTeleport:{0}", Global.A[Global.B][1])) : (
+			Joueur hôte.E == 2 ? Chaîne personnalisée(" Selected Kill Orb \n Vector: {0} \n radius: {1} ",
+			Global.H[Joueur hôte.KillIndex_Cache[Global.J]], Global.I[Joueur hôte.KillIndex_Cache[Global.J]]) : (
+			Joueur hôte.E == 3 ? Chaîne personnalisée(" Selected Bounce Orb \n Vector: {0} \n strength: {1} \n Lock: {2}",
+			Global.TQ[Joueur hôte.BounceIndex_Cache[Global.TQ1]], Global.EditMode[Joueur hôte.BounceIndex_Cache[Global.TQ1]],
+			Chaîne personnalisée("{0} \n Dash: {1} \n Ult: {2} ", Global.BounceToggleLock[Joueur hôte.BounceIndex_Cache[Global.TQ1]],
+			Global.TQ6[Joueur hôte.BounceIndex_Cache[Global.TQ1]], Global.TQ5[Joueur hôte.BounceIndex_Cache[Global.TQ1]]))
+			: Chaîne personnalisée("")))), Non applicable, Non applicable, Gauche, 50, Couleur(Blanc), Couleur(Orange), Couleur(Orange),
+			Visible pour et Chaîne de texte, Visibilité par défaut);
+		"original without vector display\r\n orb limit count"
+		Créer du texte d’interface(Joueur hôte.K == 1 ? Joueur hôte : Non applicable, Chaîne personnalisée("orb/portal limit: {0}/{1}",
+			Décompte de(Global.TQ) + Décompte de(Global.H) + Décompte de(Global.CustomPortalStart), 193), Non applicable, Non applicable,
+			Haut, -20, Couleur(Rouge), Couleur(Orange), Couleur(Orange), Visible pour et Chaîne de texte, Visibilité par défaut);
+	}
+}
+
+règle("HUD | Guide Effects")
+{
+	évènement
+	{
+		Toute la partie - Tout le monde;
+	}
+
+	actions
+	{
+		"@Condition hostPlayer.EditorOn"
+		Attendre jusqu’à(Apparition(Joueur hôte), 90);
+		Attente(5, Ignorer la condition);
+		Interrompre si(!Joueur hôte.EditorOn);
+		"##createEffect(getAllPlayers(), Effect.SPHERE, Color.RED, H[J], I[J], EffectReeval.VISIBILITY_POSITION_AND_RADIUS)\r\n Purple bounce selectino aura"
+		Créer un effet(Global.B != -1 && Joueur hôte.BouncePosition_Cache ? Tous les joueurs(Toutes les équipes) : Non applicable,
+			Bonne aura, Couleur(Violet), Global.TQ3, 1, Visible pour Position et Rayon);
+		"Don't open it easily, the action will be too long\r\n Selected kill orb text"
+		Créer du texte en jeu(Global.B != -1 && Joueur hôte.KillPosition_Cache ? Tous les joueurs(Toutes les équipes) : Non applicable,
+			Chaîne personnalisée("Selected Kill Orb"), Global.H[Joueur hôte.KillIndex_Cache[Global.J]], 1.600, Ne pas masquer,
+			Visible pour Position et Chaîne de texte, Couleur(Bleu ciel), Visibilité par défaut);
+		"Red distance orb for kill orb"
+		Créer un effet(Global.B != -1 && Joueur hôte.KillPosition_Cache ? Tous les joueurs(Toutes les équipes) : Non applicable, Orbe,
+			Couleur(Rouge), Global.L, 1, Visible pour Position et Rayon);
+		"Distance # text for kill orb"
+		Créer du texte en jeu(Global.B != -1 && Joueur hôte.KillPosition_Cache ? Tous les joueurs(Toutes les équipes) : Non applicable,
+			Chaîne de texte("{0} m", Distance entre(Joueur hôte, Global.L)), Global.L - Vecteur(0, 1.500, 0), 1.500, Ne pas masquer,
+			Visible pour Position et Chaîne de texte, Couleur(Rouge), Visibilité par défaut);
+		"Selected kill orb arrow icon"
+		Créer une icône(Global.B != -1 && Joueur hôte.KillPosition_Cache ? Tous les joueurs(Toutes les équipes) : Non applicable,
+			Global.H[Joueur hôte.KillIndex_Cache[Global.J]] + Vecteur(0, 0.600, 0), Flèche bas, Visible pour et Position, Couleur(Rouge),
+			Vrai);
+		"Purple sphere for teleport location"
+		Créer un effet(Décompte de(Global.A[Global.B]) > 1 ? Tous les joueurs(Toutes les équipes) : Non applicable, Sphère, Couleur(
+			Violet), Global.A[Global.B][1] - Vecteur(0, 0.100, 0), 0.200, Visible pour Position et Rayon);
+		"Teleport arrow icon"
+		Créer une icône(Décompte de(Global.A[Global.B]) > 1 ? Tous les joueurs(Toutes les équipes) : Non applicable,
+			Global.A[Global.B][1] + Vecteur(0, 0.600, 0), Flèche bas, Visible pour et Position, Couleur(Violet), Vrai);
+		"Teleport text"
+		Créer du texte en jeu(Décompte de(Global.A[Global.B]) > 1 ? Tous les joueurs(Toutes les équipes) : Non applicable,
+			Chaîne personnalisée("TELEPORTER EXIT"), Global.A[Global.B][1], 1.600, Ne pas masquer,
+			Visible pour Position et Chaîne de texte, Couleur(Bleu ciel), Visibilité par défaut);
+		Attente(1, Ignorer la condition);
+		Si(Global.CompMode);
+			Global.CompAtmpNum = 0;
+			Global.CompTime = 99999;
+			Tous les joueurs(Toutes les équipes).AttemptCount = Non applicable;
+			Tous les joueurs(Toutes les équipes).CompDone = Faux;
+	}
+}
+
+règle("Fly/Noclip Toggle | Hold Deflect")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Joueur hôte.EditorOn != Faux;
+		"@Condition eventPlayer.EditModeSelection > 0"
+		Joueur exécutant.E == 1;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Capacité 2)) == Vrai;
+		"@Condition not eventPlayer.isHoldingButton(Button.JUMP)"
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(S’accroupir)) == Faux;
+		"@Condition not eventPlayer.isHoldingButton(Button.PRIMARY_FIRE)\r\n@Condition not eventPlayer.isHoldingButton(Button.SECONDARY_FIRE)"
+		Joueur exécutant.flytoggle == Non applicable;
+	}
+
+	actions
+	{
+		Attendre jusqu’à(!Bouton maintenu enfoncé(Joueur exécutant, Bouton(Capacité 2)) || (Bouton maintenu enfoncé(Joueur exécutant,
+			Bouton(S’accroupir)) && Bouton maintenu enfoncé(Joueur exécutant, Bouton(Interaction))), 1);
+		Si(Bouton maintenu enfoncé(Joueur exécutant, Bouton(S’accroupir)) && Bouton maintenu enfoncé(Joueur exécutant, Bouton(
+			Interaction)));
+			Attente(0.016, Ignorer la condition);
+			Interrompre;
+		Fin;
+		Joueur exécutant.flytoggle = Position de(Joueur exécutant) + Haut;
+		Forcer la position du joueur(Joueur exécutant, Joueur exécutant.flytoggle, Vrai);
+		Désactiver la collision des mouvements avec l’environnement(Joueur exécutant, Vrai);
+		Tant que(En vie(Joueur exécutant) && Joueur exécutant.flytoggle != Non applicable && !Bouton maintenu enfoncé(Joueur exécutant,
+			Bouton(Capacité 2)));
+			Joueur exécutant.flytoggle += Regard en direction de(Joueur exécutant) * (Composante Z de(Accélération de(Joueur exécutant))
+				> 0 ? 0.250 + Bouton maintenu enfoncé(Joueur exécutant, Bouton(Sauter)) : (Composante Z de(Accélération de(Joueur exécutant))
+				< 0 ? -0.250 - Bouton maintenu enfoncé(Joueur exécutant, Bouton(Sauter)) : 0));
+			Joueur exécutant.flytoggle += Vecteur mondial de(Vecteur(Composante X de(Accélération de(Joueur exécutant)) * 0.300, 0, 0),
+				Joueur exécutant, Rotation);
+			Attente(0.016, Ignorer la condition);
+		Fin;
+		Activer la collision des mouvements avec l’environnement(Joueur exécutant);
+		"if eventPlayer.flytoggle != null:"
+		Joueur exécutant.flytoggle = Non applicable;
+		Arrêter de forcer la position du joueur(Joueur exécutant);
+		Attente(1, Ignorer la condition);
+	}
+}
+
+règle("Change Edit Mode | Hold Dash")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Joueur hôte.EditorOn != Faux;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Capacité 1)) == Vrai;
+		Joueur exécutant == Joueur hôte;
+	}
+
+	actions
+	{
+		Attente(1, Interrompre quand faux);
+		Joueur exécutant.flytoggle = Non applicable;
+		Si(Joueur exécutant.E == 1);
+			Joueur exécutant.E = 2;
+			Message en petit(Joueur hôte, Chaîne personnalisée("   Current mode: Kill Orb"));
+		Sinon Si(Joueur exécutant.E == 2);
+			Joueur exécutant.E = 3;
+			Message en petit(Joueur hôte, Chaîne personnalisée("   Current mode: Bounce Orb"));
+		Sinon Si(Joueur exécutant.E == 3);
+			Joueur exécutant.E = 1;
+			Message en petit(Joueur hôte, Chaîne personnalisée("   Current mode: Checkpoint"));
+	}
+}
+
+règle("Bounce Ball | Toggle Ultimate | Ultimate + Primary Fire")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Joueur hôte.EditorOn != Faux;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Capacité ultime)) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Tir principal)) == Vrai;
+		Joueur exécutant == Joueur hôte;
+		Joueur exécutant.E == 3;
+		Décompte de(Global.TQ) != 0;
+	}
+
+	actions
+	{
+		"1 original"
+		Attente(0.240, Ignorer la condition);
+		Si(Global.TQ5[Joueur hôte.BounceIndex_Cache[Global.TQ1]] == Faux);
+			Global.TQ5[Joueur hôte.BounceIndex_Cache[Global.TQ1]] = Vrai;
+		Sinon Si(Global.TQ5[Joueur hôte.BounceIndex_Cache[Global.TQ1]] == Vrai);
+			Global.TQ5[Joueur hôte.BounceIndex_Cache[Global.TQ1]] = Faux;
+		Fin;
+		Sous-programme à appeler(UpdateCache);
+	}
+}
+
+règle("Bounce Ball | Toggle Dash | Ultimate + Secondary Fire")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Joueur hôte.EditorOn != Faux;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Tir secondaire)) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Capacité ultime)) == Vrai;
+		Joueur exécutant == Joueur hôte;
+		Joueur exécutant.E == 3;
+		Décompte de(Global.TQ) != 0;
+	}
+
+	actions
+	{
+		"1 original"
+		Attente(0.240, Ignorer la condition);
+		Si(Global.TQ6[Joueur hôte.BounceIndex_Cache[Global.TQ1]] == Faux);
+			Global.TQ6[Joueur hôte.BounceIndex_Cache[Global.TQ1]] = Vrai;
+		Sinon Si(Global.TQ6[Joueur hôte.BounceIndex_Cache[Global.TQ1]] == Vrai);
+			Global.TQ6[Joueur hôte.BounceIndex_Cache[Global.TQ1]] = Faux;
+		Fin;
+		Sous-programme à appeler(UpdateCache);
+	}
+}
+
+règle("Bounce Ball | Toggle Lock | Ultimate + deflect")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Joueur hôte.EditorOn != Faux;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Capacité 2)) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Capacité ultime)) == Vrai;
+		Joueur exécutant == Joueur hôte;
+		Joueur exécutant.E == 3;
+		Décompte de(Global.TQ) != 0;
+	}
+
+	actions
+	{
+		"1 original"
+		Attente(0.240, Ignorer la condition);
+		Si(Global.BounceToggleLock[Joueur hôte.BounceIndex_Cache[Global.TQ1]] == Faux);
+			Global.BounceToggleLock[Joueur hôte.BounceIndex_Cache[Global.TQ1]] = Vrai;
+			Global.EditMode[Joueur hôte.BounceIndex_Cache[Global.TQ1]] = 0;
+		Sinon Si(Global.BounceToggleLock[Joueur hôte.BounceIndex_Cache[Global.TQ1]] == Vrai);
+			Global.BounceToggleLock[Joueur hôte.BounceIndex_Cache[Global.TQ1]] = Faux;
+			Global.EditMode[Joueur hôte.BounceIndex_Cache[Global.TQ1]] = 10;
+		Fin;
+		Sous-programme à appeler(UpdateCache);
+	}
+}
+
+règle("Bounce Ball | Increase Strength | Deflect + Jump")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Joueur hôte.EditorOn != Faux;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Capacité 2)) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Sauter)) == Vrai;
+		Joueur exécutant == Joueur hôte;
+		Joueur exécutant.E == 3;
+	}
+
+	actions
+	{
+		Si(Décompte de(Global.TQ) > 0);
+			Global.EditMode[Joueur hôte.BounceIndex_Cache[Global.TQ1]] += 0.100;
+			Attente(0.100, Ignorer la condition);
+			Boucle si la condition est vraie;
+		Fin;
+		Sous-programme à appeler(UpdateCache);
+	}
+}
+
+règle("Bounce Ball | Decrease Strength | Deflect + Crouch")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Joueur hôte.EditorOn != Faux;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Capacité 2)) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(S’accroupir)) == Vrai;
+		Joueur exécutant == Joueur hôte;
+		Joueur exécutant.E == 3;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Interaction)) == Faux;
+	}
+
+	actions
+	{
+		Si(Décompte de(Global.TQ) > 0);
+			Global.EditMode[Joueur hôte.BounceIndex_Cache[Global.TQ1]] -= 0.100;
+			Attente(0.100, Ignorer la condition);
+			Boucle si la condition est vraie;
+		Fin;
+		Sous-programme à appeler(UpdateCache);
+	}
+}
+
+règle("Kill Orb | Increase Size | Deflect + Jump")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Joueur hôte.EditorOn != Faux;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Capacité 2)) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Sauter)) == Vrai;
+		Joueur exécutant == Joueur hôte;
+		Joueur exécutant.E > 1;
+	}
+
+	actions
+	{
+		Si(Joueur exécutant.E == 2);
+			Si(Décompte de(Global.H) > 0);
+				Global.I[Joueur hôte.KillIndex_Cache[Global.J]] += 0.100;
+				Attente(0.100, Ignorer la condition);
+				Boucle si la condition est vraie;
+			Fin;
+		Sinon Si(Joueur exécutant.E == 3);
+			Si(Décompte de(Global.TQ) > 0);
+				Global.EditMode[Joueur hôte.BounceIndex_Cache[Global.TQ1]] += 0.100;
+				Attente(0.100, Ignorer la condition);
+				Boucle si la condition est vraie;
+			Fin;
+		Fin;
+		Sous-programme à appeler(UpdateCache);
+	}
+}
+
+règle("Kill Orb | Decrease Size | Deflect + Crouch")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Joueur hôte.EditorOn != Faux;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Capacité 2)) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(S’accroupir)) == Vrai;
+		Joueur exécutant == Joueur hôte;
+		Joueur exécutant.E > 1;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Interaction)) == Faux;
+	}
+
+	actions
+	{
+		Si(Décompte de(Global.H) > 0);
+			Si(Joueur exécutant.E == 2);
+				Global.I[Joueur hôte.KillIndex_Cache[Global.J]] -= 0.100;
+				Attente(0.100, Ignorer la condition);
+				Boucle si la condition est vraie;
+			Fin;
+		Fin;
+		Sous-programme à appeler(UpdateCache);
+	}
+}
+
+règle("Kill Orb / Bounce Orb | Move Toward/Backward | Deflect + Primary Fire")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Joueur hôte.EditorOn != Faux;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Capacité 2)) == Vrai;
+		(Bouton maintenu enfoncé(Joueur exécutant, Bouton(Tir principal)) || Bouton maintenu enfoncé(Joueur exécutant, Bouton(
+			Tir secondaire))) == Vrai;
+		Joueur exécutant == Joueur hôte;
+		Joueur exécutant.E > 1;
+	}
+
+	actions
+	{
+		Si(Joueur exécutant.E == 2);
+			Si(Décompte de(Global.H) == 0);
+				Attente(0.016, Ignorer la condition);
+				Interrompre;
+			Fin;
+			Tant que(Bouton maintenu enfoncé(Joueur exécutant, Bouton(Capacité 2)) && (Bouton maintenu enfoncé(Joueur exécutant, Bouton(
+				Tir principal)) || Bouton maintenu enfoncé(Joueur exécutant, Bouton(Tir secondaire))));
+				Global.L += Regard en direction de(Joueur exécutant) * (Bouton maintenu enfoncé(Joueur exécutant, Bouton(Tir principal))
+					? 0.063 : -0.063);
+				Attente(0.016, Ignorer la condition);
+			Fin;
+			Global.H[Joueur hôte.KillIndex_Cache[Global.J]] = Global.L;
+		Sinon Si(Joueur exécutant.E == 3);
+			Si(Décompte de(Global.TQ) == 0);
+				Attente(0.016, Ignorer la condition);
+				Interrompre;
+			Fin;
+			Tant que(Bouton maintenu enfoncé(Joueur exécutant, Bouton(Capacité 2)) && (Bouton maintenu enfoncé(Joueur exécutant, Bouton(
+				Tir principal)) || Bouton maintenu enfoncé(Joueur exécutant, Bouton(Tir secondaire))));
+				Global.TQ3 += Regard en direction de(Joueur exécutant) * (Bouton maintenu enfoncé(Joueur exécutant, Bouton(Tir principal))
+					? 0.063 : -0.063);
+				Attente(0.016, Ignorer la condition);
+			Fin;
+			Global.TQ[Joueur hôte.BounceIndex_Cache[Global.TQ1]] = Global.TQ3;
+		Fin;
+		Sous-programme à appeler(UpdateCache);
+		Attente(0.016, Ignorer la condition);
+	}
+}
+
+règle("Checkpoint / Kill Orb / Bounce Orb | Create | Interact + Primary Fire")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Joueur hôte.EditorOn != Faux;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Interaction)) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Tir principal)) == Vrai;
+		Joueur exécutant == Joueur hôte;
+	}
+
+	actions
+	{
+		Si(Joueur exécutant.E == 1);
+			Si(Global.B != -1 && Distance entre(Joueur exécutant, Global.A[Global.B]) <= 1.400);
+				Message en petit(Joueur exécutant, Chaîne personnalisée("   Cannot place checkpoints too close."));
+				Interrompre;
+			Fin;
+			Si(Global.B == Décompte de(Global.A) - 1);
+				Modifier une variable globale(A, Ajouter au tableau, Position de(Joueur exécutant) - Vecteur(0, 0, 0));
+				Global.B = Décompte de(Global.A) - 1;
+			Sinon;
+				Modifier une variable globale(A, Ajouter au tableau, Position de(Joueur exécutant));
+				Global.A = Tableau appliqué(Global.A, Index de tableau actuel < Global.B + 1 ? Élément de tableau actuel : (
+					Index de tableau actuel == Global.B + 1 ? Dernier(Global.A) : Global.A[Index de tableau actuel - 1]));
+				Global.B += 1;
+				Global.killballnumber = Tableau appliqué(Global.killballnumber, Élément de tableau actuel + (
+					Élément de tableau actuel >= Global.B ? 1 : 0));
+				Global.pinballnumber = Tableau appliqué(Global.pinballnumber, Élément de tableau actuel + (
+					Élément de tableau actuel >= Global.B ? 1 : 0));
+				Sous-programme à appeler(UpdateCache);
+				Sous-programme à appeler(RebuildKillOrbs);
+				Sous-programme à appeler(RebuildBounceOrbs);
+			Fin;
+			Message en petit(Tous les joueurs(Toutes les équipes), Chaîne personnalisée("   New Checkpoint has been created"));
+		Sinon Si(Joueur exécutant.E == 2);
+			"if eventPlayer.CurrentCheckpoint == 0:\r\n     bigMessage(getAllPlayers(), \"Cannot place Kill Orb on first checkpoint\")\r\n else:"
+			Si(Décompte de(Global.TQ) + Décompte de(Global.H) + Décompte de(Global.CustomPortalStart) >= 193);
+				Message en grand(Tous les joueurs(Toutes les équipes), Chaîne personnalisée(
+					"Orb/portal limit reached for this map, delete old orbs first"));
+				Attente(0.016, Ignorer la condition);
+				Interrompre;
+			Fin;
+			Modifier une variable globale(H, Ajouter au tableau, Position de(Joueur exécutant));
+			Modifier une variable globale(killballnumber, Ajouter au tableau, Joueur exécutant.A);
+			Sous-programme à appeler(UpdateCache);
+			Global.J = Décompte de(Joueur hôte.KillIndex_Cache) - 1;
+			Global.I[Joueur hôte.KillIndex_Cache[Global.J]] = 5;
+			"for TempIterator1 in range(len(KillBallPositions)):\r\n     destroyEffect(KillBallEffects[TempIterator1])\r\n KillBallEffects = []\r\n KILLBALL()"
+			Créer un effet(Tableau filtré(Ajouter au tableau(Tous les joueurs(Toutes les équipes), Non applicable),
+				Élément de tableau actuel.A == Global.killballnumber[Évaluer une fois(Joueur hôte.KillIndex_Cache[Global.J])]), Sphère,
+				Couleur(Bleu), Global.H[Évaluer une fois(Joueur hôte.KillIndex_Cache[Global.J])], Global.I[Évaluer une fois(
+				Joueur hôte.KillIndex_Cache[Global.J])], Visible pour Position et Rayon);
+			Modifier une variable globale(K, Ajouter au tableau, Dernière entité créée);
+			Sous-programme à appeler(UpdateCache);
+			Global.J = Décompte de(Joueur hôte.KillIndex_Cache) - 1;
+			Global.L = Global.H[Joueur hôte.KillIndex_Cache[Global.J]];
+			Sous-programme à appeler(RebuildKillOrbs);
+			Message en grand(Tous les joueurs(Toutes les équipes), Chaîne personnalisée(
+				"New Kill Orb has been created! \r\nIt's only valid for checkpoint {0}", Joueur exécutant.A));
+		Sinon Si(Joueur exécutant.E == 3);
+			"if eventPlayer.CurrentCheckpoint == 0:\r\n     bigMessage(getAllPlayers(), \"Cannot place bounce orb on first checkpoint\")\r\n else:"
+			Si(Décompte de(Global.TQ) + Décompte de(Global.H) + Décompte de(Global.CustomPortalStart) >= 193);
+				Message en grand(Tous les joueurs(Toutes les équipes), Chaîne personnalisée(
+					"Orb/portal limit reached for this map, delete old orbs first"));
+				Attente(0.016, Ignorer la condition);
+				Interrompre;
+			Fin;
+			Modifier une variable globale(TQ, Ajouter au tableau, Position de(Joueur exécutant));
+			Modifier une variable globale(pinballnumber, Ajouter au tableau, Joueur exécutant.A);
+			Sous-programme à appeler(UpdateCache);
+			Global.TQ1 = Décompte de(Joueur hôte.BounceIndex_Cache) - 1;
+			Global.EditMode[Joueur hôte.BounceIndex_Cache[Global.TQ1]] = 10;
+			Global.TQ5[Joueur hôte.BounceIndex_Cache[Global.TQ1]] = Faux;
+			Global.TQ6[Joueur hôte.BounceIndex_Cache[Global.TQ1]] = Faux;
+			Global.BounceToggleLock[Joueur hôte.BounceIndex_Cache[Global.TQ1]] = Faux;
+			"for TempIterator1 in range(len(BouncePositions)):\r\n     destroyEffect(BounceEffects[TempIterator1])\r\n BounceEffects = []\r\n pinball()"
+			Créer un effet(Tableau filtré(Ajouter au tableau(Tous les joueurs(Toutes les équipes), Non applicable),
+				Élément de tableau actuel.A == Global.pinballnumber[Évaluer une fois(Joueur hôte.BounceIndex_Cache[Global.TQ1])
+				] && !Contenu du tableau(Élément de tableau actuel.LockCollected, Évaluer une fois(Global.TQ[Évaluer une fois(
+				Joueur hôte.BounceIndex_Cache[Global.TQ1])]))), Orbe, Global.BounceToggleLock[Évaluer une fois(
+				Joueur hôte.BounceIndex_Cache[Global.TQ1])] ? Couleur(Orange) : Couleur(Vert), Global.TQ[Évaluer une fois(
+				Joueur hôte.BounceIndex_Cache[Global.TQ1])], 1, Visible pour Position Rayon et Couleur);
+			Modifier une variable globale(TQ2, Ajouter au tableau, Dernière entité créée);
+			Sous-programme à appeler(UpdateCache);
+			Global.TQ1 = Décompte de(Joueur hôte.BounceIndex_Cache) - 1;
+			Global.TQ3 = Global.TQ[Joueur hôte.BounceIndex_Cache[Global.TQ1]];
+			Sous-programme à appeler(RebuildBounceOrbs);
+			Message en grand(Tous les joueurs(Toutes les équipes), Chaîne personnalisée(
+				"New Bounce Orb has been created! \r\nIt's only valid for checkpoint {0}", Joueur exécutant.A));
+		Fin;
+		Attente(0.640, Ignorer la condition);
+	}
+}
+
+règle("Checkpoint / Kill Orb / Bounce Orb | Delete | Interact + Secondary Fire")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Joueur hôte.EditorOn != Faux;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Interaction)) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Tir secondaire)) == Vrai;
+		Joueur exécutant == Joueur hôte;
+	}
+
+	actions
+	{
+		Si(Joueur exécutant.E == 1);
+			"Resync Kill Orbs"
+			Joueur exécutant.Temp = Tableau vide;
+			Joueur exécutant.Temp = Tableau filtré(Tableau appliqué(Global.killballnumber,
+				Élément de tableau actuel == Global.B ? Index de tableau actuel : -1), Élément de tableau actuel >= 0);
+			"eventPlayer.Temp = [i for e, i in KillballCheckpoints if e == SelectedCheckpoint_Editing]"
+			Pour variable globale(NANBA, 0, Décompte de(Joueur exécutant.Temp), 1);
+				Détruire un effet(Global.K[Joueur exécutant.Temp[Global.NANBA]]);
+				Modifier une variable globale(K, Supprimer du tableau par index, Joueur exécutant.Temp[Global.NANBA]);
+				Attente(0.016, Ignorer la condition);
+			Fin;
+			"Remove specified checkpoint"
+			Global.killballnumber = Supprimer du tableau(Global.killballnumber, Global.B);
+			"Decrement checkpoints after removed one"
+			Global.killballnumber = Tableau appliqué(Global.killballnumber, Élément de tableau actuel - (
+				Élément de tableau actuel > Global.B ? 1 : 0));
+			"Remove Radii at Checkpoint indexes (temp)"
+			Global.I = Tableau filtré(Global.I, !Contenu du tableau(Joueur exécutant.Temp, Index de tableau actuel));
+			Global.H = Tableau filtré(Global.H, !Contenu du tableau(Joueur exécutant.Temp, Index de tableau actuel));
+			Global.J = Décompte de(Joueur hôte.KillIndex_Cache) - 1;
+			Global.L = Global.H[Joueur hôte.KillIndex_Cache[Global.J]];
+			Joueur exécutant.Temp = Tableau vide;
+			"Resync Bounce Orbs"
+			Joueur exécutant.Temp = Tableau filtré(Tableau appliqué(Global.pinballnumber,
+				Élément de tableau actuel == Global.B ? Index de tableau actuel : -1), Élément de tableau actuel >= 0);
+			"eventPlayer.Temp = [i for e, i in BouncePadCheckpoints if e == SelectedCheckpoint_Editing]"
+			Pour variable globale(NANBA, 0, Décompte de(Joueur exécutant.Temp), 1);
+				Détruire un effet(Global.TQ2[Joueur exécutant.Temp[Global.NANBA]]);
+				Modifier une variable globale(TQ2, Supprimer du tableau par index, Joueur exécutant.Temp[Global.NANBA]);
+				Attente(0.016, Ignorer la condition);
+			Fin;
+			"Remove specified checkpoint"
+			Global.pinballnumber = Supprimer du tableau(Global.pinballnumber, Global.B);
+			"Decrement checkpoints after removed one"
+			Global.pinballnumber = Tableau appliqué(Global.pinballnumber, Élément de tableau actuel - (
+				Élément de tableau actuel > Global.B ? 1 : 0));
+			Global.TQ = Tableau filtré(Global.TQ, !Contenu du tableau(Joueur exécutant.Temp, Index de tableau actuel));
+			Global.EditMode = Tableau filtré(Global.EditMode, !Contenu du tableau(Joueur exécutant.Temp, Index de tableau actuel));
+			Global.TQ5 = Tableau filtré(Global.TQ5, !Contenu du tableau(Joueur exécutant.Temp, Index de tableau actuel));
+			Global.TQ6 = Tableau filtré(Global.TQ6, !Contenu du tableau(Joueur exécutant.Temp, Index de tableau actuel));
+			Global.BounceToggleLock = Tableau filtré(Global.BounceToggleLock, !Contenu du tableau(Joueur exécutant.Temp,
+				Index de tableau actuel));
+			Global.TQ1 = Décompte de(Joueur hôte.BounceIndex_Cache) - 1;
+			Global.TQ3 = Global.TQ[Joueur hôte.BounceIndex_Cache[Global.TQ1]];
+			Modifier une variable globale(A, Supprimer du tableau par index, Global.B);
+			Modifier une variable globale(C, Supprimer du tableau par index, Global.B);
+			Si(Global.B <= 0);
+				Global.B = -1;
+				Passer(2);
+			Fin;
+			Global.B -= 1;
+			Sous-programme à appeler(RebuildKillOrbs);
+			Sous-programme à appeler(RebuildBounceOrbs);
+			Message en petit(Tous les joueurs(Toutes les équipes), Chaîne personnalisée("   Checkpoint has been deleted"));
+		Sinon Si(Joueur exécutant.E == 2 && Décompte de(Global.H) != 0 && Joueur hôte.KillPosition_Cache);
+			Modifier une variable globale(H, Supprimer du tableau par index, Joueur hôte.KillIndex_Cache[Global.J]);
+			Modifier une variable globale(I, Supprimer du tableau par index, Joueur hôte.KillIndex_Cache[Global.J]);
+			Modifier une variable globale(killballnumber, Supprimer du tableau par index, Joueur hôte.KillIndex_Cache[Global.J]);
+			Détruire un effet(Global.K[Joueur hôte.KillIndex_Cache[Global.J]]);
+			Modifier une variable globale(K, Supprimer du tableau par index, Joueur hôte.KillIndex_Cache[Global.J]);
+			Passer si(Global.J <= 0, 1);
+			Global.J -= 1;
+			Sous-programme à appeler(UpdateCache);
+			Sous-programme à appeler(RebuildKillOrbs);
+			Global.L = Global.H[Joueur hôte.KillIndex_Cache[Global.J]];
+		Sinon Si(Joueur exécutant.E == 3 && Décompte de(Global.TQ) != 0 && Joueur hôte.BouncePosition_Cache);
+			Modifier une variable globale(TQ, Supprimer du tableau par index, Joueur hôte.BounceIndex_Cache[Global.TQ1]);
+			Modifier une variable globale(EditMode, Supprimer du tableau par index, Joueur hôte.BounceIndex_Cache[Global.TQ1]);
+			Modifier une variable globale(TQ5, Supprimer du tableau par index, Joueur hôte.BounceIndex_Cache[Global.TQ1]);
+			Modifier une variable globale(TQ6, Supprimer du tableau par index, Joueur hôte.BounceIndex_Cache[Global.TQ1]);
+			Modifier une variable globale(BounceToggleLock, Supprimer du tableau par index, Joueur hôte.BounceIndex_Cache[Global.TQ1]);
+			Détruire un effet(Global.TQ2[Joueur hôte.BounceIndex_Cache[Global.TQ1]]);
+			Modifier une variable globale(TQ2, Supprimer du tableau par index, Joueur hôte.BounceIndex_Cache[Global.TQ1]);
+			Modifier une variable globale(pinballnumber, Supprimer du tableau par index, Joueur hôte.BounceIndex_Cache[Global.TQ1]);
+			Passer si(Global.TQ1 <= 0, 1);
+			Global.TQ1 -= 1;
+			Sous-programme à appeler(UpdateCache);
+			Sous-programme à appeler(RebuildBounceOrbs);
+			Global.TQ3 = Global.TQ[Joueur hôte.BounceIndex_Cache[Global.TQ1]];
+		Fin;
+		Sous-programme à appeler(UpdateCache);
+	}
+}
+
+règle("Checkpoint | Move | Ultimate + Interact")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Joueur hôte.EditorOn != Faux;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Capacité ultime)) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Interaction)) == Vrai;
+		Joueur exécutant == Joueur hôte;
+	}
+
+	actions
+	{
+		Message en petit(Tous les joueurs(Toutes les équipes), Décompte de(Global.A[Global.B]) != 0 ? Chaîne personnalisée(
+			"   Checkpoint {0} has been deleted", Global.B) : Chaîne personnalisée(""));
+		Global.A[Global.B] = Position de(Joueur exécutant) - Vecteur(0, 0, 0);
+		Message en petit(Tous les joueurs(Toutes les équipes), Chaîne personnalisée("   Checkpoint has been moved to your position"));
+	}
+}
+
+règle("Kill Orb / Bounce Orb | Select Previous | Interact + Crouch")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Joueur hôte.EditorOn != Faux;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Interaction)) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(S’accroupir)) == Vrai;
+		Joueur exécutant == Joueur hôte;
+	}
+
+	actions
+	{
+		Si(Joueur exécutant.E == 2);
+			"current = ( current - 1 ) % len(cache)"
+			Global.J = (Global.J - 1) % Décompte de(Joueur exécutant.KillIndex_Cache);
+			Global.J = Global.J >= 0 ? Global.J : Décompte de(Joueur exécutant.KillIndex_Cache) - 1;
+			Global.L = Global.H[Joueur hôte.KillIndex_Cache[Global.J]];
+		Sinon Si(Joueur exécutant.E == 3);
+			Global.TQ1 = (Global.TQ1 - 1) % Décompte de(Joueur exécutant.BounceIndex_Cache);
+			Global.TQ1 = Global.TQ1 >= 0 ? Global.TQ1 : Décompte de(Joueur exécutant.BounceIndex_Cache) - 1;
+			Global.TQ3 = Global.TQ[Joueur hôte.BounceIndex_Cache[Global.TQ1]];
+	}
+}
+
+règle("Kill Orb / Bounce Orb | Select Next | Interact + Jump")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Joueur hôte.EditorOn != Faux;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Interaction)) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Sauter)) == Vrai;
+		Joueur exécutant == Joueur hôte;
+	}
+
+	actions
+	{
+		Si(Joueur exécutant.E == 2);
+			"current = ( current + 1 ) % len(cache)"
+			Global.J = (Global.J + 1) % Décompte de(Joueur exécutant.KillIndex_Cache);
+			Global.L = Global.H[Joueur hôte.KillIndex_Cache[Global.J]];
+		Sinon Si(Joueur exécutant.E == 3);
+			Global.TQ1 = (Global.TQ1 + 1) % Décompte de(Joueur exécutant.BounceIndex_Cache);
+			Global.TQ3 = Global.TQ[Joueur hôte.BounceIndex_Cache[Global.TQ1]];
+	}
+}
+
+règle("Checkpoint | Toggle Checkpoint Sizes | Interact + Dash")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Joueur hôte.EditorOn != Faux;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Interaction)) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Capacité 1)) == Vrai;
+		Joueur exécutant == Joueur hôte;
+	}
+
+	actions
+	{
+		Joueur exécutant.EffectSizeToggle = !Joueur exécutant.EffectSizeToggle;
+	}
+}
+
+règle("Teleport | Add | Interact + Rel﻿oad")
+{
+	évènement
+	{
+		Toute la partie - Tout le monde;
+	}
+
+	conditions
+	{
+		Joueur hôte.EditorOn != Faux;
+		Bouton maintenu enfoncé(Joueur hôte, Bouton(Mêlée)) == Faux;
+		Bouton maintenu enfoncé(Joueur hôte, Bouton(Interaction)) == Vrai;
+		Bouton maintenu enfoncé(Joueur hôte, Bouton(Rechargement)) == Vrai;
+		Décompte de(Global.A) > 1;
+		Joueur hôte.E == 1;
+		Global.B > 0;
+	}
+
+	actions
+	{
+		Attendre jusqu’à(Bouton maintenu enfoncé(Joueur hôte, Bouton(Mêlée)) || !(Bouton maintenu enfoncé(Joueur hôte, Bouton(Interaction))
+			&& Bouton maintenu enfoncé(Joueur hôte, Bouton(Rechargement))), 0.500);
+		Interrompre si(Bouton maintenu enfoncé(Joueur hôte, Bouton(Mêlée)) || (Bouton maintenu enfoncé(Joueur hôte, Bouton(Interaction))
+			&& Bouton maintenu enfoncé(Joueur hôte, Bouton(Rechargement))));
+		Global.A[Global.B] = Tableau(Décompte de(Global.A[Global.B]) != 0 ? Premier de(Global.A[Global.B]) : Global.A[Global.B],
+			Position de(Joueur hôte));
+		Message en petit(Tous les joueurs(Toutes les équipes), Chaîne personnalisée("   Teleport has been added for checkpoint {0}",
+			Global.B));
+	}
+}
+
+désactivé règle("------------------------------------------------------------------------  General rules ------------------------------------------------------------------------ ")
+{
+	évènement
+	{
+		Toute la partie - Tout le monde;
+	}
+}
+
+règle("Setup and Variables")
+{
+	évènement
+	{
+		Toute la partie - Tout le monde;
+	}
+
+	actions
+	{
+		Si(Vrai);
+			Désactiver l’enregistrement du contrôleur;
+		Fin;
+		Désactiver la réapparition prédéfinie par le mode de jeu(Tous les joueurs(Toutes les équipes));
+		Désactiver l’accomplissement prédéfini par le mode de jeu;
+		Désactiver le calcul des points prédéfini par le mode de jeu;
+		Désactiver la musique prédéfinie par le mode de jeu;
+		Désactiver l’annonceur prédéfini par le mode de jeu;
+		"pauseMatchTime()"
+		Forcer une salle d’apparition(Toutes les équipes, 0);
+		Forcer une salle d’apparition(Toutes les équipes, 1);
+		Forcer une salle d’apparition(Toutes les équipes, 2);
+		Global.Dao = Décompte de(Tableau filtré(Global.Dao, Élément de tableau actuel != -1 && Élément de tableau actuel != Tableau vide))
+			&& Global.Dao != Non applicable ? Global.Dao : Tableau vide;
+		Global.SHIFT = Décompte de(Tableau filtré(Global.SHIFT,
+			Élément de tableau actuel != -1 && Élément de tableau actuel != Tableau vide))
+			&& Global.SHIFT != Non applicable ? Global.SHIFT : Tableau vide;
+		Global.pinballnumber = Décompte de(Global.pinballnumber) ? Global.pinballnumber : Tableau vide;
+		Global.A = Décompte de(Global.A) ? Global.A : Tableau vide;
+		Global.A = Décompte de(Global.A) ? Global.A : Tableau vide;
+		Global.killballnumber = Décompte de(Global.killballnumber) ? Global.killballnumber : Tableau vide;
+		Global.H = Décompte de(Global.H) ? Global.H : Tableau vide;
+		Global.I = Décompte de(Global.I) ? Global.I : Tableau vide;
+		Global.K = Décompte de(Global.K) ? Global.K : Tableau vide;
+		Global.J = 0;
+		Global.TQ = Décompte de(Global.TQ) ? Global.TQ : Tableau vide;
+		Global.TQ2 = Décompte de(Global.TQ2) ? Global.TQ2 : Tableau vide;
+		Global.EditMode = Décompte de(Global.EditMode) ? Global.EditMode : Tableau vide;
+		Global.TQ1 = 0;
+		Global.TQ5 = Décompte de(Global.TQ5) ? Global.TQ5 : Tableau vide;
+		Global.TQ6 = Décompte de(Global.TQ6) ? Global.TQ6 : Tableau vide;
+		Global.BounceToggleLock = Décompte de(Global.BounceToggleLock) ? Global.BounceToggleLock : Tableau vide;
+		Global.LeaderBoardFull = Tableau vide;
+		Attente(1, Ignorer la condition);
+		"-! comp minutes !- fill in second to last number\r\n 5-240"
+		Global.CompTime = Paramètre entier de la Forge(Chaîne personnalisée("Competitive mode"), Chaîne personnalisée("time limit"), 120,
+			1, 240, 101);
+		"-! comp count !- fill in second to last number"
+		Global.CompAtmpNum = Paramètre entier de la Forge(Chaîne personnalisée("Competitive mode"), Chaîne personnalisée("attempt count"),
+			0, 0, 500, 102);
+		Global.CompRestartLimit = Activerdésactiver le paramètre de la Forge(Chaîne personnalisée("Competitive mode"),
+			Chaîne personnalisée("disable restart during run"), Faux, 103);
+		Global.CompMode = Activerdésactiver le paramètre de la Forge(Chaîne personnalisée("Competitive mode"), Chaîne personnalisée(
+			"Turn on competitive mode"), Faux, 100);
+		"This probably isn't necessary"
+		Global.B = Décompte de(Global.A) - 1;
+		"KILLBALL()\r\n wait(2)\r\n pinball()"
+		Global.PortalOn = Activerdésactiver le paramètre de la Forge(Chaîne personnalisée("map settings"), Chaîne personnalisée(
+			"enable portals (control maps)"), Vrai, 0);
+		Global.save = Tableau vide;
+		Si(Global.CompMode);
+			Créer du texte d’interface(Tableau filtré(Tous les joueurs(Toutes les équipes), Élément de tableau actuel.instructionhud),
+				Chaîne personnalisée(
+				"                                                                                                                           "),
+				Non applicable, Non applicable, Haut, -22, Couleur(Blanc), Non applicable, Non applicable, Visible pour,
+				Visibilité par défaut);
+			"replace the instructions custom string for your own instructions. type \\n for enter/next line"
+			Si(Premier de(Global.instructiontext));
+				Créer du texte d’interface(Tableau filtré(Tous les joueurs(Toutes les équipes), Élément de tableau actuel.instructionhud),
+					Non applicable, Non applicable, Premier de(Global.instructiontext), Haut, -21, Non applicable, Non applicable, Couleur(Blanc),
+					Visible pour, Visibilité par défaut);
+			Fin;
+			Si(Global.instructiontext[1]);
+				Créer du texte d’interface(Tableau filtré(Tous les joueurs(Toutes les équipes), Élément de tableau actuel.instructionhud),
+					Non applicable, Non applicable, Global.instructiontext[1], Haut, -20, Non applicable, Non applicable, Couleur(Blanc),
+					Visible pour, Visibilité par défaut);
+			Fin;
+			Si(Global.instructiontext[2]);
+				Créer du texte d’interface(Tableau filtré(Tous les joueurs(Toutes les équipes), Élément de tableau actuel.instructionhud),
+					Non applicable, Non applicable, Global.instructiontext[2], Haut, -19, Non applicable, Non applicable, Couleur(Blanc),
+					Visible pour, Visibilité par défaut);
+			Fin;
+			Si(Global.instructiontext[3]);
+				Créer du texte d’interface(Tableau filtré(Tous les joueurs(Toutes les équipes), Élément de tableau actuel.instructionhud),
+					Non applicable, Non applicable, Global.instructiontext[3], Haut, -18, Non applicable, Non applicable, Couleur(Blanc),
+					Visible pour, Visibilité par défaut);
+			Fin;
+			Créer du texte d’interface(Tableau filtré(Tous les joueurs(Toutes les équipes), Élément de tableau actuel.instructionhud),
+				Chaîne personnalisée("                                   Press {0} to start                                ",
+				Chaîne de liaison d’entrée(Bouton(Interaction))), Non applicable, Non applicable, Haut, -17, Couleur(Blanc), Non applicable,
+				Non applicable, Visible pour et Chaîne de texte, Visibilité par défaut);
+		Sinon;
+			Créer du texte d’interface(Joueur hôte.E < 1 ? Tous les joueurs(Toutes les équipes) : Non applicable, Non applicable,
+				Non applicable, Chaîne personnalisée("Hold {0} | Spectate{1}", Chaîne de liaison d’entrée(Bouton(Interaction)),
+				Joueur local.F ? Chaîne personnalisée(" | ON") : Chaîne personnalisée("")), Droite, -14, Non applicable, Non applicable,
+				Joueur local.F ? Couleur(Vert) : Couleur(Blanc), Visible pour Chaîne de texte et Couleur, Visibilité par défaut);
+			Créer du texte d’interface(Joueur hôte.E < 1 ? Tous les joueurs(Toutes les équipes) : Non applicable, Non applicable,
+				Non applicable, Chaîne personnalisée("Hold {0} | invisible{1}", Chaîne de liaison d’entrée(Bouton(Capacité 2)),
+				Joueur local.invis ? Chaîne personnalisée(" | ON") : Chaîne personnalisée("")), Droite, -13, Non applicable, Non applicable,
+				Joueur local.invis ? Couleur(Vert) : Couleur(Blanc), Visible pour Chaîne de texte et Couleur, Visibilité par défaut);
+			Créer du texte d’interface(Joueur local.E < 1 ? Tous les joueurs(Toutes les équipes) : Non applicable, Non applicable,
+				Non applicable, Chaîne personnalisée("{0} + {1} | Practice{2}", Chaîne de liaison d’entrée(Bouton(Capacité ultime)),
+				Chaîne de liaison d’entrée(Bouton(Mêlée)), Joueur local.PracticeToggle ? Chaîne personnalisée(" | ({0})",
+				Joueur local.A - Joueur local.PracticeCheckpoint) : Chaîne personnalisée("")), Droite, -11, Non applicable, Non applicable,
+				Joueur local.PracticeToggle ? Couleur(Vert) : (Joueur local.C == 1 ? Couleur(Gris) : Couleur(Blanc)),
+				Visible pour Chaîne de texte et Couleur, Visibilité par défaut);
+			Créer du texte d’interface(Tableau filtré(Tous les joueurs(Toutes les équipes),
+				Élément de tableau actuel.PracticeToggle && Joueur hôte.E < 1), Non applicable, Chaîne personnalisée(
+				"{0} + {1} | Next level\n{2}", Chaîne de liaison d’entrée(Bouton(S’accroupir)), Chaîne de liaison d’entrée(Bouton(
+				Tir principal)), Chaîne personnalisée("{0} + {1} | Previous level\n{2} | Start from practice cp ", Chaîne de liaison d’entrée(
+				Bouton(S’accroupir)), Chaîne de liaison d’entrée(Bouton(Tir secondaire)), Chaîne de liaison d’entrée(Bouton(Interaction)))),
+				Non applicable, Droite, -10, Non applicable, Couleur(Citron vert), Non applicable, Visible pour Chaîne de texte et Couleur,
+				Visibilité par défaut);
+			Créer du texte d’interface(Tableau filtré(Tous les joueurs(Toutes les équipes), Élément de tableau actuel.A == Décompte de(
+				Global.A) - 1 && Élément de tableau actuel.E < 1 && Élément de tableau actuel.PracticeToggle != 1), Non applicable,
+				Non applicable, Chaîne personnalisée("Hold {0} | Traces{1}", Chaîne d’icône de la capacité(Héros(Genji), Bouton(
+				Capacité ultime)), Joueur local.TracesOff ? Chaîne personnalisée("") : Chaîne personnalisée(" | ON ")), Droite, -12,
+				Non applicable, Non applicable, Joueur local.TracesOff ? Couleur(Blanc) : Couleur(Vert),
+				Visible pour Chaîne de texte et Couleur, Visibilité par défaut);
+		Fin;
+		"async(CreateLeaderBoard(), AsyncBehavior.RESTART)"
+		Sous-programme à appeler(CreateLeaderBoard);
+		"padding for custom gud"
+		Créer du texte d’interface(Tous les joueurs(Toutes les équipes), Non applicable, Non applicable, Chaîne personnalisée(
+			"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nv"), Haut, -1, Non applicable,
+			Non applicable, Couleur(Orange), Visible pour, Visibilité par défaut);
+		"##hudSubtext(getAllPlayers(), \"{0}+{1}+{2} | Restart\".format(buttonString(Button.CROUCH), buttonString(Button.ABILITY_2), buttonString(Button.INTERACT)), HudPosition.RIGHT, -20, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)"
+		Créer du texte d’interface(Tous les joueurs(Toutes les équipes), Non applicable, Non applicable, Chaîne personnalisée(
+			"{0}+{1}+{2}", Chaîne de liaison d’entrée(Bouton(S’accroupir)), Chaîne de liaison d’entrée(Bouton(Capacité 2)),
+			Chaîne personnalisée("{0} | Restart\nHold {1} | leaderboard", Chaîne de liaison d’entrée(Bouton(Interaction)),
+			Chaîne de liaison d’entrée(Bouton(Mêlée)))), Droite, -20, Non applicable, Non applicable, Couleur(Blanc),
+			Visible pour et Chaîne de texte, Visibilité par défaut);
+		Créer du texte d’interface(Tous les joueurs(Toutes les équipes), Non applicable, Non applicable, Chaîne personnalisée(
+			"{0} {1} |  {2}", Joueur local.quick_restart ? Chaîne personnalisée("") : Chaîne personnalisée("Hold"),
+			Chaîne de liaison d’entrée(Bouton(Rechargement)), Joueur local.quick_restart ? Chaîne personnalisée("Quick reset")
+			: Chaîne personnalisée("Enable Quick reset")), Droite, -18, Non applicable, Non applicable, Couleur(Blanc),
+			Visible pour et Chaîne de texte, Visibilité par défaut);
+		"##hudSubtext(getAllPlayers() if hostPlayer.EditModeSelection < 1 else null, \"Hold {0} | leaderboard\".format(buttonString(Button.MELEE)), HudPosition.RIGHT, -17, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)"
+		Créer du texte d’interface(Joueur hôte.E < 1 ? Tous les joueurs(Toutes les équipes) : Non applicable, Non applicable,
+			Non applicable, Chaîne personnalisée("Hold {0} | Preview orb/portal", Chaîne de liaison d’entrée(Bouton(Tir principal))),
+			Droite, -16, Non applicable, Non applicable, Bouton maintenu enfoncé(Joueur local, Bouton(Tir principal)) ? Couleur(Vert) : (
+			Bouton maintenu enfoncé(Joueur local, Bouton(Tir principal)) ? Couleur(Vert) : Couleur(Blanc)),
+			Visible pour Chaîne de texte et Couleur, Visibilité par défaut);
+		Créer du texte d’interface(Joueur hôte.E < 1 && Bouton maintenu enfoncé(Joueur local, Bouton(Tir principal)) ? Tous les joueurs(
+			Toutes les équipes) : Non applicable, Non applicable, Chaîne personnalisée(
+			"Walk left/right | preview others\nAim | change preview angle"), Non applicable, Droite, -15, Non applicable, Couleur(
+			Citron vert), Non applicable, Visible pour et Chaîne de texte, Visibilité par défaut);
+		Créer du texte d’interface(Tous les joueurs(Toutes les équipes), Non applicable, Non applicable, Chaîne personnalisée(
+			"{0}+{1} | Invincible{2}", Chaîne de liaison d’entrée(Bouton(Rechargement)), Chaîne de liaison d’entrée(Bouton(Mêlée)),
+			Joueur local.C == 1 ? Chaîne personnalisée(" | ON") : Chaîne personnalisée("")), Droite, -19, Non applicable, Non applicable,
+			Joueur local.C == 1 ? Couleur(Vert) : Couleur(Blanc), Visible pour Chaîne de texte et Couleur, Visibilité par défaut);
+		"hudSubtext([i for i in getAllPlayers() if i.CurrentCheckpoint == len(CheckpointPositions) - 1 and i.EditModeSelection < 1 and i.PracticeToggle != 1], \"Hold {0} | Toggle Traces\".format(abilityIconString(Hero.GENJI,Button.ULTIMATE)), HudPosition.RIGHT, -14, "
+		Si(!Joueur hôte.EditorOn);
+			Global.Difficultyhud = Paramètre combo de la Forge(Chaîne personnalisée("map settings"), Chaîne personnalisée(
+				"difficulty (display hud)"), 2, Tableau(Chaîne personnalisée("beginner"), Chaîne personnalisée("easy-"), Chaîne personnalisée(
+				"easy"), Chaîne personnalisée("easy+"), Chaîne personnalisée("medium-"), Chaîne personnalisée("medium"), Chaîne personnalisée(
+				"medium+"), Chaîne personnalisée("hard-"), Chaîne personnalisée("hard"), Chaîne personnalisée("hard+"), Chaîne personnalisée(
+				"very hard-"), Chaîne personnalisée("very hard"), Chaîne personnalisée("very hard+"), Chaîne personnalisée("extreme-"),
+				Chaîne personnalisée("extreme"), Chaîne personnalisée("extreme+"), Chaîne personnalisée("hell"), Chaîne personnalisée(
+				"don't display")), 0);
+			"17th entry is dont display"
+			Si(Global.Difficultyhud < 17);
+				Créer du texte d’interface(Tous les joueurs(Toutes les équipes), Non applicable, Tableau(Chaîne personnalisée("beginner"),
+					Chaîne personnalisée("easy -"), Chaîne personnalisée("easy"), Chaîne personnalisée("easy +"), Chaîne personnalisée("medium -"),
+					Chaîne personnalisée("medium"), Chaîne personnalisée("medium +"), Chaîne personnalisée("hard -"), Chaîne personnalisée("hard"),
+					Chaîne personnalisée("hard +"), Chaîne personnalisée("very hard -"), Chaîne personnalisée("very hard"), Chaîne personnalisée(
+					"very hard +"), Chaîne personnalisée("extreme -"), Chaîne personnalisée("extreme"), Chaîne personnalisée("extreme +"),
+					Chaîne personnalisée("hell"))[Global.Difficultyhud], Non applicable, Haut, -24, Non applicable, Tableau(Couleur(Vert), Couleur(
+					Citron vert), Couleur(Citron vert), Couleur(Citron vert), Couleur(Jaune), Couleur(Jaune), Couleur(Jaune), Couleur(Orange),
+					Couleur(Orange), Couleur(Orange), Couleur personnalisée(255, 69, 0, 255), Couleur personnalisée(255, 69, 0, 255),
+					Couleur personnalisée(255, 69, 0, 255), Couleur(Rouge), Couleur(Rouge), Couleur(Rouge), Couleur personnalisée(150, 0, 0, 255))
+					[Global.Difficultyhud], Non applicable, Visible pour, Visibilité par défaut);
+			Fin;
+		Fin;
+		Attente(5, Ignorer la condition);
+		Sous-programme à appeler(KILLBALL);
+		Attente(2, Ignorer la condition);
+		Sous-programme à appeler(pinball);
+		Attente(2, Ignorer la condition);
+		Sous-programme à appeler(BuildPortals);
+		"Check for editor/host spawn to redo effect reeval"
+		Attendre jusqu’à(Apparition(Joueur hôte), 99999);
+		Interrompre si(!Joueur hôte.EditorOn);
+		Sous-programme à appeler(RebuildKillOrbs);
+		Sous-programme à appeler(RebuildBounceOrbs);
+	}
+}
+
+règle("Match time")
+{
+	évènement
+	{
+		Toute la partie - Tout le monde;
+	}
+
+	actions
+	{
+		Si(Mode de jeu actuel != Mode de jeu(Échauffement));
+			Attente(0.250, Ignorer la condition);
+			Définir le temps de jeu(1);
+			Attente(1.100, Ignorer la condition);
+			Définir le temps de jeu(1);
+			Attente(1.100, Ignorer la condition);
+			Attente(10, Ignorer la condition);
+		Fin;
+		Définir le temps de jeu(69);
+		Mettre en pause le temps de jeu;
+		Attente(5, Ignorer la condition);
+		"269"
+		Global.TimeRemaining = 265;
+		Créer du texte d’interface(Tous les joueurs(Toutes les équipes), Non applicable, Chaîne personnalisée(
+			"  Server Restarts In {0} Min  ", Global.TimeRemaining), Non applicable, Droite, -200, Non applicable, Couleur(Rouge),
+			Non applicable, Visible pour et Chaîne de texte, Toujours visible);
+		Tant que(Global.TimeRemaining > 0);
+			Attente(60, Ignorer la condition);
+			Global.TimeRemaining -= 1;
+			Si(Global.CompMode);
+				Global.CompTime -= 1;
+				Si(Global.CompTime == 0);
+					Message en grand(Tous les joueurs(Toutes les équipes), Chaîne personnalisée("time's up"));
+					Tous les joueurs(Toutes les équipes).CompDone = Vrai;
+					"getAllPlayers().InvincibleToggle = 1"
+					Arrêter de modifier une variable de joueur(Tous les joueurs(Toutes les équipes), D);
+					"getAllPlayers().setUltEnabled(true)\r\ngetAllPlayers().setUltCharge(100)\r\ngetAllPlayers().setAbility1Enabled(true)"
+					Désactiver la réapparition prédéfinie par le mode de jeu(Tous les joueurs(Toutes les équipes));
+					Tuer(Tous les joueurs(Toutes les équipes), Non applicable);
+					Attente(0.032, Ignorer la condition);
+					Lancer la règle(CreateLeaderBoard, Relancer la règle);
+				Fin;
+			Fin;
+		Fin;
+		Message en grand(Tous les joueurs(Toutes les équipes), Chaîne personnalisée("maximum lobby time expired, restarting"));
+		Attente(5, Ignorer la condition);
+		Si(Mode de jeu actuel == Mode de jeu(Combat à mort));
+			Déclarer la victoire d’un joueur(Joueur hôte);
+		Sinon;
+			Déclarer la victoire d’une équipe(Équipe de(Joueur hôte));
+	}
+}
+
+règle("Genji Swapper 9000")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	actions
+	{
+		Si(!Est une I.A.(Joueur exécutant));
+			Forcer un héros(Joueur exécutant, Héros(Genji));
+	}
+}
+
+règle("Initialize and CP HUD")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		"@Hero genji"
+		Apparition(Joueur exécutant) == Vrai;
+		Héros de(Joueur exécutant) == Héros(Genji);
+	}
+
+	actions
+	{
+		Désactiver l’interface du mode de jeu(Joueur exécutant);
+		Si(Temps total écoulé < 3);
+			"make sure everything loaded, specialy things like comp mode"
+			Attente(2, Ignorer la condition);
+		Fin;
+		Si(Global.CompMode);
+			Définir l’invisibilité(Joueur exécutant, Tous);
+			Créer du texte d’interface(Joueur exécutant, Chaîne personnalisée(" "), Global.CompTime <= 0 ? Chaîne personnalisée(
+				"! competition is over !") : Chaîne personnalisée("time left: {0} min{1}", Global.CompTime,
+				Joueur exécutant.AttemptCount == -1 ? Chaîne personnalisée("\nYou are out of attemps") : (
+				Global.CompAtmpNum > 0 ? Chaîne personnalisée("\nAttempt {0} / {1}", Joueur exécutant.AttemptCount, Global.CompAtmpNum)
+				: Chaîne personnalisée(""))), Global.CompTime > 0 ? Chaîne personnalisée("competitive mode") : Chaîne personnalisée(
+				"competitive mode\n\n\n"), Haut, -860, Couleur(Jaune), Couleur(Jaune), Couleur(Jaune), Chaîne de texte, Visibilité par défaut);
+			"instructions and settings for comp start"
+			Si(!Contenu du tableau(Global.CompAtmpSaveNames, Chaîne personnalisée("{0}", Joueur exécutant)));
+				Joueur exécutant.instructionhud = Vrai;
+				Modifier une variable globale(CompAtmpSaveNames, Ajouter au tableau, Chaîne personnalisée("{0}", Joueur exécutant));
+				Modifier une variable globale(CompAtmpSaveCount, Ajouter au tableau, 1);
+				Joueur exécutant.AttemptCount = 1;
+				Définir la vitesse de déplacement(Joueur exécutant, 0);
+				Attendre jusqu’à(!Bouton maintenu enfoncé(Joueur exécutant, Bouton(Interaction)), 1);
+				Attendre jusqu’à(Bouton maintenu enfoncé(Joueur exécutant, Bouton(Interaction)), 99999);
+				Définir la vitesse de déplacement(Joueur exécutant, 100);
+				Joueur exécutant.instructionhud = Faux;
+			Sinon;
+				Joueur exécutant.AttemptCount = Global.CompAtmpSaveCount[Index de la valeur de tableau(Global.CompAtmpSaveNames,
+					Chaîne personnalisée("{0}", Joueur exécutant))];
+				Message en petit(Joueur exécutant, Chaîne personnalisée("now {0}", Joueur exécutant.AttemptCount));
+			Fin;
+			Si(Joueur exécutant.AttemptCount == -1 || Global.CompTime < 1);
+				Joueur exécutant.CompDone = Vrai;
+			Fin;
+		Fin;
+		"LEFT, -2"
+		Créer du texte d’interface(Joueur exécutant, Non applicable, Non applicable, Chaîne personnalisée("Time {0}", Chaîne personnalisée(
+			"{0} sec", Joueur exécutant.D)), Gauche, -5, Non applicable, Non applicable, Couleur(Blanc), Visible pour et Chaîne de texte,
+			Visibilité par défaut);
+		"orange sub+text"
+		Créer du texte d’interface(Joueur exécutant, Non applicable, Joueur exécutant.BounceLockMax_Cache ? Chaîne personnalisée(
+			"orange orbs {0} / {1}", Décompte de(Joueur exécutant.LockCollected), Joueur exécutant.BounceLockMax_Cache)
+			: Chaîne personnalisée(""), Chaîne personnalisée("Level {0} / {1}", Joueur exécutant.A, Décompte de(Global.A) - 1), Haut, -14,
+			Couleur(Blanc), Couleur(Orange), Couleur(Blanc), Chaîne de texte, Visibilité par défaut);
+		"in same\r\n breaks if the defined thing is on the same line"
+		Joueur exécutant.EditorOn = Activerdésactiver le paramètre de la Forge(Chaîne personnalisée("Editor"), Chaîne personnalisée(
+			"Editor mode"), Faux, 0);
+		"StartGame_Sub is the initialization of the game"
+		Sous-programme à appeler(Sub1);
+		Permettre d’observer n’importe qui après la mort(Joueur exécutant);
+		Permettre de voir l’interface de la cible après la mort(Joueur exécutant);
+		Joueur exécutant.F = 0;
+		"Climbing the wall prompts the HUD"
+		Joueur exécutant.J = 2;
+		"CheckpointEffect_Sub is the checkpoint effect display"
+		Sous-programme à appeler(Sub0);
+	}
+}
+
+règle("leaderboard hud")
+{
+	évènement
+	{
+		Sous-programme;
+		CreateLeaderBoard;
+	}
+
+	actions
+	{
+		"sub is tied to player so remade turned global"
+		Global.LeaderBoardRemake = Faux;
+		Attente(0.016, Ignorer la condition);
+		Global.LeaderBoardRemake = Vrai;
+	}
+}
+
+règle("remake leaderboard")
+{
+	évènement
+	{
+		Toute la partie - Tout le monde;
+	}
+
+	conditions
+	{
+		Global.LeaderBoardRemake != Faux;
+	}
+
+	actions
+	{
+		"account for delay in completion"
+		Attente(0.016, Ignorer la condition);
+		Global.LeaderBoardFull = Tableau trié(Global.LeaderBoardFull, Élément de tableau actuel[1]);
+		Détruire du texte d’interface(Premier de(Global.LeaderBoardHuds));
+		Détruire du texte d’interface(Global.LeaderBoardHuds[1]);
+		Détruire du texte d’interface(Global.LeaderBoardHuds[2]);
+		Détruire du texte d’interface(Global.LeaderBoardHuds[3]);
+		Détruire du texte d’interface(Global.LeaderBoardHuds[4]);
+		Détruire du texte d’interface(Global.LeaderBoardHuds[5]);
+		Détruire du texte d’interface(Global.LeaderBoardHuds[6]);
+		Détruire du texte d’interface(Global.LeaderBoardHuds[7]);
+		Détruire du texte d’interface(Global.LeaderBoardHuds[8]);
+		Détruire du texte d’interface(Global.LeaderBoardHuds[9]);
+		Détruire du texte d’interface(Global.LeaderBoardHuds[10]);
+		"wait()\r\n 20 board comp and non comp"
+		Si(!Global.CompMode || (Global.CompMode && Global.CompTime > 0));
+			"top 5"
+			Si(Premier de(Global.LeaderBoardFull));
+				Créer du texte d’interface(Tous les joueurs(Toutes les équipes), Non applicable, Non applicable, Chaîne personnalisée(
+					" \n{0} Top 5 {0}", Chaîne d’icône de la capacité(Héros(Genji), Bouton(Tir principal))), Droite, 0, Non applicable,
+					Non applicable, Couleur(Blanc), Visible pour, Visibilité par défaut);
+				Global.LeaderBoardHuds[0] = Dernier identifiant de texte;
+				Créer du texte d’interface(Tous les joueurs(Toutes les équipes), Chaîne d’icône du héros(Héros(Genji)), Premier de(Premier de(
+					Global.LeaderBoardFull)), Premier de(Global.LeaderBoardFull)[2], Droite, 1, Couleur(Rouge), Couleur(Rouge), Couleur(Rouge),
+					Visible pour, Visibilité par défaut);
+				Global.LeaderBoardHuds[1] = Dernier identifiant de texte;
+			Fin;
+			Si(Global.LeaderBoardFull[1]);
+				Créer du texte d’interface(Tous les joueurs(Toutes les équipes), Chaîne d’icône du héros(Héros(Genji)), Premier de(
+					Global.LeaderBoardFull[1]), Global.LeaderBoardFull[1][2], Droite, 2, Couleur(Orange), Couleur(Orange), Couleur(Orange),
+					Visible pour, Visibilité par défaut);
+				Global.LeaderBoardHuds[2] = Dernier identifiant de texte;
+			Fin;
+			Si(Global.LeaderBoardFull[2]);
+				Créer du texte d’interface(Tous les joueurs(Toutes les équipes), Chaîne d’icône du héros(Héros(Genji)), Premier de(
+					Global.LeaderBoardFull[2]), Global.LeaderBoardFull[2][2], Droite, 3, Couleur(Jaune), Couleur(Jaune), Couleur(Jaune),
+					Visible pour, Visibilité par défaut);
+				Global.LeaderBoardHuds[3] = Dernier identifiant de texte;
+			Fin;
+			Si(Global.LeaderBoardFull[3]);
+				Créer du texte d’interface(Tous les joueurs(Toutes les équipes), Chaîne d’icône du héros(Héros(Genji)), Premier de(
+					Global.LeaderBoardFull[3]), Global.LeaderBoardFull[3][2], Droite, 4, Couleur(Citron vert), Couleur(Citron vert), Couleur(
+					Citron vert), Visible pour, Visibilité par défaut);
+				Global.LeaderBoardHuds[4] = Dernier identifiant de texte;
+			Fin;
+			Si(Global.LeaderBoardFull[4]);
+				Créer du texte d’interface(Tous les joueurs(Toutes les équipes), Chaîne d’icône du héros(Héros(Genji)), Premier de(
+					Global.LeaderBoardFull[4]), Global.LeaderBoardFull[4][2], Droite, 5, Couleur(Vert), Couleur(Vert), Couleur(Vert), Visible pour,
+					Visibilité par défaut);
+				Global.LeaderBoardHuds[5] = Dernier identifiant de texte;
+			Fin;
+			Créer du texte d’interface(Joueur local.LeaderboardToggle, Chaîne personnalisée("　　　　 {0} Leaderboard {0} 　　　", Chaîne d’icône(
+				Drapeau)), Non applicable, Non applicable, Haut, -780, Couleur(Bleu), Non applicable, Non applicable, Visible pour,
+				Jamais visible);
+			Global.LeaderBoardHuds[6] = Dernier identifiant de texte;
+			Créer du texte d’interface(Joueur local.LeaderboardToggle, Chaîne personnalisée("　　　　　　　　　　　　　　　　　　\n　 1:　{0} - {1}　\n　 2:　{2}",
+				Premier de(Global.LeaderBoardFull) ? Premier de(Premier de(Global.LeaderBoardFull)) : Chaîne personnalisée(""), Premier de(
+				Global.LeaderBoardFull) ? Premier de(Global.LeaderBoardFull)[2] : Chaîne personnalisée(""), Chaîne personnalisée(
+				"{0} - {1}　\n　 3:　{2}", Global.LeaderBoardFull[1] ? Premier de(Global.LeaderBoardFull[1]) : Chaîne personnalisée(""),
+				Global.LeaderBoardFull[1] ? Global.LeaderBoardFull[1][2] : Chaîne personnalisée(""), Chaîne personnalisée(
+				"{0} - {1}　\n　 4:　{2}", Global.LeaderBoardFull[2] ? Premier de(Global.LeaderBoardFull[2]) : Chaîne personnalisée(""),
+				Global.LeaderBoardFull[2] ? Global.LeaderBoardFull[2][2] : Chaîne personnalisée(""), Chaîne personnalisée(
+				"{0} - {1}　\n　 5:　{2}", Global.LeaderBoardFull[3] ? Premier de(Global.LeaderBoardFull[3]) : Chaîne personnalisée(""),
+				Global.LeaderBoardFull[3] ? Global.LeaderBoardFull[3][2] : Chaîne personnalisée(""), Chaîne personnalisée("{0} - {1}\n",
+				Global.LeaderBoardFull[4] ? Premier de(Global.LeaderBoardFull[4]) : Chaîne personnalisée(""),
+				Global.LeaderBoardFull[4] ? Global.LeaderBoardFull[4][2] : Chaîne personnalisée("")))))), Non applicable, Non applicable, Haut,
+				-779, Couleur(Blanc), Non applicable, Non applicable, Visible pour, Visibilité par défaut);
+			Global.LeaderBoardHuds[7] = Dernier identifiant de texte;
+			Si(Global.LeaderBoardFull[5]);
+				Créer du texte d’interface(Joueur local.LeaderboardToggle, Chaîne personnalisée("　　　　　　　　　　　　　　　　　　\n　 6:　{0} - {1}　\n　 7:　{2}",
+					Global.LeaderBoardFull[5] ? Premier de(Global.LeaderBoardFull[5]) : Chaîne personnalisée(""),
+					Global.LeaderBoardFull[5] ? Global.LeaderBoardFull[5][2] : Chaîne personnalisée(""), Chaîne personnalisée(
+					"{0} - {1}　\n　 8:　{2}", Global.LeaderBoardFull[6] ? Premier de(Global.LeaderBoardFull[6]) : Chaîne personnalisée(""),
+					Global.LeaderBoardFull[6] ? Global.LeaderBoardFull[6][2] : Chaîne personnalisée(""), Chaîne personnalisée(
+					"{0} - {1}　\n　 9:　{2}", Global.LeaderBoardFull[7] ? Premier de(Global.LeaderBoardFull[7]) : Chaîne personnalisée(""),
+					Global.LeaderBoardFull[7] ? Global.LeaderBoardFull[7][2] : Chaîne personnalisée(""), Chaîne personnalisée(
+					"{0} - {1}　\n　10:　{2}", Global.LeaderBoardFull[8] ? Premier de(Global.LeaderBoardFull[8]) : Chaîne personnalisée(""),
+					Global.LeaderBoardFull[8] ? Global.LeaderBoardFull[8][2] : Chaîne personnalisée(""), Chaîne personnalisée("{0} - {1}\n",
+					Global.LeaderBoardFull[9] ? Premier de(Global.LeaderBoardFull[9]) : Chaîne personnalisée(""),
+					Global.LeaderBoardFull[9] ? Global.LeaderBoardFull[9][2] : Chaîne personnalisée("")))))), Non applicable, Non applicable, Haut,
+					-778, Couleur(Blanc), Non applicable, Non applicable, Visible pour, Visibilité par défaut);
+				Global.LeaderBoardHuds[8] = Dernier identifiant de texte;
+			Fin;
+			Si(Global.LeaderBoardFull[10]);
+				Créer du texte d’interface(Joueur local.LeaderboardToggle, Chaîne personnalisée("　　　　　　　　　　　　　　　　　　\n　11:　{0} - {1}　\n　12:　{2}",
+					Global.LeaderBoardFull[9] ? Premier de(Global.LeaderBoardFull[10]) : Chaîne personnalisée(""),
+					Global.LeaderBoardFull[9] ? Global.LeaderBoardFull[10][2] : Chaîne personnalisée(""), Chaîne personnalisée(
+					"{0} - {1}　\n　13:　{2}", Global.LeaderBoardFull[9] ? Premier de(Global.LeaderBoardFull[11]) : Chaîne personnalisée(""),
+					Global.LeaderBoardFull[9] ? Global.LeaderBoardFull[11][2] : Chaîne personnalisée(""), Chaîne personnalisée(
+					"{0} - {1}　\n　14:　{2}", Global.LeaderBoardFull[9] ? Premier de(Global.LeaderBoardFull[12]) : Chaîne personnalisée(""),
+					Global.LeaderBoardFull[9] ? Global.LeaderBoardFull[12][2] : Chaîne personnalisée(""), Chaîne personnalisée(
+					"{0} - {1}　\n　15:　{2}", Global.LeaderBoardFull[9] ? Premier de(Global.LeaderBoardFull[13]) : Chaîne personnalisée(""),
+					Global.LeaderBoardFull[9] ? Global.LeaderBoardFull[13][2] : Chaîne personnalisée(""), Chaîne personnalisée("{0} - {1}\n",
+					Global.LeaderBoardFull[9] ? Premier de(Global.LeaderBoardFull[14]) : Chaîne personnalisée(""),
+					Global.LeaderBoardFull[9] ? Global.LeaderBoardFull[14][2] : Chaîne personnalisée("")))))), Non applicable, Non applicable,
+					Haut, -777, Couleur(Blanc), Non applicable, Non applicable, Visible pour, Visibilité par défaut);
+				Global.LeaderBoardHuds[9] = Dernier identifiant de texte;
+			Fin;
+			Si(Global.LeaderBoardFull[15]);
+				Créer du texte d’interface(Joueur local.LeaderboardToggle, Chaîne personnalisée("　　　　　　　　　　　　　　　　　　\n　16:　{0} - {1}　\n　17:　{2}",
+					Global.LeaderBoardFull[9] ? Premier de(Global.LeaderBoardFull[15]) : Chaîne personnalisée(""),
+					Global.LeaderBoardFull[9] ? Global.LeaderBoardFull[15][2] : Chaîne personnalisée(""), Chaîne personnalisée(
+					"{0} - {1}　\n　18:　{2}", Global.LeaderBoardFull[9] ? Premier de(Global.LeaderBoardFull[16]) : Chaîne personnalisée(""),
+					Global.LeaderBoardFull[9] ? Global.LeaderBoardFull[16][2] : Chaîne personnalisée(""), Chaîne personnalisée(
+					"{0} - {1}　\n　19:　{2}", Global.LeaderBoardFull[9] ? Premier de(Global.LeaderBoardFull[17]) : Chaîne personnalisée(""),
+					Global.LeaderBoardFull[9] ? Global.LeaderBoardFull[17][2] : Chaîne personnalisée(""), Chaîne personnalisée(
+					"{0} - {1}　\n　20:　{2}", Global.LeaderBoardFull[9] ? Premier de(Global.LeaderBoardFull[18]) : Chaîne personnalisée(""),
+					Global.LeaderBoardFull[9] ? Global.LeaderBoardFull[18][2] : Chaîne personnalisée(""), Chaîne personnalisée("{0} - {1}\n",
+					Global.LeaderBoardFull[9] ? Premier de(Global.LeaderBoardFull[19]) : Chaîne personnalisée(""),
+					Global.LeaderBoardFull[9] ? Global.LeaderBoardFull[19][2] : Chaîne personnalisée("")))))), Non applicable, Non applicable,
+					Haut, -776, Couleur(Blanc), Non applicable, Non applicable, Visible pour, Visibilité par défaut);
+				Global.LeaderBoardHuds[10] = Dernier identifiant de texte;
+			Fin;
+		"if comp time run out"
+		Sinon;
+			Créer du texte d’interface(Tous les joueurs(Toutes les équipes), Chaîne personnalisée("　　　　 {0} Leaderboard {0} 　　　",
+				Chaîne d’icône(Drapeau)), Non applicable, Non applicable, Haut, -780, Couleur(Bleu), Non applicable, Non applicable,
+				Visible pour, Visibilité par défaut);
+			Global.LeaderBoardHuds[6] = Dernier identifiant de texte;
+			Créer du texte d’interface(Tous les joueurs(Toutes les équipes), Chaîne personnalisée(
+				"　　　　　　　　　　　　　　　　　　\n　 1:　{0} - {1}　\n　 2:　{2}", Premier de(Global.LeaderBoardFull) ? Premier de(Premier de(
+				Global.LeaderBoardFull)) : Chaîne personnalisée(""), Premier de(Global.LeaderBoardFull) ? Premier de(Global.LeaderBoardFull)
+				[2] : Chaîne personnalisée(""), Chaîne personnalisée("{0} - {1}　\n　 3:　{2}", Global.LeaderBoardFull[1] ? Premier de(
+				Global.LeaderBoardFull[1]) : Chaîne personnalisée(""),
+				Global.LeaderBoardFull[1] ? Global.LeaderBoardFull[1][2] : Chaîne personnalisée(""), Chaîne personnalisée(
+				"{0} - {1}　\n　 4:　{2}", Global.LeaderBoardFull[2] ? Premier de(Global.LeaderBoardFull[2]) : Chaîne personnalisée(""),
+				Global.LeaderBoardFull[2] ? Global.LeaderBoardFull[2][2] : Chaîne personnalisée(""), Chaîne personnalisée(
+				"{0} - {1}　\n　 5:　{2}", Global.LeaderBoardFull[3] ? Premier de(Global.LeaderBoardFull[3]) : Chaîne personnalisée(""),
+				Global.LeaderBoardFull[3] ? Global.LeaderBoardFull[3][2] : Chaîne personnalisée(""), Chaîne personnalisée("{0} - {1}\n",
+				Global.LeaderBoardFull[4] ? Premier de(Global.LeaderBoardFull[4]) : Chaîne personnalisée(""),
+				Global.LeaderBoardFull[4] ? Global.LeaderBoardFull[4][2] : Chaîne personnalisée("")))))), Non applicable, Non applicable, Haut,
+				-779, Couleur(Blanc), Non applicable, Non applicable, Visible pour, Jamais visible);
+			Global.LeaderBoardHuds[7] = Dernier identifiant de texte;
+			Si(Global.LeaderBoardFull[5]);
+				Créer du texte d’interface(Tous les joueurs(Toutes les équipes), Chaîne personnalisée(
+					"　　　　　　　　　　　　　　　　　　\n　 6:　{0} - {1}　\n　 7:　{2}", Global.LeaderBoardFull[5] ? Premier de(Global.LeaderBoardFull[5])
+					: Chaîne personnalisée(""), Global.LeaderBoardFull[5] ? Global.LeaderBoardFull[5][2] : Chaîne personnalisée(""),
+					Chaîne personnalisée("{0} - {1}　\n　 8:　{2}", Global.LeaderBoardFull[6] ? Premier de(Global.LeaderBoardFull[6])
+					: Chaîne personnalisée(""), Global.LeaderBoardFull[6] ? Global.LeaderBoardFull[6][2] : Chaîne personnalisée(""),
+					Chaîne personnalisée("{0} - {1}　\n　 9:　{2}", Global.LeaderBoardFull[7] ? Premier de(Global.LeaderBoardFull[7])
+					: Chaîne personnalisée(""), Global.LeaderBoardFull[7] ? Global.LeaderBoardFull[7][2] : Chaîne personnalisée(""),
+					Chaîne personnalisée("{0} - {1}　\n　10:　{2}", Global.LeaderBoardFull[8] ? Premier de(Global.LeaderBoardFull[8])
+					: Chaîne personnalisée(""), Global.LeaderBoardFull[8] ? Global.LeaderBoardFull[8][2] : Chaîne personnalisée(""),
+					Chaîne personnalisée("{0} - {1}\n", Global.LeaderBoardFull[9] ? Premier de(Global.LeaderBoardFull[9]) : Chaîne personnalisée(
+					""), Global.LeaderBoardFull[9] ? Global.LeaderBoardFull[9][2] : Chaîne personnalisée("")))))), Non applicable, Non applicable,
+					Haut, -778, Couleur(Blanc), Non applicable, Non applicable, Visible pour, Jamais visible);
+				Global.LeaderBoardHuds[8] = Dernier identifiant de texte;
+			Fin;
+			Si(Global.LeaderBoardFull[10]);
+				Créer du texte d’interface(Tous les joueurs(Toutes les équipes), Chaîne personnalisée(
+					"　　　　　　　　　　　　　　　　　　\n　11:　{0} - {1}　\n　12:　{2}", Global.LeaderBoardFull[9] ? Premier de(Global.LeaderBoardFull[10])
+					: Chaîne personnalisée(""), Global.LeaderBoardFull[9] ? Global.LeaderBoardFull[10][2] : Chaîne personnalisée(""),
+					Chaîne personnalisée("{0} - {1}　\n　13:　{2}", Global.LeaderBoardFull[9] ? Premier de(Global.LeaderBoardFull[11])
+					: Chaîne personnalisée(""), Global.LeaderBoardFull[9] ? Global.LeaderBoardFull[11][2] : Chaîne personnalisée(""),
+					Chaîne personnalisée("{0} - {1}　\n　14:　{2}", Global.LeaderBoardFull[9] ? Premier de(Global.LeaderBoardFull[12])
+					: Chaîne personnalisée(""), Global.LeaderBoardFull[9] ? Global.LeaderBoardFull[12][2] : Chaîne personnalisée(""),
+					Chaîne personnalisée("{0} - {1}　\n　15:　{2}", Global.LeaderBoardFull[9] ? Premier de(Global.LeaderBoardFull[13])
+					: Chaîne personnalisée(""), Global.LeaderBoardFull[9] ? Global.LeaderBoardFull[13][2] : Chaîne personnalisée(""),
+					Chaîne personnalisée("{0} - {1}\n", Global.LeaderBoardFull[9] ? Premier de(Global.LeaderBoardFull[14]) : Chaîne personnalisée(
+					""), Global.LeaderBoardFull[9] ? Global.LeaderBoardFull[14][2] : Chaîne personnalisée("")))))), Non applicable, Non applicable,
+					Haut, -777, Couleur(Blanc), Non applicable, Non applicable, Visible pour, Jamais visible);
+				Global.LeaderBoardHuds[9] = Dernier identifiant de texte;
+			Fin;
+			Si(Global.LeaderBoardFull[15]);
+				Créer du texte d’interface(Tous les joueurs(Toutes les équipes), Chaîne personnalisée(
+					"　　　　　　　　　　　　　　　　　　\n　16:　{0} - {1}　\n　17:　{2}", Global.LeaderBoardFull[9] ? Premier de(Global.LeaderBoardFull[15])
+					: Chaîne personnalisée(""), Global.LeaderBoardFull[9] ? Global.LeaderBoardFull[15][2] : Chaîne personnalisée(""),
+					Chaîne personnalisée("{0} - {1}　\n　18:　{2}", Global.LeaderBoardFull[9] ? Premier de(Global.LeaderBoardFull[16])
+					: Chaîne personnalisée(""), Global.LeaderBoardFull[9] ? Global.LeaderBoardFull[16][2] : Chaîne personnalisée(""),
+					Chaîne personnalisée("{0} - {1}　\n　19:　{2}", Global.LeaderBoardFull[9] ? Premier de(Global.LeaderBoardFull[17])
+					: Chaîne personnalisée(""), Global.LeaderBoardFull[9] ? Global.LeaderBoardFull[17][2] : Chaîne personnalisée(""),
+					Chaîne personnalisée("{0} - {1}　\n　20:　{2}", Global.LeaderBoardFull[9] ? Premier de(Global.LeaderBoardFull[18])
+					: Chaîne personnalisée(""), Global.LeaderBoardFull[9] ? Global.LeaderBoardFull[18][2] : Chaîne personnalisée(""),
+					Chaîne personnalisée("{0} - {1}\n", Global.LeaderBoardFull[9] ? Premier de(Global.LeaderBoardFull[19]) : Chaîne personnalisée(
+					""), Global.LeaderBoardFull[9] ? Global.LeaderBoardFull[19][2] : Chaîne personnalisée("")))))), Non applicable, Non applicable,
+					Haut, -776, Couleur(Blanc), Non applicable, Non applicable, Visible pour, Jamais visible);
+				Global.LeaderBoardHuds[10] = Dernier identifiant de texte;
+	}
+}
+
+règle("SUB | Checkpoint Fail")
+{
+	évènement
+	{
+		Sous-programme;
+		checkpointFailReset;
+	}
+
+	actions
+	{
+		Joueur exécutant.LockCollected = Tableau vide;
+		Annuler l’action principale(Joueur exécutant);
+		Si(Joueur exécutant.E < 1 && Joueur exécutant.A < Décompte de(Global.A) - 1);
+			Définir l’activation de la capacité 1(Joueur exécutant, Faux);
+			Définir l’activation de la capacité ultime(Joueur exécutant, Faux);
+		Fin;
+		Appliquer une impulsion(Joueur exécutant, Bas, Vitesse de(Joueur exécutant), Au joueur, Annuler le mouvement contraire);
+		Définir un statut(Joueur exécutant, Non applicable, Immobilisé, 0.100);
+		Téléportation(Joueur exécutant, Décompte de(Global.A[Joueur exécutant.A])
+			!= 0 ? Global.A[Joueur exécutant.A][1] : Global.A[Joueur exécutant.A]);
+		Si(Global.deathjump == Vrai && Joueur exécutant.C == 0 && Joueur exécutant.A < Décompte de(Global.A) - 1);
+			"if eventPlayer.isOnWall():\r\n     smallMessage(eventPlayer, \"Deathbhop is banned!\")"
+			Interdire le bouton(Joueur exécutant, Bouton(Sauter));
+			Attente(0.100, Ignorer la condition);
+			Autoriser un bouton(Joueur exécutant, Bouton(Sauter));
+		Fin;
+		Si(Joueur exécutant.A == 0);
+			Joueur exécutant.D = 0;
+		Fin;
+		Si(Capacité ultime utilisée(Joueur exécutant));
+			Tuer(Joueur exécutant, Non applicable);
+		Fin;
+	}
+}
+
+règle("SUB | Checkpoint Effects")
+{
+	évènement
+	{
+		Sous-programme;
+		Sub0;
+	}
+
+	actions
+	{
+		Interrompre si(Premier de(Joueur exécutant.B) != Non applicable);
+		Créer un effet(Joueur exécutant.A <= Décompte de(Global.A) - 1 ? Joueur exécutant : Non applicable, Anneau, Couleur(Bleu ciel),
+			Décompte de(Global.A[Joueur exécutant.A]) != 0 ? Global.A[Joueur exécutant.A][1] : Global.A[Joueur exécutant.A], 1,
+			Visible pour Position et Rayon);
+		Joueur exécutant.B[0] = Dernière entité créée;
+		Créer un effet(Joueur exécutant.A < Décompte de(Global.A) - 1 ? Joueur exécutant : Non applicable, Anneau, Couleur(Citron vert),
+			Global.A[Joueur exécutant.A + 1], 1, Visible pour Position et Rayon);
+		Joueur exécutant.B[1] = Dernière entité créée;
+		Créer un effet(Joueur exécutant.A < Décompte de(Global.A) - 1 ? Joueur exécutant : Non applicable, Puits de lumière, Couleur(
+			Blanc), Global.A[Joueur exécutant.A + 1], 1, Visible pour Position et Rayon);
+		Joueur exécutant.B[2] = Dernière entité créée;
+		Créer une icône(Joueur exécutant.A < Décompte de(Global.A) - 1 ? Joueur exécutant : Non applicable,
+			Global.A[Joueur exécutant.A + 1] + Vecteur(0, 1, 0), Flèche bas, Visible pour et Position, Couleur(Bleu ciel), Vrai);
+		Joueur exécutant.B[3] = Dernière entité créée;
+		Créer du texte en jeu(Joueur exécutant.A < Décompte de(Global.A) - 1 ? Joueur exécutant : Non applicable, Chaîne personnalisée(
+			"Come here"), Global.A[Joueur exécutant.A + 1], 1.500, Ne pas masquer, Visible pour Position et Chaîne de texte, Couleur(
+			Blanc), Visibilité par défaut);
+		Joueur exécutant.B[4] = Dernier identifiant de texte;
+	}
+}
+
+règle("SUB | Start Game")
+{
+	évènement
+	{
+		Sous-programme;
+		Sub1;
+	}
+
+	actions
+	{
+		Si(Global.CompMode && (Global.CompTime < 1 || Joueur exécutant.CompDone));
+			"eventPlayer.InvincibleToggle = 1"
+			Joueur exécutant.LeaderboardToggle = Vrai;
+			"eventPlayer.setUltEnabled(true)\r\neventPlayer.setUltCharge(100)\r\neventPlayer.setAbility1Enabled(true)"
+			Joueur exécutant.CompDone = Vrai;
+			Désactiver la réapparition prédéfinie par le mode de jeu(Joueur exécutant);
+			Tuer(Joueur exécutant, Non applicable);
+			Interrompre;
+		Fin;
+		Sous-programme à appeler(UpdateTitle);
+		Si(Capacité ultime utilisée(Joueur exécutant));
+			Tuer(Joueur exécutant, Non applicable);
+		Fin;
+		Si(Décompte de(Global.A) != 0);
+			Si(Contenu du tableau(Global.save, Chaîne personnalisée("{0}", Joueur exécutant)));
+				"if \"{0}\".format(eventPlayer) in save == true:"
+				Joueur exécutant.A = Global.save[Index de la valeur de tableau(Global.save, Chaîne personnalisée("{0}", Joueur exécutant)) + 1];
+				Joueur exécutant.D = Global.save[Index de la valeur de tableau(Global.save, Chaîne personnalisée("{0}", Joueur exécutant)) + 2];
+				Global.save[Index de la valeur de tableau(Global.save, Chaîne personnalisée("{0}", Joueur exécutant)) + 3] = Joueur exécutant;
+				Global.save[Index de la valeur de tableau(Global.save, Chaîne personnalisée("{0}", Joueur exécutant)) + 4] = Temps total écoulé;
+				Global.save[Index de la valeur de tableau(Global.save, Chaîne personnalisée("{0}", Joueur exécutant)) + 5] = 0;
+				Global.save[Index de la valeur de tableau(Global.save, Chaîne personnalisée("{0}", Joueur exécutant)) + 6] = 0;
+				Téléportation(Joueur exécutant, Global.A[Global.save[Index de la valeur de tableau(Global.save, Chaîne personnalisée("{0}",
+					Joueur exécutant)) + 1]] + Vecteur(0, 1, 0));
+			Sinon;
+				Téléportation(Joueur exécutant, Premier de(Global.A) + Vecteur(0, 1, 0));
+				Joueur exécutant.A = 0;
+				Joueur exécutant.D = 0;
+				Arrêter de modifier une variable de joueur(Joueur exécutant, ztjs);
+				Joueur exécutant.ztjs = 0;
+				Modifier une variable globale(save, Ajouter au tableau, Tableau(Chaîne personnalisée("{0}", Joueur exécutant), Joueur exécutant.A,
+					Joueur exécutant.D, Joueur exécutant, Temps total écoulé, 0, 0));
+			Fin;
+		Fin;
+		Modifier une variable de joueur selon une cadence(Joueur exécutant, D, 9999999.000, 1, Destination et Taux);
+		"eventPlayer.PortalText = []"
+		Si(Joueur exécutant.E < 1 && !Joueur hôte.EditorOn);
+			Définir l’activation de la capacité 1(Joueur exécutant, Faux);
+			Définir l’activation de la capacité ultime(Joueur exécutant, Faux);
+		Sinon;
+			Global.B = Global.B != -1 ? 0 : -1;
+			Définir l’activation de la capacité 1(Joueur exécutant, Vrai);
+			Définir l’activation de la capacité ultime(Joueur exécutant, Vrai);
+			Définir la charge de la capacité ultime(Joueur exécutant, 100);
+		Fin;
+		Définir un statut(Joueur exécutant, Non applicable, Déphasé, 9999);
+		Définir un statut(Joueur exécutant, Non applicable, Invincible, 9999);
+		"ListPlayersAtCheckpoints[eventPlayer.CurrentCheckpoint].append(eventPlayer)"
+		Joueur exécutant.LockCollected = Tableau vide;
+		Joueur exécutant.C = 0;
+		"eventPlayer.LockState = false"
+		Sous-programme à appeler(UpdateCache);
+	}
+}
+
+règle("Tittle ")
+{
+	évènement
+	{
+		Sous-programme;
+		UpdateTitle;
+	}
+
+	actions
+	{
+		"eventPlayer.startCamera(eventPlayer.getEyePosition() + eventPlayer.getFacingDirection() * -2, eventPlayer.getEyePosition(), 10)"
+		Interrompre si(
+			Global.TitleData == Non applicable || Global.CompMode || Joueur exécutant.PracticeToggle == 1 || Joueur exécutant.EditorOn || !Contenu du tableau(
+			Premier de(Global.TitleData), Joueur exécutant.A));
+		Détruire du texte en jeu(Joueur exécutant.TitleStore);
+		Créer du texte en jeu(Joueur exécutant.invis ? Non applicable : Tous les joueurs(Toutes les équipes),
+			Global.TitleData[1][Index de la valeur de tableau(Premier de(Global.TitleData), Joueur exécutant.A)], Joueur exécutant, 1.100,
+			Masquer derrière les surfaces, Visible pour et Position, Global.TitleData[2][Index de la valeur de tableau(Premier de(
+			Global.TitleData), Joueur exécutant.A)], Visibilité par défaut);
+		Joueur exécutant.TitleStore = Dernier identifiant de texte;
+	}
+}
+
+règle("SUB | Leaderboard Update")
+{
+	évènement
+	{
+		Sous-programme;
+		Leaderboardupdate;
+	}
+
+	actions
+	{
+		Modifier une variable globale(save, Supprimer du tableau par index, Index de la valeur de tableau(Global.save,
+			Chaîne personnalisée("{0}", Joueur exécutant)) + 1);
+		Modifier une variable globale(save, Supprimer du tableau par index, Index de la valeur de tableau(Global.save,
+			Chaîne personnalisée("{0}", Joueur exécutant)) + 1);
+		Modifier une variable globale(save, Supprimer du tableau par index, Index de la valeur de tableau(Global.save,
+			Chaîne personnalisée("{0}", Joueur exécutant)) + 1);
+		Modifier une variable globale(save, Supprimer du tableau par index, Index de la valeur de tableau(Global.save,
+			Chaîne personnalisée("{0}", Joueur exécutant)) + 1);
+		Modifier une variable globale(save, Supprimer du tableau par index, Index de la valeur de tableau(Global.save,
+			Chaîne personnalisée("{0}", Joueur exécutant)) + 1);
+		Modifier une variable globale(save, Supprimer du tableau par index, Index de la valeur de tableau(Global.save,
+			Chaîne personnalisée("{0}", Joueur exécutant)) + 1);
+		Modifier une variable globale(save, Supprimer du tableau par valeur, Chaîne personnalisée("{0}", Joueur exécutant));
+		"[i[0] for i in var1]   list of first element of each in var 1\r\n [ [name, seconds, prettytime] ]\r\n you already have a time"
+		Si(Contenu du tableau(Tableau appliqué(Global.LeaderBoardFull, Premier de(Élément de tableau actuel)), Chaîne personnalisée("{0}",
+			Joueur exécutant)));
+			"new time worse"
+			Si(Joueur exécutant.D > Premier de(Tableau filtré(Global.LeaderBoardFull, Premier de(Élément de tableau actuel)
+				== Chaîne personnalisée("{0}", Joueur exécutant)))[1]);
+				Passer(19);
+			"new time better"
+			Sinon;
+				Modifier une variable globale(LeaderBoardFull, Supprimer du tableau par valeur, Tableau filtré(Global.LeaderBoardFull, Premier de(
+					Élément de tableau actuel) == Chaîne personnalisée("{0}", Joueur exécutant)));
+				Modifier une variable globale(LeaderBoardFull, Ajouter au tableau, Tableau(Tableau(Chaîne personnalisée("{0}", Joueur exécutant),
+					Joueur exécutant.D, Chaîne personnalisée("{0} sec", Joueur exécutant.D))));
+				"async(CreateLeaderBoard(), AsyncBehavior.RESTART)"
+				Sous-programme à appeler(CreateLeaderBoard);
+			Fin;
+		"you are not in list yet"
+		Sinon;
+			"board has room for more"
+			Si(Décompte de(Global.LeaderBoardFull) < 20);
+				Modifier une variable globale(LeaderBoardFull, Ajouter au tableau, Tableau(Tableau(Chaîne personnalisée("{0}", Joueur exécutant),
+					Joueur exécutant.D, Chaîne personnalisée("{0} sec", Joueur exécutant.D))));
+				"async(CreateLeaderBoard(), AsyncBehavior.RESTART)"
+				Sous-programme à appeler(CreateLeaderBoard);
+			"20 entries already"
+			Sinon;
+				"your time lower then last entry"
+				Si(Global.LeaderBoardFull[19][1] < Joueur exécutant.D);
+					Passer(7);
+				"you beat the last entry, thus replacing it"
+				Sinon;
+					Modifier une variable globale(LeaderBoardFull, Supprimer du tableau par index, 19);
+					Modifier une variable globale(LeaderBoardFull, Ajouter au tableau, Tableau(Tableau(Chaîne personnalisée("{0}", Joueur exécutant),
+						Joueur exécutant.D, Chaîne personnalisée("{0} sec", Joueur exécutant.D))));
+					"async(CreateLeaderBoard(), AsyncBehavior.RESTART)"
+					Sous-programme à appeler(CreateLeaderBoard);
+				Fin;
+			Fin;
+		Fin;
+	}
+}
+
+règle("SUB | Kill Orb Effects")
+{
+	évènement
+	{
+		Sous-programme;
+		KILLBALL;
+	}
+
+	actions
+	{
+		Interrompre si(Global.H == Tableau vide || Joueur hôte.EditorOn == Vrai);
+		Pour variable globale(NANBA, 0, Décompte de(Global.H), 1);
+			Créer un effet(Tableau filtré(Ajouter au tableau(Tous les joueurs(Toutes les équipes), Non applicable),
+				Élément de tableau actuel.A == Global.killballnumber[Évaluer une fois(Global.NANBA)]), Sphère, Couleur(Bleu),
+				Global.H[Évaluer une fois(Global.NANBA)], Global.I[Évaluer une fois(Global.NANBA)], Visible pour);
+			Modifier une variable globale(K, Ajouter au tableau, Dernière entité créée);
+			Attente(0.016, Ignorer la condition);
+		Fin;
+	}
+}
+
+règle("SUB | Bounce Ball Effects")
+{
+	évènement
+	{
+		Sous-programme;
+		pinball;
+	}
+
+	actions
+	{
+		Interrompre si(Global.TQ == Tableau vide || Joueur hôte.EditorOn == Vrai);
+		Pour variable globale(NANBA, 0, Décompte de(Global.TQ), 1);
+			Créer un effet(Tableau filtré(Ajouter au tableau(Tous les joueurs(Toutes les équipes), Non applicable),
+				Élément de tableau actuel.A == Global.pinballnumber[Évaluer une fois(Global.NANBA)] && !Contenu du tableau(
+				Élément de tableau actuel.LockCollected, Global.TQ[Évaluer une fois(Global.NANBA)])), Orbe,
+				Global.BounceToggleLock[Global.NANBA] ? Couleur(Orange) : Couleur(Vert), Global.TQ[Évaluer une fois(Global.NANBA)], 1,
+				Visible pour);
+			Modifier une variable globale(TQ2, Ajouter au tableau, Dernière entité créée);
+			Attente(0.016, Ignorer la condition);
+		Fin;
+	}
+}
+
+règle("Checkpoint | Arrived")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Au sol(Joueur exécutant) == Vrai;
+		Joueur exécutant.A < Décompte de(Global.A) - 1;
+		Distance entre(Joueur exécutant, Global.A[Joueur exécutant.A + 1]) <= 1.400;
+		(Joueur exécutant.E >= 1 || Joueur exécutant.C == 0) == Vrai;
+		Joueur exécutant.LockState == Faux;
+		(Global.CompMode == Faux || Global.CompTime > 0) == Vrai;
+	}
+
+	actions
+	{
+		Joueur exécutant.MovedCheckpoint = Vrai;
+		"kill player if not colleted the locks"
+		Si(Joueur exécutant.BounceLockMax_Cache);
+			Si(Décompte de(Joueur exécutant.LockCollected) < Joueur exécutant.BounceLockMax_Cache);
+				Message en petit(Joueur exécutant, Chaîne personnalisée("   ! collect ALL orange orbs to unlock !"));
+				Tuer(Joueur exécutant, Non applicable);
+				Interrompre;
+			Fin;
+		Fin;
+		Joueur exécutant.LockCollected = Tableau vide;
+		Joueur exécutant.A += 1;
+		Sous-programme à appeler(UpdateCache);
+		Jouer un effet(Joueur exécutant, Son d’explosion concentrique, Couleur(Blanc), Joueur exécutant, 100);
+		Jouer un effet(Global.CompMode || Joueur exécutant.invis ? Joueur exécutant : Tous les joueurs(Toutes les équipes),
+			Explosion concentrique, Couleur(Bleu ciel), Global.A[Joueur exécutant.A] + Vecteur(0, 1.500, 0), 4);
+		Message en grand(Joueur exécutant, Chaîne personnalisée("{0} {1}", Chaîne personnalisée("Arrived at"), Chaîne personnalisée(
+			"{0} / {1}", Joueur exécutant.A, Décompte de(Global.A) - 1)));
+		Sous-programme à appeler(UpdateTitle);
+		Si(Joueur exécutant.PracticeToggle == 1);
+			Joueur exécutant.PracticeCheckpoint += 1;
+			Passer si(Joueur exécutant.A < Décompte de(Global.A) - 1, 41);
+			Passer si(Joueur exécutant.A >= Décompte de(Global.A) - 1, 10);
+		"normal cp, but also runs when completed"
+		Sinon;
+			Modifier une variable globale(save, Supprimer du tableau par index, Index de la valeur de tableau(Global.save,
+				Chaîne personnalisée("{0}", Joueur exécutant)) + 1);
+			Modifier une variable globale(save, Supprimer du tableau par index, Index de la valeur de tableau(Global.save,
+				Chaîne personnalisée("{0}", Joueur exécutant)) + 1);
+			Modifier une variable globale(save, Supprimer du tableau par index, Index de la valeur de tableau(Global.save,
+				Chaîne personnalisée("{0}", Joueur exécutant)) + 1);
+			Modifier une variable globale(save, Supprimer du tableau par index, Index de la valeur de tableau(Global.save,
+				Chaîne personnalisée("{0}", Joueur exécutant)) + 1);
+			Modifier une variable globale(save, Supprimer du tableau par index, Index de la valeur de tableau(Global.save,
+				Chaîne personnalisée("{0}", Joueur exécutant)) + 1);
+			Modifier une variable globale(save, Supprimer du tableau par index, Index de la valeur de tableau(Global.save,
+				Chaîne personnalisée("{0}", Joueur exécutant)) + 1);
+			Modifier une variable globale(save, Supprimer du tableau par valeur, Chaîne personnalisée("{0}", Joueur exécutant));
+			Modifier une variable globale(save, Ajouter au tableau, Tableau(Chaîne personnalisée("{0}", Joueur exécutant), Joueur exécutant.A,
+				Joueur exécutant.D, Joueur exécutant, Temps total écoulé, 0, 0));
+		Fin;
+		Si(Joueur exécutant.E < 1);
+			Définir l’activation de la capacité ultime(Joueur exécutant, Faux);
+			Définir l’activation de la capacité 1(Joueur exécutant, Faux);
+		Fin;
+		Interrompre si(Joueur exécutant.E >= 1);
+		"complete lvl"
+		Si(Joueur exécutant.A >= Décompte de(Global.A) - 1);
+			Définir l’activation de la capacité 1(Joueur exécutant, Vrai);
+			Si(Joueur exécutant.PracticeToggle != 1);
+				Définir l’activation de la capacité ultime(Joueur exécutant, Vrai);
+				Définir la charge de la capacité ultime(Joueur exécutant, 100);
+				Arrêter de modifier une variable de joueur(Joueur exécutant, D);
+				Message en grand(Tous les joueurs(Toutes les équipes), Chaîne personnalisée("{0} {1}", Joueur exécutant, Chaîne personnalisée(
+					"Mission complete! Time {0}", Chaîne personnalisée("{0} sec", Joueur exécutant.D))));
+				Joueur exécutant.H = 2;
+				Sous-programme à appeler(Leaderboardupdate);
+				Si(Global.CompMode);
+					Si(Global.CompAtmpNum > 0);
+						Si(Joueur exécutant.AttemptCount == Global.CompAtmpNum);
+							Global.CompAtmpSaveCount[Index de la valeur de tableau(Global.CompAtmpSaveNames, Chaîne personnalisée("{0}", Joueur exécutant))
+								] = -1;
+							Joueur exécutant.AttemptCount = -1;
+							Joueur exécutant.CompDone = Vrai;
+							Joueur exécutant.LeaderboardToggle = Vrai;
+							Désactiver la réapparition prédéfinie par le mode de jeu(Joueur exécutant);
+							Tuer(Joueur exécutant, Non applicable);
+						Sinon;
+							Global.CompAtmpSaveCount[Index de la valeur de tableau(Global.CompAtmpSaveNames, Chaîne personnalisée("{0}", Joueur exécutant))
+								] = Joueur exécutant.AttemptCount + 1;
+						Fin;
+					Fin;
+				Fin;
+			Fin;
+		Fin;
+	}
+}
+
+règle("Checkpoint | Finish effects")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Joueur exécutant.A == Décompte de(Global.A) - 1;
+		Joueur exécutant.E < 1;
+		Se déplace(Joueur exécutant) == Vrai;
+		Joueur exécutant.TracesOff == Faux;
+		Joueur exécutant.PracticeToggle != 1;
+		Global.CompMode == Faux;
+	}
+
+	actions
+	{
+		"@Condition (eventPlayer.isMoving() == true or eventPlayer.isHoldingButton(Button.JUMP) == true) == true\r\n rgb((cosDeg(modeList * 360 - 0) + 0.5) * 255, (cosDeg(modeList * 360 - 120) + 0.5) * 255, (cosDeg(modeList * 360 - 240) + 0.5) * 255)"
+		Jouer un effet(Tous les joueurs(Toutes les équipes), Explosion concentrique, Couleur personnalisée((Cosinus en degrés(
+			Temps total écoulé / 2 * 360) + 0.500) * 255, (Cosinus en degrés(Temps total écoulé / 2 * 360 - 120) + 0.500) * 255, (
+			Cosinus en degrés(Temps total écoulé / 2 * 360 - 240) + 0.500) * 255, 255), Position de(Joueur exécutant), 1.600);
+		Jouer un effet(Tous les joueurs(Toutes les équipes), Explosion concentrique, Couleur personnalisée((Cosinus en degrés(
+			Temps total écoulé / 2 * 360) + 0.500) * 255, (Cosinus en degrés(Temps total écoulé / 2 * 360 - 120) + 0.500) * 255, (
+			Cosinus en degrés(Temps total écoulé / 2 * 360 - 240) + 0.500) * 255, 255), Position de(Joueur exécutant), 1.400);
+		Jouer un effet(Tous les joueurs(Toutes les équipes), Explosion concentrique, Couleur personnalisée((Cosinus en degrés(
+			Temps total écoulé / 2 * 360) + 0.500) * 255, (Cosinus en degrés(Temps total écoulé / 2 * 360 - 120) + 0.500) * 255, (
+			Cosinus en degrés(Temps total écoulé / 2 * 360 - 240) + 0.500) * 255, 255), Position de(Joueur exécutant), 1.200);
+		Jouer un effet(Tous les joueurs(Toutes les équipes), Explosion concentrique, Couleur personnalisée((Cosinus en degrés(
+			Temps total écoulé / 2 * 360) + 0.500) * 255, (Cosinus en degrés(Temps total écoulé / 2 * 360 - 120) + 0.500) * 255, (
+			Cosinus en degrés(Temps total écoulé / 2 * 360 - 240) + 0.500) * 255, 255), Position de(Joueur exécutant), 1);
+		Jouer un effet(Tous les joueurs(Toutes les équipes), Explosion concentrique, Couleur personnalisée((Cosinus en degrés(
+			Temps total écoulé / 2 * 360) + 0.500) * 255, (Cosinus en degrés(Temps total écoulé / 2 * 360 - 120) + 0.500) * 255, (
+			Cosinus en degrés(Temps total écoulé / 2 * 360 - 240) + 0.500) * 255, 255), Position de(Joueur exécutant), 0.800);
+		Jouer un effet(Tous les joueurs(Toutes les équipes), Explosion concentrique, Couleur personnalisée((Cosinus en degrés(
+			Temps total écoulé / 2 * 360) + 0.500) * 255, (Cosinus en degrés(Temps total écoulé / 2 * 360 - 120) + 0.500) * 255, (
+			Cosinus en degrés(Temps total écoulé / 2 * 360 - 240) + 0.500) * 255, 255), Position de(Joueur exécutant), 0.600);
+		Jouer un effet(Tous les joueurs(Toutes les équipes), Explosion concentrique, Couleur personnalisée((Cosinus en degrés(
+			Temps total écoulé / 2 * 360) + 0.500) * 255, (Cosinus en degrés(Temps total écoulé / 2 * 360 - 120) + 0.500) * 255, (
+			Cosinus en degrés(Temps total écoulé / 2 * 360 - 240) + 0.500) * 255, 255), Position de(Joueur exécutant), 0.400);
+		Jouer un effet(Tous les joueurs(Toutes les équipes), Explosion concentrique, Couleur personnalisée((Cosinus en degrés(
+			Temps total écoulé / 2 * 360) + 0.500) * 255, (Cosinus en degrés(Temps total écoulé / 2 * 360 - 120) + 0.500) * 255, (
+			Cosinus en degrés(Temps total écoulé / 2 * 360 - 240) + 0.500) * 255, 255), Position de(Joueur exécutant), 0.200);
+		Attente(0.340, Ignorer la condition);
+		Boucle si la condition est vraie;
+	}
+}
+
+règle("Preview orbs/portals")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Joueur exécutant.A < Décompte de(Global.A) - 1;
+		Joueur exécutant.E < 1;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Tir principal)) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(S’accroupir)) == Faux;
+	}
+
+	actions
+	{
+		Attente(0.900, Interrompre quand faux);
+		Joueur exécutant.PreviewsArray = Tableau filtré(Global.CustomPortalStart, Global.CustomPortalCP[Index de la valeur de tableau(
+			Global.CustomPortalStart, Élément de tableau actuel)] == Joueur exécutant.A);
+		Modifier une variable de joueur(Joueur exécutant, PreviewsArray, Ajouter au tableau, Tableau filtré(Global.TQ,
+			Global.pinballnumber[Index de la valeur de tableau(Global.TQ, Élément de tableau actuel)
+			] == Joueur exécutant.A && Global.BounceToggleLock[Index de la valeur de tableau(Global.TQ, Élément de tableau actuel)
+			] == Vrai));
+		"test if this doesnt mes up with empty thigns being apended"
+		Si(Décompte de(Joueur exécutant.PreviewsArray) < 1 || Joueur exécutant.PreviewsArray == Non applicable);
+			Attente(0.016, Ignorer la condition);
+			Interrompre;
+		Fin;
+		Définir la vitesse de déplacement(Joueur exécutant, 0);
+		Joueur exécutant.PreviewsI = 0;
+		Lancer la caméra(Joueur exécutant, Joueur exécutant.PreviewsArray[Joueur exécutant.PreviewsI] + Regard en direction de(
+			Joueur exécutant) * -3.500, Joueur exécutant.PreviewsArray[Joueur exécutant.PreviewsI], 15);
+		Tant que(Bouton maintenu enfoncé(Joueur exécutant, Bouton(Tir principal)) && En vie(Joueur exécutant));
+			Si(Composante X de(Accélération de(Joueur exécutant)) < -0.500);
+				Si(Joueur exécutant.PreviewsI + 1 >= Décompte de(Joueur exécutant.PreviewsArray));
+					Joueur exécutant.PreviewsI = 0;
+				Sinon;
+					Joueur exécutant.PreviewsI += 1;
+				Fin;
+				Attendre jusqu’à(Composante X de(Accélération de(Joueur exécutant)) > -0.500, 1);
+			Sinon Si(Composante X de(Accélération de(Joueur exécutant)) > 0.500);
+				Si(Joueur exécutant.PreviewsI > 0);
+					Joueur exécutant.PreviewsI -= 1;
+				Sinon;
+					Joueur exécutant.PreviewsI = Décompte de(Joueur exécutant.PreviewsArray) - 1;
+				Fin;
+				Attendre jusqu’à(Composante X de(Accélération de(Joueur exécutant)) < 0.500, 1);
+			Fin;
+			Attente(0.016, Ignorer la condition);
+		Fin;
+		Arrêter la caméra(Joueur exécutant);
+		Définir la vitesse de déplacement(Joueur exécutant, 100);
+	}
+}
+
+règle("Toggle Traces")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Capacité ultime)) == Vrai;
+		Joueur exécutant.A == Décompte de(Global.A) - 1;
+		Joueur exécutant.E < 1;
+		Joueur exécutant.PracticeToggle != 1;
+		Global.CompMode == Faux;
+	}
+
+	actions
+	{
+		Attente(1, Interrompre quand faux);
+		Joueur exécutant.TracesOff = !Joueur exécutant.TracesOff;
+		Jouer un effet(Joueur exécutant, Son d’impact d’amélioration, Non applicable, Joueur exécutant, 100);
+		Message en petit(Joueur exécutant, Chaîne personnalisée("   Traces {0}", Joueur exécutant.TracesOff ? Chaîne personnalisée("off")
+			: Chaîne personnalisée("on")));
+		Jouer un effet(Joueur exécutant, Son d’impact d’affaiblissement, Non applicable, Joueur exécutant, 100);
+	}
+}
+
+règle("Kill Orb | Activate")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Genji;
+	}
+
+	conditions
+	{
+		"@Condition eventPlayer.CurrentCheckpoint != 0"
+		Joueur exécutant.A < Décompte de(Global.A) - 1;
+		Joueur exécutant.C == 0;
+		"@Condition (KillballCheckpoints[KillBallPositions.index(([player for player in KillBallPositions if distance(eventPlayer, player) <= KillBallRadii[KillBallPositions.index(player)]])[0])] == eventPlayer.CurrentCheckpoint or KillballCheckpoints[KillBallPosit"
+		Joueur exécutant.KillPosition_Cache != Tableau vide;
+		Vrai pour n’importe qui(Joueur exécutant.KillPosition_Cache, Distance entre(Élément de tableau actuel, Joueur exécutant)
+			<= Joueur exécutant.KillRadii_Cache[Index de la valeur de tableau(Joueur exécutant.KillPosition_Cache,
+			Élément de tableau actuel)]) == Vrai;
+	}
+
+	actions
+	{
+		"kill(eventPlayer, null)"
+		Sous-programme à appeler(checkpointFailReset);
+	}
+}
+
+règle("Bounce Ball | Activate")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Genji;
+	}
+
+	conditions
+	{
+		"@Condition eventPlayer.CurrentCheckpoint != 0"
+		Joueur exécutant.BouncePosition_Cache != Tableau vide;
+		Vrai pour n’importe qui(Joueur exécutant.BouncePosition_Cache, Distance entre(Élément de tableau actuel, Joueur exécutant) < 1.400)
+			== Vrai;
+	}
+
+	actions
+	{
+		Joueur exécutant.bouncetouched = Index de la valeur de tableau(Joueur exécutant.BouncePosition_Cache, Premier de(Tableau trié(
+			Tableau filtré(Joueur exécutant.BouncePosition_Cache, Distance entre(Joueur exécutant, Élément de tableau actuel)
+			< 1.400 && !Contenu du tableau(Joueur exécutant.LockCollected, Élément de tableau actuel)), Distance entre(Joueur exécutant,
+			Élément de tableau actuel))));
+		"eventPlayer.applyImpulse(Vector.UP, BounceStrength[BouncePositions.index([player for player in BouncePositions if distance(eventPlayer.getPosition(), player) <= 2])], Relativity.TO_WORLD, Impulse.CANCEL_CONTRARY_MOTION)"
+		Si(Joueur exécutant.BounceStrength_Cache[Joueur exécutant.bouncetouched] != 0);
+			Appliquer une impulsion(Joueur exécutant, Haut, Joueur exécutant.BounceStrength_Cache[Joueur exécutant.bouncetouched], Au monde,
+				Annuler le mouvement contraire);
+		Fin;
+		"if BounceToggleDash[BouncePositions.index([player for player in BouncePositions if distance(eventPlayer.getPosition(), player) <= 2])] == true:"
+		Si(Joueur exécutant.BounceDash_Cache[Joueur exécutant.bouncetouched]);
+			Définir l’activation de la capacité 1(Joueur exécutant, Vrai);
+			Message en petit(Joueur exécutant, Chaîne personnalisée("   Dash is ready"));
+			Jouer un effet(Joueur exécutant, Son d’explosion d’amélioration, Couleur(Blanc), Joueur exécutant, 75);
+		Fin;
+		"if BounceToggleUlt[BouncePositions.index([player for player in BouncePositions if distance(eventPlayer.getPosition(), player) <= 2])] == true:"
+		Si(Joueur exécutant.BounceUlt_Cache[Joueur exécutant.bouncetouched]);
+			Définir l’activation de la capacité ultime(Joueur exécutant, Vrai);
+			Définir la charge de la capacité ultime(Joueur exécutant, 100);
+			Message en petit(Joueur exécutant, Chaîne personnalisée("   Ultimate is ready"));
+			Jouer un effet(Joueur exécutant, Son d’explosion d’amélioration, Couleur(Blanc), Joueur exécutant, 75);
+		Fin;
+		"if BounceToggleLock[BouncePositions.index([player for player in BouncePositions if distance(eventPlayer.getPosition(), player) <= 2])] == true:"
+		Si(Joueur exécutant.BounceLock_Cache[Joueur exécutant.bouncetouched]);
+			Modifier une variable de joueur(Joueur exécutant, LockCollected, Ajouter au tableau,
+				Joueur exécutant.BouncePosition_Cache[Joueur exécutant.bouncetouched]);
+			Message en petit(Joueur exécutant, Chaîne personnalisée("   orb has been collected"));
+			Jouer un effet(Joueur exécutant, Son d’explosion d’amélioration, Couleur(Blanc), Joueur exécutant, 75);
+	}
+}
+
+règle("Death Reset")
+{
+	évènement
+	{
+		Un joueur meurt;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Joueur exécutant.F != 1;
+		Décompte de(Global.A) >= 2;
+		Joueur exécutant.CompDone == Faux;
+	}
+
+	actions
+	{
+		Joueur exécutant.LockCollected = Tableau vide;
+		Effacer le statut(Joueur exécutant, Déphasé);
+		Ressusciter(Joueur exécutant);
+		Téléportation(Joueur exécutant, Décompte de(Global.A[Joueur exécutant.A])
+			!= 0 ? Global.A[Joueur exécutant.A][1] : Global.A[Joueur exécutant.A]);
+	}
+}
+
+règle("Ground Reset")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Genji;
+	}
+
+	conditions
+	{
+		Joueur exécutant.A < Décompte de(Global.A) - 1;
+		Décompte de(Global.A) >= 2;
+		Joueur exécutant.C == 0;
+		Joueur exécutant.F != 1;
+		Au sol(Joueur exécutant) == Vrai;
+		Joueur exécutant.LockState == Faux;
+		Distance entre(Joueur exécutant, Décompte de(Global.A[Joueur exécutant.A])
+			!= 0 ? Global.A[Joueur exécutant.A][1] : Global.A[Joueur exécutant.A]) > 1.400;
+	}
+
+	actions
+	{
+		Sous-programme à appeler(checkpointFailReset);
+	}
+}
+
+règle("Player Effect")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		En vie(Joueur exécutant) == Vrai;
+		Statut(Joueur exécutant, Déphasé) == Faux;
+	}
+
+	actions
+	{
+		Définir un statut(Joueur exécutant, Non applicable, Déphasé, 9999);
+		Définir un statut(Joueur exécutant, Non applicable, Invincible, 9999);
+	}
+}
+
+règle("Ultimate Charge")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Pourcentage de charge de la capacité ultime(Joueur exécutant) < 100;
+	}
+
+	actions
+	{
+		Définir la charge de la capacité ultime(Joueur exécutant, 100);
+	}
+}
+
+règle("Player Leaves")
+{
+	évènement
+	{
+		Un joueur a quitté la partie;
+		Les deux;
+		Tout;
+	}
+
+	actions
+	{
+		"if player's cur_checkpoint is 0, delete save info"
+		Si(Global.save[Index de la valeur de tableau(Global.save, Joueur exécutant) - 2] == 0);
+			Modifier une variable globale(save, Supprimer du tableau par index, Index de la valeur de tableau(Global.save, Joueur exécutant)
+				+ 1);
+			Modifier une variable globale(save, Supprimer du tableau par index, Index de la valeur de tableau(Global.save, Joueur exécutant)
+				+ 1);
+			Modifier une variable globale(save, Supprimer du tableau par index, Index de la valeur de tableau(Global.save, Joueur exécutant)
+				+ 1);
+			Modifier une variable globale(save, Supprimer du tableau par index, Index de la valeur de tableau(Global.save, Joueur exécutant)
+				- 1);
+			Modifier une variable globale(save, Supprimer du tableau par index, Index de la valeur de tableau(Global.save, Joueur exécutant)
+				- 1);
+			Modifier une variable globale(save, Supprimer du tableau par index, Index de la valeur de tableau(Global.save, Joueur exécutant)
+				- 1);
+			Modifier une variable globale(save, Supprimer du tableau par valeur, Joueur exécutant);
+		Sinon;
+			Passer si(Global.save[Index de la valeur de tableau(Global.save, Joueur exécutant) - 2] >= Décompte de(Global.A) - 1, 2);
+			Passer si(Global.save[Index de la valeur de tableau(Global.save, Joueur exécutant) + 3] == 1, 1);
+			Global.save[Index de la valeur de tableau(Global.save, Joueur exécutant)
+				- 1] = Temps total écoulé - Global.save[Index de la valeur de tableau(Global.save, Joueur exécutant)
+				+ 1] - Global.save[Index de la valeur de tableau(Global.save, Joueur exécutant)
+				+ 2] + Global.save[Index de la valeur de tableau(Global.save, Joueur exécutant) - 1];
+			Global.save[Index de la valeur de tableau(Global.save, Joueur exécutant) + 2] = 0;
+			Global.save[Index de la valeur de tableau(Global.save, Joueur exécutant) + 3] = 0;
+	}
+}
+
+règle("Combo | Leaderboard Toggle | Melee toggle")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Mêlée)) == Vrai;
+		Joueur exécutant.E < 1;
+	}
+
+	actions
+	{
+		"@Condition CompMode == false or not eventPlayer.CompDone"
+		Attente(1, Interrompre quand faux);
+		Joueur exécutant.LeaderboardToggle = !Joueur exécutant.LeaderboardToggle;
+	}
+}
+
+règle("Combo | Restart Run | Crouch + Interact + Deflect")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(S’accroupir)) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Interaction)) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Capacité 2)) == Vrai;
+	}
+
+	actions
+	{
+		"@Condition eventPlayer.isUsingAbility1() == false if DashExploitToggle else true"
+		Si(Global.CompMode);
+			Si(Global.CompTime < 1);
+				Message en petit(Joueur exécutant, Chaîne personnalisée("   The competition is over"));
+				Attente(0.016, Ignorer la condition);
+				Interrompre;
+			Fin;
+			Si(Joueur exécutant.CompDone);
+				Attente(0.016, Ignorer la condition);
+				Interrompre;
+			Fin;
+			Si(Global.CompRestartLimit && Joueur exécutant.A < Décompte de(Global.A) - 1);
+				Message en petit(Joueur exécutant, Chaîne personnalisée("   Restart during run is disabled for this competition"));
+				Attente(0.016, Ignorer la condition);
+				Interrompre;
+			Fin;
+			Si(Global.CompAtmpNum > 0);
+				Si(Joueur exécutant.AttemptCount == Global.CompAtmpNum);
+					Message en petit(Joueur exécutant, Chaîne personnalisée("   You are on your last attempt"));
+					Attente(0.016, Ignorer la condition);
+					Interrompre;
+				Fin;
+				Si(Joueur exécutant.AttemptCount == -1);
+					Message en petit(Joueur exécutant, Chaîne personnalisée("   You are out of attempts"));
+					Attente(0.016, Ignorer la condition);
+					Interrompre;
+				Fin;
+				Joueur exécutant.AttemptCount += 1;
+				Global.CompAtmpSaveCount[Index de la valeur de tableau(Global.CompAtmpSaveNames, Chaîne personnalisée("{0}", Joueur exécutant))
+					] = Joueur exécutant.AttemptCount;
+			Fin;
+		Fin;
+		Joueur exécutant.LockState = Vrai;
+		Si(Global.DashExploitToggle && Capacité 1 utilisée(Joueur exécutant));
+			Message en petit(Joueur exécutant, Chaîne personnalisée("   Dash Start is banned!"));
+			Annuler l’action principale(Joueur exécutant);
+			Attendre jusqu’à(Au sol(Joueur exécutant), 0.600);
+			Joueur exécutant.LockState = Faux;
+			Interrompre;
+		Fin;
+		Joueur exécutant.flytoggle = Non applicable;
+		Joueur exécutant.A = 0;
+		Joueur exécutant.PracticeToggle = 0;
+		Joueur exécutant.PracticeCheckpoint = 0;
+		Joueur exécutant.C = 0;
+		Si(Contenu du tableau(Global.save, Chaîne personnalisée("{0}", Joueur exécutant)));
+			Modifier une variable globale(save, Supprimer du tableau par index, Index de la valeur de tableau(Global.save,
+				Chaîne personnalisée("{0}", Joueur exécutant)) + 1);
+			Modifier une variable globale(save, Supprimer du tableau par index, Index de la valeur de tableau(Global.save,
+				Chaîne personnalisée("{0}", Joueur exécutant)) + 1);
+			Modifier une variable globale(save, Supprimer du tableau par index, Index de la valeur de tableau(Global.save,
+				Chaîne personnalisée("{0}", Joueur exécutant)) + 1);
+			Modifier une variable globale(save, Supprimer du tableau par index, Index de la valeur de tableau(Global.save,
+				Chaîne personnalisée("{0}", Joueur exécutant)) + 1);
+			Modifier une variable globale(save, Supprimer du tableau par index, Index de la valeur de tableau(Global.save,
+				Chaîne personnalisée("{0}", Joueur exécutant)) + 1);
+			Modifier une variable globale(save, Supprimer du tableau par index, Index de la valeur de tableau(Global.save,
+				Chaîne personnalisée("{0}", Joueur exécutant)) + 1);
+			Modifier une variable globale(save, Supprimer du tableau par valeur, Chaîne personnalisée("{0}", Joueur exécutant));
+		Fin;
+		Sous-programme à appeler(Sub1);
+		Jouer un effet(Joueur exécutant, Son d’explosion concentrique, Couleur(Blanc), Joueur exécutant, 100);
+		Attente(0.016, Ignorer la condition);
+		Joueur exécutant.LockState = Faux;
+		Si(Global.CompMode);
+			Attente(1, Ignorer la condition);
+		Sinon;
+			Attente(0.016, Ignorer la condition);
+	}
+}
+
+règle("Combo | Enter Spectate | Hold Interact")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Interaction)) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Capacité 2)) == Faux;
+		Joueur exécutant.E < 1;
+		Global.CompMode == Faux;
+	}
+
+	actions
+	{
+		Attente(1, Interrompre quand faux);
+		Message en petit(Joueur exécutant, Chaîne personnalisée("   Hold Interact again to turn off spectate mode"));
+		Si(En vie(Joueur exécutant));
+			Si(Joueur exécutant.A < Décompte de(Global.A) - 1);
+				Modifier une variable de joueur selon une cadence(Joueur exécutant, ztjs, 999999, 1, Destination et Taux);
+				Global.save[Index de la valeur de tableau(Global.save, Chaîne personnalisée("{0}", Joueur exécutant)) + 2] = Joueur exécutant.D;
+				Global.save[Index de la valeur de tableau(Global.save, Chaîne personnalisée("{0}", Joueur exécutant)) + 4] = Temps total écoulé;
+				Global.save[Index de la valeur de tableau(Global.save, Chaîne personnalisée("{0}", Joueur exécutant)) + 6] = 1;
+			Fin;
+			Définir la durée maximum avant réapparition(Joueur exécutant, 9999);
+			Joueur exécutant.F = 1;
+			Arrêter de modifier une variable de joueur(Joueur exécutant, D);
+			Attente(0.200, Ignorer la condition);
+			Tuer(Joueur exécutant, Non applicable);
+			Téléportation(Joueur exécutant, Décompte de(Global.A[Joueur exécutant.A])
+				!= 0 ? Global.A[Joueur exécutant.A][1] : Global.A[Joueur exécutant.A]);
+		Sinon;
+			Passer si(Joueur exécutant.E >= 1, 2);
+			Réapparaître(Joueur exécutant);
+			Joueur exécutant.F = 0;
+			Téléportation(Joueur exécutant, Décompte de(Global.A[Joueur exécutant.A])
+				!= 0 ? Global.A[Joueur exécutant.A][1] : Global.A[Joueur exécutant.A]);
+			Passer si(Joueur exécutant.A >= Décompte de(Global.A) - 1, 4);
+			Définir l’activation de la capacité ultime(Joueur exécutant, Faux);
+			Définir l’activation de la capacité 1(Joueur exécutant, Faux);
+			Passer si(Joueur exécutant.PracticeToggle == 1, 1);
+			Modifier une variable de joueur selon une cadence(Joueur exécutant, D, 10000, 1, Destination et Taux);
+			Définir la durée maximum avant réapparition(Joueur exécutant, 0);
+			Joueur exécutant.C = 0;
+			Joueur exécutant.LockCollected = Tableau vide;
+			Si(Joueur exécutant.A < Décompte de(Global.A) - 1);
+				Arrêter de modifier une variable de joueur(Joueur exécutant, ztjs);
+				Global.save[Index de la valeur de tableau(Global.save, Chaîne personnalisée("{0}", Joueur exécutant)) + 5] = Joueur exécutant.ztjs;
+				Joueur exécutant.ztjs = 0;
+				Global.save[Index de la valeur de tableau(Global.save, Chaîne personnalisée("{0}", Joueur exécutant)) + 6] = 0;
+	}
+}
+
+règle("Combo | Toggle Invincible Mode | Melee + Rel﻿oad")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Mêlée)) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Rechargement)) == Vrai;
+		Capacité 1 utilisée(Joueur exécutant) == Faux;
+		"@Condition eventPlayer.CurrentCheckpoint < len(CheckpointPositions) - 1"
+		En vie(Joueur exécutant) == Vrai;
+		Capacité ultime utilisée(Joueur exécutant) == Faux;
+		(Global.CompMode == Faux || !Joueur exécutant.CompDone) == Vrai;
+	}
+
+	actions
+	{
+		Joueur exécutant.LockCollected = Tableau vide;
+		Joueur exécutant.flytoggle = Non applicable;
+		Si(Joueur exécutant.C == 0);
+			Interrompre si(Joueur exécutant.A >= Décompte de(Global.A) - 1);
+			Modifier une variable de joueur selon une cadence(Joueur exécutant, ztjs, 999999, 1, Destination et Taux);
+			Global.save[Index de la valeur de tableau(Global.save, Chaîne personnalisée("{0}", Joueur exécutant)) + 2] = Joueur exécutant.D;
+			Global.save[Index de la valeur de tableau(Global.save, Chaîne personnalisée("{0}", Joueur exécutant)) + 4] = Temps total écoulé;
+			Global.save[Index de la valeur de tableau(Global.save, Chaîne personnalisée("{0}", Joueur exécutant)) + 6] = 1;
+			Arrêter de modifier une variable de joueur(Joueur exécutant, D);
+			Message en grand(Joueur exécutant, Chaîne personnalisée("Invincible mode"));
+			Joueur exécutant.flytoggle = Non applicable;
+			Définir l’activation de la capacité ultime(Joueur exécutant, Vrai);
+			Définir la charge de la capacité ultime(Joueur exécutant, 100);
+			Définir l’activation de la capacité 1(Joueur exécutant, Vrai);
+			Attente(0.200, Ignorer la condition);
+			Joueur exécutant.C = 1;
+		Sinon;
+			Forcer la position du joueur(Joueur exécutant, Décompte de(Global.A[Joueur exécutant.A])
+				!= 0 ? Global.A[Joueur exécutant.A][1] : Global.A[Joueur exécutant.A], Vrai);
+			Passer si(Joueur exécutant.E >= 1, 2);
+			Définir l’activation de la capacité ultime(Joueur exécutant, Faux);
+			Définir l’activation de la capacité 1(Joueur exécutant, Faux);
+			Téléportation(Joueur exécutant, Décompte de(Global.A[Joueur exécutant.A])
+				!= 0 ? Global.A[Joueur exécutant.A][1] : Global.A[Joueur exécutant.A]);
+			Attente(0.100, Ignorer la condition);
+			Joueur exécutant.C = 0;
+			Si(Joueur exécutant.PracticeToggle == 1);
+				Message en grand(Joueur exécutant, Chaîne personnalisée("Practice mode"));
+			Sinon;
+				Message en grand(Joueur exécutant, Chaîne personnalisée("Normal mode"));
+				Modifier une variable de joueur selon une cadence(Joueur exécutant, D, 9999999.000, 1, Destination et Taux);
+				Arrêter de modifier une variable de joueur(Joueur exécutant, ztjs);
+				Global.save[Index de la valeur de tableau(Global.save, Chaîne personnalisée("{0}", Joueur exécutant)) + 5] = Joueur exécutant.ztjs;
+				Joueur exécutant.ztjs = 0;
+				Global.save[Index de la valeur de tableau(Global.save, Chaîne personnalisée("{0}", Joueur exécutant)) + 6] = 0;
+			Fin;
+			Arrêter de forcer la position du joueur(Joueur exécutant);
+			Joueur exécutant.flytoggle = Non applicable;
+	}
+}
+
+règle("Combo | Toggle Practice Mode | Melee + Ultimate")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Mêlée)) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Capacité ultime)) == Vrai;
+		Joueur exécutant.E < 1;
+		Capacité 1 utilisée(Joueur exécutant) == Faux;
+		Joueur exécutant.A <= Décompte de(Global.A) - 1;
+		"@Condition eventPlayer.InvincibleToggle != 1"
+		En vie(Joueur exécutant) == Vrai;
+		Global.CompMode == Faux;
+	}
+
+	actions
+	{
+		Si(Joueur exécutant.C == 1);
+			Message en petit(Joueur exécutant, Chaîne personnalisée("   Cannot leave practice mode while also in invincible mode"));
+			Attente(0.016, Ignorer la condition);
+			Interrompre;
+		Fin;
+		Joueur exécutant.LockState = Vrai;
+		"waitUntil(eventPlayer.isUsingUltimate() == false or eventPlayer.PracticeToggle == 0, 3)"
+		Si(Capacité ultime utilisée(Joueur exécutant));
+			Tuer(Joueur exécutant, Non applicable);
+		Fin;
+		Attente(0.160, Ignorer la condition);
+		Si(Joueur exécutant.PracticeToggle == 0);
+			Forcer la position du joueur(Joueur exécutant, Décompte de(Global.A[Joueur exécutant.A])
+				== 0 ? Global.A[Joueur exécutant.A] : Global.A[Joueur exécutant.A][1], Vrai);
+			Arrêter de modifier une variable de joueur(Joueur exécutant, D);
+			Message en grand(Joueur exécutant, Chaîne personnalisée("Practice mode"));
+			Arrêter de forcer la position du joueur(Joueur exécutant);
+			Attente(0.200, Ignorer la condition);
+			Joueur exécutant.PracticeToggle = 1;
+		Sinon;
+			Forcer la position du joueur(Joueur exécutant, Décompte de(Global.A[Joueur exécutant.A - Joueur exécutant.PracticeCheckpoint])
+				== 0 ? Global.A[Joueur exécutant.A - Joueur exécutant.PracticeCheckpoint] : Global.A[Joueur exécutant.A - Joueur exécutant.PracticeCheckpoint][1],
+				Vrai);
+			Sous-programme à appeler(checkpointFailReset);
+			Définir l’activation de la capacité 1(Joueur exécutant, Faux);
+			Joueur exécutant.A -= Joueur exécutant.PracticeCheckpoint;
+			Joueur exécutant.PracticeCheckpoint = 0;
+			Joueur exécutant.LockCollected = Tableau vide;
+			Sous-programme à appeler(UpdateCache);
+			Attente(0.100, Ignorer la condition);
+			Joueur exécutant.PracticeToggle = 0;
+			Message en grand(Joueur exécutant, Chaîne personnalisée("Normal mode"));
+			Si(Joueur exécutant.A < Décompte de(Global.A) - 1);
+				Modifier une variable de joueur selon une cadence(Joueur exécutant, D, 9999999.000, 1, Destination et Taux);
+			Sinon;
+				Définir l’activation de la capacité ultime(Joueur exécutant, Vrai);
+				Définir la charge de la capacité ultime(Joueur exécutant, 100);
+				Définir l’activation de la capacité 1(Joueur exécutant, Vrai);
+			Fin;
+			Arrêter de forcer la position du joueur(Joueur exécutant);
+		Fin;
+		Attente(0.300, Ignorer la condition);
+		Joueur exécutant.LockState = Faux;
+	}
+}
+
+règle("Combo | Practice Restart | Interact")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Interaction)) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Capacité ultime)) == Faux;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Mêlée)) == Faux;
+		(En vie(Joueur exécutant) || Joueur exécutant.F != 0) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(S’accroupir)) == Faux;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Capacité 2)) == Faux;
+		Joueur exécutant.E < 1;
+		Joueur exécutant.PracticeToggle != Faux;
+	}
+
+	actions
+	{
+		"@Condition eventPlayer.SpectateToggle != 1\r\n@Condition eventPlayer.CurrentCheckpoint - eventPlayer.PracticeCheckpoint <= 0 == true"
+		Si(Joueur exécutant.F != 0);
+			Attendre jusqu’à(En vie(Joueur exécutant), 9999);
+			Attendre jusqu’à(!Bouton maintenu enfoncé(Joueur exécutant, Bouton(Interaction)), 2);
+			Interrompre;
+		Fin;
+		Attendre jusqu’à(!Bouton maintenu enfoncé(Joueur exécutant, Bouton(Interaction)), 0.900);
+		Interrompre si(Bouton maintenu enfoncé(Joueur exécutant, Bouton(Interaction)));
+		Si(Capacité ultime utilisée(Joueur exécutant));
+			Tuer(Joueur exécutant, Non applicable);
+		Fin;
+		Si(Joueur exécutant.A >= Décompte de(Global.A) - 1);
+			Sous-programme à appeler(Sub0);
+		Fin;
+		Téléportation(Joueur exécutant, Global.A[Joueur exécutant.A - Joueur exécutant.PracticeCheckpoint]);
+		"broken\r\neventPlayer.PracticeCheckpoint = eventPlayer.CurrentCheckpoint"
+		Joueur exécutant.A -= Joueur exécutant.PracticeCheckpoint;
+		"broken\r\neventPlayer.teleport(CheckpointPositions[eventPlayer.CurrentCheckpoint])"
+		Joueur exécutant.PracticeCheckpoint = 0;
+		Définir un statut(Joueur exécutant, Non applicable, Immobilisé, 0.200);
+		Joueur exécutant.LockCollected = Tableau vide;
+		Sous-programme à appeler(UpdateCache);
+	}
+}
+
+règle("Combo | Quick Reset | Rel﻿oad, Hold Rel﻿oad to Enable")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Rechargement)) == Vrai;
+	}
+
+	actions
+	{
+		"@Condition eventPlayer.EditModeSelection < 1"
+		Interrompre si(Bouton maintenu enfoncé(Joueur exécutant, Bouton(Mêlée)));
+		Si(Joueur exécutant.quick_restart == Vrai);
+			Joueur exécutant.LockCollected = Tableau vide;
+			Si(Capacité ultime utilisée(Joueur exécutant));
+				Tuer(Joueur exécutant, Non applicable);
+			Fin;
+			Forcer la position du joueur(Joueur exécutant, Décompte de(Global.A[Joueur exécutant.A])
+				!= 0 ? Global.A[Joueur exécutant.A][1] : Global.A[Joueur exécutant.A], Vrai);
+			Joueur exécutant.flytoggle = Non applicable;
+			Passer si(Joueur exécutant.E >= 1 || Joueur exécutant.C == 1 || Joueur exécutant.A >= Décompte de(Global.A) - 1, 2);
+			Définir l’activation de la capacité ultime(Joueur exécutant, Faux);
+			Définir l’activation de la capacité 1(Joueur exécutant, Faux);
+			Téléportation(Joueur exécutant, Décompte de(Global.A[Joueur exécutant.A])
+				!= 0 ? Global.A[Joueur exécutant.A][1] : Global.A[Joueur exécutant.A]);
+			Attente(0.100, Ignorer la condition);
+			Arrêter de forcer la position du joueur(Joueur exécutant);
+			Joueur exécutant.flytoggle = Non applicable;
+		Fin;
+		Attente(1, Interrompre quand faux);
+		Si(Joueur exécutant.quick_restart == Faux);
+			Joueur exécutant.quick_restart = Vrai;
+			Message en grand(Joueur exécutant, Chaîne personnalisée("Quick reset is enabled"));
+			Jouer un effet(Joueur exécutant, Son d’impact d’amélioration, Couleur(Blanc), Joueur exécutant, 100);
+		Sinon Si(Joueur exécutant.quick_restart == Vrai);
+			Jouer un effet(Joueur exécutant, Son d’impact d’amélioration, Couleur(Blanc), Joueur exécutant, 100);
+			Joueur exécutant.quick_restart = Faux;
+			Message en grand(Joueur exécutant, Chaîne personnalisée("Quick reset is disabled"));
+	}
+}
+
+règle("Combo | Invisible Toggle | Hold Deflect")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Capacité 2)) == Vrai;
+		Joueur exécutant.E < 1;
+		Global.CompMode == Faux;
+	}
+
+	actions
+	{
+		Attente(1, Interrompre quand faux);
+		Joueur exécutant.invis = !Joueur exécutant.invis;
+		Définir l’invisibilité(Joueur exécutant, Aucune);
+		Si(Joueur exécutant.invis);
+			Définir l’invisibilité(Joueur exécutant, Tous);
+		Fin;
+		Message en petit(Joueur exécutant, Chaîne personnalisée("   Invisible {0}", Joueur exécutant.invis ? Chaîne personnalisée("on")
+			: Chaîne personnalisée("off")));
+		Jouer un effet(Joueur exécutant, Son d’impact d’affaiblissement, Non applicable, Joueur exécutant, 100);
+	}
+}
+
+règle("Limit Ultimate")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Genji;
+	}
+
+	conditions
+	{
+		"The function of this rule is: ULT can only be used once when running the map"
+		Capacité ultime utilisée(Joueur exécutant) == Vrai;
+		Joueur exécutant.A < Décompte de(Global.A) - 1;
+		Joueur exécutant.E < 1;
+		Joueur exécutant.C == 0;
+	}
+
+	actions
+	{
+		Définir l’activation de la capacité ultime(Joueur exécutant, Faux);
+	}
+}
+
+règle("Limit Dash")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		"The function of this rule is: DASH can only be used once when running the map"
+		Capacité 1 utilisée(Joueur exécutant) == Vrai;
+		Joueur exécutant.A < Décompte de(Global.A) - 1;
+		Joueur exécutant.E < 1;
+		Joueur exécutant.C == 0;
+	}
+
+	actions
+	{
+		Définir l’activation de la capacité 1(Joueur exécutant, Faux);
+	}
+}
+
+règle("Give Blade")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Au sol(Joueur exécutant) == Vrai;
+		Joueur exécutant.A < Décompte de(Global.A) - 1;
+		Contenu du tableau(Global.Dao, Joueur exécutant.A) == Vrai;
+		Distance entre(Joueur exécutant, Décompte de(Global.A[Joueur exécutant.A]) > 1 ? Dernier(Global.A[Joueur exécutant.A])
+			: Global.A[Joueur exécutant.A]) <= 1.400;
+		Capacité ultime utilisée(Joueur exécutant) == Faux;
+	}
+
+	actions
+	{
+		Attente(0.100, Ignorer la condition);
+		Interrompre si(Capacité ultime utilisée(Joueur exécutant));
+		Définir l’activation de la capacité ultime(Joueur exécutant, Vrai);
+		Définir la charge de la capacité ultime(Joueur exécutant, 100);
+		Message en petit(Joueur exécutant, Chaîne personnalisée("   Ultimate is ready"));
+	}
+}
+
+règle("Give Dash")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Au sol(Joueur exécutant) == Vrai;
+		Joueur exécutant.A < Décompte de(Global.A) - 1;
+		"@Condition distance(eventPlayer, A[eventPlayer.A]) <= 1.4"
+		Contenu du tableau(Global.SHIFT, Joueur exécutant.A) == Vrai;
+		Distance entre(Joueur exécutant, Décompte de(Global.A[Joueur exécutant.A]) > 1 ? Dernier(Global.A[Joueur exécutant.A])
+			: Global.A[Joueur exécutant.A]) <= 1.400;
+		Capacité 1 utilisée(Joueur exécutant) == Faux;
+	}
+
+	actions
+	{
+		Définir l’activation de la capacité 1(Joueur exécutant, Vrai);
+		Message en petit(Joueur exécutant, Chaîne personnalisée("   Dash is ready"));
+	}
+}
+
+règle("Checkpoint | Skip | Crouch + Primary/Secondary Fire")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Joueur exécutant.LockState == Faux;
+		(Joueur hôte.EditorOn || Joueur exécutant.PracticeToggle == 1) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(S’accroupir)) == Vrai;
+		((Bouton maintenu enfoncé(Joueur exécutant, Bouton(Tir principal)) && Joueur exécutant.A < Décompte de(Global.A) - 1) || (
+			Bouton maintenu enfoncé(Joueur exécutant, Bouton(Tir secondaire)) && Joueur exécutant.A != 0)) == Vrai;
+	}
+
+	actions
+	{
+		Si(Bouton maintenu enfoncé(Joueur exécutant, Bouton(Tir secondaire)));
+			Interrompre si(Joueur exécutant.A == 0);
+			Joueur exécutant.LockState = Vrai;
+			Joueur exécutant.A -= 1;
+			Si(Joueur exécutant.PracticeToggle == 1);
+				Joueur exécutant.PracticeCheckpoint -= 1;
+			Fin;
+		Sinon;
+			Interrompre si(Joueur exécutant.A == Décompte de(Global.A) - 1);
+			Joueur exécutant.LockState = Vrai;
+			Joueur exécutant.A += 1;
+			Si(Joueur exécutant.PracticeToggle == 1);
+				Joueur exécutant.PracticeCheckpoint += 1;
+			Fin;
+		Fin;
+		Attente(0.016, Ignorer la condition);
+		Sous-programme à appeler(checkpointFailReset);
+		Attente(0.064, Ignorer la condition);
+		Joueur exécutant.LockState = Faux;
+		Joueur exécutant.MovedCheckpoint = Vrai;
+		Sous-programme à appeler(UpdateCache);
+		Attendre jusqu’à(!Bouton maintenu enfoncé(Joueur exécutant, Bouton(Tir principal)) && !Bouton maintenu enfoncé(Joueur exécutant,
+			Bouton(Tir secondaire)), 0.320);
+	}
+}
+
+désactivé règle("------------------------------------------------------------------------ Checks ------------------------------------------------------------------------ ")
+{
+	évènement
+	{
+		Toute la partie - Tout le monde;
+	}
+}
+
+règle("prevent ult swing")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Capacité ultime utilisée(Joueur exécutant) == Vrai;
+		Joueur exécutant.A < Décompte de(Global.A) - 1;
+		Joueur exécutant.C == 0;
+	}
+
+	actions
+	{
+		"prevents slashign in last second of ult, because it extends the duration"
+		Attente(1.200, Ignorer la condition);
+		Interdire le bouton(Joueur exécutant, Bouton(Tir principal));
+		Attendre jusqu’à(!Capacité ultime utilisée(Joueur exécutant), 2);
+		Attente(0.016, Ignorer la condition);
+		Autoriser un bouton(Joueur exécutant, Bouton(Tir principal));
+	}
+}
+
+règle("Checking | Jump")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Genji;
+	}
+
+	conditions
+	{
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Sauter)) == Vrai;
+		Joueur exécutant.TY != 2;
+	}
+
+	actions
+	{
+		"and if it is turned off, it will still be banned for three stages after customs clearance.\r\n@Condition eventPlayer.A < len(A) - 1"
+		Joueur exécutant.TY += 1;
+	}
+}
+
+règle("Checking | Bhop in the air")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Joueur exécutant.TY == 0;
+		Dans les airs(Joueur exécutant) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Sauter)) == Faux;
+	}
+
+	actions
+	{
+		Joueur exécutant.O = 0;
+	}
+}
+
+règle("Checking | In the air")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Genji;
+	}
+
+	conditions
+	{
+		Joueur exécutant.TY == 0;
+		Dans les airs(Joueur exécutant) == Vrai;
+	}
+
+	actions
+	{
+		"and if it is turned off, it will still be banned for three stages after customs clearance.\r\n@Condition eventPlayer.A < len(A) - 1"
+		Joueur exécutant.TY = 1;
+	}
+}
+
+règle("Checking | Triple jump")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Joueur exécutant.TY == 1;
+	}
+
+	actions
+	{
+		Attente(0.100, Interrompre quand faux);
+		Joueur exécutant.TY = 2;
+	}
+}
+
+règle("Checking | Player on the wall")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		"This rule is also linked to the determination of wall climbing, please do not close/delete"
+		Sur le mur(Joueur exécutant) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Sauter)) == Vrai;
+	}
+
+	actions
+	{
+		Joueur exécutant.TY = 2;
+		Joueur exécutant.J = 1;
+	}
+}
+
+règle("Checking | Using Emote")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Communication par emote(Joueur exécutant) == Vrai;
+	}
+
+	actions
+	{
+		Joueur exécutant.O = 0;
+	}
+}
+
+règle("Checking | Bhop")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Joueur exécutant.O == 0;
+		Utilise Saut(Joueur exécutant) == Vrai;
+	}
+
+	actions
+	{
+		Joueur exécutant.O = 1;
+		Message en petit(Joueur exécutant, Chaîne personnalisée("   Bhop"));
+	}
+}
+
+règle("Checking | Create Bhop")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Sur le mur(Joueur exécutant) == Faux;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(S’accroupir)) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Sauter)) == Faux;
+		Au sol(Joueur exécutant) == Faux;
+		Dans les airs(Joueur exécutant) == Vrai;
+		Utilise Saut(Joueur exécutant) == Faux;
+		Accroupi(Joueur exécutant) == Vrai;
+	}
+
+	actions
+	{
+		Joueur exécutant.O = 0;
+		Si(Global.kaxiaotiao == Vrai && Joueur exécutant.C == 0 && Joueur exécutant.A < Décompte de(Global.A) - 1);
+			Message en petit(Joueur exécutant, Chaîne personnalisée("   Create Bhop is banned!"));
+			Sous-programme à appeler(checkpointFailReset);
+			Interrompre;
+		Fin;
+		Message en petit(Joueur exécutant, Chaîne personnalisée("   Bhop has been created!"));
+	}
+}
+
+règle("Checking | Bhop/Double Jump Initialization")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Genji;
+	}
+
+	conditions
+	{
+		Au sol(Joueur exécutant) == Vrai;
+	}
+
+	actions
+	{
+		"Notes must be read! When this condition is turned on, the effect is \"Automatically open three stages after customs clearance\", \r\n and if it is turned off, three stages will still be banned after customs clearance.\r\n@Condition eventPlayer.A < len(A) - 1"
+		Joueur exécutant.TY = 0;
+		Joueur exécutant.J = 2;
+		Attente(0, Ignorer la condition);
+		Boucle si((Joueur exécutant.TY != 0 || Joueur exécutant.J != 2) && Au sol(Joueur exécutant));
+		Joueur exécutant.O = 1;
+	}
+}
+
+règle("Checking | Double jump, initialized with small jump")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Genji;
+	}
+
+	conditions
+	{
+		Au sol(Joueur exécutant) == Vrai;
+	}
+
+	actions
+	{
+		"and if it is turned off, it will still be banned for three stages after customs clearance.\r\n@Condition eventPlayer.A < len(A) - 1"
+		Joueur exécutant.TY = 0;
+		Joueur exécutant.J = 2;
+		Joueur exécutant.climbNum = 0;
+		Attente(0, Ignorer la condition);
+		Boucle si((Joueur exécutant.TY != 0 || Joueur exécutant.J != 2) && Au sol(Joueur exécutant));
+		Joueur exécutant.O = 1;
+	}
+}
+
+règle("HUD | Multiclimbs Used")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Joueur exécutant.J == 2;
+		Apparition(Joueur exécutant) == Vrai;
+	}
+
+	actions
+	{
+		Détruire du texte d’interface(Joueur exécutant.paqiang);
+		Créer du texte d’interface(Joueur exécutant, Chaîne personnalisée("Climb{0}", Joueur exécutant.climbNum > 0 ? Chaîne personnalisée(
+			"({0})", Joueur exécutant.climbNum) : Chaîne personnalisée("")), Non applicable, Non applicable, Gauche, 2, Couleur(Vert),
+			Non applicable, Non applicable, Visible pour et Chaîne de texte, Visibilité par défaut);
+		Joueur exécutant.paqiang = Dernier identifiant de texte;
+	}
+}
+
+règle("HUD | Wallclimb Used")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Joueur exécutant.J == 1;
+		Apparition(Joueur exécutant) == Vrai;
+	}
+
+	actions
+	{
+		Détruire du texte d’interface(Joueur exécutant.paqiang);
+		Créer du texte d’interface(Joueur exécutant, Chaîne personnalisée("Climb"), Non applicable, Non applicable, Gauche, 2, Couleur(
+			Rouge), Non applicable, Non applicable, Visible pour et Chaîne de texte, Visibilité par défaut);
+		Joueur exécutant.paqiang = Dernier identifiant de texte;
+	}
+}
+
+règle("HUD | Multiclimb Counter")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Sur le mur(Joueur exécutant) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Sauter)) == Faux;
+		Joueur exécutant.J == 2;
+	}
+
+	actions
+	{
+		"@Condition eventPlayer.InvincibleToggle == 0"
+		Joueur exécutant.climbNum += 1;
+	}
+}
+
+règle("HUD | Bhop")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Apparition(Joueur exécutant) == Vrai;
+	}
+
+	actions
+	{
+		Attente(1, Ignorer la condition);
+		Créer du texte d’interface(Joueur exécutant, Chaîne personnalisée("Bhop"), Non applicable, Non applicable, Gauche, 1,
+			Joueur exécutant.O == 0 ? Couleur(Vert) : Joueur exécutant.CH, Non applicable, Non applicable, Couleur, Visibilité par défaut);
+	}
+}
+
+règle("HUD | Bhop Indicator | Unused | Green")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Au sol(Joueur exécutant) == Vrai;
+		Bouton maintenu enfoncé(Joueur exécutant, Bouton(Sauter)) == Faux;
+	}
+
+	actions
+	{
+		Joueur exécutant.CH = Couleur(Vert);
+	}
+}
+
+règle("HUD | Bhop Indicator | Used | Red")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Utilise Saut(Joueur exécutant) == Vrai;
+	}
+
+	actions
+	{
+		Joueur exécutant.CH = Couleur(Rouge);
+	}
+}
+
+désactivé règle("-------------------------------------------------------------------------- Bans --------------------------------------------------------------------------")
+{
+	évènement
+	{
+		Toute la partie - Tout le monde;
+	}
+}
+
+règle("Ban | Wallclimb for specific CPs <---- EDIT ME")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Activerdésactiver le paramètre de la Forge(Chaîne personnalisée("Ban Switch"), Chaîne personnalisée(
+			"Ban Wallclimb for specific CPs"), Faux, 2) == Vrai;
+		Joueur exécutant.C == 0;
+		Joueur exécutant.A < Décompte de(Global.A) - 1;
+		"Change \"-1\" to certain Checkpoints' number"
+		Contenu du tableau(Tableau(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1), Joueur exécutant.A) == Vrai;
+		"If all checkpoints need this function, enable this rule and disable Rule: \"Array Contains\" \r\n@Condition eventPlayer.A < len(A) - 1"
+		Distance entre(Joueur exécutant, Global.A[Joueur exécutant.A + 1]) <= 2;
+	}
+
+	actions
+	{
+		Si(Joueur exécutant.J == 1);
+			Sous-programme à appeler(checkpointFailReset);
+			Message en petit(Joueur exécutant, Chaîne personnalisée("   Climb is banned!"));
+	}
+}
+
+règle("Ban | Bhop for specific CPs      <---- EDIT ME")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Activerdésactiver le paramètre de la Forge(Chaîne personnalisée("Ban Switch"), Chaîne personnalisée("Ban Bhop for specific CPs"),
+			Faux, 3) == Vrai;
+		Joueur exécutant.C == 0;
+		Joueur exécutant.A < Décompte de(Global.A) - 1;
+		"Change \"-1\" to certain Checkpoints' number"
+		Contenu du tableau(Tableau(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1), Joueur exécutant.A) == Vrai;
+		"If all checkpoints need this function, enable this rule and disable Rule: \"Array Contains\" \r\n@Condition eventPlayer.A < len(A) - 1"
+		Distance entre(Joueur exécutant, Global.A[Joueur exécutant.A + 1]) <= 2;
+	}
+
+	actions
+	{
+		Si(Joueur exécutant.O == 1);
+			Sous-programme à appeler(checkpointFailReset);
+			Message en petit(Joueur exécutant, Chaîne personnalisée("   Bhop is banned!"));
+	}
+}
+
+règle("Ban | Triple Jump")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Activerdésactiver le paramètre de la Forge(Chaîne personnalisée("Ban Switch"), Chaîne personnalisée("Ban Triple Jump"), Faux, 0)
+			== Vrai;
+		Joueur exécutant.C == 0;
+		Joueur exécutant.A < Décompte de(Global.A) - 1;
+		Vitesse verticale de(Joueur exécutant) >= 5.800;
+		Joueur exécutant.TY == 1;
+		Capacité 1 utilisée(Joueur exécutant) == Faux;
+	}
+
+	actions
+	{
+		Interrompre si(Sur le mur(Joueur exécutant));
+		Message en petit(Joueur exécutant, Chaîne personnalisée("   Triple Jump is banned!"));
+		Sous-programme à appeler(checkpointFailReset);
+	}
+}
+
+règle("Ban | Multiclimb")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Activerdésactiver le paramètre de la Forge(Chaîne personnalisée("Ban Switch"), Chaîne personnalisée("Ban Multiclimb"), Faux, 1)
+			== Vrai;
+		Joueur exécutant.C == 0;
+		Joueur exécutant.A < Décompte de(Global.A) - 1;
+		Joueur exécutant.climbNum > 0;
+	}
+
+	actions
+	{
+		"@Condition eventPlayer.isHoldingButton(Button.JUMP) == false\r\n @Condition eventPlayer.WallclimbUsed == 2\r\n eventPlayer.applyImpulse(Vector.DOWN, eventPlayer.getSpeed(), Relativity.TO_PLAYER, Impulse.CANCEL_CONTRARY_MOTION)"
+		Message en petit(Joueur exécutant, Chaîne personnalisée("   Multiclimb is banned!"));
+		Sous-programme à appeler(checkpointFailReset);
+	}
+}
+
+règle("Ban | Emote Savehop")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Activerdésactiver le paramètre de la Forge(Chaîne personnalisée("Ban Switch"), Chaîne personnalisée("Ban Emote Savehop"), Faux, 3)
+			== Vrai;
+		Joueur exécutant.C == 0;
+		Joueur exécutant.A < Décompte de(Global.A) - 1;
+		Communication par emote(Joueur exécutant) == Vrai;
+	}
+
+	actions
+	{
+		Message en petit(Joueur exécutant, Chaîne personnalisée("   Emote Savehop is banned!"));
+		Sous-programme à appeler(checkpointFailReset);
+	}
+}
+
+règle("Ban | Create Bhop")
+{
+	évènement
+	{
+		Toute la partie - Tout le monde;
+	}
+
+	actions
+	{
+		Attente(1, Ignorer la condition);
+		Global.kaxiaotiao = Activerdésactiver le paramètre de la Forge(Chaîne personnalisée("Ban Switch"), Chaîne personnalisée(
+			"Ban Create Bhop"), Faux, 2);
+	}
+}
+
+règle("Ban | Deathbhop")
+{
+	évènement
+	{
+		Toute la partie - Tout le monde;
+	}
+
+	actions
+	{
+		Attente(1, Ignorer la condition);
+		Global.deathjump = Activerdésactiver le paramètre de la Forge(Chaîne personnalisée("Ban Switch"), Chaîne personnalisée(
+			"Ban Deathbhop"), Faux, 4);
+	}
+}
+
+règle("Ban | Dash Start")
+{
+	évènement
+	{
+		Toute la partie - Tout le monde;
+	}
+
+	actions
+	{
+		Attente(1, Ignorer la condition);
+		Global.DashExploitToggle = Activerdésactiver le paramètre de la Forge(Chaîne personnalisée("Ban Switch"), Chaîne personnalisée(
+			"Ban Dash Start"), Faux, 4);
+	}
+}
+
+désactivé règle("------------------------------------------------------------------------ Addons  ------------------------------------------------------------------------")
+{
+	évènement
+	{
+		Toute la partie - Tout le monde;
+	}
+}
+
+règle("Add Blade to Checkpoint <---- EDIT ME")
+{
+	évènement
+	{
+		Toute la partie - Tout le monde;
+	}
+
+	actions
+	{
+		"Change \"-1\" to certain Checkpoints' number. For example if you want to add Blade to Checkpoint 2 and 6 change one of \"-1\" to 2 and other \"-1\" to 6"
+		Attente(1, Ignorer la condition);
+		Global.Dao = Tableau(Tableau vide, 20, 43);
+	}
+}
+
+règle("Add Dash to Checkpoint <---- EDIT ME")
+{
+	évènement
+	{
+		Toute la partie - Tout le monde;
+	}
+
+	actions
+	{
+		"Change \"-1\" to certain Checkpoints' number. For example if you want to add Dash to Checkpoint 7 and 1 change one of \"-1\" to 7 and other \"-1\" to 1"
+		Attente(1, Ignorer la condition);
+		Global.SHIFT = Tableau(Tableau vide, 6, 8, 16, 40, 42);
+	}
+}
+
+désactivé règle("Title Data <---- EDIT ME")
+{
+	évènement
+	{
+		Toute la partie - Tout le monde;
+	}
+
+	actions
+	{
+		"checkpoint number"
+		Global.TitleData[0] = Tableau(0, 10, 20, 30, 40, 44);
+		"title"
+		Global.TitleData[1] = Tableau(Chaîne personnalisée("bunny"), Chaîne personnalisée("jumper"), Chaîne personnalisée("Ninja"),
+			Chaîne personnalisée("pro"), Chaîne personnalisée("expert"), Chaîne personnalisée("MASTER"));
+		"color"
+		Global.TitleData[2] = Tableau(Couleur(Citron vert), Couleur(Blanc), Couleur(Jaune), Couleur(Orange), Couleur(Violet), Couleur(
+			Rouge));
+	}
+}
+
+désactivé règle("In world text for certain Checkpoints <---- EDIT ME")
+{
+	évènement
+	{
+		Toute la partie - Tout le monde;
+	}
+
+	actions
+	{
+		"warning: adding text might go over the text limit and caues huds to not apear"
+		Créer du texte en jeu(Tableau filtré(Tous les joueurs(Toutes les équipes), Élément de tableau actuel.A == 0), Chaîne personnalisée(
+			"Text for checkpoint 0"), Vecteur(0, 0, 0), 1.200, Masquer derrière les surfaces, Visible pour Position et Chaîne de texte,
+			Couleur(Orange), Visibilité par défaut);
+		Créer du texte en jeu(Tableau filtré(Tous les joueurs(Toutes les équipes), Élément de tableau actuel.A == 1), Chaîne personnalisée(
+			"Text for checkpoint 1"), Vecteur(0, 0, 0), 1.200, Masquer derrière les surfaces, Visible pour Position et Chaîne de texte,
+			Couleur(Orange), Visibilité par défaut);
+		Créer du texte en jeu(Tableau filtré(Tous les joueurs(Toutes les équipes), Élément de tableau actuel.A == 2), Chaîne personnalisée(
+			"Text for checkpoint 2"), Vecteur(0, 0, 0), 3, Masquer derrière les surfaces, Visible pour Position et Chaîne de texte,
+			Couleur(Orange), Visibilité par défaut);
+	}
+}
+
+désactivé règle("HUD text for certain Checkpoints <---- EDIT ME")
+{
+	évènement
+	{
+		Toute la partie - Tout le monde;
+	}
+
+	actions
+	{
+		"first one is padding, leave it"
+		Créer du texte d’interface(Tous les joueurs(Toutes les équipes), Non applicable, Non applicable, Chaîne personnalisée(
+			"                                                   \r\n  \r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"),
+			Haut, -6, Non applicable, Non applicable, Couleur(Orange), Visible pour, Visibilité par défaut);
+		"warning: adding text might go over the text limit and caues huds to not apear"
+		Créer du texte d’interface(Tableau filtré(Tous les joueurs(Toutes les équipes), Élément de tableau actuel.A == 0),
+			Chaîne personnalisée("Text for checkpoint 0"), Non applicable, Non applicable, Haut, -4, Couleur(Rouge), Non applicable,
+			Non applicable, Visible pour et Chaîne de texte, Visibilité par défaut);
+		Créer du texte d’interface(Tableau filtré(Tous les joueurs(Toutes les équipes), Élément de tableau actuel.A == 1),
+			Chaîne personnalisée("Text for checkpoint 1"), Non applicable, Non applicable, Haut, -4, Couleur(Rouge), Non applicable,
+			Non applicable, Visible pour et Chaîne de texte, Visibilité par défaut);
+		Créer du texte d’interface(Tableau filtré(Tous les joueurs(Toutes les équipes), Élément de tableau actuel.A == 2),
+			Chaîne personnalisée("Text for checkpoint 2"), Non applicable, Non applicable, Haut, -4, Couleur(Rouge), Non applicable,
+			Non applicable, Visible pour et Chaîne de texte, Visibilité par défaut);
+	}
+}
+
+règle("pre-set control map portal - placement - toggled via workshop")
+{
+	évènement
+	{
+		Toute la partie - Tout le monde;
+	}
+
+	conditions
+	{
+		Global.PortalOn != Faux;
+	}
+
+	actions
+	{
+		"overwrite pasta"
+		Attente(2, Interrompre quand faux);
+		Si(Carte actuelle == Carte(Busan));
+			"\"down > sanc\",\"down > meka\",\"sanc > down\",\"sanc > meka\",\"meka > sanc\",\"meka > down\""
+			Global.PortalNames = Tableau(Chaîne personnalisée("Sanctuary"), Chaîne personnalisée("MEKA base"), Chaîne personnalisée(
+				"Downtown"), Chaîne personnalisée("MEKA base"), Chaîne personnalisée("Sanctuary"), Chaîne personnalisée("Downtown"));
+			Global.PortalLoc = Tableau(Vecteur(47.946, 7.248, -93.922), Vecteur(55.921, 6.998, -94.024), Vecteur(-326.382, 10.810, 117.261),
+				Vecteur(-330.960, 10.810, 117.416), Vecteur(219.567, 10.215, 243.653), Vecteur(225.976, 10.227, 240.799));
+			Global.PortalDest = Tableau(Vecteur(-328.552, 10.010, 120.820), Vecteur(221.152, 9.376, 238.765), Vecteur(52.197, 6.301, -97.513),
+				Vecteur(221.271, 9.431, 238.978), Vecteur(-328.601, 10.010, 120.823), Vecteur(52.197, 6.299, -97.513));
+		Sinon Si(Carte actuelle == Carte(Ilios));
+			"\"light > ruin\",\"light > well\",\"ruin > light\",\"ruin > well\",\"well > light\",\"well > ruin\""
+			Global.PortalNames = Tableau(Chaîne personnalisée("Ruins"), Chaîne personnalisée("Well"), Chaîne personnalisée("Lighthouse"),
+				Chaîne personnalisée("Well"), Chaîne personnalisée("Lighthouse"), Chaîne personnalisée("Ruins"));
+			Global.PortalLoc = Tableau(Vecteur(325.722, -22.665, -40.401), Vecteur(327.430, -22.665, -36.089), Vecteur(26.176, 58.367,
+				-156.415), Vecteur(30.472, 58.367, -156.307), Vecteur(-199.945, 2.015, -2.918), Vecteur(-194.930, 2.015, -8.054));
+			Global.PortalDest = Tableau(Vecteur(28.375, 57.659, -161.195), Vecteur(-200.464, 1.306, -8.604), Vecteur(333.088, -23.389,
+				-40.933), Vecteur(-200.464, 1.306, -8.604), Vecteur(333.088, -23.389, -40.933), Vecteur(28.375, 57.829, -161.195));
+		Sinon Si(Carte actuelle == Carte(Tour de Lijiang) || Carte actuelle == Carte(Tour de Lijiang));
+			"\"control > garden\",\"control > market\",\"garden > control\",\"garden > market\",\"market > control\",\"market > garden\""
+			Global.PortalNames = Tableau(Chaîne personnalisée("Garden"), Chaîne personnalisée("Night Market"), Chaîne personnalisée(
+				"Control Center"), Chaîne personnalisée("Night Market"), Chaîne personnalisée("Control Center"), Chaîne personnalisée(
+				"Garden"));
+			Global.PortalLoc = Tableau(Vecteur(-2.815, 271, 295.373), Vecteur(2.905, 271, 295.052), Vecteur(5.788, 95.056, 135.298), Vecteur(
+				-5.343, 95.050, 134.638), Vecteur(-2.738, 0, -61.911), Vecteur(5.043, 0, -61.879));
+			Global.PortalDest = Tableau(Vecteur(0.286, 94.292, 140.396), Vecteur(0.584, -0.709, -54.469), Vecteur(0.245, 270.292, 301.428),
+				Vecteur(0.773, -0.708, -54.361), Vecteur(0.245, 270.292, 301.428), Vecteur(0.286, 94.292, 140.396));
+		Sinon Si(Carte actuelle == Carte(Népal));
+			"\"vil > shrine\",\"vil > sanc\", \"shrine > vil\",\"shrine > sanc\",#\"sanc > vil\",\"sanc > shrine\""
+			Global.PortalNames = Tableau(Chaîne personnalisée("Shrine"), Chaîne personnalisée("Sanctum"), Chaîne personnalisée("Village"),
+				Chaîne personnalisée("Sanctum"), Chaîne personnalisée("Village"), Chaîne personnalisée("Shrine"));
+			Global.PortalLoc = Tableau(Vecteur(-194.732, -92.860, -3.802), Vecteur(-194.585, -92.860, 4.187), Vecteur(-33.165, 14, 5.212),
+				Vecteur(-33.058, 14, -5.550), Vecteur(84.750, 129.008, -3.624), Vecteur(84.534, 129, 4.032));
+			Global.PortalDest = Tableau(Vecteur(-40.190, 13.292, -0.105), Vecteur(78.430, 128.292, 0.149), Vecteur(-190.540, -93.569, 0.122),
+				Vecteur(78.430, 128.292, 0.149), Vecteur(-190.540, -93.569, 0.122), Vecteur(-40.190, 13.292, -0.105));
+		Sinon Si(Carte actuelle == Carte(Oasis));
+			"\"uni > garden\",\"uni > city\",\"garden > uni\",\"garden > city\",\"city > garden\",\"city > uni\""
+			Global.PortalNames = Tableau(Chaîne personnalisée("Gardens"), Chaîne personnalisée("City Center"), Chaîne personnalisée(
+				"University"), Chaîne personnalisée("City Center"), Chaîne personnalisée("Gardens"), Chaîne personnalisée("University"));
+			Global.PortalLoc = Tableau(Vecteur(-211.137, 20, -5.084), Vecteur(-211.346, 20, 5.029), Vecteur(143.061, 8.377, -245.040), Vecteur(
+				139.333, 8.377, -249.964), Vecteur(157.297, 12.522, 255.759), Vecteur(151.452, 12.522, 261.099));
+			Global.PortalDest = Tableau(Vecteur(134.366, 7.829, -240.530), Vecteur(158.270, 11.814, 262.272), Vecteur(-206.269, 19.292, 0.103),
+				Vecteur(158.283, 11.814, 262.283), Vecteur(134.318, 7.829, -240.667), Vecteur(-206.269, 19.292, 0.103));
+		Sinon;
+			Global.PortalDest = Non applicable;
+			Interrompre;
+	}
+}
+
+règle("pre-set control map portal - function - toggled via workshop")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Global.PortalOn != Faux;
+		Décompte de(Global.PortalLoc) != Non applicable;
+		(Joueur exécutant.C || Joueur exécutant.A == Décompte de(Global.A) - 1) == Vrai;
+		Vrai pour n’importe qui(Global.PortalLoc, Distance entre(Position de(Joueur exécutant) + Vecteur(0, 0.200, 0),
+			Élément de tableau actuel) < 1.400) == Vrai;
+	}
+
+	actions
+	{
+		Si(Global.PortalDest[Index de la valeur de tableau(Global.PortalLoc, Premier de(Tableau trié(Global.PortalLoc, Distance entre(
+			Joueur exécutant, Élément de tableau actuel))))] != Vecteur(0, 0, 0));
+			Téléportation(Joueur exécutant, Global.PortalDest[Index de la valeur de tableau(Global.PortalLoc, Premier de(Tableau trié(
+				Global.PortalLoc, Distance entre(Joueur exécutant, Élément de tableau actuel))))]);
+	}
+}
+
+désactivé règle("custom portals - data <---- EDIT ME")
+{
+	évènement
+	{
+		Toute la partie - Tout le monde;
+	}
+
+	actions
+	{
+		Attente(1, Ignorer la condition);
+		"Portal start position"
+		Global.CustomPortalStart = Tableau(Vecteur(0, 0, 0));
+		"Portal end position (on same number as start position)"
+		Global.CustomPortalEndpoint = Tableau(Vecteur(0, 10, 0));
+		"Portal checkpoint (on same number as start position) \r\n999 = apply portal to entire map"
+		Global.CustomPortalCP = Tableau(999);
+	}
+}
+
+désactivé règle("custom portals - function")
+{
+	évènement
+	{
+		Toute la partie - Chaque joueur;
+		Les deux;
+		Tout;
+	}
+
+	conditions
+	{
+		Décompte de(Global.CustomPortalStart) > 0;
+		Vrai pour n’importe qui(Global.CustomPortalStart, Distance entre(Position de(Joueur exécutant) + Vecteur(0, 0.200, 0),
+			Élément de tableau actuel) < 1.300 && Contenu du tableau(Tableau(999, Joueur exécutant.A),
+			Global.CustomPortalCP[Index de tableau actuel])) == Vrai;
+	}
+
+	actions
+	{
+		Joueur exécutant.PortalLoop = 0;
+		Pour variable de joueur(Joueur exécutant, PortalLoop, 0, Décompte de(Global.CustomPortalStart), 1);
+			Si(Distance entre(Position de(Joueur exécutant) + Vecteur(0, 0.200, 0), Global.CustomPortalStart[Joueur exécutant.PortalLoop])
+				< 1.300 && Contenu du tableau(Tableau(999, Joueur exécutant.A), Global.CustomPortalCP[Joueur exécutant.PortalLoop]));
+				Téléportation(Joueur exécutant, Global.CustomPortalEndpoint[Joueur exécutant.PortalLoop]);
+				Interrompre;
+			Fin;
+		Fin;
+		Attente(1, Ignorer la condition);
+	}
+}

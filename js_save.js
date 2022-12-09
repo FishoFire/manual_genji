@@ -1,4 +1,4 @@
-setInterval(function() {
+setInterval(function() { // auto save
     localStorage.setItem('headerdata-auto', JSON.stringify(MapData));
     localStorage.setItem('checkpoints-auto', JSON.stringify(CheckPoints));
     
@@ -8,7 +8,7 @@ setInterval(function() {
 
 }, 60 * 1000)
 
-function Save(x){
+function Save(x){ // do normal save
     localStorage.setItem('headerdata'+x, JSON.stringify(MapData));
     localStorage.setItem('checkpoints'+x, JSON.stringify(CheckPoints));
    
@@ -18,7 +18,7 @@ function Save(x){
     ShowMsg("Saved!")
 }
 
-function LoadSave(x){
+function LoadSave(x){ // load save slot
     if(localStorage.getItem('headerdata'+x) != null){
         // load
         CheckPoints = []
@@ -32,7 +32,7 @@ function LoadSave(x){
     
 }
 
-function SaveNamesFunc(x){
+function SaveNamesFunc(x){ // save names (they are a seperate save)
     SaveNames[x] = document.getElementById("save"+x).value ;
     //alert(SaveNames[x]);
     localStorage.setItem('savenames',JSON.stringify(SaveNames))
@@ -47,7 +47,7 @@ function ImportJson(){
     LoadData()
 }
 
-function ExportJsonCopy(){
+function ExportJsonCopy(){ // to clipboard
     var jsonstring = JSON.stringify(CheckPoints) + "+!SEPERATOR!+" +  JSON.stringify(MapData) 
     /*
     var resultthing = document.getElementById("results")
@@ -60,7 +60,7 @@ function ExportJsonCopy(){
     ShowMsg("json copied to clipboard!")
 }
 
-function ExportJsonFile(){
+function ExportJsonFile(){ // to file
     var jsonstring = JSON.stringify(CheckPoints) + "+!SEPERATOR!+" +  JSON.stringify(MapData) 
     var filename = (
         MapData[1] + // code
@@ -87,7 +87,7 @@ function ExportJsonFile(){
 
 }
 
-function LoadData(){
+function LoadData(){ // after setting the data with previous codes, checks the variables and loads it to display in the interface
           // check data
         MapData[0] =  MapData[0] ?  MapData[0] : ""
         MapData[1] =  MapData[1] ?  MapData[1] : ""
@@ -190,7 +190,7 @@ function LoadData(){
 }
 
 	
-// save/loading buttons ==================================
+// save/loading buttons ====================================================================
 
 // load save names
 if(localStorage.getItem('savenames') != null){

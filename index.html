@@ -9,7 +9,6 @@
 
 
 <body>
-
 <div class="contentblock"> 
 	<div class="sidebar">
 		<button onclick="changebar(3)" class="sidebarbutton">settings</button> 
@@ -294,7 +293,7 @@
 		Type the vectors in the <i>data</i> tab of this web interface.<br/>
 		There is no way to automate this without the inspector, have fun typing.<br/>
 		<br/>
-		<img src="vectornumber.png" alt="picture of vector"> 
+		<img src="pic/vectornumber.png" alt="picture of vector"> 
 		
 		</p>
 
@@ -311,7 +310,7 @@
 		Paste in the data from step 3 copy button with the orange + symbol.<br/>
 		Don't forget to also select the map you want to play on. <br/>
 		<br/>
-		<img src="plusbutton.png" alt="picture of plus button"> 
+		<img src="pic/plusbutton.png" alt="picture of plus button"> 
 		</p>
 
 		<p>
@@ -325,10 +324,11 @@
 
 <div id="convert">
 	<div class="contentblock">
-		<img src="copybutton.png" alt="picture of copy button" style="width:100px;height:50px;float:right"> 
+		<img src="pic/copybutton.png" alt="picture of copy button" style="width:100px;height:50px;float:right"> 
 	<div>
 		Expirimental feature that attemps to load mapdata from map pasta. </br>
 		Copy the entire mode pasta in the text field, select your client langauge and press convert. </br>
+		Only supports data pasted from overwatch. If you copy straight from the web interface, it might not work. </br>
 		<u> This is might not import everything and it's on you to check your map for mistakes in converting </u> </br>
 	</div>
 	<hr>
@@ -390,24 +390,25 @@
 	</div>
 </div>
 
-
-<textarea id="results" style="display:none"></textarea>
 <div style="text-align:left"><small>version 1</small></div>
 
+
+
+<!--
+<textarea id="results" style="display:none"></textarea>
 <input type="hidden" id="overpy-textarea">
-<input type="hidden" id="compiled-textarea">
+<input type="hidden" id="compiled-textarea"> -->
 <script src="overpy-master/VS Code Extension/overpy.js"></script>
 
 
-<!-- <script src="templates/template 1-7_beta.js"></script> -->
 <script src="templates/template 1-7-1.js"></script>
-<!-- <script src="templates/template_debug.js"></script> -->
+
 
 <script src="js_generate_things.js"></script>
 <script src="js_main.js"></script>
 <script src="js_copy_button.js"></script>
 <script src="js_save.js"></script>
-<script src="js_converter_per_rule.js"></script>
+<script src="js_converter.js"></script>
 
 </body>
 </html>

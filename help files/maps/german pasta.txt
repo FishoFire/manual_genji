@@ -1,0 +1,4504 @@
+einstellungen
+{
+	hauptregeln
+	{
+		Beschreibung: "Map: Hollywood\r\nCheckpoints: 50\r\nDifficulty: Easy\r\nCode: GWGKM\r\nDiscord: dsc.gg/genjiparkour"
+		Modusname: "Genji Parkour"
+	}
+
+	Lobby
+	{
+		Kartenrotation: Pausiert
+		Max. Anzahl Spieler Team 1: 0
+		Max. Anzahl Spieler Team 2: 12
+		Max. Anzahl Zuschauer: 4
+		Seitenwechsel nach Match: Nein
+		Spieler in der Spielsuche zulassen: Ja
+		Voicechat Match: Aktiviert
+		Zurück zur Lobby: Nie
+	}
+
+	modi
+	{
+		deaktiviert Deathmatch
+		{
+			Selbst ausgelöste Wiederbelebung: Aus
+		}
+
+		Team-Deathmatch
+		{
+			Selbst ausgelöste Wiederbelebung: Aus
+			Unterschiedliche Teampunktzahl für Sieg: Ein
+
+			verfügbare karten
+			{
+			}
+		}
+
+		Übungsgefecht
+		{
+			verfügbare karten
+			{
+				Hollywood 0
+			}
+		}
+
+		Allgemein
+		{
+			Heldenbegrenzung: Aus
+			Heldenwechsel zulassen: Aus
+			Killcam: Aus
+			Killfeed: Aus
+			Medikits: Deaktiviert
+			Start des Spielmodus: Manuell
+			Wiederbelebungszeit: 0%
+		}
+	}
+
+	helden
+	{
+		Allgemein
+		{
+			Genji
+			{
+				Mit aufgeladenem Ultimate starten: Ein
+				Reflektieren – Abklingzeit: 0%
+				Sturmschlag – Abklingzeit: 0%
+				Ultimatedauer: 25%
+				Unbegrenzte Munition: Ein
+			}
+
+			verfügbare helden
+			{
+				Genji
+			}
+		}
+	}
+}
+
+Variablen
+{
+	global:
+		3: DVA
+		4: dva
+		12: Dao
+		13: SHIFT
+		14: SUPERJUMP
+		18: TQ
+		19: TQ1
+		20: TQ2
+		21: TQ3
+		22: EditMode
+		23: TQ5
+		24: TQ6
+		26: killballnumber
+		27: pinballnumber
+		28: deathjump
+		30: save
+		32: toplistPlayers
+		33: toplistTimes
+		34: toplistSortedTimes
+		35: kaxiaotiao
+		38: NANBA
+		81: InvisibleAll
+		82: Ban_DoubleBhop_Per_Level
+		90: Ban_Multi_Per_Level
+		107: jumpplacepos
+		109: jumpplaceballnumber
+		110: jumpplaceeffect
+		111: jumpplace1
+		112: jumpplace2
+		113: Multiclimb_Tournament
+		122: Tips
+
+	player:
+		3: Timer
+		26: TY
+		28: paqiang
+		31: quick_restart
+		84: CG
+		85: CH
+		117: HUB_DOTS_INDEX
+		118: DOTS_EFFECT
+		119: flymode
+		120: flyspeed
+}
+
+Subroutinen
+{
+	3: KILLBALL
+	4: pinball
+	121: jumpplaceball
+}
+
+regel("------------------------------------------------------Turn off the rules below after finishing editing--------------------------")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+}
+
+deaktiviert regel("Fly Mode")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Event Player.flymode == True;
+		Event Player.E >= 1;
+	}
+
+	aktionen
+	{
+		Set Gravity(Event Player, 0);
+		Disable Movement Collision With Environment(Event Player, True);
+		deaktiviert Disallow Button(Event Player, Button(Ability 1));
+		Disallow Button(Event Player, Button(Ability 2));
+		Event Player.flyspeed = 0;
+		While(Event Player.flymode);
+			If(Is Button Held(Event Player, Button(Ability 1)) == False);
+				Event Player.flyspeed = 10;
+			Else;
+				Event Player.flyspeed = 3;
+			End;
+			If(Throttle Of(Event Player) != Vector(Empty Array, Empty Array, Empty Array));
+				Apply Impulse(Event Player, Cross Product(Up, Normalize(World Vector Of(Throttle Of(Event Player), Event Player, Rotation))),
+					0.001, To World, Cancel Contrary Motion);
+				Apply Impulse(Event Player, Cross Product(Down, Normalize(World Vector Of(Throttle Of(Event Player), Event Player, Rotation))),
+					0.001, To World, Cancel Contrary Motion);
+				Apply Impulse(Event Player, Direction Towards(Eye Position(Event Player), Eye Position(Event Player) + Normalize(World Vector Of(
+					Throttle Of(Event Player), Event Player, Rotation))), Event Player.flyspeed, To World, Cancel Contrary Motion);
+				If(Is Button Held(Event Player, Button(Crouch)) == False);
+					Apply Impulse(Event Player, Up, 0.001, To World, Cancel Contrary Motion);
+				End;
+				If(Is Button Held(Event Player, Button(Jump)) == False);
+					Apply Impulse(Event Player, Down, 0.001, To World, Cancel Contrary Motion);
+				End;
+			Else;
+				If(Speed Of(Event Player) > 0.010);
+					Apply Impulse(Event Player, Left, 0.001, To World, Cancel Contrary Motion);
+					Apply Impulse(Event Player, Right, 0.001, To World, Cancel Contrary Motion);
+					Apply Impulse(Event Player, Forward, 0.001, To World, Cancel Contrary Motion);
+					Apply Impulse(Event Player, Backward, 0.001, To World, Cancel Contrary Motion);
+					If(Is Button Held(Event Player, Button(Crouch)) == False);
+						Apply Impulse(Event Player, Up, 0.001, To World, Cancel Contrary Motion);
+					End;
+					If(Is Button Held(Event Player, Button(Jump)) == False);
+						Apply Impulse(Event Player, Down, 0.001, To World, Cancel Contrary Motion);
+					End;
+				End;
+			End;
+			If(Is Button Held(Event Player, Button(Jump)));
+				Apply Impulse(Event Player, Up, Event Player.flyspeed, To World, Cancel Contrary Motion);
+			Else If(Is Button Held(Event Player, Button(Crouch)));
+				Apply Impulse(Event Player, Down, Event Player.flyspeed, To World, Cancel Contrary Motion);
+			End;
+			Wait(0.016, Ignore Condition);
+		End;
+		Set Gravity(Event Player, 100);
+		Enable Movement Collision With Environment(Event Player);
+		Allow Button(Event Player, Button(Ability 1));
+		Allow Button(Event Player, Button(Ability 2));
+	}
+}
+
+deaktiviert regel("Combo l Fly Mode")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		deaktiviert Is Button Held(Event Player, Button(Reload)) == True;
+		deaktiviert Is Button Held(Event Player, Button(Crouch)) == True;
+		deaktiviert Is Button Held(Event Player, Button(Interact)) == True;
+		Is Communicating(Event Player, Hello) == True;
+		Event Player.E >= 1;
+	}
+
+	aktionen
+	{
+		deaktiviert Wait(1.250, Abort When False);
+		If(Event Player.flymode == False);
+			Event Player.flymode = True;
+		Else;
+			Event Player.flymode = False;
+		End;
+	}
+}
+
+deaktiviert regel("Prevent the crash")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	aktionen
+	{
+		Disable Inspector Recording;
+		Wait(10, Ignore Condition);
+		Enable Inspector Recording;
+		Loop;
+	}
+}
+
+deaktiviert regel("Hide/Show Guide HUD")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Button Held(Event Player, Button(Melee)) == True;
+		Event Player == Host Player;
+		Event Player.E >= 1;
+	}
+
+	aktionen
+	{
+		Wait(0.800, Abort When False);
+		Play Effect(Host Player, Buff Impact Sound, Color(White), Event Player, 100);
+		If(Event Player.K == 1);
+			Event Player.K = 2;
+			Small Message(All Players(All Teams), Custom String("Guide is hidden"));
+		Else;
+			Event Player.K = 1;
+			Small Message(All Players(All Teams), Custom String("Guide is open"));
+		End;
+	}
+}
+
+deaktiviert regel("Clear excess data")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Button Held(Event Player, Button(Interact)) == True;
+		Is Button Held(Event Player, Button(Melee)) == True;
+		Is Button Held(Event Player, Button(Reload)) == True;
+		Event Player == Host Player;
+	}
+
+	aktionen
+	{
+		Global.jumpplaceeffect = 0;
+		Global.jumpplace1 = 0;
+		Global.jumpplace2 = 0;
+		Global.B = 0;
+		Global.C = 0;
+		Global.DVA = 0;
+		Global.dva = 0;
+		Global.F = 0;
+		Global.G = 0;
+		Global.J = 0;
+		Global.K = 0;
+		Global.L = 0;
+		Global.Dao = 0;
+		Global.SHIFT = 0;
+		Global.SUPERJUMP = 0;
+		Global.P = 0;
+		Global.Q = 0;
+		Global.R = 0;
+		Global.TQ1 = 0;
+		Global.NANBA = 0;
+		Global.TQ2 = 0;
+		Global.TQ3 = 0;
+		Global.save = 0;
+		Big Message(All Players(All Teams), Custom String("Excess data has been cleared"));
+		Big Message(All Players(All Teams), Custom String("Excess data has been cleared"));
+		Enable Inspector Recording;
+	}
+}
+
+deaktiviert regel("Deflect TP")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Button Held(Event Player, Button(Ability 2)) == True;
+		Event Player.E == 1;
+	}
+
+	aktionen
+	{
+		Teleport(Event Player, Position Of(Event Player) + Facing Direction Of(Event Player) * 3);
+	}
+}
+
+deaktiviert regel("Change editing mode")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Button Held(Event Player, Button(Ability 1)) == True;
+		Event Player == Host Player;
+		Is Button Held(Event Player, Button(Interact)) == False;
+	}
+
+	aktionen
+	{
+		Wait(0.800, Abort When False);
+		If(Event Player.E == 1);
+			Event Player.E = 2;
+			Small Message(Host Player, Custom String("Current mode: Killing sphere"));
+		Else If(Event Player.E == 2);
+			Event Player.E = 3;
+			Small Message(Host Player, Custom String("Current mode: Bouncing Ball"));
+		Else If(Event Player.E == 3);
+			Event Player.E = 5;
+			Small Message(Host Player, Custom String("Current mode: Jump Place"));
+		Else If(Event Player.E == 5);
+			Event Player.E = 1;
+			Small Message(Host Player, Custom String("Current mode: Checkpoint"));
+		End;
+	}
+}
+
+deaktiviert regel("Change Killing Sphere size (increase)")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Button Held(Event Player, Button(Ability 2)) == True;
+		Is Button Held(Event Player, Button(Jump)) == True;
+		Event Player == Host Player;
+		Event Player.E > 1;
+	}
+
+	aktionen
+	{
+		If(Event Player.E == 2);
+			If(Count Of(Global.H) > 0);
+				Global.I[Global.J] += 0.100;
+				Wait(0.100, Ignore Condition);
+				Loop If Condition Is True;
+				For Global Variable(NANBA, 0, Count Of(Global.H), 1);
+					Destroy Effect(Global.K[Global.NANBA]);
+				End;
+				Global.K = Empty Array;
+				Call Subroutine(KILLBALL);
+			End;
+		Else If(Event Player.E == 3);
+			If(Count Of(Global.TQ) > 0);
+				Global.EditMode[Global.TQ1] += 0.100;
+				Wait(0.100, Ignore Condition);
+				Loop If Condition Is True;
+			End;
+		End;
+	}
+}
+
+deaktiviert regel("Change Killing Sphere size (decrease)")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Button Held(Event Player, Button(Ability 2)) == True;
+		Is Button Held(Event Player, Button(Crouch)) == True;
+		Event Player == Host Player;
+		Event Player.E > 1;
+		Is Button Held(Event Player, Button(Interact)) == False;
+	}
+
+	aktionen
+	{
+		If(Count Of(Global.H) > 0);
+			If(Event Player.E == 2);
+				Global.I[Global.J] -= 0.100;
+				Wait(0.100, Ignore Condition);
+				Loop If Condition Is True;
+				For Global Variable(NANBA, 0, Count Of(Global.H), 1);
+					Destroy Effect(Global.K[Global.NANBA]);
+				End;
+				Global.K = Empty Array;
+				Call Subroutine(KILLBALL);
+			End;
+		End;
+	}
+}
+
+deaktiviert regel("Bouncing Ball strenght")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Button Held(Event Player, Button(Ability 2)) == True;
+		Is Button Held(Event Player, Button(Crouch)) == True;
+		Event Player == Host Player;
+		Event Player.E == 3;
+		Is Button Held(Event Player, Button(Interact)) == False;
+	}
+
+	aktionen
+	{
+		If(Count Of(Global.TQ) > 0);
+			Global.EditMode[Global.TQ1] -= 0.100;
+			Wait(0.100, Ignore Condition);
+			Loop If Condition Is True;
+		End;
+	}
+}
+
+deaktiviert regel("Move the Killing sphere (toward)")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Button Held(Event Player, Button(Ability 2)) == True;
+		Is Button Held(Event Player, Button(Primary Fire)) == True;
+		Event Player == Host Player;
+		Event Player.E > 1;
+	}
+
+	aktionen
+	{
+		If(Event Player.E == 2);
+			Skip If(Global.L != Global.H[Global.J], 1);
+			Chase Global Variable At Rate(L, Eye Position(Event Player) + Facing Direction Of(Event Player) * (Distance Between(Position Of(
+				Event Player), Global.H[Global.J]) + 5), 1, Destination and Rate);
+			Wait(0.250, Ignore Condition);
+			Loop If Condition Is True;
+			Stop Chasing Global Variable(L);
+			Global.H[Global.J] = Global.L;
+			For Global Variable(NANBA, 0, Count Of(Global.H), 1);
+				Destroy Effect(Global.K[Global.NANBA]);
+			End;
+			Global.K = Empty Array;
+			Call Subroutine(KILLBALL);
+		Else If(Event Player.E == 3);
+			Skip If(Global.TQ3 != Global.TQ[Global.TQ1], 1);
+			Chase Global Variable At Rate(TQ3, Eye Position(Event Player) + Facing Direction Of(Event Player) * (Distance Between(Position Of(
+				Event Player), Global.TQ[Global.TQ1]) + 5), 1, Destination and Rate);
+			Wait(0.250, Ignore Condition);
+			Loop If Condition Is True;
+			Stop Chasing Global Variable(TQ3);
+			Global.TQ[Global.TQ1] = Global.TQ3;
+			For Global Variable(NANBA, 0, Count Of(Global.TQ), 1);
+				Destroy Effect(Global.TQ2[Global.NANBA]);
+			End;
+			Global.TQ2 = Empty Array;
+			Call Subroutine(pinball);
+		Else If(Event Player.E == 5);
+			Skip If(Global.jumpplace2 != Global.jumpplacepos[Global.jumpplace1], 1);
+			Chase Global Variable At Rate(jumpplace2, Eye Position(Event Player) + Facing Direction Of(Event Player) * (Distance Between(
+				Position Of(Event Player), Global.jumpplacepos[Global.jumpplace1]) + 5), 1, Destination and Rate);
+			Wait(0.250, Ignore Condition);
+			Loop If Condition Is True;
+			Stop Chasing Global Variable(jumpplace2);
+			Global.jumpplacepos[Global.jumpplace1] = Global.jumpplace2;
+			For Global Variable(NANBA, 0, Count Of(Global.jumpplacepos), 1);
+				Destroy Effect(Global.jumpplaceeffect[Global.NANBA]);
+			End;
+			Global.jumpplaceeffect = Empty Array;
+			Call Subroutine(jumpplaceball);
+		End;
+	}
+}
+
+deaktiviert regel("Move the Killing sphere (backward)")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Button Held(Event Player, Button(Ability 2)) == True;
+		Is Button Held(Event Player, Button(Secondary Fire)) == True;
+		Event Player == Host Player;
+		Event Player.E > 1;
+	}
+
+	aktionen
+	{
+		If(Event Player.E == 2);
+			Skip If(Global.L != Global.H[Global.J], 1);
+			Chase Global Variable At Rate(L, Eye Position(Event Player) - Facing Direction Of(Event Player) * (Distance Between(Position Of(
+				Event Player), Global.H[Global.J]) + 5), 1, Destination and Rate);
+			Wait(0.250, Ignore Condition);
+			Loop If Condition Is True;
+			Stop Chasing Global Variable(L);
+			Global.H[Global.J] = Global.L;
+			For Global Variable(NANBA, 0, Count Of(Global.H), 1);
+				Destroy Effect(Global.K[Global.NANBA]);
+			End;
+			Global.K = Empty Array;
+			Call Subroutine(KILLBALL);
+		Else If(Event Player.E == 3);
+			Skip If(Global.TQ3 != Global.TQ[Global.TQ1], 1);
+			Chase Global Variable At Rate(TQ3, Eye Position(Event Player) - Facing Direction Of(Event Player) * (Distance Between(Position Of(
+				Event Player), Global.TQ[Global.TQ1]) + 5), 1, Destination and Rate);
+			Wait(0.250, Ignore Condition);
+			Loop If Condition Is True;
+			Stop Chasing Global Variable(TQ3);
+			Global.TQ[Global.TQ1] = Global.TQ3;
+			For Global Variable(NANBA, 0, Count Of(Global.TQ), 1);
+				Destroy Effect(Global.TQ2[Global.NANBA]);
+			End;
+			Global.TQ2 = Empty Array;
+			Call Subroutine(pinball);
+		Else If(Event Player.E == 5);
+			Skip If(Global.jumpplace2 != Global.jumpplacepos[Global.jumpplace1], 1);
+			Chase Global Variable At Rate(jumpplace2, Eye Position(Event Player) - Facing Direction Of(Event Player) * (Distance Between(
+				Position Of(Event Player), Global.jumpplacepos[Global.jumpplace1]) + 5), 1, Destination and Rate);
+			Wait(0.250, Ignore Condition);
+			Loop If Condition Is True;
+			Stop Chasing Global Variable(jumpplace2);
+			Global.jumpplacepos[Global.jumpplace1] = Global.jumpplace2;
+			For Global Variable(NANBA, 0, Count Of(Global.jumpplacepos), 1);
+				Destroy Effect(Global.jumpplaceeffect[Global.NANBA]);
+			End;
+			Global.jumpplaceeffect = Empty Array;
+			Call Subroutine(jumpplaceball);
+		End;
+	}
+}
+
+deaktiviert regel("Edit mode")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Has Spawned(Event Player) == True;
+	}
+
+	aktionen
+	{
+		"玩家E：编辑模式"
+		Event Player.E = 1;
+		Event Player.K = 1;
+	}
+}
+
+deaktiviert regel("Create Checkpoint")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Button Held(Event Player, Button(Interact)) == True;
+		Is Button Held(Event Player, Button(Primary Fire)) == True;
+		Event Player == Host Player;
+	}
+
+	aktionen
+	{
+		Wait(0.100, Abort When False);
+		If(Event Player.E == 1);
+			Modify Global Variable(A, Append To Array, Position Of(Event Player) - Vector(0, 0, 0));
+			Global.B = Count Of(Global.A) - 1;
+			Small Message(All Players(All Teams), Custom String("New Checkpoint has been created"));
+		Else If(Event Player.E == 2);
+			If(Event Player.A == 0);
+				Big Message(All Players(All Teams), Custom String("Cannot place killing sphere on level 0"));
+			Else;
+				Modify Global Variable(H, Append To Array, Position Of(Event Player));
+				Modify Global Variable(killballnumber, Append To Array, Event Player.A);
+				Global.J = Count Of(Global.H) - 1;
+				Global.I[Global.J] = 5;
+				For Global Variable(NANBA, 0, Count Of(Global.H), 1);
+					Destroy Effect(Global.K[Global.NANBA]);
+				End;
+				Global.K = Empty Array;
+				Call Subroutine(KILLBALL);
+				Global.L = Global.H[Global.J];
+				Big Message(All Players(All Teams), Custom String("New killing sphere has been created! \r\nIt's only valid for level {0}",
+					Event Player.A));
+			End;
+		Else If(Event Player.E == 3);
+			If(Event Player.A == 0);
+				Big Message(All Players(All Teams), Custom String("Cannot place bouncing balls on level 0"));
+			Else;
+				Modify Global Variable(TQ, Append To Array, Position Of(Event Player));
+				Global.TQ1 = Count Of(Global.TQ) - 1;
+				Global.EditMode[Global.TQ1] = 10;
+				Global.TQ5[Global.TQ1] = False;
+				Global.TQ6[Global.TQ1] = False;
+				For Global Variable(NANBA, 0, Count Of(Global.TQ), 1);
+					Destroy Effect(Global.TQ2[Global.NANBA]);
+				End;
+				Global.TQ2 = Empty Array;
+				Call Subroutine(pinball);
+				Global.TQ3 = Global.TQ[Global.TQ1];
+				Modify Global Variable(pinballnumber, Append To Array, Event Player.A);
+				Big Message(All Players(All Teams), Custom String("New bouncing ball has been created! \r\nIt's only valid for level {0}",
+					Event Player.A));
+			End;
+		Else If(Event Player.E == 5);
+			If(Event Player.A == 0);
+				Big Message(All Players(All Teams), Custom String("Cannot place Jump place balls on level 0"));
+			Else;
+				Modify Global Variable(jumpplacepos, Append To Array, Position Of(Event Player));
+				Global.jumpplace1 = Count Of(Global.jumpplacepos) - 1;
+				For Global Variable(NANBA, 0, Count Of(Global.jumpplacepos), 1);
+					Destroy Effect(Global.jumpplaceeffect[Global.NANBA]);
+				End;
+				Global.jumpplaceeffect = Empty Array;
+				Call Subroutine(jumpplaceball);
+				Global.jumpplace2 = Global.jumpplacepos[Global.jumpplace1];
+				Modify Global Variable(jumpplaceballnumber, Append To Array, Event Player.A);
+				Big Message(All Players(All Teams), Custom String("New Jump place ball has been created! \r\nIt's only valid for level {0}",
+					Event Player.A));
+			End;
+		End;
+	}
+}
+
+deaktiviert regel("Delete Checkpoint")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Button Held(Event Player, Button(Interact)) == True;
+		Is Button Held(Event Player, Button(Secondary Fire)) == True;
+		Event Player == Host Player;
+	}
+
+	aktionen
+	{
+		If(Event Player.E == 1);
+			Modify Global Variable(A, Remove From Array By Index, Global.B);
+			Modify Global Variable(C, Remove From Array By Index, Global.B);
+			Skip If(Global.B <= 0, 1);
+			Global.B -= 1;
+			Small Message(All Players(All Teams), Custom String("Checkpoint has been deleted"));
+		Else If(Event Player.E == 2 && Count Of(Global.H) != 0);
+			Modify Global Variable(H, Remove From Array By Index, Global.J);
+			Modify Global Variable(I, Remove From Array By Index, Global.J);
+			Modify Global Variable(killballnumber, Remove From Array By Index, Global.J);
+			Destroy Effect(Global.K[Global.J]);
+			Modify Global Variable(K, Remove From Array By Index, Global.J);
+			Skip If(Global.J <= 0, 1);
+			Global.J -= 1;
+			Global.L = Global.H[Global.J];
+		Else If(Event Player.E == 3 && Count Of(Global.TQ) != 0);
+			Modify Global Variable(TQ, Remove From Array By Index, Global.TQ1);
+			Modify Global Variable(EditMode, Remove From Array By Index, Global.TQ1);
+			Modify Global Variable(TQ5, Remove From Array By Index, Global.TQ1);
+			Modify Global Variable(TQ6, Remove From Array By Index, Global.TQ1);
+			Destroy Effect(Global.TQ2[Global.TQ1]);
+			Modify Global Variable(TQ2, Remove From Array By Index, Global.TQ1);
+			Modify Global Variable(pinballnumber, Remove From Array By Index, Global.TQ1);
+			Skip If(Global.TQ1 <= 0, 1);
+			Global.TQ1 -= 1;
+			Global.TQ3 = Global.TQ[Global.TQ1];
+		Else If(Event Player.E == 5 && Count Of(Global.jumpplacepos) != 0);
+			Modify Global Variable(jumpplacepos, Remove From Array By Index, Global.jumpplace1);
+			Destroy Effect(Global.jumpplaceeffect[Global.jumpplace1]);
+			Modify Global Variable(jumpplaceeffect, Remove From Array By Index, Global.jumpplace1);
+			Modify Global Variable(jumpplaceballnumber, Remove From Array By Index, Global.jumpplace1);
+			Skip If(Global.jumpplace1 <= 0, 1);
+			Global.jumpplace1 -= 1;
+			Global.jumpplace2 = Global.jumpplacepos[Global.jumpplace1];
+		End;
+	}
+}
+
+deaktiviert regel("Move checkpoint")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Button Held(Event Player, Button(Ultimate)) == True;
+		Is Button Held(Event Player, Button(Interact)) == True;
+		Event Player == Host Player;
+	}
+
+	aktionen
+	{
+		Small Message(All Players(All Teams), Count Of(Global.A[Global.B]) != 0 ? Custom String("Checkpoint {0} has been deleted",
+			Global.B) : Custom String(""));
+		Global.A[Global.B] = Position Of(Event Player) - Vector(0, 0, 0);
+		Small Message(All Players(All Teams), Custom String("Checkpoint has been moved to your position"));
+	}
+}
+
+deaktiviert regel("Add a teleport")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	bedingungen
+	{
+		(Is Button Held(Host Player, Button(Interact)) && Is Button Held(Host Player, Button(Reload))) == True;
+		Count Of(Global.A) > 1;
+		Host Player.E == 1;
+		Global.B > 0;
+		Is Button Held(Host Player, Button(Melee)) == False;
+	}
+
+	aktionen
+	{
+		Global.A[Global.B] = Array(Count Of(Global.A[Global.B]) != 0 ? Global.A[Global.B][0] : Global.A[Global.B], Position Of(
+			Host Player));
+		Small Message(All Players(All Teams), Custom String("Teleport has been added for level {0}", Global.B));
+	}
+}
+
+deaktiviert regel("Swap selected point (back)")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Button Held(Event Player, Button(Interact)) == True;
+		Is Button Held(Event Player, Button(Crouch)) == True;
+		Event Player == Host Player;
+	}
+
+	aktionen
+	{
+		If(Event Player.E == 1);
+			Skip If(Global.B <= 0, 1);
+			Global.B -= 1;
+		Else If(Event Player.E == 2);
+			Skip If(Global.J <= 0, 2);
+			Global.J -= 1;
+			Global.L = Global.H[Global.J];
+		Else If(Event Player.E == 3);
+			Skip If(Global.TQ1 <= 0, 2);
+			Global.TQ1 -= 1;
+			Global.TQ3 = Global.TQ[Global.TQ1];
+		Else If(Event Player.E == 5);
+			Skip If(Global.jumpplace1 <= 0, 2);
+			Global.jumpplace1 -= 1;
+			Global.jumpplace2 = Global.jumpplacepos[Global.jumpplace1];
+		End;
+	}
+}
+
+deaktiviert regel("Swap selected point (forward)")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Button Held(Event Player, Button(Interact)) == True;
+		Is Button Held(Event Player, Button(Jump)) == True;
+		Event Player == Host Player;
+	}
+
+	aktionen
+	{
+		If(Event Player.E == 1);
+			Skip If(Global.B == Count Of(Global.A) - 1, 1);
+			Global.B += 1;
+		Else If(Event Player.E == 2);
+			Skip If(Global.J == Count Of(Global.H) - 1, 2);
+			Global.J += 1;
+			Global.L = Global.H[Global.J];
+		Else If(Event Player.E == 3);
+			Skip If(Global.TQ1 == Count Of(Global.TQ) - 1, 2);
+			Global.TQ1 += 1;
+			Global.TQ3 = Global.TQ[Global.TQ1];
+		Else If(Event Player.E == 5);
+			Skip If(Global.jumpplace1 == Count Of(Global.jumpplacepos) - 1, 2);
+			Global.jumpplace1 += 1;
+			Global.jumpplace2 = Global.jumpplacepos[Global.jumpplace1];
+	}
+}
+
+deaktiviert regel("Bouncing Ball turn on/off ultimate")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		(Is Button Held(Event Player, Button(Ultimate)) && Is Button Held(Event Player, Button(Primary Fire))) == True;
+		Event Player == Host Player;
+		Event Player.E == 3;
+		Count Of(Global.TQ) != 0;
+	}
+
+	aktionen
+	{
+		Wait(1, Ignore Condition);
+		If(Global.TQ5[Global.TQ1] == False);
+			Global.TQ5[Global.TQ1] = True;
+		Else If(Global.TQ5[Global.TQ1] == True);
+			Global.TQ5[Global.TQ1] = False;
+		End;
+	}
+}
+
+deaktiviert regel("Bouncing Ball turn on/off dash")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		(Is Button Held(Event Player, Button(Secondary Fire)) && Is Button Held(Event Player, Button(Ultimate))) == True;
+		Event Player == Host Player;
+		Event Player.E == 3;
+		Count Of(Global.TQ) != 0;
+	}
+
+	aktionen
+	{
+		Wait(1, Ignore Condition);
+		If(Global.TQ6[Global.TQ1] == False);
+			Global.TQ6[Global.TQ1] = True;
+		Else If(Global.TQ6[Global.TQ1] == True);
+			Global.TQ6[Global.TQ1] = False;
+		End;
+	}
+}
+
+deaktiviert regel("Guide HUD")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	aktionen
+	{
+		Create HUD Text(All Players(All Teams), Null, Custom String(""), Custom String("{{0}}", Host Player.K, Append To Array(
+			Append To Array(Append To Array(Append To Array(Append To Array(Append To Array(Empty Array, 0), Custom String(
+			"{0}\r\n{1}\r\n{2}", Custom String(
+			"Interact+LMB=Create New Checkpoint\r\nInteract+RMB=Delete selected Checkpoint\r\nInteract+R=Add teleport to Checkpoint"),
+			Custom String("Interact+Ultimate=Set Checkpoint to your current position\r\nInteract+Crouch=Select previous Checkpoint"),
+			Custom String("Interact+Jump=Select next Checkpoint\r\nInteract+1 ability=Show all checkpoints"))), Custom String(
+			"{0}\r\n{1}\r\n{2}", Custom String(
+			"Interact+LMB=Create new killing sphere\r\nInteract+RMB=Delete selected sphere\r\nInteract+Crouch=Select previous sphere"),
+			Custom String("Interact+Jump=Select nex sphere\r\nDeflect+Jump=Make sphere bigger\r\nDeflect+Crouch=Shrink the sphere"),
+			Custom String("Deflect+LMB=Move forward\r\nDeflect+RMB=Move Backward"))), Custom String("{0}\r\n{1}\r\n{2}", Custom String(
+			"Interact+LMB=Create new Bouncing Ball\r\nInteract+RMB=Delete selected Ball\r\nInteract+Crouch=Select previous Ball"),
+			Custom String(
+			"Interact+Jump=Select next Ball\r\nDeflect+Jump=Increase Ball's strenght\r\nDeflect+Crouch=Decrease Ball's strenght"),
+			Custom String("Deflect+LMB=Move Ball forward\r\nDeflect+RMB=Move Ball back"))), Custom String("{0}\r\n{1}\r\n{2}",
+			Custom String(
+			"Interact+LMB=Create new Target Ball\r\nInteract+RMB=Delete selected Ball\r\nInteract+Crouch=Select previous Ball"),
+			Custom String("Interact+Jump=Select next Ball\r\nDeflect+LMB=Move Ball forward\r\nDeflect+RMB=Move Ball back"), Custom String(
+			"Hold LMB+Jump=sight distance forward\r\nHold RMB+Jump=sight distance back"))), Custom String("{0}\r\n{1}\r\n{2}",
+			Custom String(
+			"Interact+LMB=Create new Jump platform Ball\r\nInteract+RMB=Delete selected Ball\r\nInteract+Crouch=Select previous Ball"),
+			Custom String("Interact+Jump=Select next Ball\r\nDeflect+LMB=Move Ball forward\r\nDeflect+RMB=Move Ball back"), Custom String(
+			"")))[Host Player.E], Custom String("Hold melee to open the guidance text")), Right, -4, Color(White), Color(Red), Color(
+			Yellow), Visible To and String, Default Visibility);
+		Create HUD Text(All Players(All Teams), Null, Null, Custom String("{{0}}", Host Player.K, Custom String("{1}", Custom String(""),
+			Custom String(
+			"Crouch+LMB=Next lvl\r\nCrouch+RMB=Prev lvl\r\nIn invincbile mode:\r\nE=Trough Wall\r\nFly Mode - hello emotion")),
+			Custom String("")), Right, -2, Color(White), Color(White), Color(Green), Visible To and String, Default Visibility);
+		Create HUD Text(All Players(All Teams), Null, Null, Custom String("{{0}}", Host Player.K, Custom String(
+			"Hold melee to hide guidence text\r\nCreator made by: 易忘#51876\r\nUdpated by: 五里雾中#51574,BlackNight#2123\r\nTranslated by: Xerteks#2929"),
+			Custom String("")), Right, -1, Color(White), Color(White), Color(Red), Visible To and String, Default Visibility);
+		Create HUD Text(All Players(All Teams), Null, Null, Custom String("{{0}}", Host Player.K, Custom String("{0}\r\n{1}{2}",
+			Custom String("To save the map:\r\n1.Interact+Melee+Reload to clear excess data"), Custom String(
+			"2.Open Workshop Inspector → Set variable target as global → click the [x]\r\n3.Open Workshop Editor → open ”Checkpoint | Position”"),
+			Custom String(
+			" → click the yellow [+] sign\r\n4.Turn off edit rules\r\n5.Add map code and your nickname as author in \"Text\" at the bottom of rules")),
+			Custom String("")), Left, -3, Color(White), Color(White), Color(Yellow), Visible To and String, Default Visibility);
+		Create HUD Text(All Players(All Teams), Custom String("{{0}}", Host Player.K, Append To Array(Append To Array(Append To Array(
+			Append To Array(Append To Array(Append To Array(Empty Array, 0), Custom String(
+			"Hold Dash to change editing mode\r\nCurrent mode: Checkpoints")), Custom String(
+			"Hold Dash to change editing mode\r\nCurrent mode: Killing Sphere")), Custom String(
+			"Hold Dash to change editing mode\r\nCurrent mode: Bouncing Ball")), Custom String(
+			"Hold Dash to change editing mode\r\nCurrent mode: Aim-parkour target Ball")), Custom String(
+			"Hold Dash to change editing mode\r\nCurrent mode: Jumping platform"))[Host Player.E], Custom String(
+			" Guide HUD has been closed")), Null, Append To Array(Append To Array(Append To Array(Append To Array(Append To Array(
+			Append To Array(Empty Array, Custom String("")), Custom String("")), Custom String("")), Custom String(
+			"Hold Q+LMB=Turn Ultimate On/Off\r\nHold Q+RMB=Turn Dash On/Off")), Custom String(
+			"1 Warning you will not be able to edit the previous levels\r\n2-Warning After the last checkpoint, do not put new spheres")),
+			Custom String(""))[Host Player.E], Left, -6, Color(Red), Color(White), Color(Orange), Visible To and String,
+			Default Visibility);
+		Create HUD Text(All Players(All Teams), Null, Null, Custom String("{{0}}", Host Player.K, Custom String("{1}", Custom String(""),
+			Custom String(
+			"In workshop editor in rule \r\n\"Checkpoint | Arrived\" you can \r\nset if point can be reached \r\nwithout touching the ground")),
+			Custom String("")), Right, -3, Color(White), Color(White), Color(Orange), Visible To and String, Default Visibility);
+	}
+}
+
+deaktiviert regel("Guide HUD effects")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	aktionen
+	{
+		Create Icon(All Players(All Teams), Global.A[Global.B] + Vector(0, 0.600, 0), Arrow: Down, Visible To and Position, Color(Red),
+			True);
+		Create In-World Text(All Players(All Teams), Custom String("Selected Checkpoint"), Global.A[Global.B] + Vector(0, 0.500, 0), 1.600,
+			Do Not Clip, Visible To Position and String, Color(Red), Default Visibility);
+		deaktiviert Create Effect(All Players(All Teams), Sphere, Color(Red), Global.H[Global.J], Global.I[Global.J], Visible To Position and Radius);
+		Create Effect(All Players(All Teams), Good Aura, Color(Purple), Global.TQ[Global.TQ1], 1, Visible To Position and Radius);
+		"轻易别打开，动作太长会"
+		Create HUD Text(All Players(All Teams), Append To Array(Append To Array(Append To Array(Append To Array(Append To Array(
+			Append To Array(Empty Array, 0), Custom String("Selected Checkpoint's number: {0}", Global.B)), Custom String(
+			"Current Killing Sphere's radius: {0}", Global.I[Global.J])), Custom String("Current Bouncing Ball's strenght: {0}",
+			Global.EditMode[Global.TQ1])), Custom String("Current Aim-parkour target: {0}")), Custom String(
+			"Current Jumping platform: {0}", Global.jumpplace1))[Host Player.E], Null, Append To Array(Append To Array(Append To Array(
+			Append To Array(Append To Array(Append To Array(Empty Array, Custom String("")), Custom String("")), Custom String("")),
+			Custom String("Current Bouncing Ball's Ultimate: {0}\r\nCurrent Bouncing Ball's Dash: {1}", Global.TQ5[Global.TQ1],
+			Global.TQ6[Global.TQ1])), Custom String("")), Custom String("", Global.TQ5[Global.TQ1], Global.TQ6[Global.TQ1]))
+			[Host Player.E], Left, -6, Color(Red), Color(White), Color(Orange), Visible To and String, Default Visibility);
+		Create In-World Text(All Players(All Teams), Custom String("Selected Killing Sphere"), Global.H[Global.J], 1.600, Do Not Clip,
+			Visible To Position and String, Color(Sky Blue), Default Visibility);
+		Create Effect(All Players(All Teams), Orb, Color(Red), Global.L, 1, Visible To Position and Radius);
+		Create In-World Text(Host Player, String("{0} m", Distance Between(Host Player, Global.L)), Global.L - Vector(0, 1.500, 0), 1.500,
+			Do Not Clip, Visible To Position and String, Color(Red), Default Visibility);
+		Create Icon(All Players(All Teams), Global.H[Global.J] + Vector(0, 0.600, 0), Arrow: Down, Visible To and Position, Color(Red),
+			True);
+		Create Effect(All Players(All Teams), Sphere, Color(Red), Global.L, Global.I[Global.NANBA], Visible To Position and Radius);
+		Create Effect(All Players(All Teams), Orb, Color(Purple), Global.jumpplacepos[Global.jumpplace1], 1,
+			Visible To Position and Radius);
+	}
+}
+
+deaktiviert regel("Clear display of checkpoints (?)")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Button Held(Event Player, Button(Interact)) == True;
+		Is Button Held(Event Player, Button(Ability 1)) == True;
+		Event Player == Host Player;
+	}
+
+	aktionen
+	{
+		For Global Variable(B, Count Of(Global.C) - 1, 0, -1);
+			Destroy Effect(Global.C[Global.B]);
+			Modify Global Variable(C, Remove From Array By Index, Global.B);
+		End;
+		Global.B = -2;
+	}
+}
+
+deaktiviert regel("Show checkpoints")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	bedingungen
+	{
+		Global.B == -2;
+	}
+
+	aktionen
+	{
+		For Global Variable(B, 0, Count Of(Global.A), 1);
+			Create Effect(All Players(All Teams), Ring, Color(Red), Global.A[Global.B], 1, Visible To);
+			Modify Global Variable(C, Append To Array, Last Created Entity);
+		End;
+	}
+}
+
+deaktiviert regel("Jump to previous checkpoint")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Button Held(Event Player, Button(Crouch)) == True;
+		Is Button Held(Event Player, Button(Primary Fire)) == True;
+		Event Player.A < Count Of(Global.A) - 1;
+	}
+
+	aktionen
+	{
+		Event Player.A += 1;
+		Teleport(Event Player, Global.A[Event Player.A]);
+		Modify Global Variable At Index(P, Event Player.A, Append To Array, Event Player);
+		Modify Global Variable At Index(P, Event Player.A - 1, Remove From Array By Value, Event Player);
+	}
+}
+
+deaktiviert regel("Jump to next checkpoint")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Button Held(Event Player, Button(Crouch)) == True;
+		Is Button Held(Event Player, Button(Secondary Fire)) == True;
+		Event Player.A != 0;
+	}
+
+	aktionen
+	{
+		Teleport(Event Player, Global.A[Event Player.A - 1]);
+		Event Player.A -= 1;
+		Modify Global Variable At Index(P, Event Player.A, Append To Array, Event Player);
+		Modify Global Variable At Index(P, Event Player.A + 1, Remove From Array By Value, Event Player);
+	}
+}
+
+regel("------------------------------------------------------Turn off the rules above after finishing editing--------------------------")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+}
+
+regel("Setup and Variables")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	aktionen
+	{
+		Disable Inspector Recording;
+		Disable Built-In Game Mode Respawning(All Players(All Teams));
+		Disable Built-In Game Mode Completion;
+		Disable Built-In Game Mode Scoring;
+		Disable Built-In Game Mode Music;
+		Pause Match Time;
+		Global.jumpplaceballnumber = Empty Array;
+		Global.jumpplacepos = Empty Array;
+		Global.jumpplaceeffect = Empty Array;
+		Global.jumpplace1 = 0;
+		Global.Dao = Empty Array;
+		Global.SHIFT = Empty Array;
+		Global.pinballnumber = Empty Array;
+		Global.killballnumber = Empty Array;
+		Global.A = Empty Array;
+		Global.F = Empty Array;
+		Global.G = Empty Array;
+		Global.H = Empty Array;
+		Global.I = Empty Array;
+		Global.K = Empty Array;
+		Global.J = 0;
+		Global.Q = Empty Array;
+		Global.TQ = Empty Array;
+		Global.TQ2 = Empty Array;
+		Global.EditMode = Empty Array;
+		Global.TQ1 = 0;
+		Global.TQ5 = Empty Array;
+		Global.TQ6 = Empty Array;
+		Wait(1, Ignore Condition);
+		Global.B = Count Of(Global.A) - 1;
+		Call Subroutine(KILLBALL);
+		Wait(2, Ignore Condition);
+		Call Subroutine(pinball);
+		Wait(2, Ignore Condition);
+		Call Subroutine(jumpplaceball);
+		If(Current Game Mode == Game Mode(Übungsgefecht));
+			Create HUD Text(All Players(All Teams), Custom String(""), Null, String("{0} {1} {2}", Custom String(
+				"Time left until server resets:"), 270 - Round To Integer(Total Time Elapsed / 60, Down), Custom String("Minutes")), Right,
+				-16, Color(White), Color(White), Color(Red), Visible To and String, Default Visibility);
+		Else;
+			Create HUD Text(All Players(All Teams), Custom String(""), Null, String("{0} {1} {2}", Custom String(
+				"Time left until server resets:"), 90 - Round To Integer(Total Time Elapsed / 60, Down), Custom String("Minutes")), Right, -16,
+				Color(White), Color(White), Color(Red), Visible To and String, Default Visibility);
+		End;
+		Create HUD Text(All Players(All Teams), Null, Null, Custom String(
+			"                                                   \r\n  \r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"),
+			Top, -6, Color(White), Color(White), Color(Orange), Visible To and String, Default Visibility);
+		Create HUD Text(All Players(All Teams), Null, Null, Custom String("Hold {0}丨Quick reset", Input Binding String(Button(Reload))),
+			Right, -12, Color(White), Color(White), Color(Orange), Visible To and String, Default Visibility);
+		Create HUD Text(All Players(All Teams), Null, Null, Custom String("Hold {0}丨Toggle Indicator", Input Binding String(Button(
+			Melee))), Right, -12, Color(White), Color(White), Color(Orange), Visible To and String, Default Visibility);
+		Create HUD Text(All Players(All Teams), Null, Null, Custom String("Hold {0}丨Spectate", Input Binding String(Button(Interact))),
+			Right, -12, Color(White), Color(White), Color(Orange), Visible To and String, Default Visibility);
+		Create HUD Text(All Players(All Teams), Null, Null, Custom String("{0}+{1}+{2}丨Restart", Input Binding String(Button(Crouch)),
+			Input Binding String(Button(Ability 2)), Input Binding String(Button(Interact))), Right, -11, Color(White), Color(White),
+			Color(Sky Blue), Visible To and String, Default Visibility);
+		Create HUD Text(All Players(All Teams), Null, Null, Custom String("{0}+{1}丨Invincible", Input Binding String(Button(Reload)),
+			Input Binding String(Button(Melee))), Right, -11, Color(White), Color(White), Color(Sky Blue), Visible To and String,
+			Default Visibility);
+		Create HUD Text(All Players(All Teams), Null, Null, Custom String("{0}+{1}丨practice", Input Binding String(Button(Ultimate)),
+			Input Binding String(Button(Melee))), Right, -10, Color(White), Color(White), Color(Sky Blue), Visible To and String,
+			Default Visibility);
+		Global.save = Empty Array;
+		"Top 5 best times hud text"
+		Create HUD Text(All Players(All Teams), Null, Null, Custom String("Top 5 "), Right, -8, Color(White), Color(White), Color(White),
+			Visible To and String, Default Visibility);
+		"1th Place"
+		Create HUD Text(Global.toplistSortedTimes[1] != Null ? All Players(All Teams) : Null, Hero Icon String(Hero(Genji)),
+			Global.toplistPlayers[Index Of Array Value(Global.toplistTimes, Global.toplistSortedTimes[1])], Custom String("{0} sec",
+			Global.toplistSortedTimes[1]), Right, -7, Custom Color(158, 255, 187, 255), Custom Color(158, 255, 187, 255), Custom Color(158,
+			255, 187, 255), Visible To and String, Default Visibility);
+		"2nd Place"
+		Create HUD Text(Global.toplistSortedTimes[2] != Null ? All Players(All Teams) : Null, Hero Icon String(Hero(Genji)),
+			Global.toplistPlayers[Index Of Array Value(Global.toplistTimes, Global.toplistSortedTimes[2])], Custom String("{0} sec",
+			Global.toplistSortedTimes[2]), Right, -6, Custom Color(158, 255, 187, 255), Custom Color(158, 255, 187, 255), Custom Color(158,
+			255, 187, 255), Visible To and String, Default Visibility);
+		"3rd Place"
+		Create HUD Text(Global.toplistSortedTimes[3] != Null ? All Players(All Teams) : Null, Hero Icon String(Hero(Genji)),
+			Global.toplistPlayers[Index Of Array Value(Global.toplistTimes, Global.toplistSortedTimes[3])], Custom String("{0} sec",
+			Global.toplistSortedTimes[3]), Right, -5, Custom Color(158, 255, 187, 255), Custom Color(158, 255, 187, 255), Custom Color(158,
+			255, 187, 255), Visible To and String, Default Visibility);
+		"4th Place"
+		Create HUD Text(Global.toplistSortedTimes[4] != Null ? All Players(All Teams) : Null, Hero Icon String(Hero(Genji)),
+			Global.toplistPlayers[Index Of Array Value(Global.toplistTimes, Global.toplistSortedTimes[4])], Custom String("{0} sec",
+			Global.toplistSortedTimes[4]), Right, -4, Custom Color(158, 255, 187, 255), Custom Color(158, 255, 187, 255), Custom Color(158,
+			255, 187, 255), Visible To and String, Default Visibility);
+		"5th Place"
+		Create HUD Text(Global.toplistSortedTimes[5] != Null ? All Players(All Teams) : Null, Hero Icon String(Hero(Genji)),
+			Global.toplistPlayers[Index Of Array Value(Global.toplistTimes, Global.toplistSortedTimes[5])], Custom String("{0} sec",
+			Global.toplistSortedTimes[5]), Right, -3, Custom Color(158, 255, 187, 255), Custom Color(158, 255, 187, 255), Custom Color(158,
+			255, 187, 255), Visible To and String, Default Visibility);
+		"Other player best times hud text"
+		Create HUD Text(All Players(All Teams), Null, Null, Custom String("Other"), Right, -2, Color(White), Color(White), Color(White),
+			Visible To and String, Default Visibility);
+	}
+}
+
+regel("Player Variables (Combo l DOTS | ...)")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	aktionen
+	{
+		Event Player.HUB_DOTS_INDEX = 0;
+		Event Player.DOTS_EFFECT = 0;
+	}
+}
+
+regel("Checkpoint | Position <---------------------------------------------------------------------------- paste here!")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	aktionen
+	{
+		Global.A = Array(Vector(-31.080, 6.836, -140.694), Vector(-33.426, 1.750, -125.790), Vector(-35.241, 3.773, -112.396), Vector(
+			-30.666, 10.662, -97.737), Vector(-15.294, 1.750, -81.730), Vector(-12.829, 4.361, -68.381), Vector(-4.884, 4.001, -52.674),
+			Vector(2.700, 6.820, -40.329), Vector(-1.310, 5.995, -20.151), Vector(-15.227, 5.493, -5.578), Vector(-32.856, 4.425, -8.237),
+			Vector(-44.137, -0.250, 9.013), Vector(-33.797, 0.165, 21.076), Vector(-24.595, 7.750, 15.760), Vector(-5.472, 3.798, 23.399),
+			Vector(4.855, 6.850, 38.413), Vector(17.458, 6.863, 54.878), Vector(1.106, 0.989, 67.240), Vector(-10.632, 6.508, 55.992),
+			Vector(-30.479, 4.840, 49.822), Vector(-51.439, 0.962, 58.668), Vector(-33.124, 3.510, 60.637), Vector(-22.094, 3.509, 60.662),
+			Vector(-10.772, 7.582, 53.212), Vector(-7.954, 3.069, 35.232), Vector(-5.298, 1.750, 16.420), Vector(-8.892, 1.604, 3.176),
+			Vector(0.809, 1.750, -7.300), Vector(6.271, 8.348, -21.513), Vector(7.637, 12.837, -38.153), Vector(7.007, 12.835, -57.820),
+			Vector(11.972, 4.090, -79.684), Vector(11.415, 3.750, -94.499), Vector(2.032, 4.051, -106.393), Vector(-6.742, 15.352,
+			-106.098), Vector(-24.812, 3.040, -92.263), Vector(-36.268, 1.574, -107.058), Vector(-42.092, 3.750, -119.043), Vector(-42.775,
+			6.753, -135.674), Vector(-25.748, 3.757, -143.408), Vector(-20.972, 9.750, -126.161));
+		Global.H = Array();
+		Global.I = Array();
+		Global.TQ = Array();
+		Global.EditMode = Array();
+		Global.TQ5 = Array();
+		Global.TQ6 = Array();
+		Global.killballnumber = Array();
+		Global.pinballnumber = Array();
+		Global.Ban_DoubleBhop_Per_Level = Array(Array(), -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+			-1, -1, -1);
+		Global.Ban_Multi_Per_Level = Array(Array(), -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+			-1);
+		Global.jumpplacepos = Array();
+		Global.jumpplaceballnumber = Array();
+		Global.A = Array(Vector(-31.080, 6.836, -140.694), Vector(-33.426, 1.750, -125.790), Vector(-35.241, 3.773, -112.396), Vector(
+			-30.666, 10.662, -97.737), Vector(-15.294, 1.750, -81.730), Vector(-12.829, 4.361, -68.381), Vector(-4.884, 4.001, -52.674),
+			Vector(2.700, 6.820, -40.329), Vector(-1.310, 5.995, -20.151), Vector(-15.227, 5.493, -5.578), Vector(-32.856, 4.425, -8.237),
+			Vector(-44.137, -0.250, 9.013), Vector(-33.797, 0.165, 21.076), Vector(-24.595, 7.750, 15.760), Vector(-5.472, 3.798, 23.399),
+			Vector(4.855, 6.850, 38.413), Vector(17.458, 6.863, 54.878), Vector(1.106, 0.989, 67.240), Vector(-10.632, 6.508, 55.992),
+			Vector(-30.479, 4.840, 49.822), Vector(-51.439, 0.962, 58.668), Vector(-33.124, 3.510, 60.637), Vector(-22.094, 3.509, 60.662),
+			Vector(-10.772, 7.582, 53.212), Vector(-7.954, 3.069, 35.232), Vector(-5.298, 1.750, 16.420), Vector(-8.892, 1.604, 3.176),
+			Vector(0.809, 1.750, -7.300), Vector(6.271, 8.348, -21.513), Vector(7.637, 12.837, -38.153), Vector(7.007, 12.835, -57.820),
+			Vector(11.972, 4.090, -79.684), Vector(11.415, 3.750, -94.499), Vector(2.032, 4.051, -106.393), Vector(-6.742, 15.352,
+			-106.098), Vector(-24.812, 3.040, -92.263), Vector(-36.268, 1.574, -107.058), Vector(-42.092, 3.750, -119.043), Vector(-42.775,
+			6.753, -135.674), Vector(-25.748, 3.757, -143.408), Vector(-20.972, 9.750, -126.161), Vector(-27.485, -0.258, -110.528),
+			Vector(-9.252, 9.750, -102.309), Vector(12.068, 1.750, -86.997), Vector(12.086, 6.003, -57.257), Vector(-7.793, 6.533,
+			-39.074), Vector(-7.840, 4.367, -15.799), Vector(-11.266, 1.604, 5.778), Vector(0.403, 1.602, 24.955), Vector(4.666, 6.813,
+			43.381), Vector(-10.704, 6.269, 55.797));
+		Global.H = Array();
+		Global.I = Array();
+		Global.TQ = Array();
+		Global.EditMode = Array();
+		Global.TQ5 = Array();
+		Global.TQ6 = Array();
+		Global.killballnumber = Array();
+		Global.pinballnumber = Array();
+		Global.Ban_DoubleBhop_Per_Level = Array(Array(), -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+			-1, -1, -1);
+		Global.Ban_Multi_Per_Level = Array(Array(), -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+			-1);
+		Global.jumpplacepos = Array();
+		Global.jumpplaceballnumber = Array();
+		Global.A = Array(Vector(-31.080, 6.836, -140.694), Vector(-33.426, 1.750, -125.790), Vector(-35.241, 3.773, -112.396), Vector(
+			-30.666, 10.662, -97.737), Vector(-15.294, 1.750, -81.730), Vector(-12.829, 4.361, -68.381), Vector(-4.884, 4.001, -52.674),
+			Vector(2.700, 6.820, -40.329), Vector(-1.310, 5.995, -20.151), Vector(-15.227, 5.493, -5.578), Vector(-32.856, 4.425, -8.237),
+			Vector(-44.137, -0.250, 9.013), Vector(-33.797, 0.165, 21.076), Vector(-24.595, 7.750, 15.760), Vector(-5.472, 3.798, 23.399),
+			Vector(4.855, 6.850, 38.413), Vector(17.458, 6.863, 54.878), Vector(1.106, 0.989, 67.240), Vector(-10.632, 6.508, 55.992),
+			Vector(-30.479, 4.840, 49.822), Vector(-51.439, 0.962, 58.668), Vector(-33.124, 3.510, 60.637), Vector(-22.094, 3.509, 60.662),
+			Vector(-10.772, 7.582, 53.212), Vector(-7.954, 3.069, 35.232), Vector(-5.298, 1.750, 16.420), Vector(-8.892, 1.604, 3.176),
+			Vector(0.392, 1.750, -7.349), Vector(6.271, 8.348, -21.513), Vector(7.637, 12.837, -38.153), Vector(7.007, 12.835, -57.820),
+			Vector(11.972, 4.090, -79.684), Vector(11.415, 3.750, -94.499), Vector(2.032, 4.051, -106.393), Vector(-6.575, 15.316,
+			-106.268), Vector(-24.812, 3.040, -92.263), Vector(-36.268, 1.574, -107.058), Vector(-42.013, 3.750, -118.422), Vector(-42.775,
+			6.753, -135.674), Vector(-25.748, 3.757, -143.408), Vector(-20.972, 9.750, -126.161), Vector(-27.485, -0.258, -110.528),
+			Vector(-9.252, 9.750, -102.309), Vector(11.677, 1.750, -89.111), Vector(12.086, 6.003, -57.257), Vector(-7.793, 6.533,
+			-39.074), Vector(-7.840, 4.367, -15.799), Vector(-11.266, 1.604, 5.778), Vector(0.403, 1.602, 24.955), Vector(4.666, 6.813,
+			43.381), Vector(-10.704, 6.269, 55.797));
+		Global.H = Array();
+		Global.I = Array();
+		Global.TQ = Array();
+		Global.EditMode = Array();
+		Global.TQ5 = Array();
+		Global.TQ6 = Array();
+		Global.killballnumber = Array();
+		Global.pinballnumber = Array();
+		Global.Ban_DoubleBhop_Per_Level = Array(Array(), -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+			-1, -1, -1);
+		Global.Ban_Multi_Per_Level = Array(Array(), -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+			-1);
+		Global.jumpplacepos = Array();
+		Global.jumpplaceballnumber = Array();
+		Global.A = Array(Vector(-31.080, 6.836, -140.694), Vector(-33.426, 1.750, -125.790), Vector(-35.241, 3.773, -112.396), Vector(
+			-30.666, 10.662, -97.737), Vector(-15.294, 1.750, -81.730), Vector(-12.829, 4.361, -68.381), Vector(-4.884, 4.001, -52.674),
+			Vector(0.622, 5.817, -36.958), Vector(-1.310, 5.995, -20.151), Vector(-15.227, 5.493, -5.578), Vector(-32.856, 4.425, -8.237),
+			Vector(-44.137, -0.250, 9.013), Vector(-33.797, 0.165, 21.076), Vector(-24.104, 7.750, 15.266), Vector(-4.915, 3.775, 23.616),
+			Vector(4.855, 6.850, 38.413), Vector(17.458, 6.863, 54.878), Vector(1.106, 0.989, 67.240), Vector(-10.632, 6.508, 55.992),
+			Vector(-30.642, 4.840, 49.714), Vector(-51.439, 0.962, 58.668), Vector(-33.124, 3.510, 60.637), Vector(-22.094, 3.509, 60.662),
+			Vector(-10.772, 7.582, 53.212), Vector(-7.954, 3.069, 35.232), Vector(-5.298, 1.750, 16.420), Vector(-8.892, 1.604, 3.176),
+			Vector(0.392, 1.750, -7.349), Vector(5.429, 8.348, -21.364), Vector(7.637, 12.837, -38.153), Vector(7.007, 12.835, -57.820),
+			Vector(11.972, 4.090, -79.684), Vector(11.415, 3.750, -94.499), Vector(2.032, 4.051, -106.393), Vector(-6.125, 15.218,
+			-106.071), Vector(-24.812, 3.040, -92.263), Vector(-36.268, 1.574, -107.058), Vector(-42.013, 3.750, -118.422), Vector(-42.775,
+			6.753, -135.674), Vector(-25.748, 3.757, -143.408), Vector(-20.972, 9.750, -126.161), Vector(-27.393, -0.258, -109.783),
+			Vector(-9.252, 9.750, -102.309), Vector(11.296, 1.750, -90.313), Vector(14.906, 4.950, -63.397), Vector(15.233, 6.687,
+			-45.455), Vector(-7.840, 4.367, -15.799), Vector(-11.266, 1.604, 5.778), Vector(0.403, 1.602, 24.955), Vector(4.666, 6.813,
+			43.381), Vector(-10.704, 6.269, 55.797));
+		Global.H = Array();
+		Global.I = Array();
+		Global.TQ = Array();
+		Global.EditMode = Array();
+		Global.TQ5 = Array();
+		Global.TQ6 = Array();
+		Global.killballnumber = Array();
+		Global.pinballnumber = Array();
+		Global.Ban_DoubleBhop_Per_Level = Array(Array(), -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+			-1, -1, -1);
+		Global.Ban_Multi_Per_Level = Array(Array(), -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+			-1);
+		Global.jumpplacepos = Array();
+		Global.jumpplaceballnumber = Array();
+		Global.A = Array(Vector(-31.080, 6.836, -140.694), Vector(-33.426, 1.750, -125.790), Vector(-35.241, 3.773, -112.396), Vector(
+			-30.666, 10.662, -97.737), Vector(-15.294, 1.750, -81.730), Vector(-12.829, 4.361, -68.381), Vector(-4.884, 4.001, -52.674),
+			Vector(0.622, 5.817, -36.958), Vector(-1.310, 5.995, -20.151), Vector(-15.227, 5.493, -5.578), Vector(-32.856, 4.425, -8.237),
+			Vector(-44.137, -0.250, 9.013), Vector(-33.797, 0.165, 21.076), Vector(-24.104, 7.750, 15.266), Vector(-4.915, 3.775, 23.616),
+			Vector(4.855, 6.850, 38.413), Vector(17.458, 6.863, 54.878), Vector(1.106, 0.989, 67.240), Vector(-10.632, 6.508, 55.992),
+			Vector(-30.642, 4.840, 49.714), Vector(-51.439, 0.962, 58.668), Vector(-33.124, 3.510, 60.637), Vector(-22.094, 3.509, 60.662),
+			Vector(-10.772, 7.582, 53.212), Vector(-7.954, 3.069, 35.232), Vector(-5.481, 1.750, 16.058), Vector(-8.892, 1.604, 3.176),
+			Vector(0.392, 1.750, -7.349), Vector(5.429, 8.348, -21.364), Vector(7.637, 12.837, -38.153), Vector(7.007, 12.835, -57.820),
+			Vector(11.972, 4.090, -79.684), Vector(11.415, 3.750, -94.499), Vector(2.032, 4.051, -106.393), Vector(-6.125, 15.218,
+			-106.071), Vector(-24.812, 3.040, -92.263), Vector(-36.268, 1.574, -107.058), Vector(-42.013, 3.750, -118.422), Vector(-42.775,
+			6.753, -135.674), Vector(-25.748, 3.757, -143.408), Vector(-20.972, 9.750, -126.161), Vector(-27.393, -0.258, -109.783),
+			Vector(-9.664, 9.750, -102.532), Vector(11.296, 1.750, -90.313), Vector(14.893, 4.950, -63.423), Vector(12.243, 7.077,
+			-43.400), Vector(-8.136, 6.588, -38.846), Vector(2.926, 3.966, -13.283), Vector(-8.316, 1.604, 2.563), Vector(1.304, 1.746,
+			24.275), Vector(4.805, 6.854, 43.516), Array(Vector(-10.903, 6.187, 55.733), Vector(-10.962, 6.149, 55.732)));
+		Global.H = Array();
+		Global.I = Array();
+		Global.TQ = Array();
+		Global.EditMode = Array();
+		Global.TQ5 = Array();
+		Global.TQ6 = Array();
+		Global.killballnumber = Array();
+		Global.pinballnumber = Array();
+		Global.Ban_DoubleBhop_Per_Level = Array(Array(), -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+			-1, -1, -1);
+		Global.Ban_Multi_Per_Level = Array(Array(), -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+			-1);
+		Global.jumpplacepos = Array();
+		Global.jumpplaceballnumber = Array();
+		Global.A = Array(Vector(-31.080, 6.836, -140.694), Vector(-33.426, 1.750, -125.790), Vector(-35.241, 3.773, -112.396), Vector(
+			-30.666, 10.662, -97.737), Vector(-15.294, 1.750, -81.730), Vector(-12.829, 4.361, -68.381), Vector(-4.884, 4.001, -52.674),
+			Vector(1.074, 5.750, -36.674), Vector(-1.310, 5.995, -20.151), Vector(-15.227, 5.493, -5.578), Vector(-32.856, 4.425, -8.237),
+			Vector(-44.137, -0.250, 9.013), Vector(-33.965, 0.060, 20.690), Vector(-24.104, 7.750, 15.266), Vector(-5.260, 3.778, 23.549),
+			Vector(4.855, 6.850, 38.413), Vector(17.458, 6.863, 54.878), Vector(1.106, 0.989, 67.240), Vector(-10.632, 6.508, 55.992),
+			Vector(-30.642, 4.840, 49.714), Vector(-51.439, 0.962, 58.668), Vector(-33.124, 3.510, 60.637), Vector(-22.094, 3.509, 60.662),
+			Vector(-10.772, 7.582, 53.212), Vector(-7.954, 3.069, 35.232), Vector(-5.481, 1.750, 16.058), Vector(-8.892, 1.604, 3.176),
+			Vector(0.510, 1.750, -7.352), Vector(5.429, 8.348, -21.364), Vector(7.637, 12.837, -38.153), Vector(7.007, 12.835, -57.820),
+			Vector(11.972, 4.090, -79.684), Vector(11.415, 3.750, -94.499), Vector(2.032, 4.051, -106.393), Vector(-6.125, 15.218,
+			-106.071), Vector(-24.812, 3.040, -92.263), Vector(-36.268, 1.574, -107.058), Vector(-42.013, 3.750, -118.422), Vector(-42.775,
+			6.753, -135.674), Vector(-25.748, 3.757, -143.408), Vector(-20.972, 9.750, -126.161), Vector(-27.393, -0.258, -109.783),
+			Vector(-9.664, 9.750, -102.532), Vector(11.296, 1.750, -90.313), Vector(14.893, 4.950, -63.423), Vector(12.243, 7.077,
+			-43.400), Vector(-8.136, 6.588, -38.846), Vector(2.926, 3.966, -13.283), Vector(-8.316, 1.604, 2.563), Vector(1.304, 1.746,
+			24.275), Vector(4.805, 6.854, 43.516), Array(Vector(-10.903, 6.187, 55.733), Vector(-10.962, 6.149, 55.732)));
+		Global.H = Array();
+		Global.I = Array();
+		Global.TQ = Array();
+		Global.EditMode = Array();
+		Global.TQ5 = Array();
+		Global.TQ6 = Array();
+		Global.killballnumber = Array();
+		Global.pinballnumber = Array();
+		Global.Ban_DoubleBhop_Per_Level = Array(Array(), -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+			-1, -1, -1);
+		Global.Ban_Multi_Per_Level = Array(Array(), -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+			-1);
+		Global.jumpplacepos = Array();
+		Global.jumpplaceballnumber = Array();
+		Global.A = Array(Vector(-34.002, 1.750, -128.206), Vector(-35.241, 3.773, -112.396), Vector(-30.666, 10.662, -97.737), Vector(
+			-15.294, 1.750, -81.730), Vector(-12.829, 4.361, -68.381), Vector(-4.884, 4.001, -52.674), Vector(1.074, 5.750, -36.674),
+			Vector(-1.141, 6.030, -20.370), Vector(-15.227, 5.493, -5.578), Vector(-32.856, 4.425, -8.237), Vector(-44.137, -0.250, 9.013),
+			Vector(-33.965, 0.060, 20.690), Vector(-24.104, 7.750, 15.266), Vector(-5.260, 3.778, 23.549), Vector(4.855, 6.850, 38.413),
+			Vector(17.458, 6.863, 54.878), Vector(1.106, 0.989, 67.240), Vector(-10.632, 6.508, 55.992), Vector(-30.642, 4.840, 49.714),
+			Vector(-51.439, 0.962, 58.668), Vector(-33.124, 3.510, 60.637), Vector(-22.094, 3.509, 60.662), Vector(-10.772, 7.582, 53.212),
+			Vector(-7.954, 3.069, 35.232), Vector(-5.481, 1.750, 16.058), Vector(-8.892, 1.604, 3.176), Vector(0.510, 1.750, -7.352),
+			Vector(5.429, 8.348, -21.364), Vector(7.637, 12.837, -38.153), Vector(7.007, 12.835, -57.820), Vector(11.972, 4.090, -79.684),
+			Vector(11.143, 3.750, -94.548), Vector(2.032, 4.051, -106.393), Vector(-6.125, 15.218, -106.071), Vector(-24.812, 3.040,
+			-92.263), Vector(-36.268, 1.574, -107.058), Vector(-42.013, 3.750, -118.422), Vector(-42.775, 6.753, -135.674), Vector(-25.748,
+			3.757, -143.408), Vector(-20.972, 9.750, -126.161), Vector(-27.393, -0.258, -109.783), Vector(-9.664, 9.750, -102.532), Vector(
+			11.296, 1.750, -90.313), Vector(14.893, 4.950, -63.423), Vector(12.243, 7.077, -43.400), Vector(-8.136, 6.588, -38.846),
+			Vector(2.926, 3.966, -13.283), Vector(-8.316, 1.604, 2.563), Vector(1.304, 1.746, 24.275), Vector(4.805, 6.854, 43.516), Array(
+			Vector(-10.903, 6.187, 55.733), Vector(-10.962, 6.149, 55.732)));
+		Global.H = Array();
+		Global.I = Array();
+		Global.TQ = Array();
+		Global.EditMode = Array();
+		Global.TQ5 = Array();
+		Global.TQ6 = Array();
+		Global.killballnumber = Array();
+		Global.pinballnumber = Array();
+		Global.Ban_DoubleBhop_Per_Level = Array(Array(), -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+			-1, -1, -1);
+		Global.Ban_Multi_Per_Level = Array(Array(), -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+			-1);
+		Global.jumpplacepos = Array();
+		Global.jumpplaceballnumber = Array();
+		Global.A = Array(Vector(-34.002, 1.750, -128.206), Vector(-35.241, 3.773, -112.396), Vector(-30.666, 10.662, -97.737), Vector(
+			-15.294, 1.750, -81.730), Vector(-12.829, 4.361, -68.381), Vector(-4.884, 4.001, -52.674), Vector(0.984, 5.750, -36.734),
+			Vector(-1.141, 6.030, -20.370), Vector(-15.227, 5.493, -5.578), Vector(-32.856, 4.425, -8.237), Vector(-44.137, -0.250, 9.013),
+			Vector(-33.965, 0.060, 20.690), Vector(-24.104, 7.750, 15.266), Vector(-5.260, 3.778, 23.549), Vector(4.855, 6.850, 38.413),
+			Vector(17.458, 6.863, 54.878), Vector(1.106, 0.989, 67.240), Vector(-10.632, 6.508, 55.992), Vector(-30.642, 4.840, 49.714),
+			Vector(-51.439, 0.962, 58.668), Vector(-33.124, 3.510, 60.637), Vector(-22.094, 3.509, 60.662), Vector(-10.772, 7.582, 53.212),
+			Vector(-7.954, 3.069, 35.232), Vector(-5.481, 1.750, 16.058), Vector(-8.892, 1.604, 3.176), Vector(0.510, 1.750, -7.352),
+			Vector(5.429, 8.348, -21.364), Vector(7.637, 12.837, -38.153), Vector(7.007, 12.835, -57.820), Vector(11.972, 4.090, -79.684),
+			Vector(11.143, 3.750, -94.548), Vector(2.032, 4.051, -106.393), Vector(-6.125, 15.218, -106.071), Vector(-24.812, 3.040,
+			-92.263), Vector(-36.268, 1.574, -107.058), Vector(-42.013, 3.750, -118.422), Vector(-42.775, 6.753, -135.674), Vector(-25.748,
+			3.757, -143.408), Vector(-20.972, 9.750, -126.161), Vector(-27.393, -0.258, -109.783), Vector(-9.664, 9.750, -102.532), Vector(
+			11.296, 1.750, -90.313), Vector(14.893, 4.950, -63.423), Vector(12.243, 7.077, -43.400), Vector(-8.136, 6.588, -38.846),
+			Vector(2.926, 3.966, -13.283), Vector(-8.316, 1.604, 2.563), Vector(1.304, 1.746, 24.275), Vector(4.805, 6.854, 43.516), Array(
+			Vector(-10.903, 6.187, 55.733), Vector(-10.962, 6.149, 55.732)));
+		Global.H = Array();
+		Global.I = Array();
+		Global.TQ = Array();
+		Global.EditMode = Array();
+		Global.TQ5 = Array();
+		Global.TQ6 = Array();
+		Global.killballnumber = Array();
+		Global.pinballnumber = Array();
+		Global.Ban_DoubleBhop_Per_Level = Array(Array(), -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+			-1, -1, -1);
+		Global.Ban_Multi_Per_Level = Array(Array(), -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+			-1);
+		Global.jumpplacepos = Array();
+		Global.jumpplaceballnumber = Array();
+	}
+}
+
+regel("Tips | Text <-------------------------------------------------------------- tips and hints to write here")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	aktionen
+	{
+		"Here you can write tips for specific levels."
+		deaktiviert Continue;
+		"Click on the Global.Tips action\r\nYou can copy this action and write a hint for each level."
+		deaktiviert Continue;
+		"The index indicates the level"
+		deaktiviert Continue;
+		"In line * Custom string * Writes hints"
+		deaktiviert Continue;
+		"actions\r\n{\r\n	Global.Tips[0] = Custom String(\"\");\r\n}"
+		deaktiviert Continue;
+		"Example tip for level 0 [Action disabled]"
+		deaktiviert Global.Tips[0] = Custom String("Example tip for level 0");
+	}
+}
+
+regel("Checkpoint | Effect |-------------------------------------------------SUB0")
+{
+	event
+	{
+		Subroutine;
+		Sub0;
+	}
+
+	aktionen
+	{
+		Create Effect(Event Player, Ring, Color(Sky Blue), Count Of(Global.A[Event Player.A])
+			!= 0 ? Global.A[Event Player.A][1] : Global.A[Event Player.A], 1, Visible To Position and Radius);
+		Event Player.B[0] = Last Created Entity;
+		Create Effect(Event Player, Ring, Color(Lime Green), Global.A[Event Player.A + 1], 1, Visible To Position and Radius);
+		Event Player.B[1] = Last Created Entity;
+		Create Effect(Event Player, Light Shaft, Color(White), Global.A[Event Player.A + 1], 1, Visible To Position and Radius);
+		Event Player.B[2] = Last Created Entity;
+		Create Icon(Event Player, Global.A[Event Player.A + 1] + Vector(0, 1, 0), Arrow: Down, Visible To and Position, Color(Sky Blue),
+			True);
+		Event Player.B[3] = Last Created Entity;
+		Create In-World Text(Event Player, Custom String("Come here"), Global.A[Event Player.A + 1], 1.500, Do Not Clip,
+			Visible To Position and String, Color(White), Default Visibility);
+		Event Player.B[4] = Last Text ID;
+	}
+}
+
+regel("Checkpoint | Start the game |-------------------------------------SUB1")
+{
+	event
+	{
+		Subroutine;
+		Sub1;
+	}
+
+	aktionen
+	{
+		Skip If(Count Of(Global.A) == 0, 6);
+		If(Array Contains(Global.save, Custom String("{0}", Event Player)) == True);
+			Event Player.A = Global.save[Index Of Array Value(Global.save, Custom String("{0}", Event Player)) + 1];
+			Event Player.Timer = Global.save[Index Of Array Value(Global.save, Custom String("{0}", Event Player)) + 2];
+			Teleport(Event Player, Global.A[Global.save[Index Of Array Value(Global.save, Custom String("{0}", Event Player)) + 1]] + Vector(0,
+				1, 0));
+		Else;
+			Teleport(Event Player, Global.A[0] + Vector(0, 1, 0));
+			Event Player.A = 0;
+			Event Player.Timer = 0;
+			Modify Global Variable(save, Append To Array, Array(Custom String("{0}", Event Player), Event Player.A, Event Player.Timer));
+		End;
+		Chase Player Variable At Rate(Event Player, Timer, Absolute Value(9999999.000), 1, Destination and Rate);
+		Event Player.G = 0;
+		Event Player.H = Empty Array;
+		If(Event Player.E < 1);
+			Set Ability 1 Enabled(Event Player, False);
+			Set Ultimate Ability Enabled(Event Player, False);
+		Else;
+			Set Ability 1 Enabled(Event Player, True);
+			Set Ultimate Ability Enabled(Event Player, True);
+			Set Ultimate Charge(Event Player, 100);
+		End;
+		Modify Global Variable At Index(P, Event Player.A, Append To Array, Event Player);
+		Event Player.C = 0;
+	}
+}
+
+regel("Checkpoint | Killing Sphere effect |-------------------------------------SUB")
+{
+	event
+	{
+		Subroutine;
+		KILLBALL;
+	}
+
+	aktionen
+	{
+		Abort If(Global.H == Empty Array);
+		Global.NANBA = 0;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[0]], Current Array Element), Sphere, Color(Blue), Global.H[Global.NANBA],
+			Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 1;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[1]], Current Array Element), Sphere, Color(Blue), Global.H[Global.NANBA],
+			Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 2;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[2]], Current Array Element), Sphere, Color(Blue), Global.H[Global.NANBA],
+			Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 3;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[3]], Current Array Element), Sphere, Color(Blue), Global.H[Global.NANBA],
+			Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 4;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[4]], Current Array Element), Sphere, Color(Blue), Global.H[Global.NANBA],
+			Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 5;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[5]], Current Array Element), Sphere, Color(Blue), Global.H[Global.NANBA],
+			Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 6;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[6]], Current Array Element), Sphere, Color(Blue), Global.H[Global.NANBA],
+			Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 7;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[7]], Current Array Element), Sphere, Color(Blue), Global.H[Global.NANBA],
+			Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 8;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[8]], Current Array Element), Sphere, Color(Blue), Global.H[Global.NANBA],
+			Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 9;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[9]], Current Array Element), Sphere, Color(Blue), Global.H[Global.NANBA],
+			Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 10;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[10]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 11;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[11]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 12;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[12]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 13;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[13]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 14;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[14]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 15;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[15]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 16;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[16]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 17;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[17]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 18;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[18]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 19;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[19]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 20;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[20]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 21;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[21]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 22;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[22]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 23;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[23]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 24;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[24]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 25;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[25]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 26;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[26]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 27;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[27]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 28;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[28]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 29;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[29]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 30;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[30]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 31;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[31]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 32;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[32]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 33;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[33]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 34;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[34]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 35;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[35]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 36;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[36]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 37;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[37]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 38;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[38]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 39;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[39]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 40;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[40]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 41;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[41]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 42;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[42]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 43;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[43]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 44;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[44]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 45;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[45]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 46;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[46]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 47;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[47]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 48;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[48]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 49;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[49]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+		Global.NANBA = 50;
+		Create Effect(Sorted Array(Global.P[Global.killballnumber[50]], Current Array Element), Sphere, Color(Blue),
+			Global.H[Global.NANBA], Global.I[Global.NANBA], Visible To);
+		Modify Global Variable(K, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.H) - 1);
+	}
+}
+
+regel("Checkpoint | Bouncing Ball effect |-------------------------------------SUB")
+{
+	event
+	{
+		Subroutine;
+		pinball;
+	}
+
+	aktionen
+	{
+		Abort If(Global.TQ == Empty Array);
+		Global.NANBA = 0;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[0]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 1;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[1]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 2;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[2]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 3;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[3]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 4;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[4]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 5;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[5]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 6;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[6]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 7;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[7]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 8;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[8]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 9;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[9]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 10;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[10]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 11;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[11]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 12;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[12]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 13;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[13]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 14;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[14]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 15;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[15]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 16;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[16]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 17;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[17]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 18;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[18]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 19;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[19]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 20;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[20]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 21;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[21]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 22;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[22]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 23;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[23]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 24;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[24]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 25;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[25]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 26;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[26]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 27;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[27]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 28;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[28]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 29;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[29]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 30;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[30]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 31;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[31]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 32;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[32]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 33;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[33]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 34;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[34]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 35;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[35]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 36;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[36]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 37;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[37]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 38;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[38]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 39;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[39]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 40;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[40]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 41;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[41]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 42;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[42]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 43;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[43]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 44;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[44]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 45;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[45]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 46;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[46]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 47;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[47]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 48;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[48]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 49;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[49]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 50;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[50]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 51;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[51]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 52;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[52]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 53;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[53]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 54;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[54]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 55;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[55]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 56;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[56]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 57;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[57]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 58;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[58]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 59;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[59]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 60;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[60]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 61;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[61]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 62;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[62]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 63;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[63]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 64;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[64]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 65;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[65]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 66;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[66]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 67;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[67]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 68;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[68]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 69;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[69]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 70;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[70]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 71;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[71]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 72;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[72]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 73;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[73]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 74;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[74]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+		Global.NANBA = 75;
+		Create Effect(Sorted Array(Global.P[Global.pinballnumber[75]], Current Array Element), Orb, Color(Green), Global.TQ[Global.NANBA],
+			1, Visible To);
+		Modify Global Variable(TQ2, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.TQ) - 1);
+	}
+}
+
+regel("Checkpoint | JumpPlace Ball effect |-------------------------------------SUB")
+{
+	event
+	{
+		Subroutine;
+		jumpplaceball;
+	}
+
+	aktionen
+	{
+		Abort If(Global.jumpplacepos == Empty Array);
+		Global.NANBA = 0;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[0]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 1;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[1]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 2;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[2]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 3;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[3]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 4;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[4]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 5;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[5]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 6;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[6]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 7;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[7]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 8;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[8]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 9;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[9]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 10;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[10]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 11;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[11]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 12;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[12]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 13;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[13]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 14;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[14]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 15;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[15]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 16;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[16]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 17;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[17]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 18;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[18]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 19;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[19]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 20;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[20]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 21;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[21]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 22;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[22]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 23;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[23]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 24;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[24]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 25;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[25]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 26;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[26]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 27;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[27]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 28;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[28]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 29;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[29]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 30;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[30]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 31;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[31]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 32;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[32]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 33;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[33]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 34;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[34]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 35;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[35]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 36;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[36]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 37;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[37]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 38;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[38]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 39;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[39]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 40;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[40]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 41;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[41]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 42;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[42]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 43;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[43]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 44;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[44]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 45;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[45]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 46;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[46]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 47;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[47]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 48;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[48]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 49;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[49]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+		Global.NANBA = 50;
+		Create Effect(Sorted Array(Global.P[Global.jumpplaceballnumber[50]], Current Array Element), Good Aura, Color(Sky Blue),
+			Global.jumpplacepos[Global.NANBA], 1, Visible To);
+		Modify Global Variable(jumpplaceeffect, Append To Array, Last Created Entity);
+		Abort If(Global.NANBA == Count Of(Global.jumpplacepos) - 1);
+	}
+}
+
+regel("Checkpoint | HUD")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Genji;
+	}
+
+	bedingungen
+	{
+		Has Spawned(Event Player) == True;
+	}
+
+	aktionen
+	{
+		Set Damage Dealt(Event Player, 0);
+		"子程序1为游戏的初始化设置"
+		Call Subroutine(Sub1);
+		Disable Movement Collision With Players(Event Player);
+		Enable Death Spectate All Players(Event Player);
+		Enable Death Spectate Target HUD(Event Player);
+		"玩家F：自杀防止复活"
+		Event Player.F = 0;
+		"玩家I：教程HUD"
+		Event Player.I = 2;
+		"玩家J：爬墙提示HUD"
+		Event Player.J = 2;
+		"子程序0为检查点效果显示"
+		Call Subroutine(Sub0);
+		If(Array Contains(Global.Q, Event Player) == False);
+			"(((Combo l DOTS)))___varies depending on Combo l DOTS"
+			Create HUD Text(Event Player, Null, Null, Event Player.HUB_DOTS_INDEX == 1 ? Custom String(
+				"Level {0} / {1}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n", Event Player.A, Count Of(
+				Global.A) - 1) : Custom String(
+				"Level {0} / {1}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+				Event Player.A, Count Of(Global.A) - 1), Top, -10, Color(White), Color(White), Color(White), Visible To and String,
+				Default Visibility);
+			Create HUD Text(Event Player, Null, Null, String("{0} {1}", Custom String("Time"), String("{0} Sek.", Event Player.Timer)), Left,
+				-2, Color(White), Color(White), Color(White), Visible To and String, Default Visibility);
+			If(Count Of(Global.Tips) != 0);
+				"Hud | Tips"
+				Create HUD Text(Global.Tips[Event Player.A] != Custom String("") && Global.Tips[Event Player.A] != 0 && Event Player.A < Count Of(
+					Global.A) - 1 && Is Alive(Event Player) && Event Player.C != 1 && Event Player.E < 1 ? Event Player : Null, Custom String(
+					"{0}:　　　　　　　　　　　　　　　　　　　　　▼\n{1}", Hero Icon String(Hero(Genji)), Global.Tips[Event Player.A]), Null, Null, Top, -7, Color(
+					Turquoise), Color(White), Color(White), Visible To and String, Default Visibility);
+			End;
+		End;
+		Modify Global Variable(Q, Append To Array, Event Player);
+	}
+}
+
+regel("Checkpoint | Arrived <------------------change \"-1\" in conditions to select CP that can be reached in air (ex. for CP 20 set 19)")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		"Multiclimb Tournament | Insert into Rule Checkpoint | Arrived"
+		(Global.Multiclimb_Tournament && Event Player.J == 1) == False;
+		Distance Between(Event Player, Global.A[Event Player.A + 1]) <= 1.400;
+		Event Player.A < Count Of(Global.A) - 1;
+		(Event Player.E >= 1 || Event Player.C == 0) == True;
+		(Is On Ground(Event Player) || Array Contains(Array(-1, -1, -1, -1, -1, -1), Event Player.A)) == True;
+	}
+
+	aktionen
+	{
+		If(Event Player.E < 1);
+			Set Ultimate Ability Enabled(Event Player, False);
+			Set Ability 1 Enabled(Event Player, False);
+		End;
+		Event Player.A += 1;
+		Play Effect(Event Player, Ring Explosion Sound, Color(White), Event Player, 100);
+		Play Effect(All Players(All Teams), Ring Explosion, Color(Sky Blue), Global.A[Event Player.A] + Vector(0, 1.500, 0), 4);
+		Big Message(Event Player, String("{0} {1}", Custom String("Arrived at"), String("{0} / {1}", Event Player.A, Count Of(Global.A)
+			- 1)));
+		Skip If(Event Player.P != Custom String("On"), 2);
+		Event Player.Q += 1;
+		"Замена abort которая позволяет удалять эффект после прохождения карты в режиме практики"
+		Skip If(Event Player.P == Custom String("On") && Event Player.A < Count Of(Global.A) - 1, 23);
+		"Замена abort которая позволяет удалять эффект после прохождения карты в режиме практики"
+		Skip If(Event Player.P == Custom String("On") && Event Player.A >= Count Of(Global.A) - 1, 6);
+		"1"
+		Modify Global Variable(save, Remove From Array By Index, Index Of Array Value(Global.save, Custom String("{0}", Event Player))
+			+ 1);
+		"2"
+		Modify Global Variable(save, Remove From Array By Index, Index Of Array Value(Global.save, Custom String("{0}", Event Player))
+			+ 1);
+		"3"
+		Modify Global Variable(save, Remove From Array By Value, Custom String("{0}", Event Player));
+		"4"
+		Modify Global Variable(save, Append To Array, Array(Custom String("{0}", Event Player), Event Player.A, Event Player.Timer));
+		"5"
+		Modify Global Variable At Index(P, Event Player.A, Append To Array, Event Player);
+		"6"
+		Modify Global Variable At Index(P, Event Player.A - 1, Remove From Array By Value, Event Player);
+		"7"
+		Abort If(Event Player.E >= 1);
+		"8"
+		If(Event Player.A >= Count Of(Global.A) - 1);
+			"9"
+			Set Ability 1 Enabled(Event Player, True);
+			"10"
+			Set Ultimate Ability Enabled(Event Player, True);
+			"11"
+			Set Ultimate Charge(Event Player, 100);
+			"12"
+			Stop Chasing Player Variable(Event Player, Timer);
+			"13"
+			Big Message(All Players(All Teams), String("{0} {1} {2}", Event Player, Custom String("Mission complete! Time"), String("{0} Sek.",
+				Event Player.Timer)));
+			"14"
+			Destroy Effect(Event Player.B[0]);
+			"15"
+			Destroy Effect(Event Player.B[1]);
+			"16"
+			Destroy Effect(Event Player.B[2]);
+			"17"
+			Destroy Icon(Event Player.B[3]);
+			"18"
+			Destroy In-World Text(Event Player.B[4]);
+			"F传送门开关19"
+			Modify Global Variable(F, Append To Array, Event Player);
+			"G传送门开关20"
+			Modify Global Variable(G, Append To Array, Event Player);
+			"H传送门字符串21"
+			Event Player.H = 2;
+		"22"
+		End;
+	}
+}
+
+regel("Checkpoint | Finish effects")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Event Player.A == Count Of(Global.A) - 1;
+		Event Player.E < 1;
+		Is Moving(Event Player) == True;
+		deaktiviert (Is Moving(Event Player) == True || Is Button Held(Event Player, Button(Jump)) == True) == True;
+	}
+
+	aktionen
+	{
+		Play Effect(All Players(All Teams), Ring Explosion, Color(Yellow), Position Of(Event Player), 1.600);
+		Play Effect(All Players(All Teams), Ring Explosion, Color(Green), Position Of(Event Player), 1.400);
+		Play Effect(All Players(All Teams), Ring Explosion, Color(Purple), Position Of(Event Player), 1.200);
+		Play Effect(All Players(All Teams), Ring Explosion, Color(Red), Position Of(Event Player), 1);
+		Play Effect(All Players(All Teams), Ring Explosion, Color(Blue), Position Of(Event Player), 0.800);
+		Play Effect(All Players(All Teams), Ring Explosion, Color(Aqua), Position Of(Event Player), 0.600);
+		Play Effect(All Players(All Teams), Ring Explosion, Color(Orange), Position Of(Event Player), 0.400);
+		Play Effect(All Players(All Teams), Ring Explosion, Color(Sky Blue), Position Of(Event Player), 0.200);
+		Wait(0.350, Ignore Condition);
+		Loop If Condition Is True;
+	}
+}
+
+regel("Show (?)")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Has Spawned(Event Player) == True;
+	}
+
+	aktionen
+	{
+		"空白处填写您好友的名字"
+		If(Custom String("五里雾中") == Custom String("{0}", Event Player));
+			Create In-World Text(All Players(All Teams), Custom String("萌新"), Event Player, 1.500, Clip Against Surfaces,
+				Visible To Position and String, Color(Orange), Default Visibility);
+		Else If(Custom String("Crazydouzi") == Custom String("{0}", Event Player));
+			Create In-World Text(All Players(All Teams), Custom String("猛 男豆子"), Event Player, 1.500, Clip Against Surfaces,
+				Visible To Position and String, Color(Orange), Default Visibility);
+		Else If(Custom String("淡风盈晓") == Custom String("{0}", Event Player));
+			Create In-World Text(All Players(All Teams), Custom String("3055"), Event Player, 1.500, Clip Against Surfaces,
+				Visible To Position and String, Color(Orange), Default Visibility);
+		Else If(Custom String("南烟吹北枳") == Custom String("{0}", Event Player));
+			Create In-World Text(All Players(All Teams), Custom String("北 老婆"), Event Player, 1.500, Clip Against Surfaces,
+				Visible To Position and String, Color(Orange), Default Visibility);
+		Else If(Custom String("柠萌") == Custom String("{0}", Event Player));
+			Create In-World Text(All Players(All Teams), Custom String("萌萌萌萌妹子(●'◡'●)"), Event Player, 1.500, Clip Against Surfaces,
+				Visible To Position and String, Color(Orange), Default Visibility);
+		Else If(Custom String("太阳的黑子") == Custom String("{0}", Event Player));
+			Create In-World Text(All Players(All Teams), Custom String("小 菜 鸡"), Event Player, 1.500, Clip Against Surfaces,
+				Visible To Position and String, Color(Orange), Default Visibility);
+		Else If(Custom String("翎马") == Custom String("{0}", Event Player));
+			Create In-World Text(All Players(All Teams), Custom String("宝马"), Event Player, 1.500, Clip Against Surfaces,
+				Visible To Position and String, Color(Orange), Default Visibility);
+		Else If(Custom String("喵喵酱") == Custom String("{0}", Event Player));
+			Create In-World Text(All Players(All Teams), Custom String("网恋教母"), Event Player, 1.500, Clip Against Surfaces,
+				Visible To Position and String, Color(Rose), Default Visibility);
+		Else If(Custom String("火锅") == Custom String("{0}", Event Player));
+			Create In-World Text(All Players(All Teams), Custom String("重庆火锅"), Event Player, 1.500, Clip Against Surfaces,
+				Visible To Position and String, Color(Orange), Default Visibility);
+		Else If(Custom String("She") == Custom String("{0}", Event Player));
+			Big Message(All Players(All Teams), Custom String("陈少来了！"));
+			Create In-World Text(All Players(All Teams), Custom String("まだまだ"), Event Player, 1.500, Clip Against Surfaces,
+				Visible To Position and String, Color(Orange), Default Visibility);
+		Else If(Custom String("淮北也生橘") == Custom String("{0}", Event Player));
+			Big Message(All Players(All Teams), Custom String("那个小可爱来了！"));
+			Create In-World Text(All Players(All Teams), Custom String("Yu"), Event Player, 1.500, Clip Against Surfaces,
+				Visible To Position and String, Color(Orange), Default Visibility);
+		Else If(Custom String("半藏他女朋友") == Custom String("{0}", Event Player));
+			Create In-World Text(All Players(All Teams), Custom String("茶茶"), Event Player, 1.500, Clip Against Surfaces,
+				Visible To Position and String, Color(Orange), Default Visibility);
+		Else If(Custom String("小樱") == Custom String("{0}", Event Player));
+			Create In-World Text(All Players(All Teams), Custom String("樱桃小丸子"), Event Player, 1.500, Clip Against Surfaces,
+				Visible To Position and String, Color(Orange), Default Visibility);
+		Else If(Custom String("余不乐") == Custom String("{0}", Event Player));
+			Create In-World Text(All Players(All Teams), Custom String("不是余文乐"), Event Player, 1.500, Clip Against Surfaces,
+				Visible To Position and String, Color(Orange), Default Visibility);
+		Else If(Custom String("泠鸢") == Custom String("{0}", Event Player));
+			Big Message(All Players(All Teams), Custom String("RGB少年来了"));
+			Create In-World Text(All Players(All Teams), Custom String("ラストドール・エクスターミネーター"), Event Player, 1.300, Clip Against Surfaces,
+				Visible To Position and String, Color(Gray), Default Visibility);
+		Else If(Custom String("从未手软") == Custom String("{0}", Event Player));
+			Big Message(All Players(All Teams), Custom String("小甜兔来了~"));
+			Create In-World Text(All Players(All Teams), Custom String("小甜兔"), Event Player, 1.500, Clip Against Surfaces,
+				Visible To Position and String, Color(Orange), Default Visibility);
+		Else If(Custom String("小小柚子") == Custom String("{0}", Event Player));
+			Create In-World Text(All Players(All Teams), Custom String("炒鸡无敌可爱的柚子吖~"), Event Player, 1.800, Clip Against Surfaces,
+				Visible To Position and String, Color(Rose), Default Visibility);
+		Else If(Custom String("雪夜月音") == Custom String("{0}", Event Player));
+			Create In-World Text(All Players(All Teams), Custom String("Hanser小天使"), Event Player, 1.500, Clip Against Surfaces,
+				Visible To Position and String, Color(Orange), Default Visibility);
+		Else If(Custom String("雾月屿枝") == Custom String("{0}", Event Player));
+			Big Message(All Players(All Teams), Custom String("阴阳人来了"));
+			Create In-World Text(All Players(All Teams), Custom String("阴阳带师"), Event Player, 1.500, Clip Against Surfaces,
+				Visible To Position and String, Color(Orange), Default Visibility);
+		Else If(Custom String("猫汐") == Custom String("{0}", Event Player));
+			Create In-World Text(All Players(All Teams), Custom String("炒鸡无敌可爱的猫汐吖~"), Event Player, 1.800, Clip Against Surfaces,
+				Visible To Position and String, Color(Rose), Default Visibility);
+		End;
+	}
+}
+
+regel("Killing Sphere | \"Damage\"")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Genji;
+	}
+
+	bedingungen
+	{
+		(Global.killballnumber[Index Of Array Value(Global.H, Filtered Array(Global.H, Distance Between(Event Player,
+			Current Array Element) <= Global.I[Index Of Array Value(Global.H, Current Array Element)])[0])
+			] == Event Player.A || Global.killballnumber[Index Of Array Value(Global.H, Filtered Array(Global.H, Distance Between(
+			Event Player, Current Array Element) <= Global.I[Index Of Array Value(Global.H, Current Array Element)])[1])
+			] == Event Player.A || Global.killballnumber[Index Of Array Value(Global.H, Filtered Array(Global.H, Distance Between(
+			Event Player, Current Array Element) <= Global.I[Index Of Array Value(Global.H, Current Array Element)])[2])
+			] == Event Player.A || Global.killballnumber[Index Of Array Value(Global.H, Filtered Array(Global.H, Distance Between(
+			Event Player, Current Array Element) <= Global.I[Index Of Array Value(Global.H, Current Array Element)])[3])
+			] == Event Player.A) == True;
+		Event Player.A != 0;
+		Event Player.A < Count Of(Global.A) - 1;
+		Event Player.C == 0;
+		Is Alive(Event Player) == True;
+	}
+
+	aktionen
+	{
+		Kill(Event Player, Null);
+	}
+}
+
+regel("Bouncing Ball | Properties")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Genji;
+	}
+
+	bedingungen
+	{
+		(Global.pinballnumber[Index Of Array Value(Global.TQ, Filtered Array(Global.TQ, Distance Between(Event Player,
+			Current Array Element) <= 1.200))] == Event Player.A) == True;
+		Event Player.A != 0;
+	}
+
+	aktionen
+	{
+		Apply Impulse(Event Player, Up, Global.EditMode[Index Of Array Value(Global.TQ, Filtered Array(Global.TQ, Distance Between(
+			Position Of(Event Player), Current Array Element) <= 2))], To World, Cancel Contrary Motion);
+		deaktiviert Set Ability 1 Enabled(Event Player, Global.TQ6[Index Of Array Value(Global.TQ, Filtered Array(Global.TQ, Distance Between(
+			Position Of(Event Player), Current Array Element) <= 2))]);
+		deaktiviert Set Ultimate Ability Enabled(Event Player, Global.TQ5[Index Of Array Value(Global.TQ, Filtered Array(Global.TQ, Distance Between(
+			Position Of(Event Player), Current Array Element) <= 2))]);
+		If(Global.TQ6[Index Of Array Value(Global.TQ, Filtered Array(Global.TQ, Distance Between(Position Of(Event Player),
+			Current Array Element) <= 2))] == True);
+			Set Ability 1 Enabled(Event Player, True);
+			Small Message(Event Player, Custom String("Dash is ready"));
+		End;
+		If(Global.TQ5[Index Of Array Value(Global.TQ, Filtered Array(Global.TQ, Distance Between(Position Of(Event Player),
+			Current Array Element) <= 2))] == True);
+			Set Ultimate Ability Enabled(Event Player, True);
+			Set Ultimate Charge(Event Player, 100);
+			Small Message(Event Player, Custom String("Ultimate is ready"));
+		End;
+	}
+}
+
+regel("Jump Place Ball | Properties")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Genji;
+	}
+
+	bedingungen
+	{
+		(Global.jumpplaceballnumber[Index Of Array Value(Global.jumpplacepos, Filtered Array(Global.jumpplacepos, Distance Between(
+			Event Player, Current Array Element) <= 1.700))] == Event Player.A) == True;
+		Event Player.A != 0;
+	}
+
+	aktionen
+	{
+		"After passing through this zone genji can make 3 jumps"
+		Cancel Primary Action(Event Player);
+		Play Effect(Event Player, Buff Impact Sound, Color(White), Event Player, 100);
+		Small Message(Event Player, Custom String("u can use Jump"));
+	}
+}
+
+regel("Data for Top 5")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Genji;
+	}
+
+	bedingungen
+	{
+		Event Player.A == Count Of(Global.A) - 1;
+		Event Player.E < 1;
+		(Event Player.P == Custom String("On")) == False;
+	}
+
+	aktionen
+	{
+		Modify Global Variable(save, Remove From Array By Index, Index Of Array Value(Global.save, Custom String("{0}", Event Player))
+			+ 1);
+		Modify Global Variable(save, Remove From Array By Index, Index Of Array Value(Global.save, Custom String("{0}", Event Player))
+			+ 1);
+		Modify Global Variable(save, Remove From Array By Value, Custom String("{0}", Event Player));
+		If(Event Player.B[7] == Null);
+			Event Player.T = Event Player.Timer;
+			Create HUD Text(Array Contains(Global.toplistSortedTimes, Global.toplistTimes[Index Of Array Value(Global.toplistPlayers,
+				Custom String("{0}", Event Player))]) == True ? Null : All Players(All Teams), Hero Icon String(Hero(Genji)), Event Player,
+				Custom String("{0} sec", Event Player.T), Right, Event Player.T, Custom Color(158, 255, 187, 255), Custom Color(158, 255, 187,
+				255), Custom Color(158, 255, 187, 255), Visible To Sort Order and String, Default Visibility);
+			Event Player.B[7] = Last Text ID;
+		Else;
+			Skip If(Event Player.Timer > Event Player.T, 1);
+			Event Player.T = Event Player.Timer;
+		End;
+		"Save data for the Top 5 list"
+		If(Array Contains(Global.toplistPlayers, Custom String("{0}", Event Player)) == True);
+			Skip If(Event Player.Timer >= Global.toplistTimes[Index Of Array Value(Global.toplistPlayers, Custom String("{0}", Event Player))],
+				1);
+			Global.toplistTimes[Index Of Array Value(Global.toplistPlayers, Custom String("{0}", Event Player))] = Event Player.Timer;
+		Else;
+			Modify Global Variable(toplistPlayers, Append To Array, Custom String("{0}", Event Player));
+			Global.toplistTimes[Index Of Array Value(Global.toplistPlayers, Custom String("{0}", Event Player))] = Event Player.Timer;
+		End;
+		"Reload the Sorted Array Times"
+		Global.toplistSortedTimes = Array Slice(Sorted Array(Global.toplistTimes, Current Array Element), 0, 6);
+	}
+}
+
+regel("Death Teleport")
+{
+	event
+	{
+		Player Died;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Event Player.F != 1;
+		Count Of(Global.A) >= 2;
+	}
+
+	aktionen
+	{
+		Resurrect(Event Player);
+		Teleport(Event Player, Count Of(Global.A[Event Player.A]) != 0 ? Global.A[Event Player.A][1] : Global.A[Event Player.A]);
+	}
+}
+
+regel("Landing on Checkpoint (In some circumstances turn off?)")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Genji;
+	}
+
+	bedingungen
+	{
+		(Distance Between(Event Player, Count Of(Global.A[Event Player.A]) != 0 ? Global.A[Event Player.A][1] : Global.A[Event Player.A])
+			> 1.400 || False) == True;
+		(Is On Ground(Event Player) == True || False) == True;
+		Event Player.A < Count Of(Global.A) - 1;
+		Count Of(Global.A) >= 2;
+		Event Player.C != 1;
+		Event Player.F != 1;
+		"做特定关卡开启落地死亡再打开"
+		deaktiviert (Event Player.A == -1 || Event Player.A == -1 || Event Player.A == -1 || False) == True;
+	}
+
+	aktionen
+	{
+		If(Global.Multiclimb_Tournament && Distance Between(Global.A[Event Player.A + 1], Event Player) <= 1.400);
+			Small Message(Event Player, Custom String("Wallclimb not allowed"));
+		End;
+		If(Array Contains(Global.Dao, Event Player.A) == True);
+			deaktiviert Wait(0.100, Ignore Condition);
+			Skip If(Ultimate Charge Percent(Event Player) == 100, 4);
+			Skip If(Is Using Ultimate(Event Player), 3);
+			Set Ultimate Ability Enabled(Event Player, True);
+			Set Ultimate Charge(Event Player, 100);
+		End;
+		If(Array Contains(Global.SHIFT, Event Player.A) == True);
+			Set Ability 1 Enabled(Event Player, True);
+		End;
+		If(Event Player.E < 1);
+			Set Ability 1 Enabled(Event Player, False);
+			Set Ultimate Ability Enabled(Event Player, False);
+		End;
+		Apply Impulse(Event Player, Down, Speed Of(Event Player), To Player, Cancel Contrary Motion);
+		Set Status(Event Player, Null, Rooted, 0.100);
+		Teleport(Event Player, Count Of(Global.A[Event Player.A]) != 0 ? Global.A[Event Player.A][1] : Global.A[Event Player.A]);
+		If(Global.deathjump == True);
+			Disallow Button(Event Player, Button(Jump));
+			Wait(0.100, Ignore Condition);
+			Allow Button(Event Player, Button(Jump));
+		End;
+		Skip If(Event Player.P == Custom String("On"), 3);
+		If(Event Player.A == 0);
+			Event Player.Timer = 0;
+		End;
+	}
+}
+
+deaktiviert regel("Player Effect | Phased Out | Invincible")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Alive(Event Player) == True;
+		Has Status(Event Player, Phased Out) == False;
+	}
+
+	aktionen
+	{
+		deaktiviert Set Status(Event Player, Null, Phased Out, 9999);
+		Set Status(Event Player, Null, Invincible, 9999);
+	}
+}
+
+regel("Combo | Reset the run | RESTART")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Button Held(Event Player, Button(Crouch)) == True;
+		Is Button Held(Event Player, Button(Interact)) == True;
+		Is Button Held(Event Player, Button(Ability 2)) == True;
+	}
+
+	aktionen
+	{
+		Event Player.P = Custom String("Off");
+		Event Player.Q = 0;
+		If(Array Contains(Global.save, Custom String("{0}", Event Player)) == True);
+			Modify Global Variable(save, Remove From Array By Index, Index Of Array Value(Global.save, Custom String("{0}", Event Player))
+				+ 1);
+			Modify Global Variable(save, Remove From Array By Index, Index Of Array Value(Global.save, Custom String("{0}", Event Player))
+				+ 1);
+			Modify Global Variable(save, Remove From Array By Value, Custom String("{0}", Event Player));
+		End;
+		Modify Global Variable At Index(P, Event Player.A, Remove From Array By Value, Event Player);
+		If(Event Player.A >= Count Of(Global.A) - 1);
+			Call Subroutine(Sub0);
+			"这条动作为“消除玩家通关成绩显示”"
+			Destroy HUD Text(Event Player.B[7]);
+			"效果B5.B6代表的是光环通关特效，需保持和规则“通关特效”同步开启/关闭"
+			deaktiviert Destroy Effect(Event Player.B[5]);
+			deaktiviert Destroy Effect(Event Player.B[6]);
+		End;
+		Call Subroutine(Sub1);
+		Play Effect(Event Player, Ring Explosion Sound, Color(White), Event Player, 100);
+		Modify Global Variable(F, Remove From Array By Value, Event Player);
+		Modify Global Variable(G, Remove From Array By Value, Event Player);
+	}
+}
+
+regel("Combo | Spectate | Interact")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Button Held(Event Player, Button(Interact)) == True;
+		Event Player.E < 1;
+	}
+
+	aktionen
+	{
+		Wait(1, Abort When False);
+		Small Message(Event Player, Custom String("Hold Interact again to turn off spectate mode"));
+		If(Is Alive(Event Player) == True);
+			Set Respawn Max Time(Event Player, 9999);
+			Event Player.F = 1;
+			Stop Chasing Player Variable(Event Player, Timer);
+			Wait(0.200, Ignore Condition);
+			Kill(Event Player, Null);
+			Teleport(Event Player, Count Of(Global.A[Event Player.A]) != 0 ? Global.A[Event Player.A][1] : Global.A[Event Player.A]);
+		Else;
+			Skip If(Event Player.E >= 1, 2);
+			Respawn(Event Player);
+			Event Player.F = 0;
+			Teleport(Event Player, Count Of(Global.A[Event Player.A]) != 0 ? Global.A[Event Player.A][1] : Global.A[Event Player.A]);
+			Skip If(Event Player.A >= Count Of(Global.A) - 1, 4);
+			Set Ultimate Ability Enabled(Event Player, False);
+			Set Ability 1 Enabled(Event Player, False);
+			Skip If(Event Player.P == Custom String("On"), 1);
+			Chase Player Variable At Rate(Event Player, Timer, 10000, 1, Destination and Rate);
+			Set Respawn Max Time(Event Player, 0);
+			Event Player.C = 0;
+		End;
+	}
+}
+
+regel("Combo | Invincible/Normal mode")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Button Held(Event Player, Button(Melee)) == True;
+		Is Button Held(Event Player, Button(Reload)) == True;
+		Is Using Ability 1(Event Player) == False;
+		Event Player.A < Count Of(Global.A) - 1;
+		Is Alive(Event Player) == True;
+		Is Using Ultimate(Event Player) == False;
+	}
+
+	aktionen
+	{
+		Start Forcing Player Position(Event Player, Count Of(Global.A[Event Player.A])
+			!= 0 ? Global.A[Event Player.A][1] : Global.A[Event Player.A], True);
+		If(Event Player.C == 0);
+			Stop Chasing Player Variable(Event Player, Timer);
+			Big Message(Event Player, Custom String("Invincible mode"));
+			Stop Forcing Player Position(Event Player);
+			Set Ultimate Ability Enabled(Event Player, True);
+			Set Ultimate Charge(Event Player, 100);
+			Set Ability 1 Enabled(Event Player, True);
+			Wait(0.200, Ignore Condition);
+			Event Player.C = 1;
+		Else;
+			Skip If(Event Player.E >= 1, 2);
+			Set Ultimate Ability Enabled(Event Player, False);
+			Set Ability 1 Enabled(Event Player, False);
+			Teleport(Event Player, Count Of(Global.A[Event Player.A]) != 0 ? Global.A[Event Player.A][1] : Global.A[Event Player.A]);
+			Wait(0.100, Ignore Condition);
+			Event Player.C = 0;
+			Big Message(Event Player, Custom String("Normal mode"));
+			Skip If(Event Player.P == Custom String("On"), 1);
+			Chase Player Variable At Rate(Event Player, Timer, Absolute Value(9999999.000), 1, Destination and Rate);
+			Stop Forcing Player Position(Event Player);
+		End;
+	}
+}
+
+regel("Combo | Quick Reset")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Button Held(Event Player, Button(Reload)) == True;
+		Event Player.A < Count Of(Global.A) - 1;
+	}
+
+	aktionen
+	{
+		Abort If(Is Button Held(Event Player, Button(Melee)) == True);
+		If(Event Player.quick_restart == True);
+			Start Forcing Player Position(Event Player, Count Of(Global.A[Event Player.A])
+				!= 0 ? Global.A[Event Player.A][1] : Global.A[Event Player.A], True);
+			Skip If(Event Player.E >= 1 || Event Player.C == 1, 6);
+			Set Ultimate Ability Enabled(Event Player, False);
+			If(Array Contains(Global.SHIFT, Event Player.A) == True);
+				Set Ability 1 Enabled(Event Player, True);
+			Else;
+				Set Ability 1 Enabled(Event Player, False);
+			End;
+			Teleport(Event Player, Count Of(Global.A[Event Player.A]) != 0 ? Global.A[Event Player.A][1] : Global.A[Event Player.A]);
+			Wait(0.100, Ignore Condition);
+			Stop Forcing Player Position(Event Player);
+		End;
+		Wait(1, Abort When False);
+		If(Event Player.quick_restart == False);
+			Event Player.quick_restart = True;
+			Big Message(Event Player, Custom String("Quick reset is enabled"));
+			Play Effect(Event Player, Buff Impact Sound, Color(White), Event Player, 100);
+		Else If(Event Player.quick_restart == True);
+			Play Effect(Event Player, Buff Impact Sound, Color(White), Event Player, 100);
+			Event Player.quick_restart = False;
+			Big Message(Event Player, Custom String("Quick reset is disabled"));
+		End;
+	}
+}
+
+regel("Combo | Practice/Normal")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Button Held(Event Player, Button(Melee)) == True;
+		Is Button Held(Event Player, Button(Ultimate)) == True;
+		Event Player.E < 1;
+		Is Using Ability 1(Event Player) == False;
+		Event Player.A < Count Of(Global.A) - 1;
+		Event Player.C != 1;
+		Is Alive(Event Player) == True;
+	}
+
+	aktionen
+	{
+		Start Forcing Player Position(Event Player, Event Player.P == Custom String("On")
+			? Global.A[Event Player.A - Event Player.Q] : Global.A[Event Player.A], True);
+		If(Event Player.P != Custom String("On"));
+			Stop Chasing Player Variable(Event Player, Timer);
+			Big Message(Event Player, Custom String("Practice mode"));
+			Stop Forcing Player Position(Event Player);
+			Wait(0.200, Ignore Condition);
+			Event Player.P = Custom String("On");
+		Else;
+			Set Ability 1 Enabled(Event Player, False);
+			Teleport(Event Player, Global.A[Event Player.A - Event Player.Q]);
+			Event Player.A = Event Player.A - Event Player.Q;
+			Event Player.Q = 0;
+			Wait(0.100, Ignore Condition);
+			Event Player.P = Custom String("Off");
+			Big Message(Event Player, Custom String("Normal mode"));
+			Chase Player Variable At Rate(Event Player, Timer, Absolute Value(9999999.000), 1, Destination and Rate);
+			Stop Forcing Player Position(Event Player);
+		End;
+	}
+}
+
+regel("Combo | Practice {interact} {restart practice}")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Button Held(Event Player, Button(Interact)) == True;
+		Is Button Held(Event Player, Button(Ultimate)) == False;
+		Is Button Held(Event Player, Button(Melee)) == False;
+		Event Player.P == Custom String("On");
+		Is Alive(Event Player) == True;
+		Is Button Held(Event Player, Button(Crouch)) == False;
+		Is Button Held(Event Player, Button(Ability 2)) == False;
+		deaktiviert (Event Player.A - Event Player.Q <= 0) == True;
+	}
+
+	aktionen
+	{
+		If(Event Player.A >= Count Of(Global.A) - 1);
+			Call Subroutine(Sub0);
+		End;
+		Teleport(Event Player, Global.A[Event Player.A - Event Player.Q]);
+		"broken"
+		deaktiviert Event Player.Q = Event Player.A;
+		Event Player.A = Event Player.A - Event Player.Q;
+		"broken"
+		deaktiviert Teleport(Event Player, Global.A[Event Player.A]);
+		Event Player.Q = 0;
+		Set Status(Event Player, Null, Rooted, 0.200);
+	}
+}
+
+regel("Combo l DOTS  Melee hold 3s")
+{
+	event
+	{
+		Ongoing - Each Player;
+		Team 1;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Button Held(Event Player, Button(Melee)) == True;
+		Event Player.E < 1;
+	}
+
+	aktionen
+	{
+		Wait(2.500, Abort When False);
+		"The sight works in conjunction with Checkpoint | HUD text of the current level"
+		If(Event Player.HUB_DOTS_INDEX == 0);
+			Small Message(Event Player, Custom String("mini sight"));
+			Create HUD Text(Event Player, Null, Null, Custom String("︼\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"), Top, -8, Color(
+				White), Color(White), Event Player.J == 2 ? Color(Green) : Color(Red), Visible To String and Color, Default Visibility);
+			Event Player.DOTS_EFFECT[0] = Last Text ID;
+			Create HUD Text(Event Player, Null, Null, Custom String("︼"), Top, -9, Color(White), Color(White), Event Player.O == 0 ? Color(
+				Green) : Event Player.CH, Visible To String and Color, Default Visibility);
+			Event Player.DOTS_EFFECT[1] = Last Text ID;
+			Event Player.HUB_DOTS_INDEX = 1;
+			Abort;
+		End;
+		If(Event Player.HUB_DOTS_INDEX == 1);
+			Destroy HUD Text(Event Player.DOTS_EFFECT[0]);
+			Destroy HUD Text(Event Player.DOTS_EFFECT[1]);
+			Small Message(Event Player, Custom String("alert"));
+			Event Player.HUB_DOTS_INDEX = 2;
+			Abort;
+		End;
+		If(Event Player.HUB_DOTS_INDEX == 2);
+			Small Message(Event Player, Custom String("sights hidden"));
+			Event Player.HUB_DOTS_INDEX = 0;
+			Abort;
+		End;
+	}
+}
+
+regel("Checking | Is on ground")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Genji;
+	}
+
+	bedingungen
+	{
+		Is On Ground(Event Player) == True;
+		"变量A后的数字“-1”为关卡数，具体操作参考“给刀”。此条规则开启效果为“特定关卡开启三段”，关闭则为“所有关卡封禁三段”"
+		deaktiviert (Event Player.A != -1 || Event Player.A != -1 || False) == True;
+		"注释一定要看！此条条件开启的效果为“通关后自动开启三段”，关闭则通关后仍封禁三段"
+		deaktiviert Event Player.A < Count Of(Global.A) - 1;
+	}
+
+	aktionen
+	{
+		Event Player.TY = 0;
+		Event Player.J = 2;
+		Wait(0, Ignore Condition);
+		Loop If((Event Player.TY != 0 || Event Player.J != 2) && Is On Ground(Event Player) == True);
+		Event Player.O = 1;
+	}
+}
+
+regel("跳跃判定")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Genji;
+	}
+
+	bedingungen
+	{
+		Is Button Held(Event Player, Button(Jump)) == True;
+		Event Player.TY != 2;
+		"变量A后的数字“-1”为关卡数，具体操作参考“给刀”。此条规则开启效果为“特定关卡开启三段”，关闭则为“所有关卡封禁三段"
+		deaktiviert (Event Player.A != -1 || Event Player.A != -1 || False) == True;
+		"注释一定要看！此条条件开启的效果为“通关后自动开启三段”，关闭则通关后仍封禁三"
+		deaktiviert Event Player.A < Count Of(Global.A) - 1;
+	}
+
+	aktionen
+	{
+		Event Player.TY += 1;
+	}
+}
+
+regel("Checking | Bhop in the air")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Event Player.TY == 0;
+		Is In Air(Event Player) == True;
+		Is Button Held(Event Player, Button(Jump)) == False;
+	}
+
+	aktionen
+	{
+		Event Player.O = 0;
+	}
+}
+
+regel("踏空")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Genji;
+	}
+
+	bedingungen
+	{
+		Event Player.TY == 0;
+		Is In Air(Event Player) == True;
+		"变量A后的数字“-1”为关卡数，具体操作参考“给刀”。此条规则开启效果为“特定关卡开启三段”，关闭则为“所有关卡封禁三段"
+		deaktiviert (Event Player.A != -1 || Event Player.A != -1 || False) == True;
+		"注释一定要看！此条条件开启的效果为“通关后自动开启三段”，关闭则通关后仍封禁三"
+		deaktiviert Event Player.A < Count Of(Global.A) - 1;
+	}
+
+	aktionen
+	{
+		Event Player.TY = 1;
+	}
+}
+
+regel("Checking | Triple jump")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Event Player.TY == 1;
+	}
+
+	aktionen
+	{
+		Wait(0.100, Abort When False);
+		Event Player.TY = 2;
+	}
+}
+
+regel("Checking | Player on the wall")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		"此条规则同时与爬墙判定挂钩，请勿关闭/删除"
+		Is On Wall(Event Player) == True;
+		Is Button Held(Event Player, Button(Jump)) == True;
+	}
+
+	aktionen
+	{
+		Event Player.TY = 2;
+		Event Player.J = 1;
+	}
+}
+
+deaktiviert regel("Combo | Skip Level")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Button Held(Event Player, Button(Crouch)) == True;
+		Is Button Held(Event Player, Button(Primary Fire)) == True;
+		Event Player.A < Count Of(Global.A) - 1;
+		Is Button Held(Event Player, Button(Ultimate)) == True;
+		Is Button Held(Event Player, Button(Ability 2)) == True;
+		Is Button Held(Event Player, Button(Secondary Fire)) == True;
+		Is Button Held(Event Player, Button(Jump)) == True;
+	}
+
+	aktionen
+	{
+		Event Player.A += 1;
+		Teleport(Event Player, Global.A[Event Player.A]);
+		Modify Global Variable At Index(P, Event Player.A, Append To Array, Event Player);
+		Modify Global Variable At Index(P, Event Player.A - 1, Remove From Array By Value, Event Player);
+	}
+}
+
+regel("Checking | Using Emote")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Communicating Any Emote(Event Player) == True;
+	}
+
+	aktionen
+	{
+		Event Player.O = 0;
+	}
+}
+
+regel("Checking | Bhop")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Event Player.O == 0;
+		Is Jumping(Event Player) == True;
+	}
+
+	aktionen
+	{
+		Event Player.O = 1;
+		Small Message(Event Player, Custom String("Bhop"));
+	}
+}
+
+regel("Ultimate charge")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Ultimate Charge Percent(Event Player) < 100;
+	}
+
+	aktionen
+	{
+		Set Ultimate Charge(Event Player, 100);
+	}
+}
+
+regel("Player left the game")
+{
+	event
+	{
+		Player Left Match;
+		All;
+		All;
+	}
+
+	aktionen
+	{
+		Modify Global Variable(Q, Remove From Array By Value, Event Player);
+	}
+}
+
+regel("Climb Green")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is On Ground(Event Player) == True;
+	}
+
+	aktionen
+	{
+		Event Player.CG = Color(Green);
+		If(Is Button Held(Event Player, Button(Jump)));
+			Event Player.CH = Color(Red);
+		End;
+	}
+}
+
+deaktiviert regel("Climb Red")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is On Wall(Event Player) == True;
+		Is Button Held(Event Player, Button(Jump)) == True;
+	}
+
+	aktionen
+	{
+		Event Player.CG = Color(Red);
+		If(Event Player.HUB_DOTS_INDEX == 2);
+			Small Message(Event Player, Custom String("Wallclimb "));
+		End;
+	}
+}
+
+regel("Bhop Green")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is On Ground(Event Player) == True;
+		Is Button Held(Event Player, Button(Jump)) == False;
+	}
+
+	aktionen
+	{
+		Event Player.CH = Color(Green);
+	}
+}
+
+regel("Bhop Red")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Jumping(Event Player) == True;
+	}
+
+	aktionen
+	{
+		Event Player.CH = Color(Red);
+	}
+}
+
+regel("Create Bhop Climb HUD Text")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Has Spawned(Event Player) == True;
+	}
+
+	aktionen
+	{
+		Wait(2, Ignore Condition);
+		Create HUD Text(Event Player, Custom String("Bhop"), Null, Null, Left, 1, Event Player.CH, Color(White), Color(White), Color,
+			Default Visibility);
+		deaktiviert Create HUD Text(Event Player, Custom String("Climb"), Null, Null, Left, 2, Event Player.CG, Color(White), Color(White), Color,
+			Default Visibility);
+	}
+}
+
+regel("爬墙未用HUD")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Event Player.J == 2;
+		Has Spawned(Event Player) == True;
+	}
+
+	aktionen
+	{
+		Destroy HUD Text(Event Player.paqiang);
+		Create HUD Text(Event Player, Custom String("Climb"), Null, Null, Left, 2, Color(Green), Color(White), Color(White),
+			Visible To and String, Default Visibility);
+		Event Player.paqiang = Last Text ID;
+	}
+}
+
+regel("爬墙已用HUD")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Event Player.J == 1;
+		Has Spawned(Event Player) == True;
+	}
+
+	aktionen
+	{
+		Destroy HUD Text(Event Player.paqiang);
+		Create HUD Text(Event Player, Custom String("Climb"), Null, Null, Left, 2, Color(Red), Color(White), Color(White),
+			Visible To and String, Default Visibility);
+		Event Player.paqiang = Last Text ID;
+		If(Event Player.HUB_DOTS_INDEX == 2);
+			Small Message(Event Player, Custom String("Wallclimb "));
+		End;
+	}
+}
+
+regel("Limit Ultimate")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Genji;
+	}
+
+	bedingungen
+	{
+		"此条规则作用为：在跑图时令SHIFT只能使用一次"
+		Is Using Ultimate(Event Player) == True;
+		Event Player.A < Count Of(Global.A) - 1;
+		Event Player.E < 1;
+		Event Player.C == 0;
+	}
+
+	aktionen
+	{
+		Set Ultimate Ability Enabled(Event Player, False);
+	}
+}
+
+regel("Lmit Dash")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		"此条规则作用为：在跑图时令SHIFT只能使用一次"
+		Is Using Ability 1(Event Player) == True;
+		Event Player.A < Count Of(Global.A) - 1;
+		Event Player.E < 1;
+		Event Player.C == 0;
+	}
+
+	aktionen
+	{
+		Set Ability 1 Enabled(Event Player, False);
+	}
+}
+
+regel("Give Blade")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Event Player.A < Count Of(Global.A) - 1;
+		Distance Between(Event Player, Count Of(Global.A[Event Player.A]) > 1 ? Last Of(Global.A[Event Player.A])
+			: Global.A[Event Player.A]) <= 1.400;
+		Array Contains(Global.Dao, Event Player.A) == True;
+		Is Using Ultimate(Event Player) == False;
+		Is On Ground(Event Player) == True;
+		Ultimate Charge Percent(Event Player) != 100;
+	}
+
+	aktionen
+	{
+		Wait(0.100, Ignore Condition);
+		Abort If(Is Using Ultimate(Event Player) == True);
+		Set Ultimate Ability Enabled(Event Player, True);
+		Set Ultimate Charge(Event Player, 100);
+		Small Message(Event Player, Custom String("Ultimate is ready"));
+	}
+}
+
+regel("Give Dash")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Event Player.A < Count Of(Global.A) - 1;
+		deaktiviert Distance Between(Event Player, Global.A[Event Player.A]) <= 1.400;
+		Distance Between(Event Player, Count Of(Global.A[Event Player.A]) > 1 ? Last Of(Global.A[Event Player.A])
+			: Global.A[Event Player.A]) <= 1.400;
+		Array Contains(Global.SHIFT, Event Player.A) == True;
+		Is Using Ability 1(Event Player) == False;
+		Is On Ground(Event Player) == True;
+	}
+
+	aktionen
+	{
+		Set Ability 1 Enabled(Event Player, True);
+		Small Message(Event Player, Custom String("Dash is ready"));
+	}
+}
+
+regel("-------------------------------------------Addons-------------------------------------------------------")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+}
+
+regel("Add Blade to Checkpoint")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	aktionen
+	{
+		"Change \"-1\" to certain Checkpoints' number. For example if you want to add Blade to Checkpoint 2 and 6 change one of \"-1\" to 2 and other \"-1\" to 6"
+		Global.Dao = Array(Empty Array, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);
+	}
+}
+
+regel("Add Dash to Checkpoint")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	aktionen
+	{
+		"Change \"-1\" to certain Checkpoints' number. For example if you want to add Dash to Checkpoint 7 and 1 change one of \"-1\" to 7 and other \"-1\" to 1"
+		Global.SHIFT = Array(Empty Array, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);
+	}
+}
+
+regel("Ban Double Bhop to Checkpoint -------DATA")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	aktionen
+	{
+		"Change \"-1\" to certain Checkpoints' number. For example if you want to Ban DoubleBhop to Checkpoint 2 and 6 change one of \"-1\" to 2 and other \"-1\" to 6"
+		Global.Ban_DoubleBhop_Per_Level = Array(Empty Array, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+			-1, -1, -1, -1);
+	}
+}
+
+regel("Checking | Double bhop")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is On Wall(Event Player) == False;
+		Is Button Held(Event Player, Button(Crouch)) == True;
+		Is Button Held(Event Player, Button(Jump)) == False;
+		Is On Ground(Event Player) == False;
+		Is In Air(Event Player) == True;
+		Is Jumping(Event Player) == False;
+		Is Crouching(Event Player) == True;
+	}
+
+	aktionen
+	{
+		Small Message(Event Player, Custom String("bhop has been created"));
+		Event Player.O = 0;
+		If(Global.kaxiaotiao == True);
+			Kill(Event Player, Null);
+			Small Message(Event Player, String("{0} {1}", Custom String(""), Custom String("Double Bhop is disabled")));
+		End;
+		If(Array Contains(Global.Ban_DoubleBhop_Per_Level, Event Player.A) == True);
+			Kill(Event Player, Null);
+			Small Message(Event Player, String("{0} {1}", Custom String(""), Custom String("Create Bhop is disabled for this level")));
+		End;
+	}
+}
+
+regel("Ban multiclimb to Checkpoint -------DATA")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	aktionen
+	{
+		"Change \"-1\" to certain Checkpoints' number. For example if you want to Ban Multi to Checkpoint 2 and 6 change one of \"-1\" to 2 and other \"-1\" to 6"
+		Global.Ban_Multi_Per_Level = Array(Empty Array, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+			-1);
+	}
+}
+
+regel("Ban multi per level")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Array Contains(Global.Ban_Multi_Per_Level, Event Player.A) == True;
+		Is On Wall(Event Player) == True;
+		Is Button Held(Event Player, Button(Jump)) == False;
+		Event Player.J == 2;
+	}
+
+	aktionen
+	{
+		If(Array Contains(Global.Dao, Event Player.A) == True);
+			deaktiviert Wait(0.100, Ignore Condition);
+			Skip If(Ultimate Charge Percent(Event Player) == 100, 4);
+			Skip If(Is Using Ultimate(Event Player), 3);
+			Set Ultimate Ability Enabled(Event Player, True);
+			Set Ultimate Charge(Event Player, 100);
+		End;
+		If(Array Contains(Global.SHIFT, Event Player.A) == True);
+			Set Ability 1 Enabled(Event Player, True);
+		End;
+		If(Event Player.E < 1);
+			Set Ability 1 Enabled(Event Player, False);
+			Set Ultimate Ability Enabled(Event Player, False);
+		End;
+		Apply Impulse(Event Player, Down, Speed Of(Event Player), To Player, Cancel Contrary Motion);
+		Set Status(Event Player, Null, Rooted, 0.100);
+		Teleport(Event Player, Count Of(Global.A[Event Player.A]) != 0 ? Global.A[Event Player.A][1] : Global.A[Event Player.A]);
+		If(Global.deathjump == True);
+			Disallow Button(Event Player, Button(Jump));
+			Wait(0.100, Ignore Condition);
+			Allow Button(Event Player, Button(Jump));
+		End;
+		Skip If(Event Player.P == Custom String("On"), 3);
+		If(Event Player.A == 0);
+			Event Player.Timer = 0;
+		End;
+		Apply Impulse(Event Player, Down, Speed Of(Event Player), To Player, Cancel Contrary Motion);
+		Small Message(Event Player, String("{0} {1}", Custom String(""), Custom String("Multiclimb is Disabled for this Level")));
+	}
+}
+
+deaktiviert regel("Portal 1")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		"Change Vector (0, 0, 0) to starting position of the portal"
+		Distance Between(Event Player, Vector(0, 0, 0)) <= 1.400;
+	}
+
+	aktionen
+	{
+		"Change Vector (0, 0, 0) to ending position of the portal"
+		deaktiviert Teleport(Event Player, Vector(0, 0, 0));
+	}
+}
+
+deaktiviert regel("Portal 2")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		"Change Vector (0, 0, 0) to starting position of the portal"
+		Distance Between(Event Player, Vector(0, 0, 0)) <= 1.400;
+	}
+
+	aktionen
+	{
+		"Change Vector (0, 0, 0) to ending position of the portal"
+		deaktiviert Teleport(Event Player, Vector(0, 0, 0));
+	}
+}
+
+deaktiviert regel("Portal 3")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		"Change Vector (0, 0, 0) to starting position of the portal"
+		Distance Between(Event Player, Vector(0, 0, 0)) <= 1.400;
+	}
+
+	aktionen
+	{
+		"Change Vector (0, 0, 0) to ending position of the portal"
+		deaktiviert Teleport(Event Player, Vector(0, 0, 0));
+	}
+}
+
+deaktiviert regel("Portal 4")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		"Change Vector (0, 0, 0) to starting position of the portal"
+		Distance Between(Event Player, Vector(0, 0, 0)) <= 1.400;
+	}
+
+	aktionen
+	{
+		"Change Vector (0, 0, 0) to ending position of the portal"
+		deaktiviert Teleport(Event Player, Vector(0, 100, 0));
+	}
+}
+
+deaktiviert regel("Portal 5")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		"Change Vector (0, 0, 0) to starting position of the portal"
+		Distance Between(Event Player, Vector(0, 0, 0)) <= 1.400;
+	}
+
+	aktionen
+	{
+		"Change Vector (0, 0, 0) to ending position of the portal"
+		deaktiviert Teleport(Event Player, Vector(0, 0, 0));
+	}
+}
+
+deaktiviert regel("Portal 6")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		"Change Vector (0, 0, 0) to starting position of the portal"
+		Distance Between(Event Player, Vector(0, 0, 0)) <= 1.400;
+	}
+
+	aktionen
+	{
+		"Change Vector (0, 0, 0) to ending position of the portal"
+		deaktiviert Teleport(Event Player, Vector(0, 0, 0));
+	}
+}
+
+deaktiviert regel("Portal Effect - Text")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	aktionen
+	{
+		"Change Vector (0, 0, 0) to starting position of Portal 1"
+		Create In-World Text(Event Player, Custom String("{1}", Event Player.H, Custom String("Send to next target")), Vector(0, 0, 0),
+			1.500, Clip Against Surfaces, Visible To Position and String, Color(White), Default Visibility);
+		"Change Vector (1, 1, 1) to starting position of Portal 2"
+		Create In-World Text(Event Player, Custom String("{1}", Event Player.H, Custom String("Send to next target")), Vector(1, 1, 1),
+			1.500, Clip Against Surfaces, Visible To Position and String, Color(White), Default Visibility);
+		"Change Vector (2, 2, 2) to starting position of Portal 3"
+		Create In-World Text(Event Player, Custom String("{1}", Event Player.H, Custom String("Send to next target")), Vector(2, 2, 2),
+			1.500, Clip Against Surfaces, Visible To Position and String, Color(White), Default Visibility);
+		"Change Vector (0, 0, 0) to starting position of Portal 4"
+		Create In-World Text(Event Player, Custom String("{1}", Event Player.H, Custom String("Send to next target")), Vector(3, 3, 3),
+			1.500, Clip Against Surfaces, Visible To Position and String, Color(White), Default Visibility);
+		"Change Vector (1, 1, 1) to starting position of Portal 5"
+		Create In-World Text(Event Player, Custom String("{1}", Event Player.H, Custom String("Send to next target")), Vector(4, 4, 4),
+			1.500, Clip Against Surfaces, Visible To Position and String, Color(White), Default Visibility);
+		"Change Vector (2, 2, 2) to starting position of Portal 6"
+		Create In-World Text(Event Player, Custom String("{1}", Event Player.H, Custom String("Send to next target")), Vector(5, 5, 5),
+			1.500, Clip Against Surfaces, Visible To Position and String, Color(White), Default Visibility);
+	}
+}
+
+deaktiviert regel("Portal Effects (Change Vectors to match Portal coordinates)")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	aktionen
+	{
+		"Effects of Portal 1"
+		Create Effect(All Players(All Teams), Bad Aura, Color(Blue), Vector(0, 0, 0), 1, Visible To Position and Radius);
+		Create Effect(All Players(All Teams), Good Aura, Color(Blue), Vector(0, 0, 0), 1, Visible To Position and Radius);
+		"Effects of portal 2"
+		Create Effect(All Players(All Teams), Bad Aura, Color(Orange), Vector(1, 1, 1), 1, Visible To Position and Radius);
+		Create Effect(All Players(All Teams), Good Aura, Color(Orange), Vector(1, 1, 1), 1, Visible To Position and Radius);
+		"Effects of portal 3"
+		Create Effect(All Players(All Teams), Bad Aura, Color(Green), Vector(2, 2, 2), 1, Visible To Position and Radius);
+		Create Effect(All Players(All Teams), Good Aura, Color(Green), Vector(2, 2, 2), 1, Visible To Position and Radius);
+		"Effects of Portal 4"
+		Create Effect(All Players(All Teams), Bad Aura, Color(Blue), Vector(3, 3, 3), 1, Visible To Position and Radius);
+		Create Effect(All Players(All Teams), Good Aura, Color(Blue), Vector(3, 3, 3), 1, Visible To Position and Radius);
+		"Effects of portal 5"
+		Create Effect(All Players(All Teams), Bad Aura, Color(Orange), Vector(4, 4, 4), 1, Visible To Position and Radius);
+		Create Effect(All Players(All Teams), Good Aura, Color(Orange), Vector(4, 4, 4), 1, Visible To Position and Radius);
+		"Effects of portal 6"
+		Create Effect(All Players(All Teams), Bad Aura, Color(Green), Vector(5, 5, 5), 1, Visible To Position and Radius);
+		Create Effect(All Players(All Teams), Good Aura, Color(Green), Vector(5, 5, 5), 1, Visible To Position and Radius);
+	}
+}
+
+deaktiviert regel("In world text for certain Checkpoints")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	aktionen
+	{
+		"Change Vector (0, 0, 0) to position of text. Copy and paste one of the actions and change number of variable P to needed Checkpoint (ex. for lvl 7 input number 7)"
+		Create In-World Text(Sorted Array(Global.P[0], Current Array Element), Custom String("Text for checkpoint 0"), Vector(0, 0, 0),
+			1.200, Clip Against Surfaces, Visible To Position and String, Color(Orange), Default Visibility);
+		Create In-World Text(Sorted Array(Global.P[1], Current Array Element), Custom String("Text for checkpoint 1"), Vector(0, 0, 0),
+			1.200, Clip Against Surfaces, Visible To Position and String, Color(Orange), Default Visibility);
+		Create In-World Text(Sorted Array(Global.P[2], Current Array Element), Custom String("Text for checkpoint 2"), Vector(0, 0, 0),
+			1.200, Clip Against Surfaces, Visible To Position and String, Color(Orange), Default Visibility);
+	}
+}
+
+deaktiviert regel("DVA Bomb to destroy railings - Coordinates")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	aktionen
+	{
+		Global.DVA = Empty Array;
+		Global.dva = 0;
+		"Change Vector (0, 0, 0) to position where DVA will detonate"
+		deaktiviert Modify Global Variable(DVA, Append To Array, Vector(0, 0, 0));
+		deaktiviert Modify Global Variable(DVA, Append To Array, Vector(0, 0, 0));
+		deaktiviert Modify Global Variable(DVA, Append To Array, Vector(0, 0, 0));
+	}
+}
+
+deaktiviert regel("Summon DVA")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	bedingungen
+	{
+		Global.dva == 0;
+		Count Of(All Players(Team 2)) < 6;
+	}
+
+	aktionen
+	{
+		Create Dummy Bot(Hero(D.Va), Team 2, 5, Global.DVA[Global.dva], Up);
+		Global.dva += 1;
+		Start Holding Button(Players On Hero(Hero(D.Va), All Teams), Button(Ultimate));
+		Wait(6.500, Ignore Condition);
+		Loop If(Global.dva < Count Of(Global.DVA));
+		Stop Holding Button(Players On Hero(Hero(D.Va), All Teams), Button(Ultimate));
+		Destroy Dummy Bot(Team 2, 5);
+	}
+}
+
+regel("Text <------------------------------------------------- put code and author here!")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	aktionen
+	{
+		Create HUD Text(All Players(All Teams), Null, Null, Custom String("For more maps and records join:"), Left, -9, Color(White),
+			Color(White), Color(Purple), Visible To, Default Visibility);
+		Create HUD Text(All Players(All Teams), Null, Null, Custom String("dsc.gg/genjiparkour"), Left, -8, Color(White), Color(White),
+			Color(Purple), Visible To, Default Visibility);
+		Create HUD Text(All Players(All Teams), Custom String(""), Null, Custom String("{0}\r\n{1}", Custom String("MADE BY: FRENCHFRIES"),
+			Custom String("CODE: GWGKM")), Left, -12, Color(White), Color(Sky Blue), Color(Sky Blue), Visible To and String,
+			Default Visibility);
+	}
+}
+
+regel("Friend Title (?) - Displaying your message (on you)")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Has Spawned(Event Player) == True;
+	}
+
+	aktionen
+	{
+		"In the field custom string your nickname"
+		deaktiviert If(Custom String("your nickname <-------") == Custom String("{0}", Event Player));
+		"Message to the whole room"
+		deaktiviert Big Message(All Players(All Teams), Custom String("is good B)"));
+		"The inscription that will be displayed on you"
+		deaktiviert Create In-World Text(All Players(All Teams), Custom String(
+			"Title (?)<---------------The inscription that will be displayed on you"), Event Player, 1.500, Clip Against Surfaces,
+			Visible To Position and String, Color(Orange), Default Visibility);
+		deaktiviert End;
+		"空白处填写您好友的名字"
+		If(Custom String("Yeti") == Custom String("{0}", Event Player));
+			Big Message(All Players(All Teams), Custom String("is good B)"));
+			Create In-World Text(All Players(All Teams), Custom String("Title (?)"), Event Player, 1.500, Clip Against Surfaces,
+				Visible To Position and String, Color(Orange), Default Visibility);
+		End;
+		"空白处填写您好友的名字"
+		If(Custom String("Jack") == Custom String("{0}", Event Player));
+			Big Message(All Players(All Teams), Custom String("im just checking lolo"));
+			Create In-World Text(All Players(All Teams), Custom String("Title 2.0 (?)"), Event Player, 1.500, Clip Against Surfaces,
+				Visible To Position and String, Color(Orange), Default Visibility);
+		End;
+	}
+}
+
+regel("-------------------------------Workshop settings-------------------------")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+}
+
+regel("Ban | Triple Jump")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Vertical Speed Of(Event Player) >= 5.800;
+		Event Player.TY == 1;
+		Is Using Ability 1(Event Player) == False;
+		Workshop Setting Toggle(Custom String("Ban Switch"), Custom String("Ban Triple Jump"), False, 0) == True;
+	}
+
+	aktionen
+	{
+		Abort If(Is On Wall(Event Player) == True);
+		Apply Impulse(Event Player, Down, Speed Of(Event Player), To Player, Cancel Contrary Motion);
+		Small Message(Event Player, String("{0} {1}", Custom String(""), Custom String("Triple Jump is Disabled")));
+	}
+}
+
+regel("Ban | Multiclimb")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is On Wall(Event Player) == True;
+		Is Button Held(Event Player, Button(Jump)) == False;
+		Event Player.J == 2;
+		Workshop Setting Toggle(Custom String("Ban Switch"), Custom String("Ban Multiclimb"), False, 1) == True;
+	}
+
+	aktionen
+	{
+		If(Global.Multiclimb_Tournament && Distance Between(Global.A[Event Player.A + 1], Event Player) <= 1.400);
+			Small Message(Event Player, Custom String(""));
+		End;
+		If(Array Contains(Global.Dao, Event Player.A) == True);
+			deaktiviert Wait(0.100, Ignore Condition);
+			Skip If(Ultimate Charge Percent(Event Player) == 100, 4);
+			Skip If(Is Using Ultimate(Event Player), 3);
+			Set Ultimate Ability Enabled(Event Player, True);
+			Set Ultimate Charge(Event Player, 100);
+		End;
+		If(Array Contains(Global.SHIFT, Event Player.A) == True);
+			Set Ability 1 Enabled(Event Player, True);
+		End;
+		If(Event Player.E < 1);
+			Set Ability 1 Enabled(Event Player, False);
+			Set Ultimate Ability Enabled(Event Player, False);
+		End;
+		Apply Impulse(Event Player, Down, Speed Of(Event Player), To Player, Cancel Contrary Motion);
+		Set Status(Event Player, Null, Rooted, 0.100);
+		Teleport(Event Player, Count Of(Global.A[Event Player.A]) != 0 ? Global.A[Event Player.A][1] : Global.A[Event Player.A]);
+		If(Global.deathjump == True);
+			Disallow Button(Event Player, Button(Jump));
+			Wait(0.100, Ignore Condition);
+			Allow Button(Event Player, Button(Jump));
+		End;
+		Skip If(Event Player.P == Custom String(""), 3);
+		If(Event Player.A == 0);
+			Event Player.Timer = 0;
+		End;
+		Apply Impulse(Event Player, Down, Speed Of(Event Player), To Player, Cancel Contrary Motion);
+		Small Message(Event Player, String("{0} {1}", Custom String(""), Custom String("Multiclimb is Disabled")));
+	}
+}
+
+regel("Ban | Double Bhop")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	bedingungen
+	{
+		Workshop Setting Toggle(Custom String("Ban Switch"), Custom String("Ban Double Bhop"), False, 2) == True;
+	}
+
+	aktionen
+	{
+		Global.kaxiaotiao = True;
+	}
+}
+
+regel("Ban | Emote")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Is Communicating Any Emote(Event Player) == True;
+		Event Player.A < Count Of(Global.A) - 1;
+		Workshop Setting Toggle(Custom String("Ban Switch"), Custom String("Ban Emote"), False, 3) == True;
+	}
+
+	aktionen
+	{
+		Kill(Event Player, Null);
+		Small Message(Event Player, String("{0} {1}", Custom String(""), Custom String("Emote jumping is disabled")));
+	}
+}
+
+regel("Ban | Bhop from Reset")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	bedingungen
+	{
+		Workshop Setting Toggle(Custom String("Ban Switch"), Custom String("Ban bhop from reset"), False, 4) == True;
+	}
+
+	aktionen
+	{
+		Global.deathjump = True;
+	}
+}
+
+regel("Ban | Multi tournament")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	bedingungen
+	{
+		Workshop Setting Toggle(Custom String("Ban Switch"), Custom String("Ban Wallclimb - Multiclimb Tournament"), False, 6) == True;
+	}
+
+	aktionen
+	{
+		Global.Multiclimb_Tournament = True;
+	}
+}
+
+regel("Ban | All players are invisible")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	bedingungen
+	{
+		Workshop Setting Toggle(Custom String("Ban Switch"), Custom String("Ban All players are invisible"), False, 7) == True;
+		Has Spawned(Event Player) == True;
+	}
+
+	aktionen
+	{
+		Set Invisible(Event Player, All);
+		Global.InvisibleAll = True;
+	}
+}

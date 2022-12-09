@@ -1,5 +1,68 @@
+general workings:
+    
+    generate map data:
+        variables get turned into ws code
+        a var is set to the template, and it inserts those settings vars
+        this entire thing gets copied to clipboard
+        if another client langauge is selected then it first converts it via decompile+recompile in overpy
+
+    documents
+        index has html
+        convertperrule has the converter code
+        generatethings has all the things that get auto generated based on data, like cp buttons or orbs
+        main is the general functions
+        save has all save related things saving and loading
+
+    website structure
+        the sidebar html contains the buttons that navigat the page with the  changebar function
+        everything is just one page, the pages that are not being used are just hidden with html
+
+
+    update overpy version:
+        during my troubleshooting i found that for some reason overpy cant check variable indexes on my code
+        it trows errors at variable numbers
+        note that it will only trow the error on using overpy, thus not if you compile english
+        so compile in diferent langague to check it
+        it might only trow error itn the console log. note that this is catched so it doesnt apear red like most errors.
+
+        to fix this, go into the overpy.js file that the web interface uses and disable the check
+                find the line by searching for "Invalid index" find the one for variables,
+                disable it for both subroutines and variables, by comenting out the error the line that returns the error
+                it looks like this:
+
+                    if (!isNumber(variable.index) || variable.index >= 128 || variable.index < 0) {
+                        error("Invalid index '"+variable.index+"' for "+varType+" variable '"+variable.name+"', must be from 0 to 127");
+                    }
+
+                comment out the line that starts with "error"
+
+        note that we only need overpy.js the rest of files can be deleted
+        but make sure you point to it via the index.html's script loading
+
+    change template:
+        If only a small part of the code is changed, it can be easier to swap out that part of the code in the template instead.
+        If you do have to replace the entire template follow these steps.
+        If you only replace a part of code and the version, just copy the template and renumber it and change the number in index.
+        
+        1) add a new file for it in the template folder
+        2) paste the data for the template in the file
+        3) replace map settings to allow all skirmrish maps
+        4) remove all // comments, overpy puts these on :lbl for some reason this bugs overpy so just remove them
+        5) put all interface variables in:
+            - syntax is:   ${variable name}
+                - some variables only contain true,false or a color etc
+                - other variables contain the full line of code that sets the entire variable
+                - there is also variables that just add "disabled " to a rule that is suposed ot be on or off
+                - to handle togles i set the default settings to true/false instead of the extension settings
+            - the best way to find what it does, is to jsut look at the last template
+            - you should probly verify the count of ${ is the same as in last template
+        6) in index.html near the end, change the old template file loading to the new template
+        
+        note: overpy only translates when going in a different langauge, make sure you also test if the translations dont give errors
+
+
 variables
-    map data (1d array)
+    MapData (1d array that contains all settings and such)
         contains settings 
             0 map maker name
             1 map code
@@ -33,34 +96,31 @@ variables
 
             16 restart toggle
             17 comp instructions
-
-       
-    cp data - 2d array were each entry contains cp data:
+   
+    Checkpoints = cp data = 2d array were each entry contains all data for that cp
         0 pos vector
         1 teleport bool
         2 teleport vector
         3 dash
         4 ult
         5 notes
-        6 orbs
-        7 kills
-        8 bans per cp (old ban bhop)
-        9 texts per cp (old ban climb)
+        6 orbs (contains a 2d array, one array per orb on the cp)
+        7 kills (contains a 2d array, one array per orb on the cp)
+        8 bans per cp 
+        9 texts per cp 
 
- 
-
-        orb (inside 6)
+        orb (inside 6) 2d array
             0 pos vector
             1 dash
             2 ult
             3 lock
             4 strength
 
-        kills (inside 7)
+        kills (inside 7) 2d array
             0 pos
             1 radius
 
-        bans (inside 8)
+        bans (inside 8) 2d array
             0 triple
             1 multi
             2 create
@@ -75,56 +135,15 @@ variables
             3 iwt text
             4 iwt pos
 
-general workings:
-    interface settings get turned into workshop code
-    the variables get inserted into a version of the template
-    this gets copied to clipboard
-    if another client langauge is selected then it first converts it via decompile+recompile in overpy
-
-list of [1] of every cp that has enabled
 
 
-update overpy version:
-    during my troubleshooting i found that for some reason overpy cant check variable indexes on my code
-    it trows errors at variable numbers
-    note that it will only trow the error on using overpy, thus not if you compile english
-    so compile in diferent langague to check it
-    it might only trow error itn the console log. note that this is catched so it doesnt apear red like most errors.
 
-    to fix this, go into the overpy.js file that the web interface uses and disable the check
-            find the line by searching for "Invalid index" find the one for variables,
-            disable it for both subroutines and variables, by comenting out the error the line that returns the error
-            it looks like this:
 
-                if (!isNumber(variable.index) || variable.index >= 128 || variable.index < 0) {
-                    error("Invalid index '"+variable.index+"' for "+varType+" variable '"+variable.name+"', must be from 0 to 127");
-                }
-
-            comment out the line that starts with "error"
-
-    note that we only need overpy.js the rest of files can be deleted
-    but make sure you point to it via the index.html's script loading
-
-change template:
-    1) add a new file for it in the template folder
-    2) paste the data for the template in the file
-    3) replace map settings to allow all skirmrish maps
-    4) remove all // comments, overpy puts these on :lbl for some reason this bugs overpy so just remove them
-    5) put all the variables in:
-        - syntax is:   ${variable name}
-            - some variables only contain true,false or a color etc
-            - other variables contain the full line of code that sets a variable
-            - there is also variables that just add "disabled " to a rule that is suposed ot be on or off
-        - the best way to find what it does, is to jsut look at the last template
-        - you should probly verify the count of ${ is the same as in last template
-    6) in index.html near the end, change the old template file loading to the new template
-    
-    note: overpy only translates when going in a different langauge, make sure you also test if the translations dont give errors
-
+    team numbers
     ${team1players}
     ${team2players}
 
-    map data
+    map data entire lines
     ${data_cps}
     ${data_orb_cp}
     ${data_orb_pos}
@@ -136,65 +155,77 @@ change template:
     ${data_kill_rad}
     ${data_kill_cp}
 
+    just part of the string, paste inside string
     ${mapcode}
     ${mapmaker}
 
-    ${compon}
-    ${comptime}
-    ${compattempt}
-    ${comprestarts}
-
-    // cp bans
+    // cp bans entire line
     ${cpbantriple}
     ${cpbanmulti}
     ${cpbancreate}
     ${cpbandead}
     ${cpbanemote}
     ${cpclimb}
+
+    // ws toggle ban
     ${ban_dashstart}
 
-    ${customdifenabled}
-    ${customdiftxt}
-    #{customdifcolor}
+    ${customdifenabled} infront of rule to disable/enable
+    ${customdiftxt} inside the string quotes
+    #{customdifcolor} inside Color(x)
 
-    ${portalon}
-    ${difficultyhud}
- 
+    // comp mesage popup description text inside the quotes
     ${compdescription[0]}
     ${compdescription[1]}
     ${compdescription[2]}
     ${compdescription[3]}
 
-    // full bans
+
+    // full bans, true/false togles inside the default settings
     ${ban_triple}
     ${ban_multi}
     ${ban_create}
     ${ban_dbhop}
     ${ban_emote}
     ${ban_climb}
+   
 
-    ${editoron}
+    ${portalon} true/false toggle
+
+
+    ${compon} bool as ws toogle
+    ${comptime} number sets toggle as default
+    ${compattempt} number sets toglge as default
+    ${comprestarts} bool as ws togle
+
+    ${difficultyhud} number inside default
+
+
+    ${editoron} bool defualt
+
 
     // addons
-    ${titleon}
+    
+    ${ulteanbled} // rule enable/disable
+    ${ultarray}
+    ${dasheanbled} // rule enable/disable
+    ${dasharray}
+
+    ${titleon} // rule enable/disable
     ${titlenames}
     ${titlecps}
     ${titlecolors}
 
-    ${hudeanbled}
+    ${hudeanbled} // rule enable/disable
     ${hudtext}
     ${hudcps}
 
-    ${iwtenabled}
+    ${iwtenabled} // rule enable/disable
     ${iwttext}
     ${iwtcps}
     ${iwtpos}
     ${iwtcolor}
 
-    ${ulteanbled}
-    ${ultarray}
-    ${dasheanbled}
-    ${dasharray}
 
 
 

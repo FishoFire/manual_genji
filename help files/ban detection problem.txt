@@ -1,0 +1,45 @@
+
+problem:
+- in old fw they used extension names
+- in newest version of our own fw i renamed extensions again
+- in my web interface i set them via true/false in default instead of extensions settings
+- our ban per cp should be detacble
+- old bans are often manual rules per ban
+
+A proper detection would be able to check for all these.
+
+if any of them true then set ban true, else default to false
+
+
+
+
+ "Ban Triple Jump"
+BhopBanToggle =  "Ban Double Bhop" = create
+ "Ban Multiclimb" 
+BhopBanFromReset "Ban bhop from reset" = deathbhop
+"Ban Emote" emote
+
+
+old:
+		Ban bhop from reset: On
+		Ban Emote: On
+		Ban Multiclimb: On
+		Ban Triple Jump: On
+
+modern: 1.0
+		Ban Dash Start: On
+		Ban Deathbhop: On
+		Ban Emote Savehop: On
+		Ban Multiclimb: On
+		Ban Triple Jump: On
+		difficulty display hud: [11]
+		Editor mode: Off
+
+
+modern 1.7
+??? i renamed them again
+
+
+
+
+
