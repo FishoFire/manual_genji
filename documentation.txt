@@ -25,7 +25,7 @@ general workings:
         so compile in diferent langague to check it
         it might only trow error itn the console log. note that this is catched so it doesnt apear red like most errors.
 
-        to fix this, go into the overpy.js file that the web interface uses and disable the check
+        to fix this, go into the overpy.js file (inside vs code extension folder) that the web interface uses and disable the check
                 find the line by searching for "Invalid index" find the one for variables,
                 disable it for both subroutines and variables, by comenting out the error the line that returns the error
                 it looks like this:

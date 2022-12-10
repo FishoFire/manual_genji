@@ -2687,7 +2687,8 @@ const customGameSettingsSchema =
                         "torbjorn",
                         "widowmaker",
                         "winston",
-                        "hammond"
+                        "hammond",
+                        "ramattra"
                     ],
                     "guid": "000000007671",
                     "en-US": "Ultimate Duration",
@@ -2719,7 +2720,8 @@ const customGameSettingsSchema =
                         "torbjorn",
                         "widowmaker",
                         "winston",
-                        "hammond"
+                        "hammond",
+                        "ramattra"
                     ],
                     "guid": "000000007672",
                     "en-US": "Infinite Ultimate Duration",
@@ -3267,7 +3269,8 @@ const customGameSettingsSchema =
                         "sojourn",
                         "soldier",
                         "sombra",
-                        "hammond"
+                        "hammond",
+                        "ramattra"
                     ],
                     "en-US": "%1$s"
                 },
@@ -3288,7 +3291,8 @@ const customGameSettingsSchema =
                         "sigma",
                         "soldier",
                         "sombra",
-                        "hammond"
+                        "hammond",
+                        "ramattra"
                     ],
                     "en-US": "%1$s Cooldown Time",
                     "de-DE": "%1$s – Abklingzeit",
@@ -4383,6 +4387,28 @@ const customGameSettingsSchema =
                     }
                 }
             },
+            "ramattra": {
+                "values": {
+                    "secondaryFireAlternateForm": {
+                        "values": "__boolOnOff__",
+                        "default": "on",
+                        "guid": "00000000D2A8",
+                        "en-US": "Block Nemesis Form",
+                        "de-DE": "Blocken Nemesisform",
+                        "es-ES": "Bloquear Forma de némesis",
+                        "es-MX": "Bloqueo Forma de némesis",
+                        "fr-FR": "Blocage forme de némésis",
+                        "it-IT": "Blocco Forma Nemesi",
+                        "ja-JP": "ブロック（ネメシス・フォーム）",
+                        "ko-KR": "막기 네메시스 형태",
+                        "pl-PL": "Blok Postać Nemezis",
+                        "pt-BR": "Bloqueio Forma Nêmesis",
+                        "ru-RU": "Блок форма Немезиды",
+                        "zh-CN": "铁臂（天罚形态）",
+                        "zh-TW": "格擋（復仇形態）"
+                    }
+                }
+            },
             "reinhardt": {
                 "values": {
                     "ability1Kb%": {
@@ -5059,6 +5085,9 @@ const customGameSettingsSchema =
                 "default": "no",
                 "guid": "00000000F25B",
                 "description": "Whether to allow players in 'While you wait'.",
+                "descriptionLocalized": {
+                    "en-US": "Whether to allow players in 'While you wait'."
+                },
                 "en-US": "Allow Players Who Are In Queue",
                 "de-DE": "Spieler in der Spielsuche zulassen",
                 "es-ES": "Permitir jugadores que estén en cola",
@@ -5071,10 +5100,7 @@ const customGameSettingsSchema =
                 "pt-BR": "Permitir jogadores na fila",
                 "ru-RU": "Открыть для игроков в очереди",
                 "zh-CN": "队列中的玩家可以加入",
-                "zh-TW": "佇列中的玩家可進行",
-                "descriptionLocalized": {
-                    "en-US": "Whether to allow players in 'While you wait'."
-                }
+                "zh-TW": "佇列中的玩家可進行"
             },
             "useExperimentalUpdate": {
                 "values": "__boolYesNo__",
@@ -5734,7 +5760,7 @@ const customGameSettingsSchema =
                 "ru-RU": "Название режима",
                 "zh-CN": "模式名称",
                 "zh-TW": "模式名稱"
-            },
+            }
         },
         "guid": "00000001006E",
         "en-US": "main",
