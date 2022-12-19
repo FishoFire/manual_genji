@@ -120,6 +120,7 @@ function LoadData(){ // after setting the data with previous codes, checks the v
         MapData[20] =  MapData[20] ?  MapData[20] :  "Lime Green"
         MapData[21] =  MapData[21] ?  MapData[21] :  false
         MapData[22] =  MapData[22] ?  MapData[22] :  'team1'
+        MapData[23] =  MapData[23] ?  MapData[23] :  false
 
         if (CheckPoints.length > 0){
         // per cp things
@@ -173,6 +174,8 @@ function LoadData(){ // after setting the data with previous codes, checks the v
         document.getElementById("customdifcolor").value =  MapData[20]
         document.getElementById("ban_climb").checked =  MapData[21]
         document.getElementById("teamselect").value = MapData[22]
+        document.getElementById("faketripleon").checked = MapData[23]
+        
         // load things in the tab
         SelectedCp = 0
         CpButtons()

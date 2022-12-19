@@ -79,6 +79,7 @@ var iwtpos
 var iwtcps
 var iwtcolor
 
+var faketripleon
 
 var dasheanbled
 var dasharray
@@ -263,11 +264,15 @@ function Copy(){
             titlenames = titlenames.slice(0,-2) + "));"
             titlecolors = titlecolors.slice(0,-2) + "));"
             
+            faketripleon =  MapData[23] ? "" : "disabled "
+
             editoron = defaultBool(document.getElementById("editorontoggle").checked)
 
             team1players = MapData[22] == 'team2' ? 0 : 11 
             team2players = MapData[22] == 'team2' ? 11 : 0 
       
+
+
             // ====== compile and copy ===================
             setdata(); // loaded from data file
       

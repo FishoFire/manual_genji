@@ -79,6 +79,7 @@ variables
             20 custom dif color
             
             22 team 1 or 2
+            23 fake triple enabled
 
             full bans
             3 triple
@@ -226,7 +227,7 @@ variables
     ${iwtpos}
     ${iwtcolor}
 
-
+    ${faketripleon} // rule enable/disable
 
 
 
