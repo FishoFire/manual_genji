@@ -14,10 +14,12 @@ var convert_bans = []
 /*\nrule = disabled rule
 
 
-const re = /[^#]\SHIFT = \[/g
-// use ^# to not have comented out
-// /b no other leters infront of it
-// A = \[    is just A = [  the \ to cancel out [ being regex
+const re = /[^#.]\bA = \[/g
+// use [^] to say not these signs
+    //# to not have comented out
+    // . is to sort out eventplayer.variable, we only want global variables to be detected
+// /b  means no other leters infront of it
+// A = \[    is just A = [  the \ to cancel out [ being regex syntax normally
 // /g needs to be at the end to make it work
 
 */
@@ -102,8 +104,8 @@ function Converter(){
     convert_credits = []
     convert_ult = []
     convert_dash = []
+
     convert_bounces = []
-    
     convert_bounces[0] = []
     convert_bounces[1] = []
     convert_bounces[2] = []
@@ -185,21 +187,21 @@ function Converter(){
 
             if (skiprule == false && rulepasta.includes("@Event eachPlayer") == false){
 
-                convert_positions = FindArray(rulepasta, "A", /[^#]\bA = \[/g, convert_positions)
+                convert_positions = FindArray(rulepasta, "A", /[^#.]\bA = \[/g, convert_positions)
                 
-                convert_ult = FindArray(rulepasta, "Dao", /[^#]\bDao = \[/g, convert_ult)
-                convert_dash = FindArray(rulepasta, "SHIFT", /[^#]\bSHIFT = \[/g, convert_dash)
+                convert_ult = FindArray(rulepasta, "Dao", /[^#.]\bDao = \[/g, convert_ult)
+                convert_dash = FindArray(rulepasta, "SHIFT", /[^#.]\bSHIFT = \[/g, convert_dash)
 
-                convert_bounces[0] = FindArray(rulepasta, "TQ", /[^#]\bTQ = \[/g, convert_bounces[0]) // pos
-                convert_bounces[1] = FindArray(rulepasta, "TQ6", /[^#]\bTQ6 = \[/g, convert_bounces[1]) // dash
-                convert_bounces[2] = FindArray(rulepasta, "TQ5", /[^#]\bTQ5 = \[/g, convert_bounces[2]) // ult
-                convert_bounces[3] = FindArray(rulepasta, "BounceToggleLock", /[^#]\bBounceToggleLock = \[/g, convert_bounces[3]) // lock
-                convert_bounces[4] = FindArray(rulepasta, "EditMode", /[^#]\bEditMode = \[/g, convert_bounces[4]) // stregth
-                convert_bounces[5] = FindArray(rulepasta, "pinballnumber", /[^#]\bpinballnumber = \[/g, convert_bounces[5]) // cp
+                convert_bounces[0] = FindArray(rulepasta, "TQ", /[^#.]\bTQ = \[/g, convert_bounces[0]) // pos
+                convert_bounces[1] = FindArray(rulepasta, "TQ6", /[^#.]\bTQ6 = \[/g, convert_bounces[1]) // dash
+                convert_bounces[2] = FindArray(rulepasta, "TQ5", /[^#.]\bTQ5 = \[/g, convert_bounces[2]) // ult
+                convert_bounces[3] = FindArray(rulepasta, "BounceToggleLock", /[^#.]\bBounceToggleLock = \[/g, convert_bounces[3]) // lock
+                convert_bounces[4] = FindArray(rulepasta, "EditMode", /[^#.]\bEditMode = \[/g, convert_bounces[4]) // stregth
+                convert_bounces[5] = FindArray(rulepasta, "pinballnumber", /[^#.]\bpinballnumber = \[/g, convert_bounces[5]) // cp
 
-                convert_kills[0] = FindArray(rulepasta, "H", /[^#]\bH = \[/g, convert_kills[0]) // lock
-                convert_kills[1] = FindArray(rulepasta, "I", /[^#]\bI = \[/g, convert_kills[1]) // stregth
-                convert_kills[2] = FindArray(rulepasta, "killballnumber", /[^#]\bkillballnumber = \[/g, convert_kills[2]) // cp
+                convert_kills[0] = FindArray(rulepasta, "H", /[^#.]\bH = \[/g, convert_kills[0]) // vect
+                convert_kills[1] = FindArray(rulepasta, "I", /[^#.]\bI = \[/g, convert_kills[1]) // stregth
+                convert_kills[2] = FindArray(rulepasta, "killballnumber", /[^#.]\bkillballnumber = \[/g, convert_kills[2]) // cp
                 // credits and code
                 if (rulepasta.toLowerCase().includes("made by:") && rulepasta.toLowerCase().includes("map code:") && rulepasta.toLowerCase().includes("guidence text") == false){             
                     var tempcredits = rulepasta.substring(rulepasta.toLowerCase().indexOf("made"))
@@ -215,7 +217,9 @@ function Converter(){
    
 
                 }
-                
+                //if (rulepasta.includes("A = [vect(-28.427,")){ // debug stop
+                //    return
+                //}
                 
             } 
 
@@ -344,12 +348,14 @@ function Converter(){
         }
 
         // kills ====================
+  
         if(convert_kills[2].length > 0){
             convert_kills[2] = waitcheck(convert_kills[2], 1).split(",")
         }
         if(convert_kills[2].length > 0 && convert_kills[2] != ''){
             convert_kills[0] = waitcheck(convert_kills[0], 1) //.split(",")
             // for 0 extract vectors first              
+          
             var tempkills = convert_kills[0]
             convert_kills[0] = []
             while(tempkills.includes("vect")){
@@ -360,11 +366,9 @@ function Converter(){
             convert_kills[1] = convert_kills[1].length > 0 ? waitcheck(convert_kills[1], 1).split(",") : []
             //convert_kills[2] = convert_kills[2].length > 0 ? waitcheck(convert_kills[2], 1).split(",") : []
             for (var i = 0; i < convert_kills[2].length; i++) {
-            
                 convert_kills[0][i] = convert_kills[0][i] ? convert_kills[0][i] : "0,0,0" // vect
                 convert_kills[1][i] = convert_kills[1][i] ? convert_kills[1][i] : "1" // radius
                 convert_kills[2][i] = convert_kills[2][i] ? convert_kills[2][i] : "-500" // cp
-                 
                 if( convert_kills[2][i] >= 0 &&  convert_kills[2][i] < CheckPoints.length -1 &&  convert_kills[2][i] != "-500" ){
                     CheckPoints[Number(convert_kills[2][i])][7].push( [
                         defaultVect(convert_kills[0][i]),
