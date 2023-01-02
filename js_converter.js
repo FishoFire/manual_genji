@@ -98,7 +98,6 @@ function FindArray(pastahere, arrayName,regexthing, arraytopaste) {
 }
 
 
-
 function Converter(){
     convert_positions = []
     convert_credits = []
@@ -132,8 +131,7 @@ function Converter(){
 
     try {   
         pasta =  decompileAllRules(document.getElementById("converterdata").value , document.getElementById("lang_convert").value );
-      
-  
+ 
         var settingstr = pasta.substring(0, pasta.indexOf('rule "'))
 
         convert_team = settingstr.includes('team1Slots": 0,') ? 'team2' : 'team1'
@@ -168,9 +166,28 @@ function Converter(){
         // cut out rest of settings til first rule
         pasta = pasta.substring( pasta.indexOf('rule "'))
         
+
            
         while (pasta.includes('\nrule "')){ // loop torugh eahc rule
             
+
+            /*
+            search for "\ndef "
+
+
+
+
+
+            check wenether nrxt one is define or rule
+
+            do skip check
+
+            cut the string
+                from first def or rule
+                to next def or rule
+
+
+            */
             if(pasta.indexOf('/*\nrule "') == pasta.indexOf('\nrule "') - 2){ // check if rule is disabled
                 var skiprule = true
             } else {
@@ -183,7 +200,12 @@ function Converter(){
             } else {
                 rulepasta = pasta
             }
- 
+
+
+
+
+
+            console.log(rulepasta)
 
             if (skiprule == false && rulepasta.includes("@Event eachPlayer") == false){
 
