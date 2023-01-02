@@ -201,12 +201,6 @@ function Converter(){
                 rulepasta = pasta
             }
 
-
-
-
-
-            console.log(rulepasta)
-
             if (skiprule == false && rulepasta.includes("@Event eachPlayer") == false){
 
                 convert_positions = FindArray(rulepasta, "A", /[^#.]\bA = \[/g, convert_positions)
