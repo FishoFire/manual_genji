@@ -99,6 +99,10 @@ function FindArray(pastahere, arrayName,regexthing, arraytopaste) {
 
 
 function Converter(){
+    LogOpenNew()
+    LogAdd("Starting map conversion")
+ 
+ 
     convert_positions = []
     convert_credits = []
     convert_ult = []
@@ -130,8 +134,9 @@ function Converter(){
     convert_team = "team1"
 
     try {   
+        LogAdd("Starting compile in overpy")
         pasta =  decompileAllRules(document.getElementById("converterdata").value , document.getElementById("lang_convert").value );
- 
+        LogAdd("Reading rule data")
         var settingstr = pasta.substring(0, pasta.indexOf('rule "'))
 
         convert_team = settingstr.includes('team1Slots": 0,') ? 'team2' : 'team1'
@@ -244,6 +249,8 @@ function Converter(){
         }
 
     //return
+    LogAdd("Data gathered")
+    LogAdd("Attempting to translated to map data")
     defaultdata() // remove checkpoints and map data and set defaults
             
     convert_positions = waitcheck(convert_positions, 1)
@@ -397,12 +404,12 @@ function Converter(){
         }
         
         LoadData()
-        ShowMsg("done")
-
-       
+           
     } catch(e){
-        ShowMsg("Couldnt load data")
         console.log(e)
+        LogAdd("! Failed to load data !","b",true)
+        LogAdd(e)
+        changebar(5)
 
     }
     
