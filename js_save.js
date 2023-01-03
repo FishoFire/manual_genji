@@ -11,11 +11,21 @@ setInterval(function() { // auto save
 function Save(x){ // do normal save
     localStorage.setItem('headerdata'+x, JSON.stringify(MapData));
     localStorage.setItem('checkpoints'+x, JSON.stringify(CheckPoints));
-   
+    
+
     //SaveNames[x] = document.getElementById("save"+x).value ;
     //localStorage.setItem('savenames',JSON.stringify(SaveNames))
-    
-    ShowMsg("Saved!")
+    try{
+        document.getElementById("loadbutton" + x).disabled = false
+    } catch(e) {
+        console.log(e)
+    }
+
+    LogOpenNew()
+    LogAdd("Data saved", 'n',true)
+    LogAdd("slot: <i>" + x + "</i>") 
+    LogAdd("name: <i>" + SaveNames[x] + "</i>") 
+
 }
 
 function LoadSave(x){ // load save slot
@@ -27,7 +37,9 @@ function LoadSave(x){ // load save slot
         CheckPoints = JSON.parse(  localStorage.getItem('checkpoints'+x) )
         LoadData()    
     } else {
-        ShowMsg("no data found")
+        //ShowMsg("no data found")
+        LogOpenNew()
+        LogAdd("Error: no data found in this slot")
     }
     
 }
@@ -57,7 +69,10 @@ function ExportJsonCopy(){ // to clipboard
     navigator.clipboard.writeText(resultthing.value);
     */
     navigator.clipboard.writeText(jsonstring);
-    ShowMsg("json copied to clipboard!")
+    //ShowMsg("json copied to clipboard!")
+    LogOpenNew()
+    LogAdd("Copied json string to clipboard","g")
+    LogAdd("<br/>" + jsonstring + "<br/>")
 }
 
 function ExportJsonFile(){ // to file
@@ -89,6 +104,8 @@ function ExportJsonFile(){ // to file
 
 function LoadData(){ // after setting the data with previous codes, checks the variables and loads it to display in the interface
           // check data
+        LogOpenNew()
+        LogAdd("Attempting to read data")
         MapData[0] =  MapData[0] ?  MapData[0] : ""
         MapData[1] =  MapData[1] ?  MapData[1] : ""
         MapData[2] =  MapData[2] ?  MapData[2] : ""
@@ -147,7 +164,7 @@ function LoadData(){ // after setting the data with previous codes, checks the v
 
             }
         }
-
+        LogAdd("Putting data in the interface")
         // show first tab
         document.getElementById("cpdata").style.display = "block"
         document.getElementById("orbs-kills").style.display = "block"
@@ -189,7 +206,7 @@ function LoadData(){ // after setting the data with previous codes, checks the v
         UpdateTop()
         MakeTitles()
         changebar(0)
-        ShowMsg("Loaded!")
+        LogAdd("Data loaded")
 }
 
 	
@@ -212,7 +229,7 @@ for (var save_i = 0; save_i < 21; save_i++){
 
     let savebox = document.createElement("textarea");
     savebox.id = "save"+save_i
-    savebox.style.width = "90%"
+    savebox.style.width = "89%"
     savebox.rows = 1
     savebox.innerHTML = SaveNames[save_i]
     //savebox.value = save_i
@@ -229,10 +246,15 @@ for (var save_i = 0; save_i < 21; save_i++){
     savediv.appendChild(savebutton)
 
     let saveload = document.createElement("button");
+    saveload.id="loadbutton" + save_i
     saveload.value = save_i
     saveload.innerHTML = " Load "
     saveload.style.width = "45%"
     saveload.onclick = function(){LoadSave(this.value)}
+    if ((localStorage.getItem('headerdata'+save_i) != null) == false){
+        saveload.disabled = true
+        // disable if no save found in that slot
+    }
     savediv.appendChild(saveload)
 
     document.getElementById("savebar").appendChild(savediv);

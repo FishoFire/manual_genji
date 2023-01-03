@@ -17,6 +17,12 @@ general workings:
         the sidebar html contains the buttons that navigat the page with the  changebar function
         everything is just one page, the pages that are not being used are just hidden with html
 
+    Log
+        replaces the message feature that was a popup banner before.
+        Now its just a html div in wich i add text via the commands.
+        LogOpenNew to open the log and clean it
+        LogAdd new entry line
+        CLS already included in logopennew, just clears screen 
 
     update overpy version:
         during my troubleshooting i found that for some reason overpy cant check variable indexes on my code

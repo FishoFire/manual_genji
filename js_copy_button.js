@@ -97,12 +97,15 @@ function Copy(){
         return
     }
     */
-    ShowMsg("compiling - do not tab out");
+
     CompileError = false
-   
+
+    LogOpenNew()
+    LogAdd("Initiating compile - !do not tab out!","b")
+
     setTimeout(
         function (){
-            
+            LogAdd("Turning data to workshop code")
             // cp data ==================
             //data_cps = "\n\t\tGlobal.A = Array( " + CheckPoints.map(x => "\n\t\t\tvector("+x[0]+")").join(",") +  "\n\t\t);"
             // above doesnt deal with teleports 
@@ -274,19 +277,23 @@ function Copy(){
 
 
             // ====== compile and copy ===================
+            LogAdd("Setting data in template")
             setdata(); // loaded from data file
       
-            
+            LogAdd("Checking if translation needed")
             try {
                 var language = document.getElementById("languageInput").value;
                 if (language != "en-US"){ // recompile in overpy to translate if not eng
                     data_pasta = decompileAllRules(data_pasta, "en-US");
+                    //data_pasta = decompileAllRules(data_pasta, "fr-FR"); // force french wich always errors
                     data_pasta = data_pasta + "\n#!disableMapDetectionFix"
                     data_pasta = compile(data_pasta, language);
                     data_pasta  = data_pasta.result;
                 }
             }  catch(e) {
                 console.log(e)
+                LogAdd("Error in translation/loading in overpy:",'r',true)
+                LogAdd(e)
                 CompileError = true
             }
              /*
@@ -302,25 +309,25 @@ function Copy(){
             navigator.clipboard.writeText(resultthing.value);
             */
             
+
             setTimeout(async()=>console.log(
                 await window.navigator.clipboard.readText()), 3000
             )
             navigator.clipboard.writeText(data_pasta);
-
+            LogAdd("Copying to clipboard")
         },
         10
     );
-    setTimeout(ShowMsg, 10, "copied to clipboard!");
+    setTimeout(LogAdd, 10, "Copied to clipboard!","g",true);
 
     /*
     setTimeout(async()=>console.log(
      await window.navigator.clipboard.readText()), 3000)
     */
-
-    
+  
 
 }
-   
+
 //
 // async function compilingthings(){
 //     try {

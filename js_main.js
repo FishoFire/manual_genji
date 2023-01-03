@@ -7,7 +7,7 @@ var SelectedCp = -1
 var maxtimecomp = 240
 var CheckPoints = []
 var MapData = []
-
+var LogBox = document.getElementById("LogBox")
 defaultdata()
 MakeTitles()
 
@@ -48,6 +48,8 @@ function defaultdata(){
         ]
 }
 
+/*
+// old message function
 function ShowMsg(x){
     
     document.getElementById("message").innerHTML = CompileError ? "compile error" : x
@@ -60,7 +62,7 @@ function ShowMsg(x){
     }, 5000); // 2500
     
 }
-
+*/
 // checks ##############################################################
 
 /*
@@ -126,6 +128,50 @@ function FieldColorsNum(thing){
 
 // update html ##############################################################
 
+
+// log: new log
+function LogOpenNew(){
+    CLS()
+    changebar(5) // change to log screen
+}
+
+// log: clear log screen
+function CLS(){
+    LogBox.innerHTML = "" // yes its that easy
+
+}
+
+// log: add a line
+// display a line of text in log
+function LogAdd(msg, logtype="n", lines=false){
+    logtype = logtype.toLowerCase() // just to be sure
+
+    // filter out this message because i cant cancel it if an error apears
+    if( (msg == "Copied to clipboard!" || msg == "Copying to clipboard") && CompileError){
+        msg = ""
+    }
+
+    if(lines){
+        LogBox.innerHTML += "-------------------------- <br/>"
+    }
+
+    if( logtype=="n" ){ // normal
+        LogBox.innerHTML += msg + "<br/>"
+    }else if( logtype=="r" ){ // red
+        LogBox.innerHTML +=  "<p id='parared'>" + msg + " </p><br/>"
+    }else if( logtype=="g" ){ // green
+        LogBox.innerHTML +=  "<p id='paragreen'>" + msg + " </p><br/>"
+    }else if( logtype=="b" ){ // bold
+        LogBox.innerHTML +=  "<p id='parabold'>" + msg + " </p><br/>"
+    }
+
+    if(lines){
+        LogBox.innerHTML += "-------------------------- <br/>"
+    }
+
+}
+
+
 // change window / navigation bar
 function changebar(x){
     document.getElementById("tool").style.display = x == 0 ? "block" : "none"
@@ -133,7 +179,14 @@ function changebar(x){
     document.getElementById("helpbar").style.display = x == 2 ? "block" : "none"
     document.getElementById("settingsdata").style.display = x == 3 ? "block" : "none"
     document.getElementById("convert").style.display = x == 4 ? "block" : "none"
+    document.getElementById("logger").style.display = x == 5 ? "block" : "none"
     
+}
+
+// toggle hint that tells you how to open browser log
+function ToggleLogHint(){
+    document.getElementById('loghint').style.display =  document.getElementById('loghint').style.display == 'none' ? 'block' : 'none'
+	
 }
 
 // settings
