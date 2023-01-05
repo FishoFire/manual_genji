@@ -14,8 +14,9 @@
 		<button onclick="changebar(3)" class="sidebarbutton">settings</button> 
 		<button onclick="changebar(0)" class="sidebarbutton">data</button> 
 		<button onclick="changebar(1)" class="sidebarbutton">save/load</button> 
-		<button onclick="changebar(2)" class="sidebarbutton">help</button> 
-		<button onclick="changebar(4)" class="sidebarbutton">(beta) convert map</button>
+		<button onclick="changebar(4)" class="sidebarbutton">convert map</button>
+		<button onclick="changebar(5)" class="sidebarbutton">log</button> 
+		<button onclick="changebar(2)" class="sidebarbutton">help ?</button> 
 	</div>
 </div>
 
@@ -283,13 +284,14 @@
 	<div class="contentblock">
 		<p>
 		<strong>step 1</strong><br/>
-		Open the editor on code <b>54CRY</b>  <br/>
-		Alternatively the vector tool on QR1PZ also still works if you prefere that.<br/>
+		Go ingame and open the editor on code <b>54CRY</b>  <br/>
+		Make your map with the ingame editor. <br/>
+		<!--Alternatively the vector tool on QR1PZ also still works if you prefere that.<br/>-->
 		</p>
 
 		<p>
-		<strong>step 2</strong> <br/>
-		Find the vector co-ordinates with the editor or the vector tool.<br/>
+		<strong>step 2 </strong><br/>
+		Put the data from the game inside the web interface.<br/>
 		In the editor the information about selected orbs or checkpoints is displayed on the left.<br>
 		Type the vectors in the <i>data</i> tab of this web interface.<br/>
 		There is no way to automate this without the inspector, have fun typing.<br/>
@@ -303,6 +305,7 @@
 		Make sure the langauge in the <i>settings</i> tab matches your overwatch client.<br/>
 		Save the data in the <i>save/load</i> tab for later editing. <br/>
 		Press the big <i>copy map to clipboard</i> button on top. <br/>
+		Wait for the code to compile, it will copy your clipboard. <br/>
 		Do not tab out while compiling! <br/>
 		</p>
 
@@ -317,7 +320,8 @@
 		<p>
 		<strong>step 5</strong> <br/>
 		The map is now ready for testing and playing.<br/>
-		Remember that it's still possible to generate a share code for te map the usual way.<br/>
+		Ingame you can generate a share code for your map so others can open it. <br/>
+
 		</p>
 
 	</div>
@@ -391,7 +395,37 @@
 	</div>
 </div>
 
-<div style="text-align:left"><small>version 1</small></div>
+
+<div id="logger">
+	<div class="contentblock">
+	
+		<b>Log</b> <br/>
+		Information the last save/load/convert commands is displayed here. <br/>
+		<!--<textarea readonly id="LogBox" style="width:90%;overflow:visible"></textarea>-->
+		<div id="LogBox"> </div>
+
+		<hr>
+		<small>
+		Advanced information can be found in the browsers log.<button onclick="ToggleLogHint()" style="padding:2px;margin:1px"> ? </button> <br/>	
+		<div id="loghint" style="display:none">
+			In most browsers this is done with these steps: <br/>
+			1) right clicking anywere on the page to open the context menu <br/>
+			2) click the "inspect" page option <br/>
+			3) go to the "console" tab inside the inspector window <br/>
+		</div>
+		</small>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+
+<div style="text-align:left"><small>version 1.2</small></div>
 
 
 

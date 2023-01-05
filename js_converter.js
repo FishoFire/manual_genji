@@ -99,6 +99,10 @@ function FindArray(pastahere, arrayName,regexthing, arraytopaste) {
 
 
 function Converter(){
+    LogOpenNew()
+    LogAdd("Starting map conversion")
+ 
+ 
     convert_positions = []
     convert_credits = []
     convert_ult = []
@@ -130,8 +134,9 @@ function Converter(){
     convert_team = "team1"
 
     try {   
+        LogAdd("Starting compile in overpy")
         pasta =  decompileAllRules(document.getElementById("converterdata").value , document.getElementById("lang_convert").value );
- 
+        LogAdd("Reading rule data")
         var settingstr = pasta.substring(0, pasta.indexOf('rule "'))
 
         convert_team = settingstr.includes('team1Slots": 0,') ? 'team2' : 'team1'
@@ -244,11 +249,14 @@ function Converter(){
         }
 
     //return
+    LogAdd("Data gathered")
+    LogAdd("Attempting to translated to map data")
     defaultdata() // remove checkpoints and map data and set defaults
             
     convert_positions = waitcheck(convert_positions, 1)
     
     while(convert_positions.includes("vect")){
+            // new cp ====================
             CheckPoints.push(
                 [
                 "0,0,0", //0 pos
@@ -263,7 +271,8 @@ function Converter(){
                 [false,"",false,"",""] // 9 text
             ]
             )
-    
+
+            // add position and teleport ====================
             var thiscp = CheckPoints.length-1
             if(convert_positions[0] == "["){ // teleport
                 convert_positions = convert_positions.substring(1)
@@ -280,6 +289,7 @@ function Converter(){
             
         }
         
+        // ult ====================
         if (convert_ult.length > 0){
             convert_ult = waitcheck(convert_ult, 1)
             convert_ult = convert_ult.split(",")
@@ -289,6 +299,7 @@ function Converter(){
                 }
             } 
         }
+        // dash ====================
         if (convert_dash.length > 0){
             convert_dash = waitcheck(convert_dash, 1)
             convert_dash = convert_dash.split(",")
@@ -299,13 +310,13 @@ function Converter(){
             } 
         }
         
-        
-
+        // name and code ====================
         if(convert_credits[0]){MapData[0] = convert_credits[0].trim()}
         if(convert_credits[1]){MapData[1] = convert_credits[1].trim()}
         MapData[22] = convert_team
  
         /*
+        // bans for now left out because of the difficulties scraping the data
         MapData[3] = convert_bans[0]//triple
         MapData[4] = convert_bans[1]//multi
         MapData[5] = convert_bans[2]//emote
@@ -397,12 +408,12 @@ function Converter(){
         }
         
         LoadData()
-        ShowMsg("done")
-
-       
+           
     } catch(e){
-        ShowMsg("Couldnt load data")
         console.log(e)
+        LogAdd("! Failed to load data !","b",true)
+        LogAdd(e)
+        changebar(5)
 
     }
     
