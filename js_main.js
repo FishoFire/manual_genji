@@ -8,9 +8,10 @@ var maxtimecomp = 240
 var CheckPoints = []
 var MapData = []
 var LogBox = document.getElementById("LogBox")
+
 defaultdata()
 MakeTitles()
-
+SetHeaderData()
 
 // functions ##############################################################
 
@@ -25,7 +26,7 @@ function defaultdata(){
         false,
         false,
         false,
-        false,
+        true, // dash start
         true,
         "0",
         120, // 11 time limit 
@@ -314,5 +315,31 @@ function UpdateAfterChange(){
 }
 
 
+function SetHeaderData(){
 
+    document.getElementById("maker").value =  MapData[0]
+    document.getElementById("code").value =  MapData[1]
+    document.getElementById("notes").value =  MapData[2]
+    document.getElementById("ban_triple").checked = MapData[3]
+    document.getElementById("ban_multi").checked =  MapData[4]
+    document.getElementById("ban_emote" ).checked = MapData[5]
+    document.getElementById("ban_create").checked = MapData[6]
+    document.getElementById("ban_dbhop" ).checked =  MapData[7]
+    document.getElementById("ban_dashstart" ).checked = MapData[8]
+    document.getElementById("portalOn").checked = MapData[9]
+    document.getElementById("dif").value = MapData[10]
+    document.getElementById("comptimeslider").value = MapData[11] 
+    document.getElementById("comptimenumber").value = MapData[11] 
+    document.getElementById("comptoggle").checked = MapData[12]      
+    document.getElementById("compattempt").value = MapData[13] 
+    document.getElementById("titletoggle").checked = MapData[15]
+    document.getElementById("comprestart").checked = MapData[16]	
+    document.getElementById("compdesc").value = MapData[17]	
+    document.getElementById("iwtcolor").value = MapData[18]	    
+    document.getElementById("customdif").value  = MapData[19] 
+    document.getElementById("customdifcolor").value =  MapData[20]
+    document.getElementById("ban_climb").checked =  MapData[21]
+    document.getElementById("teamselect").value = MapData[22]
+    document.getElementById("faketripleon").checked = MapData[23]
 
+}

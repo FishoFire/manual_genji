@@ -128,7 +128,9 @@ function ExportJsonFile(){ // to file
 function LoadData(){ // after setting the data with previous codes, checks the variables and loads it to display in the interface
           // check data
         try{
+           
             LogAdd("Attempting to read data")
+  
             MapData[0] =  MapData[0] ?  MapData[0] : ""
             MapData[1] =  MapData[1] ?  MapData[1] : ""
             MapData[2] =  MapData[2] ?  MapData[2] : ""
@@ -191,30 +193,8 @@ function LoadData(){ // after setting the data with previous codes, checks the v
             // show first tab
             document.getElementById("cpdata").style.display = "block"
             document.getElementById("orbs-kills").style.display = "block"
-            document.getElementById("maker").value =  MapData[0]
-            document.getElementById("code").value =  MapData[1]
-            document.getElementById("notes").value =  MapData[2]
-            document.getElementById("ban_triple").checked = MapData[3]
-            document.getElementById("ban_multi").checked =  MapData[4]
-            document.getElementById("ban_emote" ).checked = MapData[5]
-            document.getElementById("ban_create").checked = MapData[6]
-            document.getElementById("ban_dbhop" ).checked =  MapData[7]
-            document.getElementById("ban_dashstart" ).checked = MapData[8]
-            document.getElementById("portalOn").checked = MapData[9]
-            document.getElementById("dif").value = MapData[10]
-            document.getElementById("comptimeslider").value = MapData[11] 
-            document.getElementById("comptimenumber").value = MapData[11] 
-            document.getElementById("comptoggle").checked = MapData[12]      
-            document.getElementById("compattempt").value = MapData[13] 
-            document.getElementById("titletoggle").checked = MapData[15]
-            document.getElementById("comprestart").checked = MapData[16]	
-            document.getElementById("compdesc").value = MapData[17]	
-            document.getElementById("iwtcolor").value = MapData[18]	    
-            document.getElementById("customdif").value  = MapData[19] 
-            document.getElementById("customdifcolor").value =  MapData[20]
-            document.getElementById("ban_climb").checked =  MapData[21]
-            document.getElementById("teamselect").value = MapData[22]
-            document.getElementById("faketripleon").checked = MapData[23]
+            
+            SetHeaderData()
             
             // load things in the tab
             SelectedCp = 0
