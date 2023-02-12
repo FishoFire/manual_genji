@@ -1,0 +1,74 @@
+variables
+{
+	global:
+		0: A
+		4: TimeRemaining
+		7: H
+		8: I
+		18: TQ
+		22: EditMode
+		23: TQ5
+		24: TQ6
+		25: BounceToggleLock
+		26: killballnumber
+		27: pinballnumber
+		32: LeaderBoardFull
+		33: LeaderBoardHuds
+		34: LeaderBoardRemake
+		39: DashExploitToggle
+		43: PortalOn
+		50: CompMode
+		56: instructiontext
+		58: HudStoreEdit
+		60: SaveName
+		61: SaveCp
+		62: SaveEnt
+		63: SaveTimer
+		64: SaveElapsed
+		65: SavePauseTime
+		66: SavePauseEnabled
+		80: BanTriple
+		81: BanMulti
+		82: BanCreate
+		83: BanDead
+		84: BanEmote
+		85: BanClimb
+}
+
+actions
+{
+	Global.A = Array(Vector(17.260, 0, -17.405), Vector(9.264, 0, -17.760), Vector(1.125, 0, -17.804));
+	Global.TimeRemaining = 265;
+	Global.H = Array();
+	Global.I = Array();
+	Global.TQ = Array();
+	Global.EditMode = Array();
+	Global.TQ5 = Array();
+	Global.TQ6 = Array();
+	Global.BounceToggleLock = Array();
+	Global.killballnumber = Array();
+	Global.pinballnumber = Array();
+	Global.LeaderBoardFull = Array();
+	Global.LeaderBoardHuds = Array(0, 16, 17);
+	Global.LeaderBoardRemake = True;
+	Global.DashExploitToggle = False;
+	Global.PortalOn = False;
+	Global.CompMode = False;
+	Global.instructiontext = Array(Custom String("Change in Comp Mode instruction message hud 1"), Custom String(
+		"Change in Comp Mode instruction message hud 2"), Custom String("Change in Comp Mode instruction message hud 2"),
+		Custom String("Change in Comp Mode instruction message hud 2"));
+	Global.HudStoreEdit = Array();
+	Global.SaveName = Array();
+	Global.SaveCp = Array();
+	Global.SaveEnt = Array();
+	Global.SaveTimer = Array();
+	Global.SaveElapsed = Array();
+	Global.SavePauseTime = Array();
+	Global.SavePauseEnabled = Array();
+	Global.BanTriple = Array();
+	Global.BanMulti = Array();
+	Global.BanCreate = Array();
+	Global.BanDead = Array();
+	Global.BanEmote = Array();
+	Global.BanClimb = Array();
+}
