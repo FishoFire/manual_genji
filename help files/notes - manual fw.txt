@@ -1,0 +1,52 @@
+todo:
+- output orbs, kills, cps etc found. make easy to copy format
+vect tab radius/setings tab etc
+- check if i already fixed the sub not detecting thing
+- wrap more things in try catch
+- version log:
+    - load button grey out if nothing to load
+    - now has a load page that atempt to display what is going on isntead of a mesage baner on top.
+
+long term:
+- turn extension setings into actual extension settings
+- make test thing: auto input and convert serveral datas and check if loaded data matches the desired results. store in input file and result file. only relevant data so it doesnt brick when i add more map data.
+
+- d1qfv = 1) converting kill orbs doesnt work 2) not reset bug on old fw but not on new
+---------------------------
+detect subs
+
+- detect subs as seperate from rules
+some detection breaks because subs arent seperate from rules
+- they look like rules so its tricky
+
+- rule check doesnt take into account "\ndef Sub0()"
+
+def .... :
+"\ndef "
+
+check for next rule
+store
+ceheck if next sub
+if sub is sooner then store else ignore
+cut off using number if possible, but perhaps need to split because cut requires the name
+
+
+---------------------------
+orb thing
+
+- orbs and kils that are global dont get detected
+- first have to change how orbs/lava gets added to, because it ignores cp soemtimes
+- on detecting this problem, buttns for solutions
+- try add to every cp, only work when enough fx
+- try add to only 1 cp and make user copy it themselves
+
+
+---------------------------
+insepctor to pasta
+
+normally doesnt work because its not a rule and cant detect rule
+ignoring rule is problem because translations
+
+bypass: put ur data in a rule
+
+other solution: try find how to either turn into a temp rule or detec
