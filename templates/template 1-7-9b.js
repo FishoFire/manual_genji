@@ -2128,7 +2128,7 @@ rule ("Enter Spectate | Hold Interact") {
     }
 }
 
-rule ("Toggle Invincible Mode | Melee + Rel﻿oad") {
+rule ("Toggle Invincible Mode | Melee + Reload") {
     event {
         Ongoing - Each Player;
         All;
@@ -2320,7 +2320,7 @@ rule ("Skip | Crouch + Primary/Secondary Fire") {
     }
 }
 
-rule ("Quick Reset | Rel﻿oad, Hold Rel﻿oad to Enable") {
+rule ("Quick Reset | Reload, Hold Reload to Enable") {
     event {
         Ongoing - Each Player;
         All;
