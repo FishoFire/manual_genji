@@ -274,6 +274,13 @@ const customGameSettingsSchema =
                 "pt-BR": "Reproduzir Mais Efeitos",
                 "zh-CN": "播放更多效果"
             },
+            "projectiles": {
+                points: 4,
+                descriptionLocalized: {
+                    "en-US": "Adds projectiles to the Projectile Type menu of the Create Projectile actions."
+                },
+                "en-US": "Projectiles",
+            },
             "spawnMoreDummyBots": {
                 "points": 2,
                 "guid": "0000000128E7",
@@ -780,6 +787,73 @@ const customGameSettingsSchema =
                         "ru-RU": "Время возрождения",
                         "zh-CN": "复生时间",
                         "zh-TW": "重生時間"
+                    },
+                    "tankPassiveHealthBonus": {
+                        "values": {
+                            "1Tank2Offense2Support": {
+                                "default": true,
+                                "guid": "000000015884",
+                                "en-US": "1 Tank 2 Offense 2 Support",
+                                "de-DE": "1 Tank 2 Offensiv 2 Unterstützung",
+                                "es-ES": "1 tanque 2 DPS 2 apoyos",
+                                "es-MX": "1 tanque 2 de ataque y 2 de apoyo",
+                                "fr-FR": "1 Tank 2 Dégâts 2 Soutiens",
+                                "it-IT": "1 tank 2 eroi d'attacco 2 eroi di supporto",
+                                "ja-JP": "1タンク、2ダメージ、2サポート",
+                                "ko-KR": "돌격 담당 1명 공격 담당 2명 지원 담당 2명",
+                                "pl-PL": "1 tank 2 postaci natarcia i 2 wsparcie",
+                                "pt-BR": "1 Tanque 2 Ofensivos 2 Suportes",
+                                "ru-RU": "1 танк 2 бойца 2 героя поддержки",
+                                "zh-CN": "1重装，2输出，2支援",
+                                "zh-TW": "1名肉盾型，2名攻擊型，2名輔助型"
+                            },
+                            "alwaysEnabled": {
+                                "guid": "00000001ABBD",
+                                "en-US": "Always Enabled",
+                                "de-DE": "Immer aktiv",
+                                "es-ES": "Siempre habilitado",
+                                "es-MX": "Siempre habilitado",
+                                "fr-FR": "Toujours activé",
+                                "it-IT": "Sempre disponibile",
+                                "ja-JP": "常に有効",
+                                "ko-KR": "항상 활성화",
+                                "pl-PL": "Zawsze włączone",
+                                "pt-BR": "Sempre Habilitado",
+                                "ru-RU": "Всегда включено",
+                                "zh-CN": "始终启用",
+                                "zh-TW": "永遠啟用"
+                            },
+                            "disabled": {
+                                "guid": "00000001ABBE",
+                                "en-US": "Disabled",
+                                "de-DE": "Deaktiviert",
+                                "es-ES": "Deshabilitado",
+                                "es-MX": "Deshabilitado",
+                                "fr-FR": "Désactivé",
+                                "it-IT": "Disattivato",
+                                "ja-JP": "無効",
+                                "ko-KR": "비활성화",
+                                "pl-PL": "Wyłączono",
+                                "pt-BR": "Desabilitado",
+                                "ru-RU": "Откл.",
+                                "zh-CN": "禁用",
+                                "zh-TW": "停用"
+                            }
+                        },
+                        "guid": "00000001AB6F",
+                        "en-US": "Tank Role Passive Health Bonus",
+                        "de-DE": "Passiver Trefferpunktebonus für Tankrolle",
+                        "es-ES": "Bonificación de salud de la pasiva del rol de tanque",
+                        "es-MX": "Bonificación de salud para la pasiva del rol de tanque",
+                        "fr-FR": "Bonus de points de vie passif pour tank",
+                        "it-IT": "Bonus alla salute dell'abilità passiva dei tank",
+                        "ja-JP": "タンクのロール・パッシブ ライフ・ボーナス",
+                        "ko-KR": "돌격 역할 생명력 보너스 지속 효과",
+                        "pl-PL": "Premia do zdrowia za pasywną zdolność roli tanka",
+                        "pt-BR": "Bônus de Vida Passivo da Função Tanque",
+                        "ru-RU": "Пассивный бонус к здоровью танков",
+                        "zh-CN": "重装职责被动生命值加成",
+                        "zh-TW": "肉盾角色類型被動生命值加成"
                     },
                     "disabledMaps": {
                         "guid": "000000010041",
@@ -3266,7 +3340,8 @@ const customGameSettingsSchema =
                     "default": "on",
                     "include": [
                         "mercy",
-                        "echo"
+                        "echo",
+                        "lifeweaver"
                     ],
                     "en-US": "%1$s"
                 },
@@ -3290,7 +3365,8 @@ const customGameSettingsSchema =
                         "soldier",
                         "sombra",
                         "hammond",
-                        "ramattra"
+                        "ramattra",
+                        "lifeweaver"
                     ],
                     "en-US": "%1$s"
                 },
@@ -3312,7 +3388,8 @@ const customGameSettingsSchema =
                         "soldier",
                         "sombra",
                         "hammond",
-                        "ramattra"
+                        "ramattra",
+                        "lifeweaver"
                     ],
                     "en-US": "%1$s Cooldown Time",
                     "de-DE": "%1$s – Abklingzeit",
@@ -4783,6 +4860,65 @@ const customGameSettingsSchema =
                         "ru-RU": "Лучевая пушка: сила отбрасывания взрывом",
                         "zh-CN": "粒子炮辅助攻击击退倍率",
                         "zh-TW": "粒子砲次要攻擊擊退距離"
+                    }
+                }
+            },
+            "lifeweaver": {
+                values: {
+                    "ultHealth%": {
+                        "values": "__percent__",
+                        "min": 50,
+                        "max": 300,
+                        "default": 100,
+                        "en-US": "Tree of Life Health"
+                    },
+                    "ability1Health%": {
+                        "values": "__percent__",
+                        "min": 0,
+                        "max": 500,
+                        "default": 100,
+                        "en-US": "Rejuvenating Dash Healing",
+                    },
+                    "secondaryFireHealth%": {
+                        "values": "__percent__",
+                        "min": 25,
+                        "max": 500,
+                        "default": 100,
+                        "en-US": "Petal Platform Health"
+                    },
+                    "primaryFireRange%": {
+                        "values": "__percent__",
+                        "min": 20,
+                        "max": 200,
+                        "default": 100,
+                        "en-US": "Life Grip and Healing Blossom Range",
+                    },
+                    "weaponsEnabled": {
+                        "values": {
+                            "all": {
+                                "guid": "000000006019",
+                                "default": true,
+                                "en-US": "All",
+                                "de-DE": "Alle",
+                                "es-ES": "Todas",
+                                "es-MX": "Todos",
+                                "fr-FR": "Toutes",
+                                "it-IT": "Tutte",
+                                "ja-JP": "すべて",
+                                "ko-KR": "모두 사용",
+                                "pl-PL": "Wszystkie",
+                                "pt-BR": "Todas",
+                                "ru-RU": "Все",
+                                "zh-CN": "全部",
+                                "zh-TW": "全部"
+                            },
+                            "healingBlossom": {
+                                "en-US": "Healing Blossom Only",
+                            },
+                            "thornVolley": {
+                                "en-US": "Thorn Volley Only",
+                            }
+                        },
                     }
                 }
             }
