@@ -57,10 +57,11 @@
 				<option value="15">extreme+</option>
 				<option value="16">hell</option>
 				<option value="17">don't display</option>
+				<option value="18">playtest</option>
 				<option value="custom">custom</option>
-			</select> 
-			
-			| 
+			</select> | Playtest display 
+			<input type="checkbox" id="playtestdisplay" onclick="UpdateTop()">
+			<br> 
 			<textarea rows="1" cols="20" placeholder="custom difficulty" id="customdif" onchange="UpdateTop();" disabled="true"></textarea> 
 			
 			| color <small>(custom difficulty)</small>
@@ -128,13 +129,14 @@
 			<input type="checkbox" id="ban_dashstart" onclick="UpdateTop()"> dash start |
 			<input type="checkbox" id="ban_climb" onclick="UpdateTop()">↑ wall climb |
 			<input type="checkbox" id="ban_emote" onclick="UpdateTop()">♥ emote <small>(not working until blizzard fixes)</small>
+			<br> <input type="checkbox" id="ban_bhop" onclick="UpdateTop()"> ≥ require bhop available
 		</div>
 
 		<div class="contentblock">
 
-			<input type="checkbox" id="portalOn" onclick="UpdateTop()" checked="true"> default portal addon (control maps) 
-			
-			| in world text color
+			<input type="checkbox" id="portalOn" onclick="UpdateTop()" checked="true"> default portal addon (control maps) |
+			<input type="checkbox" id="faketripleon" onclick="UpdateTop()" > fake triple jump addon <br>
+			in world text color
 			<select id="iwtcolor" onchange="MapData[18] = this.value">	
 				<option value="Aqua">Aqua</option>
 				<option value="Black">Black</option>
@@ -151,9 +153,10 @@
 				<option value="Violet">Violet</option>
 				<option value="White">White</option>
 				<option value="Yellow">Yellow</option>
-			</select> <br/>
+			</select> 
 
-			<input type="checkbox" id="faketripleon" onclick="UpdateTop()" > enable fake triple jump addon
+			
+
 			<!--
 			<label id="DashToggleEnabled">dash addon (automatic): disabled |</label>
 			<label id="UltToggleEnabled">| ult addon (automatic): disabled</label>   
@@ -223,8 +226,11 @@
 			<input type="checkbox" id="banmulti" onclick="UpdateAfterChange()"> ∞ multi |
 			<input type="checkbox" id="bancrea" onclick="UpdateAfterChange()" >♂ create |
 			<input type="checkbox" id="bandead" onclick="UpdateAfterChange()">X deadhop |
-			<input type="checkbox" id="banclimb" onclick="UpdateAfterChange()" >↑ wallclimb |
-			<input type="checkbox" id="banemote" onclick="UpdateAfterChange()">♥ emote <small>(not working until blizzard fixes)</small>
+			<input type="checkbox" id="banclimb" onclick="UpdateAfterChange()" >↑ wallclimb
+			<br>
+			<input type="checkbox" id="banemote" onclick="UpdateAfterChange()">♥ emote <small>(not working until blizzard fixes) |</small>
+			<input type="checkbox" id="banbhop" onclick="UpdateAfterChange()" >≥ require bhop available
+			
 			
 			<hr>
 

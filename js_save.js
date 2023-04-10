@@ -163,6 +163,8 @@ function LoadData(){ // after setting the data with previous codes, checks the v
             MapData[21] =  MapData[21] ?  MapData[21] :  false
             MapData[22] =  MapData[22] ?  MapData[22] :  'team1'
             MapData[23] =  MapData[23] ?  MapData[23] :  false
+            MapData[24] =  MapData[24] ?  MapData[24] :  false
+            MapData[25] =  MapData[25] ?  MapData[25] :  false
 
             if (CheckPoints.length > 0){
             // per cp things
@@ -176,7 +178,8 @@ function LoadData(){ // after setting the data with previous codes, checks the v
                         false, // create
                         false, // dead
                         false, // emote
-                        false // climb
+                        false, // climb
+                        false // require bhop
 
                     ]
                     CheckPoints[i][9] = CheckPoints[i][9]  && CheckPoints[i][9] != false ?  CheckPoints[i][9]  : [
