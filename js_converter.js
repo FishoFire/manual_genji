@@ -276,14 +276,14 @@ function Converter(){
             var thiscp = CheckPoints.length-1
             if(convert_positions[0] == "["){ // teleport
                 convert_positions = convert_positions.substring(1)
-                CheckPoints[thiscp][0] = defaultVect( convert_positions.substring("vect(".length,convert_positions.indexOf(")")) )                
+                CheckPoints[thiscp][0] = WSvector( convert_positions.substring("vect(".length,convert_positions.indexOf(")")) )                
                 convert_positions = convert_positions.substring(convert_positions.indexOf("),")+2)
                 CheckPoints[thiscp][1] = true
-                CheckPoints[thiscp][2] =  defaultVect( convert_positions.substring("vect(".length,convert_positions.indexOf(")")) )                
+                CheckPoints[thiscp][2] =  WSvector( convert_positions.substring("vect(".length,convert_positions.indexOf(")")) )                
                 convert_positions = convert_positions.substring(convert_positions.indexOf(")],")+3)
                 
             }else{
-                CheckPoints[thiscp][0] = defaultVect( convert_positions.substring("vect(".length,convert_positions.indexOf(")")) )
+                CheckPoints[thiscp][0] = WSvector( convert_positions.substring("vect(".length,convert_positions.indexOf(")")) )
                 convert_positions = convert_positions.substring(convert_positions.indexOf("),")+2) // cut out
             }
             
@@ -339,7 +339,7 @@ function Converter(){
             var tempbounce = convert_bounces[0]
             convert_bounces[0] = []
             while(tempbounce.includes("vect")){
-                convert_bounces[0].push(defaultVect(tempbounce.substring( "vect(".length, tempbounce.indexOf(")") ) ) )
+                convert_bounces[0].push(WSvector(tempbounce.substring( "vect(".length, tempbounce.indexOf(")") ) ) )
                 tempbounce = tempbounce.substring(tempbounce.indexOf(")")+2)
             }
             convert_bounces[1] = convert_bounces[1].length > 0 ? waitcheck(convert_bounces[1], 1).split(",") : []
@@ -362,7 +362,7 @@ function Converter(){
 
                 if( convert_bounces[5][i] >= 0 &&  convert_bounces[5][i] < CheckPoints.length -1 &&  convert_bounces[5][i] != -500 ){
                     CheckPoints[Number(convert_bounces[5][i])][6].push( [
-                        defaultVect(convert_bounces[0][i]),
+                        WSvector(convert_bounces[0][i]),
                         Boolean(convert_bounces[1][i]),
                         Boolean(convert_bounces[2][i]),
                         Boolean(convert_bounces[3][i]),
@@ -386,7 +386,7 @@ function Converter(){
             var tempkills = convert_kills[0]
             convert_kills[0] = []
             while(tempkills.includes("vect")){
-                convert_kills[0].push(defaultVect(tempkills.substring( "vect(".length, tempkills.indexOf(")") ) ) )
+                convert_kills[0].push(WSvector(tempkills.substring( "vect(".length, tempkills.indexOf(")") ) ) )
                 tempkills = tempkills.substring(tempkills.indexOf(")")+2)
             }
             
@@ -398,7 +398,7 @@ function Converter(){
                 convert_kills[2][i] = convert_kills[2][i] ? convert_kills[2][i] : "-500" // cp
                 if( convert_kills[2][i] >= 0 &&  convert_kills[2][i] < CheckPoints.length -1 &&  convert_kills[2][i] != "-500" ){
                     CheckPoints[Number(convert_kills[2][i])][7].push( [
-                        defaultVect(convert_kills[0][i]),
+                        WSvector(convert_kills[0][i]),
                         String(convert_kills[1][i]),
                         String(convert_kills[2][i])
                     ]

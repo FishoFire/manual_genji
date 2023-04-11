@@ -71,6 +71,29 @@ function ShowMsg(x){
     
 }
 */
+
+function FieldColorsVect(thing){
+    try{
+        if (typeof thing != "undefined"){
+            thing.value = thing.value.replace("(","").replace(")","") // remove ()
+            IsVector(thing.value) ? thing.style.backgroundColor="": thing.style.backgroundColor="red"
+        }
+    } catch(e) {
+        console.log(e)
+    }
+}
+
+function FieldColorsNum(thing){
+    try{
+        if (typeof thing != "undefined"){
+            thing.value = thing.value.replace(",","") // remove ,
+            isNumber(thing.value) ? thing.style.backgroundColor="": thing.style.backgroundColor="red"
+        }
+    } catch(e) {
+        console.log(e)
+    }
+}
+
 // checks ##############################################################
 
 /*
@@ -97,42 +120,28 @@ function IsVector(vec){ // return true if vectir
     */
 }
 
-function defaultVect(vec){
-    return IsVector(vec) ? vec : "0,0,0"
-}
-
 function isNumber(numb){
     return !isNaN(numb) && numb != ""
 }
-function defaultNum(num){
+
+//turn to ws ##############################################################
+
+function WSvector(vec){
+    return IsVector(vec) ? vec : "0,0,0"
+}
+
+function WSnumber(num){
     return isNumber(num) ? num : "0"
 }
 
-function defaultBool(boo){
+function WSbool(boo){
     return boo ? "True" : "False"
 }
 
-function FieldColorsVect(thing){
-    try{
-        if (typeof thing != "undefined"){
-            thing.value = thing.value.replace("(","").replace(")","") // remove ()
-            IsVector(thing.value) ? thing.style.backgroundColor="": thing.style.backgroundColor="red"
-        }
-    } catch(e) {
-        console.log(e)
-    }
+function WSruleEnable(x){ // false results in adding disabled infront of rule
+    return x ? "" : "disabled "
 }
 
-function FieldColorsNum(thing){
-    try{
-        if (typeof thing != "undefined"){
-            thing.value = thing.value.replace(",","") // remove ,
-            isNumber(thing.value) ? thing.style.backgroundColor="": thing.style.backgroundColor="red"
-        }
-    } catch(e) {
-        console.log(e)
-    }
-}
 
 // update html ##############################################################
 

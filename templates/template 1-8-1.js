@@ -18,8 +18,8 @@ settings
 		Allow Players Who Are In Queue: Yes
 		Match Voice Chat: Enabled
 		Max Spectators: 3
-		Max Team 1 Players: 11
-		Max Team 2 Players: 0
+		Max Team 1 Players: ${team1players}
+		Max Team 2 Players: ${team2players}
 		Return To Lobby: Never
 		Swap Teams After Match: No
 	}
@@ -362,7 +362,7 @@ rule("SUB | Update Effect Cache")
 		Event Player.banstring = Custom String("");
 		Wait(0.016, Ignore Condition);
 		If(Workshop Setting Toggle(Custom String("Ban (applies to all levels)\n封禁(应用于所有关卡)"), Custom String("ban Triple Jump - 三段跳"),
-			False, 0));
+			${ban_triple}, 0));
 			Event Player.ban_triple = True;
 		Else If(Array Contains(Global.BanTriple, Event Player.A));
 			Event Player.banstring = Custom String("▲ {0}", Event Player.banstring);
@@ -370,7 +370,7 @@ rule("SUB | Update Effect Cache")
 		Else;
 			Event Player.ban_triple = False;
 		End;
-		If(Workshop Setting Toggle(Custom String("Ban (applies to all levels)\n封禁(应用于所有关卡)"), Custom String("ban Multiclim - 封禁蹭留"), False,
+		If(Workshop Setting Toggle(Custom String("Ban (applies to all levels)\n封禁(应用于所有关卡)"), Custom String("ban Multiclim - 封禁蹭留"), ${ban_multi},
 			1));
 			Event Player.ban_multi = True;
 		Else If(Array Contains(Global.BanMulti, Event Player.A));
@@ -380,7 +380,7 @@ rule("SUB | Update Effect Cache")
 			Event Player.ban_multi = False;
 		End;
 		If(Workshop Setting Toggle(Custom String("Ban (applies to all levels)\n封禁(应用于所有关卡)"), Custom String("ban Createbhop - 封禁卡小"),
-			False, 2));
+			${ban_create}, 2));
 			Event Player.ban_create = True;
 		Else If(Array Contains(Global.BanCreate, Event Player.A));
 			Event Player.banstring = Custom String("♂ {0}", Event Player.banstring);
@@ -388,7 +388,7 @@ rule("SUB | Update Effect Cache")
 		Else;
 			Event Player.ban_create = False;
 		End;
-		If(Workshop Setting Toggle(Custom String("Ban (applies to all levels)\n封禁(应用于所有关卡)"), Custom String("ban Deathbhop - 封禁死小"), False,
+		If(Workshop Setting Toggle(Custom String("Ban (applies to all levels)\n封禁(应用于所有关卡)"), Custom String("ban Deathbhop - 封禁死小"), ${ban_dbhop},
 			3));
 			Event Player.ban_dedhop = True;
 		Else If(Array Contains(Global.BanDead, Event Player.A));
@@ -398,7 +398,7 @@ rule("SUB | Update Effect Cache")
 			Event Player.ban_dedhop = False;
 		End;
 		If(Workshop Setting Toggle(Custom String("Ban (applies to all levels)\n封禁(应用于所有关卡)"), Custom String("ban Emote Savehop - 封禁表情爬"),
-			False, 4));
+			${ban_emote}, 4));
 			Event Player.ban_emote = True;
 		Else If(Array Contains(Global.BanEmote, Event Player.A));
 			Event Player.banstring = Custom String("♥ {0}", Event Player.banstring);
@@ -406,7 +406,7 @@ rule("SUB | Update Effect Cache")
 		Else;
 			Event Player.ban_emote = False;
 		End;
-		If(Workshop Setting Toggle(Custom String("Ban (applies to all levels)\n封禁(应用于所有关卡)"), Custom String("ban Wallclimb - 封禁爬墙"), False,
+		If(Workshop Setting Toggle(Custom String("Ban (applies to all levels)\n封禁(应用于所有关卡)"), Custom String("ban Wallclimb - 封禁爬墙"), ${ban_climb},
 			5));
 			Event Player.ban_climb = True;
 		Else If(Array Contains(Global.BanClimb, Event Player.A));
@@ -416,7 +416,7 @@ rule("SUB | Update Effect Cache")
 			Event Player.ban_climb = False;
 		End;
 		If(Workshop Setting Toggle(Custom String("Ban (applies to all levels)\n封禁(应用于所有关卡)"), Custom String(
-			"require bhop available - 留小跳进点 "), False, 5));
+			"require bhop available - 留小跳进点 "), ${ban_requirebhop}, 5));
 			Event Player.ban_bhop = True;
 		Else If(Array Contains(Global.BanBhop, Event Player.A));
 			"≥  √ ▼ ↓"
@@ -1430,21 +1430,21 @@ rule("Setup and Variables")
 		Global.CustomPortalCP = Empty Array;
 		Wait(1, Ignore Condition);
 		Global.DashExploitToggle = Workshop Setting Toggle(Custom String("Ban (applies to all levels)\n封禁(应用于所有关卡)"), Custom String(
-			"ban Dash Start - 0关卡Shift"), True, 2);
+			"ban Dash Start - 0关卡Shift"), ${ban_dashstart}, 2);
 		Global.PortalOn = Workshop Setting Toggle(Custom String("map settings \n地图设置"), Custom String(
-			"enable portals (control maps) - 启用传送门 (占点地图)"), True, 10);
+			"enable portals (control maps) - 启用传送门 (占点地图)"), ${portalon}, 10);
 		Global.CompMode = Workshop Setting Toggle(Custom String("Competitive mode\n竞赛模式"), Custom String(
-			"Turn on competitive mode - 开启竞赛模式"), False, 100);
+			"Turn on competitive mode - 开启竞赛模式"), ${compon}, 100);
 		If(Global.CompMode);
 			"-! comp minutes !- \r\n 5-240"
 			Global.CompTime = Workshop Setting Integer(Custom String("Competitive mode\n竞赛模式"), Custom String("time limit (global) - 时间限制"),
-				120, 1, 240, 101);
+				${comptime}, 1, 240, 101);
 			"-! comp attempt count !-"
-			Global.CompAtmpNum = Workshop Setting Integer(Custom String("Competitive mode\n竞赛模式"), Custom String("attempt count - 尝试次数"), 5, 0,
+			Global.CompAtmpNum = Workshop Setting Integer(Custom String("Competitive mode\n竞赛模式"), Custom String("attempt count - 尝试次数"), ${compattempt}, 0,
 				500, 102);
 			"-! comp restartlimiter !-"
 			Global.CompRestartLimit = Workshop Setting Toggle(Custom String("Competitive mode\n竞赛模式"), Custom String(
-				"disable restart during run - 竞赛中禁用重新开始"), False, 103);
+				"disable restart during run - 竞赛中禁用重新开始"), ${comprestarts}, 103);
 		End;
 		Wait(5, Ignore Condition);
 		Call Subroutine(KILLBALL);
@@ -1522,7 +1522,7 @@ rule("Player Initialize")
 	actions
 	{
 		"eventPlayer.EditorOn = createWorkshopSetting(bool, \"Editor - 作图模式\",\"Editor mode - 作图模式\" ,  editoron , 0) # Turn Editor On\r\n Turn Editor On"
-		Event Player.EditorOn = Workshop Setting Toggle(Custom String("map settings \n地图设置"), Custom String("Editor mode - 作图模式"), True,
+		Event Player.EditorOn = Workshop Setting Toggle(Custom String("map settings \n地图设置"), Custom String("Editor mode - 作图模式"), ${editoron},
 			-1);
 		Event Player.K = True;
 		Disable Game Mode HUD(Event Player);
@@ -2413,12 +2413,12 @@ rule("Huds: Global/Localplayer")
 		If(!Host Player.EditorOn);
 			"find the value"
 			Global.Difficultyhud = Array(Workshop Setting Combo(Custom String("map settings \n地图设置"), Custom String(
-				"difficulty (display hud) - 难度(显示hud)"), 0, Array(Custom String("beginner"), Custom String("easy-"), Custom String("easy"),
+				"difficulty (display hud) - 难度(显示hud)"), ${difficultyhud}, Array(Custom String("beginner"), Custom String("easy-"), Custom String("easy"),
 				Custom String("easy+"), Custom String("medium-"), Custom String("medium"), Custom String("medium+"), Custom String("hard-"),
 				Custom String("hard"), Custom String("hard+"), Custom String("very hard-"), Custom String("very hard"), Custom String(
 				"very hard+"), Custom String("extreme-"), Custom String("extreme"), Custom String("extreme+"), Custom String("hell"),
 				Custom String("don't display - 不显示"), Custom String("Playtest - 游戏测试")), 0), Workshop Setting Toggle(Custom String(
-				"map settings \n地图设置"), Custom String("Playtest display - 游戏测试"), False, 0));
+				"map settings \n地图设置"), Custom String("Playtest display - 游戏测试"), ${playteston}, 0));
 			"display\r\n 17th entry is 'dont display'"
 			If(First Of(Global.Difficultyhud) != 17);
 				Create HUD Text(Local Player.K && !Local Player.LeaderboardToggle ? Local Player : Null, Global.Difficultyhud[1] ? (String(
@@ -4074,6 +4074,48 @@ rule("Map Data - 数据录入 <---- INSERT HERE / 在这输入")
 	{
 		Ongoing - Global;
 	}
+	actions
+	{
+		"credits"
+		${mapcredits}
+		"ult and dash"
+		${ultarray}
+		${dasharray}
+
+
+		"======= Checkpoint data ==========================
+		Checkpoints positions - Vector(123.456,123.456,123.456) - The order is the checkpoint number.  The first Vector here is checkpoint 0"
+		${data_cps}
+
+		"======= killballs ==========================
+		Killball level number - Number 123 - Number of the checkpoint (in position array starting count with 0)"
+		${data_kill_cp}
+		
+		"killball positions - Vector(123.456,123.456,123.456)"
+		${data_kill_pos}
+
+		"killball radius - Vector(123.456,123.456,123.456)"
+		${data_kill_rad}
+		
+		"======= orbs ==========================
+		orb checkpoint number - Number 123 - Number of the checkpoint (in position array starting count with 0)"
+		${data_orb_cp}
+		
+		"orb position - Vector(123.456,123.456,123.456)"
+		${data_orb_pos}
+		
+		"orb bounce strength - Number 123.456 - default bounce is 10 - 0 means dont bounce"
+		${data_orb_strength}
+		
+		"orb gives ult - True or False"
+		${data_orb_ult}
+		
+		"orb gives dash - True or False"
+		${data_orb_dash}
+		
+		"orb locks checkpoint - True or False"
+		${data_orb_lock}
+	}
 }
 
 rule("Credits here - 作者名字 <---- INSERT HERE / 在这输入 ")
@@ -4103,23 +4145,23 @@ rule("Ban per CP - 封禁(每级) <---- INSERT HERE / 在这输入")
 		"Enter the checkpoint/level numbers in the lists below to apply the ban on them\r\n Remember the workshop toggle overwrites this list\r\n 在下面的列 表中输入检 查点 / 级别编号，封禁 掉对其应用\r\n 记住，工作坊切换 将覆盖 此列表"
 		Wait(1, Ignore Condition);
 		"======================\r\n ban  triple - 三段跳"
-		Global.BanTriple = Array(-1, -1, -1, -1, -1, -1, -1, -1, -1);
+		Global.BanTriple = Array(${cpbantriple});
 		"ban  multi - 蹭留"
-		Global.BanMulti = Array(-1, -1, -1, -1, -1, -1, -1, -1, -1);
+		Global.BanMulti = Array(${cpbanmulti});
 		"ban create - 卡小"
-		Global.BanCreate = Array(-1, -1, -1, -1, -1, -1, -1, -1, -1);
+		Global.BanCreate = Array(${cpbancreate});
 		"ban dedhop - 死小"
-		Global.BanDead = Array(-1, -1, -1, -1, -1, -1, -1, -1, -1);
+		Global.BanDead = Array(${cpbandead});
 		"ban emote - 表情爬"
-		Global.BanEmote = Array(-1, -1, -1, -1, -1, -1, -1, -1, -1);
+		Global.BanEmote = Array(${cpbanemote});
 		"ban climb - 爬墙"
-		Global.BanClimb = Array(-1, -1, -1, -1, -1, -1, -1, -1, -1);
+		Global.BanClimb = Array(${cpclimb});
 		"require bhop available - 留小跳进点"
-		Global.BanBhop = Array(-1, -1, -1, -1, -1, -1, -1, -1, -1);
+		Global.BanBhop = Array(${cprequirebhop});
 	}
 }
 
-disabled rule("Custom difficulty hud  - 自定义难度hud <---- INSERT HERE / 在这输入")
+${customdifenabled}rule("Custom difficulty hud  - 自定义难度hud <---- INSERT HERE / 在这输入")
 {
 	event
 	{
@@ -4134,7 +4176,7 @@ disabled rule("Custom difficulty hud  - 自定义难度hud <---- INSERT HERE / �
 		"1) 设置正常 难度hud为“不显示”\r\n2) 启用此规则\r\n3) 在下面的hud中输入难度"
 		Create HUD Text(All Players(All Teams), Global.Difficultyhud[1] ? (String("Capture") == Custom String("捕捉") || Custom String("{0}",
 			Color(Rose)) == Custom String("玫红") ? Custom String("游戏测试") : Custom String("Playtest")) : Custom String(""), Custom String(
-			"enter custom difficulty here"), Null, Top, -174, Color(Blue), Color(Green), Color(Blue), Visible To and String,
+			"${customdiftxt}"), Null, Top, -174, Color(Blue), Color(${customdifcolor}), Color(Blue), Visible To and String,
 			Default Visibility);
 		Modify Global Variable(HudStoreEdit, Append To Array, Last Text ID);
 	}
@@ -4152,10 +4194,10 @@ rule("Comp Mode instruction message - 竞赛模式指引消息 <---- INSERT HERE
 		"Instructions that show when you start comp mode.\r\n Due to the hud text limit, you there is 4 huds available.\r\n If you dont need a field just empty the textfield."
 		Log To Inspector(Custom String("--------"));
 		"竞赛模式 指引消息\r\n 指引消息将 会在竞赛模 式开始时 显示\r\n 由于 hud 文本限制，你有 4 个hud可用\r\n 如果你不需 要一个字段 只是空文 本字段"
-		Global.instructiontext[0] = Custom String("Change in Comp Mode instruction message hud 1");
-		Global.instructiontext[1] = Custom String("Change in Comp Mode instruction message hud 2");
-		Global.instructiontext[2] = Custom String("Change in Comp Mode instruction message hud 2");
-		Global.instructiontext[3] = Custom String("Change in Comp Mode instruction message hud 2");
+		Global.instructiontext[0] = Custom String("${compdescription[0]}");
+		Global.instructiontext[1] = Custom String("${compdescription[1]}");
+		Global.instructiontext[2] = Custom String("${compdescription[2]}");
+		Global.instructiontext[3] = Custom String("${compdescription[3]}");
 	}
 }
 
@@ -4167,7 +4209,7 @@ disabled rule("-----------------------------------------------------------------
 	}
 }
 
-disabled rule("Title Data - 标题数据 <---- EDIT ME / 在此处编辑")
+${titleon}rule("Title Data - 标题数据 <---- EDIT ME / 在此处编辑")
 {
 	event
 	{
@@ -4179,12 +4221,11 @@ disabled rule("Title Data - 标题数据 <---- EDIT ME / 在此处编辑")
 		"enable this rule and fill in the title data below.\r\n 启用此规则 并填写下面 的标题数据"
 		Wait(1, Ignore Condition);
 		"checkpoint number \r\n 每关数量"
-		Global.TitleData[0] = Array(0, 10, 20, 30, 40, 50);
+		${titlecps}
 		"title \r\n 标题文本"
-		Global.TitleData[1] = Array(Custom String("Bunny"), Custom String("Jumper"), Custom String("Ninja"), Custom String("Pro"),
-			Custom String("Expert"), Custom String("Master"));
+		${titlenames}
 		"color\r\n 颜色"
-		Global.TitleData[2] = Array(Color(Lime Green), Color(White), Color(Yellow), Color(Orange), Color(Purple), Color(Red));
+		${titlecolors}
 	}
 }
 
@@ -4238,7 +4279,7 @@ disabled rule("Display World Record - 展示世界纪录 <---- EDIT ME / 在此�
 	}
 }
 
-disabled rule("HUD text for certain Checkpoints - 某些检查点的HUD文本 <---- EDIT ME / 在此处编辑")
+${hudeanbled}rule("HUD text for certain Checkpoints - 某些检查点的HUD文本 <---- EDIT ME / 在此处编辑")
 {
 	event
 	{
@@ -4250,13 +4291,13 @@ disabled rule("HUD text for certain Checkpoints - 某些检查点的HUD文本 <-
 		"the example fill shows a text for cp 1 and cp 3\r\n 示例填充 显示了cp 1和cp 3的文本"
 		Wait(1, Ignore Condition);
 		"in CpHudText fill in text\r\n 在 “CpHudText” 中填写文本"
-		Global.CpHudText = Array(Custom String("text cp 1"), Custom String("text cp 3"));
+		${hudtext}
 		"in CpHudCp fill in the at wich to display\r\n 在 “CpHudCp” 中填写要显 示的位置"
-		Global.CpHudCp = Array(1, 3);
+		${hudcps}
 	}
 }
 
-disabled rule("Inworld text for certain Checkpoints - 在世界文本中为某些检查点 <---- EDIT ME / 在此处编辑")
+${iwtenabled}rule("Inworld text for certain Checkpoints - 在世界文本中为某些检查点 <---- EDIT ME / 在此处编辑")
 {
 	event
 	{
@@ -4268,13 +4309,13 @@ disabled rule("Inworld text for certain Checkpoints - 在世界文本中为某�
 		"the example fill shows a text for cp 1 and cp 3\r\n 示例填充 显示了cp 1和cp 3的文本"
 		Wait(1, Ignore Condition);
 		"in CpIwtText fill in text \r\n 在 “CpIwtText” 中填写文本"
-		Global.CpIwtText = Array(Custom String("text cp 1"), Custom String("text cp 3"));
+		${iwttext}
 		"in CpIwtCp fill in cp at wich to display\r\n 在 “CpIwtCp” 中填写 要显示的cp"
-		Global.CpIwtCp = Array(1, 3);
+		${iwtcps}
 		"in CpIwtPos fill in the vector \r\n 在 “CpIwtPos” 中填充向量"
-		Global.CpIwtPos = Array(Vector(0, 0, 0), Vector(0, 0, 0));
+		${iwtpos}
 		"color applies to all \r\n 色彩运 用于全部"
-		Global.CpIwtColor = Color(Lime Green);
+		${iwtcolor}
 	}
 }
 
@@ -4324,7 +4365,7 @@ disabled rule("Dash/Blade | DEPRICATED, instructions inside - 刀/Shift | 已弃
 	}
 }
 
-disabled rule("Fake Triple Jump - enable rule - 启用此规则 - 假三级跳")
+${faketripleon}rule("Fake Triple Jump - enable rule - 启用此规则 - 假三级跳")
 {
 	event
 	{

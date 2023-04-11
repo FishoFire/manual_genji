@@ -166,8 +166,9 @@ variables
     ${data_kill_cp}
 
     just part of the string, paste inside string
-    ${mapcode}
-    ${mapmaker}
+    DELETED ${mapcode}
+    DELETED ${mapmaker}
+    ${mapcredits}
 
     // cp bans entire line
     ${cpbantriple}
@@ -176,6 +177,7 @@ variables
     ${cpbandead}
     ${cpbanemote}
     ${cpclimb}
+    ${cprequirebhop}
 
     // ws toggle ban
     ${ban_dashstart}
@@ -216,9 +218,9 @@ variables
 
     // addons
     
-    ${ulteanbled} // rule enable/disable
+    DELETED ${ulteanbled} // rule enable/disable
     ${ultarray}
-    ${dasheanbled} // rule enable/disable
+    DELETED ${dasheanbled} // rule enable/disable
     ${dasharray}
 
     ${titleon} // rule enable/disable
