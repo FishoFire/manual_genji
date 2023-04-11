@@ -45,7 +45,14 @@ function defaultdata(){
         "",//17comp description
         "Lime Green",// 18 iwt color
         "", // custom dif text
-        "Lime Green" // custom dif color
+        "Lime Green", // custom dif color
+        false, // ban climb
+        "team1", // team
+        false,  // fake triple
+        false, // require bhop
+        false // playtest display
+
+
         ]
 }
 
@@ -64,6 +71,29 @@ function ShowMsg(x){
     
 }
 */
+
+function FieldColorsVect(thing){
+    try{
+        if (typeof thing != "undefined"){
+            thing.value = thing.value.replace("(","").replace(")","") // remove ()
+            IsVector(thing.value) ? thing.style.backgroundColor="": thing.style.backgroundColor="red"
+        }
+    } catch(e) {
+        console.log(e)
+    }
+}
+
+function FieldColorsNum(thing){
+    try{
+        if (typeof thing != "undefined"){
+            thing.value = thing.value.replace(",","") // remove ,
+            isNumber(thing.value) ? thing.style.backgroundColor="": thing.style.backgroundColor="red"
+        }
+    } catch(e) {
+        console.log(e)
+    }
+}
+
 // checks ##############################################################
 
 /*
@@ -90,42 +120,28 @@ function IsVector(vec){ // return true if vectir
     */
 }
 
-function defaultVect(vec){
-    return IsVector(vec) ? vec : "0,0,0"
-}
-
 function isNumber(numb){
     return !isNaN(numb) && numb != ""
 }
-function defaultNum(num){
+
+//turn to ws ##############################################################
+
+function WSvector(vec){
+    return IsVector(vec) ? vec : "0,0,0"
+}
+
+function WSnumber(num){
     return isNumber(num) ? num : "0"
 }
 
-function defaultBool(boo){
+function WSbool(boo){
     return boo ? "True" : "False"
 }
 
-function FieldColorsVect(thing){
-    try{
-        if (typeof thing != "undefined"){
-            thing.value = thing.value.replace("(","").replace(")","") // remove ()
-            IsVector(thing.value) ? thing.style.backgroundColor="": thing.style.backgroundColor="red"
-        }
-    } catch(e) {
-        console.log(e)
-    }
+function WSruleEnable(x){ // false results in adding disabled infront of rule
+    return x ? "" : "disabled "
 }
 
-function FieldColorsNum(thing){
-    try{
-        if (typeof thing != "undefined"){
-            thing.value = thing.value.replace(",","") // remove ,
-            isNumber(thing.value) ? thing.style.backgroundColor="": thing.style.backgroundColor="red"
-        }
-    } catch(e) {
-        console.log(e)
-    }
-}
 
 // update html ##############################################################
 
@@ -217,6 +233,9 @@ function UpdateTop(){
     MapData[21] =  document.getElementById("ban_climb").checked
     MapData[22] = document.getElementById("teamselect").value
     MapData[23] = document.getElementById("faketripleon").checked
+    MapData[24] = document.getElementById("ban_bhop").checked
+    MapData[25] = document.getElementById("playtestdisplay").checked
+ 
 
     document.getElementById("customdif").disabled = document.getElementById("dif").value != "custom" 
     document.getElementById("customdifcolor").disabled = document.getElementById("dif").value != "custom" 
@@ -245,7 +264,8 @@ function UpdateSelection(){
     document.getElementById("bandead").checked = CheckPoints[parseInt(SelectedCp)][8][3]
     document.getElementById("banemote").checked = CheckPoints[parseInt(SelectedCp)][8][4] 
     document.getElementById("banclimb").checked = CheckPoints[parseInt(SelectedCp)][8][5] 
-
+    document.getElementById("banbhop").checked = CheckPoints[parseInt(SelectedCp)][8][6] 
+    
     document.getElementById("hudeanbledbox").checked = CheckPoints[parseInt(SelectedCp)][9][0]
     document.getElementById("hudtxt").value = CheckPoints[parseInt(SelectedCp)][9][1] 
     document.getElementById("iwteanbledbox").checked = CheckPoints[parseInt(SelectedCp)][9][2] 
@@ -293,6 +313,7 @@ function UpdateAfterChange(){
     CheckPoints[parseInt(SelectedCp)][8][3] = document.getElementById("bandead").checked
     CheckPoints[parseInt(SelectedCp)][8][4] = document.getElementById("banemote").checked
     CheckPoints[parseInt(SelectedCp)][8][5] = document.getElementById("banclimb").checked
+    CheckPoints[parseInt(SelectedCp)][8][6] = document.getElementById("banbhop").checked
 
     CheckPoints[parseInt(SelectedCp)][9][0] = document.getElementById("hudeanbledbox").checked
     CheckPoints[parseInt(SelectedCp)][9][1] = document.getElementById("hudtxt").value
@@ -341,5 +362,6 @@ function SetHeaderData(){
     document.getElementById("ban_climb").checked =  MapData[21]
     document.getElementById("teamselect").value = MapData[22]
     document.getElementById("faketripleon").checked = MapData[23]
-
+    document.getElementById("ban_bhop").checked = MapData[24]
+    document.getElementById("playtestdisplay").checked = MapData[25]
 }

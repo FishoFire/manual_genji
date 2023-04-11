@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "diff": "^5.1.0",
-    "uglify-js": "^3.17.4"
-  }
-}

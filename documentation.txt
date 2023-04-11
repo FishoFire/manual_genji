@@ -66,7 +66,7 @@ general workings:
         
         note: overpy only translates when going in a different langauge, make sure you also test if the translations dont give errors
 
-
+next available var of map: 26
 variables
     MapData (1d array that contains all settings and such)
         contains settings 
@@ -86,6 +86,7 @@ variables
             
             22 team 1 or 2
             23 fake triple enabled
+            25 playtest display
 
             full bans
             3 triple
@@ -95,6 +96,7 @@ variables
             7 death
             8 dashstart
             21 ban climb
+            24 require bhop
 
             comp
             11 comptime
@@ -134,6 +136,7 @@ variables
             3 dead
             4 emote
             5 climb
+            6 require bhop
 
         texts (inside 9)
             0 hud enabled
@@ -163,8 +166,9 @@ variables
     ${data_kill_cp}
 
     just part of the string, paste inside string
-    ${mapcode}
-    ${mapmaker}
+    DELETED ${mapcode}
+    DELETED ${mapmaker}
+    ${mapcredits}
 
     // cp bans entire line
     ${cpbantriple}
@@ -173,6 +177,7 @@ variables
     ${cpbandead}
     ${cpbanemote}
     ${cpclimb}
+    ${cprequirebhop}
 
     // ws toggle ban
     ${ban_dashstart}
@@ -213,9 +218,9 @@ variables
 
     // addons
     
-    ${ulteanbled} // rule enable/disable
+    DELETED ${ulteanbled} // rule enable/disable
     ${ultarray}
-    ${dasheanbled} // rule enable/disable
+    DELETED ${dasheanbled} // rule enable/disable
     ${dasharray}
 
     ${titleon} // rule enable/disable
