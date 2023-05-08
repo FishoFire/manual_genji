@@ -301,9 +301,11 @@ function Copy(){
                 LogAdd("translating")
                 var language = document.getElementById("languageInput").value;
                 if (language != "en-US"){ // recompile in overpy to translate if not eng
+              
                     data_pasta = decompileAllRules(data_pasta, "en-US");
                     //data_pasta = decompileAllRules(data_pasta, "fr-FR"); // force french wich always errors
                     //data_pasta = data_pasta + "\n#!disableMapDetectionFix"
+
                     data_pasta = compile(data_pasta, language);
                     data_pasta  = data_pasta.result;
                 }
