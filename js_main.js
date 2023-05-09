@@ -120,7 +120,7 @@ function IsVector(vec){ // return true if vectir
     */
 }
 
-function isNumberCheck(numb){
+function isNumberCheck(numb){ // renamed
     return !isNaN(numb) && numb != ""
 }
 
