@@ -4067,7 +4067,6 @@ rule("Map Data - 数据录入 <---- INSERT HERE / 在这输入")
 	{
 		"credits"
 		${mapcredits}
-		"ult and dash"
 		${ultarray}
 		${dasharray}
 

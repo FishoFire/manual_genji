@@ -87,7 +87,7 @@ function FieldColorsNum(thing){
     try{
         if (typeof thing != "undefined"){
             thing.value = thing.value.replace(",","") // remove ,
-            isNumber(thing.value) ? thing.style.backgroundColor="": thing.style.backgroundColor="red"
+            isNumberCheck(thing.value) ? thing.style.backgroundColor="": thing.style.backgroundColor="red"
         }
     } catch(e) {
         console.log(e)
@@ -120,7 +120,7 @@ function IsVector(vec){ // return true if vectir
     */
 }
 
-function isNumber(numb){
+function isNumberCheck(numb){
     return !isNaN(numb) && numb != ""
 }
 
@@ -131,7 +131,7 @@ function WSvector(vec){
 }
 
 function WSnumber(num){
-    return isNumber(num) ? num : "0"
+    return isNumberCheck(num) ? num : "0"
 }
 
 function WSbool(boo){

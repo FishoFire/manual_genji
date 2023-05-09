@@ -298,8 +298,8 @@ function Copy(){
 
             LogAdd("Checking if translation needed")
             try {
-                LogAdd("translating")
                 var language = document.getElementById("languageInput").value;
+                LogAdd("Translating to " + language)
                 if (language != "en-US"){ // recompile in overpy to translate if not eng
               
                     data_pasta = decompileAllRules(data_pasta, "en-US");

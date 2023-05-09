@@ -25,25 +25,10 @@ general workings:
         CLS already included in logopennew, just clears screen 
 
     update overpy version:
-        during my troubleshooting i found that for some reason overpy cant check variable indexes on my code
-        it trows errors at variable numbers
-        note that it will only trow the error on using overpy, thus not if you compile english
-        so compile in diferent langague to check it
-        it might only trow error itn the console log. note that this is catched so it doesnt apear red like most errors.
+        Just replace the overpy master folder with the new folder. 
+        You can download the full master from zeozo's main.
+        You used to have to comment out the 2x "Invalid index" errors from overpy, but this issue was fixed by changing my function name. So this is no longer required.
 
-        to fix this, go into the overpy.js file (inside vs code extension folder) that the web interface uses and disable the check
-                find the line by searching for "Invalid index" find the one for !both variables and subroutines!,
-                disable it for both subroutines and variables, by comenting out the error the line that returns the error
-                it looks like this:
-
-                    if (!isNumber(variable.index) || variable.index >= 128 || variable.index < 0) {
-                        error("Invalid index '"+variable.index+"' for "+varType+" variable '"+variable.name+"', must be from 0 to 127");
-                    }
-
-                comment out the line that starts with "error"
-
-        note that we only need overpy.js the rest of files can be deleted
-        but make sure you point to it via the index.html's script loading
 
     change template:
         If only a small part of the code is changed, it can be easier to swap out that part of the code in the template instead.
