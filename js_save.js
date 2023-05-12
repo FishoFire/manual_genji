@@ -192,6 +192,14 @@ function LoadData(){ // after setting the data with previous codes, checks the v
 
                 }
             }
+            // update outdated settings
+
+            if(MapData[10] == 18){ // playtest that got turned into 0
+                console.log("turned outdated playtest 18 value to 0")
+                MapData[10] = "0"
+            }
+
+
             LogAdd("Putting data in the interface")
             // show first tab
             document.getElementById("cpdata").style.display = "block"
