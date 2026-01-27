@@ -20,10 +20,16 @@ rule "workshop settings":
     A = createWorkshopSetting(float<6:>, "float", "float<6;>", 3.5)
     A = createWorkshopSetting(float<:6>, "float", "float<;6>", 3.5)
 
-    #heros
+    #heroes
     A = createWorkshopSetting(Hero, "hero", "hero", Hero.ANA)
     A = createWorkshopSetting(Hero, "hero", "hero", Hero.HAMMOND, 3)
 
     #enums
     A = createWorkshopSetting(enum["a", "b\nc\nd"], "enum", "enum", 0)
     A = createWorkshopSetting(enum[p"a", b"b", w"c"], "enum", "enum", 2)
+
+    #texture test
+    A = createWorkshopSetting(enum["<txC00000000008E02>"], "<txC00000000008E02>", "<txC00000000008E02>", 0)
+
+    #char workaround
+    A = createWorkshopSettingEnum("!\"#$%&'()*+,-./:\n;<=>?[\\]^_`{|}~", "!\"#$%&'()*+,-./:\n;<=>?[\\]^_`{|}~", 0, ["{test special chars:}", "!\"#$%&'()*+,-./:\n;<=>?[\\]^_`{|}~"])

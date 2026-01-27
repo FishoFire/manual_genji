@@ -7,6 +7,33 @@ variables {
     player:
         0: A
 }
+//Optimize for size enabled
+rule ("strict optimizations") {
+    event {
+        Ongoing - Global;
+    }
+    actions {
+        //Strict optimizations enabled
+        "Unless specified otherwise, none of these should be optimized"
+        Set Global Variable(A, Compare(Custom String("am"), ==, Custom String("**")));
+        Set Global Variable(A, Add(Global.B, 0));
+        Set Global Variable(A, Add(Global.B, Add(Left, Right)));
+        Set Global Variable(A, Multiply(Global.B, 0));
+        Set Global Variable(A, Multiply(Global.B, 0));
+        "0"
+        Set Global Variable(A, Null);
+        Set Global Variable(A, Multiply(Global.B, 1));
+        Set Global Variable(A, Divide(Global.B, 1));
+        Set Global Variable(A, Divide(0, Global.B));
+        Set Global Variable(A, And(Global.B, False));
+        Set Global Variable(A, And(Global.B, True));
+        Set Global Variable(A, And(Global.B, Not(Global.B)));
+        Set Global Variable(A, Or(Global.B, False));
+        Set Global Variable(A, Or(Global.B, True));
+        Set Global Variable(A, Or(Global.B, Not(Global.B)));
+    }
+}
+
 rule ("comparison") {
     event {
         Ongoing - Global;
@@ -21,6 +48,10 @@ rule ("comparison") {
         Set Global Variable(A, Compare(Global.B, ==, Null));
         "isGameInProgress()"
         Set Global Variable(A, Is Game In Progress);
+        "false"
+        Set Global Variable(A, False);
+        "should not be optimized"
+        Set Global Variable(A, Compare(Hero(Ana), ==, Custom String("azer{0}", Global.A)));
         Set Global Variable(A, Compare(Global.B, !=, Global.C));
         "true"
         Set Global Variable(A, True);
@@ -31,6 +62,10 @@ rule ("comparison") {
         Set Global Variable(A, Not(Compare(Global.B, !=, Null)));
         "not isGameInProgress()"
         Set Global Variable(A, Not(Is Game In Progress));
+        "true"
+        Set Global Variable(A, True);
+        "should not be optimized"
+        Set Global Variable(A, Compare(Hero(Ana), !=, Custom String("azer{0}", Global.A)));
         Set Global Variable(A, Compare(Global.B, >=, Global.C));
         "true"
         Set Global Variable(A, True);
@@ -66,9 +101,21 @@ rule ("add") {
         Set Global Variable(A, Multiply(2, Global.B));
         "3"
         Set Global Variable(A, 3);
+        "B"
+        Set Global Variable(A, Global.B);
+        "B"
+        Set Global Variable(A, Global.B);
         Set Global Variable(A, Add(Vector(Global.B, Global.C, Global.D), Vector(True, 2, 3)));
         "vect(5,7,9)"
         Set Global Variable(A, Vector(5, 7, 9));
+        "left + right"
+        Set Global Variable(A, Add(Left, Right));
+        "up"
+        Set Global Variable(A, Up);
+        "vect(1, -1, -1)"
+        Set Global Variable(B, Vector(True, -1, -1));
+        "vect(-1, 1, 1)"
+        Set Global Variable(C, Vector(-1, True, True));
     }
 }
 
@@ -85,6 +132,8 @@ rule ("subtract") {
         Set Global Variable(A, Null);
         "-1"
         Set Global Variable(A, -1);
+        "B"
+        Set Global Variable(A, Global.B);
         Set Global Variable(A, Subtract(Vector(Global.B, Global.C, Global.D), Vector(True, 2, 3)));
         "vect(-3,-3,-3)"
         Set Global Variable(A, Vector(-3, -3, -3));
@@ -250,6 +299,8 @@ rule ("and") {
         Set Global Variable(A, Global.B);
         "false"
         Set Global Variable(A, False);
+        "not (B or C)"
+        Set Global Variable(A, Not(Or(Global.B, Global.C)));
     }
 }
 
@@ -267,6 +318,8 @@ rule ("or") {
         Set Global Variable(A, Global.B);
         "true"
         Set Global Variable(A, True);
+        "not (B and C)"
+        Set Global Variable(A, Not(And(Global.B, Global.C)));
     }
 }
 
@@ -276,8 +329,10 @@ rule ("not") {
     }
     actions {
         Set Global Variable(A, Not(Global.B));
-        "B"
+        "not not B"
         Set Global Variable(A, Not(Not(Global.B)));
+        "B == C"
+        Set Global Variable(A, Compare(Global.B, ==, Global.C));
         "false"
         Set Global Variable(A, False);
         "true"
@@ -293,8 +348,8 @@ rule ("in") {
     actions {
         Set Global Variable(A, Array Contains(Global.B, Global.A));
         "true"
-        Set Global Variable(A, Array Contains(Array(1, Global.A, 3), 3));
-        Set Global Variable(A, Array Contains(Array(Global.A, 5, 6), 3));
+        Set Global Variable(A, True);
+        Set Global Variable(A, Compare(3, ==, Global.A));
         Set Global Variable(A, Not(Array Contains(Global.C, Global.B)));
     }
 }
@@ -315,6 +370,17 @@ rule ("ternaries") {
         Set Global Variable(A, If-Then-Else(Global.C, Global.D, Global.B));
         "D"
         Set Global Variable(A, Global.D);
+    }
+}
+
+rule ("handling random values") {
+    event {
+        Ongoing - Global;
+    }
+    actions {
+        Modify Player Variable(Random Value In Array(All Players(All Teams)), A, Add, True);
+        Set Player Variable(Random Value In Array(All Players(All Teams)), A, Add((Random Value In Array(All Players(All Teams))).A, True));
+        Modify Player Variable(Random Value In Array(All Players(All Teams)), A, Max, Global.B);
     }
 }
 

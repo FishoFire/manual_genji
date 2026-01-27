@@ -6,6 +6,7 @@ variables {
     player:
         0: A
 }
+//Optimize for size enabled
 rule ("0 to null") {
     event {
         Ongoing - Global;
@@ -18,8 +19,8 @@ rule ("0 to null") {
         Set Global Variable(A, Compare(Null, ==, Global.B));
         Set Global Variable(A, Compare(Global.B, !=, Null));
         Set Global Variable(A, Compare(Null, !=, Global.B));
-        Set Global Variable(A, Custom String("{0}{1}{2}", Null, Null, Null));
-        Set Global Variable(A, String("{0}, {1}, and {2}", Null, Null, Null));
+        Set Global Variable(A, Custom String("000"));
+        Set Global Variable(A, String("{0}, {1}, and {2}"));
         Big Message(All Players(All Teams), Null);
         Set Global Variable(A, Null);
         Set Global Variable At Index(A, Global.B, Null);
@@ -49,13 +50,13 @@ rule ("0 to false") {
         Set Global Variable(A, Random Integer(False, Global.B));
         Set Global Variable(A, Random Integer(Global.B, False));
         Set Global Variable(A, Subtract(False, Global.B));
-        Set Global Variable(A, Vector(False, False, False));
+        Set Global Variable(A, Add(Left, Right));
         Chase Global Variable At Rate(A, False, False, None);
         Chase Global Variable Over Time(A, False, False, None);
         Chase Player Variable At Rate(Global.B, A, False, False, None);
         Chase Player Variable Over Time(Global.B, A, False, False, None);
         Create Dummy Bot(Hero(Ana), Team 2, False, Global.B, Global.C);
-        Create HUD Text(All Players(All Teams), Custom String("", Null, Null, Null), Null, Null, Left, False, Color(White), Null, Null, Visible To, Visible Always);
+        Create HUD Text(All Players(All Teams), Custom String("123"), Null, Null, Left, False, Color(White), Null, Null, Visible To, Visible Always);
         For Global Variable(A, 0, False, False);
         End;
         For Player Variable(Global.B, A, 0, False, False);
@@ -99,7 +100,7 @@ rule ("1 to true") {
         Chase Player Variable At Rate(Global.B, A, True, True, None);
         Chase Player Variable Over Time(Global.B, A, True, True, None);
         Create Dummy Bot(Hero(Ana), Team 2, True, Global.B, Global.C);
-        Create HUD Text(All Players(All Teams), Custom String("", Null, Null, Null), Null, Null, Left, True, Color(White), Null, Null, Visible To, Visible Always);
+        Create HUD Text(All Players(All Teams), Custom String("123"), Null, Null, Left, True, Color(White), Null, Null, Visible To, Visible Always);
         For Global Variable(A, 1, True, True);
         End;
         For Player Variable(Global.B, A, 1, True, True);
@@ -116,6 +117,46 @@ rule ("null vector to null") {
     }
     actions {
         Create Dummy Bot(Hero(Ana), Team 2, Global.A, Null, Null);
+    }
+}
+
+rule ("other optimizations") {
+    event {
+        Ongoing - Global;
+    }
+    actions {
+        "left + right"
+        Set Global Variable(A, Add(Left, Right));
+        "left"
+        Set Global Variable(A, Left);
+        "left"
+        Set Global Variable(A, Left);
+        "right"
+        Set Global Variable(A, Right);
+        "right"
+        Set Global Variable(A, Right);
+        "up"
+        Set Global Variable(A, Up);
+        "up"
+        Set Global Variable(A, Up);
+        "down"
+        Set Global Variable(A, Down);
+        "down"
+        Set Global Variable(A, Down);
+        "forward"
+        Set Global Variable(A, Forward);
+        "forward"
+        Set Global Variable(A, Forward);
+        "backward"
+        Set Global Variable(A, Backward);
+        "backward"
+        Set Global Variable(A, Backward);
+        "B * left"
+        Set Global Variable(A, Multiply(Global.B, Left));
+        "B * up"
+        Set Global Variable(A, Multiply(Global.B, Up));
+        "B * forward"
+        Set Global Variable(A, Multiply(Global.B, Forward));
     }
 }
 

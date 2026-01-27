@@ -1,6 +1,214 @@
 {
-  "dependencies": {
-    "diff": "^5.1.0",
-    "uglify-js": "^3.17.4"
-  }
+    "name": "overpy",
+    "publisher": "Zezombye",
+    "displayName": "OverPy",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Zezombye/overpy"
+    },
+    "description": "High-level language for the Overwatch Workshop, with decompilation and compilation.",
+    "version": "9.4.9",
+    "scripts": {
+        "dev": "node esbuild.standalone.js --watch",
+        "compile": "node esbuild.js",
+        "compile-standalone": "node esbuild.standalone.js",
+        "watch": "npm-run-all -p watch:*",
+        "watch:esbuild": "node esbuild.js --watch",
+        "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+        "package": "pnpm run check-types && pnpm run lint && pnpm run test && node esbuild.js --production && node generateJsonSchema.mjs",
+        "compile-tests": "tsc -p . --outDir out",
+        "watch-tests": "tsc -p . -w --outDir out",
+        "check-types": "tsc --noEmit",
+        "lint": "npx eslint src --ext ts",
+        "test": "node esbuild.standalone.js && node runTests.mjs",
+        "prepare": "husky",
+        "publish": "del *.vsix && pnpm run package && pnpm vsce package --no-dependencies && pnpm vsce publish --no-dependencies --no-update-package-json --no-git-tag-version && python upload-to-openvsx.py"
+    },
+    "readme": "README.md",
+    "engines": {
+        "vscode": "^1.105.0",
+        "npm": "please-use-pnpm",
+        "yarn": "please-use-pnpm",
+        "pnpm": ">= 10.0.0"
+    },
+    "icon": "img/overpy.png",
+    "keywords": [
+        "overpy",
+        "overwatch",
+        "workshop",
+        "ow",
+        "owws"
+    ],
+    "activationEvents": [],
+    "browser": "out/extension.js",
+    "main": "out/extension.js",
+    "categories": [
+        "Programming Languages"
+    ],
+    "files": [
+        "img/**",
+        "out/*",
+        "syntaxes/**",
+        "LICENSE{,.txt}",
+        "customGameSettingsSchema.json",
+        "language-configuration.json"
+    ],
+    "contributes": {
+        "configuration": {
+            "title": "OverPy",
+            "properties": {
+                "overpy.workshopLanguage": {
+                    "type": "string",
+                    "description": "Specifies the language used for decompilation and compilation.",
+                    "default": "en-US",
+                    "enum": [
+                        "de-DE",
+                        "en-US",
+                        "es-ES",
+                        "es-MX",
+                        "fr-FR",
+                        "it-IT",
+                        "ja-JP",
+                        "ko-KR",
+                        "pl-PL",
+                        "pt-BR",
+                        "ru-RU",
+                        "zh-CN",
+                        "zh-TW"
+                    ],
+                    "enumDescriptions": [
+                        "German [de-DE]",
+                        "English [en-US]",
+                        "Spanish (Spain) [es-ES]",
+                        "Spanish (Mexico) [es-MX]",
+                        "French [fr-FR]",
+                        "Italian [it-IT]",
+                        "Japanese [ja-JP]",
+                        "Korean [ko-KR]",
+                        "Polish [pl-PL]",
+                        "Portugese (Brazil) [pt-BR]",
+                        "Russian [ru-RU]",
+                        "Chinese (Simplified) [zh-CN]",
+                        "Chinese (Traditional) [zh-TW]"
+                    ]
+                },
+                "overpy.compileOnSave": {
+                    "type": "boolean",
+                    "description": "Specifies whether to initiate a compilation on save.",
+                    "default": true
+                },
+                "overpy.onlySaveOnMainFile": {
+                    "type": "boolean",
+                    "description": "If \"Compile on save\" is enabled, only saves if the file is the main file (defined as not having a `#!mainFile` directive).",
+                    "default": false
+                },
+                "overpy.addTemplateOnNewFile": {
+                    "type": "boolean",
+                    "description": "Specifies whether to add a template when a new OverPy file is created. Warning: due to a bug (#196), the template will be inserted when a new file is saved to disk (as .opy file) for the first time.",
+                    "default": false
+                },
+                "overpy.showElementCountOnCompile": {
+                    "type": "boolean",
+                    "description": "Specifies whether to show the element count when a compilation is successful.",
+                    "default": true
+                }
+            }
+        },
+        "languages": [
+            {
+                "id": "overpy",
+                "aliases": [
+                    "OverPy",
+                    "overpy"
+                ],
+                "extensions": [
+                    ".opy"
+                ],
+                "configuration": "./language-configuration.json",
+                "icon": {
+                    "light": "/img/overpy.ico",
+                    "dark": "/img/overpy.ico"
+                }
+            }
+        ],
+        "grammars": [
+            {
+                "language": "overpy",
+                "scopeName": "source.opy",
+                "path": "./syntaxes/overpy.tmLanguage.json"
+            }
+        ],
+        "commands": [
+            {
+                "command": "overpy.compile",
+                "title": "Compile (OverPy -> Workshop)",
+                "category": "OverPy",
+                "icon": {
+                    "light": "/img/index.svg",
+                    "dark": "/img/index.svg"
+                }
+            },
+            {
+                "command": "overpy.decompile",
+                "title": "Decompile (Workshop -> OverPy)",
+                "category": "OverPy",
+                "icon": {
+                    "light": "/img/index.svg",
+                    "dark": "/img/index.svg"
+                }
+            },
+            {
+                "command": "overpy.insertTemplate",
+                "title": "Insert Template",
+                "category": "OverPy"
+            }
+        ],
+        "menus": {
+            "editor/title": [
+                {
+                    "when": "resourceLangId == overpy",
+                    "command": "overpy.compile",
+                    "group": "navigation@6"
+                }
+            ]
+        },
+        "jsonValidation": [
+            {
+                "fileMatch": "*.opy.json",
+                "url": "./customGameSettingsSchema.json"
+            }
+        ]
+    },
+    "dependencies": {
+        "@babel/standalone": "^7.28.5",
+        "babel-plugin-polyfill-es-shims": "^0.10.8",
+        "colors": "^1.4.0",
+        "diff": "^8.0.2",
+        "dotenv": "^17.2.3",
+        "js-interpreter": "^6.0.1",
+        "pofile": "^1.1.4",
+        "vscode-uri": "^3.1.0"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.28.5",
+        "@babel/preset-typescript": "^7.28.5",
+        "@types/babel__standalone": "^7.1.9",
+        "@types/mocha": "^10.0.10",
+        "@types/node": "^20.19.24",
+        "@types/vscode": "^1.105.0",
+        "@typescript-eslint/eslint-plugin": "^7.18.0",
+        "@typescript-eslint/parser": "^7.18.0",
+        "@vscode/test-cli": "^0.0.12",
+        "@vscode/test-electron": "^2.5.2",
+        "esbuild": "^0.25.11",
+        "eslint": "^8.57.1",
+        "husky": "^9.1.7",
+        "lint-staged": "^16.2.7",
+        "npm-run-all": "^4.1.5",
+        "typescript": "^5.9.3"
+    },
+    "lint-staged": {
+        "*.ts": "eslint --fix"
+    },
+    "packageManager": "pnpm@10.18.0+sha512.e804f889f1cecc40d572db084eec3e4881739f8dec69c0ff10d2d1beff9a4e309383ba27b5b750059d7f4c149535b6cd0d2cb1ed3aeb739239a4284a68f40cfa"
 }

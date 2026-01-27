@@ -1,2 +1,6 @@
 node_modules
 *.vsix
+/out/*
+!/out/overpy_standalone.js
+.env
+*.cpuprofile

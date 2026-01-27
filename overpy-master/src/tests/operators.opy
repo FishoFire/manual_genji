@@ -1,11 +1,32 @@
 #!optimizeForSize
 
+rule "strict optimizations":
+    #!optimizeStrict
+    #Unless specified otherwise, none of these should be optimized
+    A = "am" == "**"
+    A = B + 0
+    A = B + vect(0,0,0)
+    A = B - B
+    A = B * 0
+    A = len(B)*0 #0
+    A = B * 1
+    A = B / 1
+    A = 0 / B
+    A = B and false
+    A = B and true
+    A = B and not B
+    A = B or false
+    A = B or true
+    A = B or not B
+
 rule "comparison":
     A = B == C
     A = 1 == 0 #false
     A = B == B #true
     A = B == 0 #not B
     A = isGameInProgress() == true #isGameInProgress()
+    A = Hero.ANA == Map.KINGS_ROW #false
+    A = Hero.ANA == "azer{}".format(A) #should not be optimized
 
     A = B != C
     A = 1 != 0 #true
@@ -13,6 +34,8 @@ rule "comparison":
     A = B != 0
     A = not(B != 0) #not B
     A = isGameInProgress() != true #not isGameInProgress()
+    A = Hero.ANA != Map.KINGS_ROW #true
+    A = Hero.ANA != "azer{}".format(A) #should not be optimized
 
     A = B >= C
     A = 1 >= 0 #true
@@ -35,15 +58,22 @@ rule "add":
     A = B+0 #B
     A = B+B #B*2
     A = 1+2 #3
+    A = B+vect(0,0,0) #B
+    A = vect(0,0,0)+B #B
     A = vect(B,C,D)+vect(1,2,3)
     A = vect(1,2,3)+vect(4,5,6) #vect(5,7,9)
-    
+    A = vect(0,0,0) #left + right
+    A = vect(0,1,0) #up
+    B = Vector.LEFT + Vector.DOWN + Vector.BACKWARD #vect(1, -1, -1)
+    C = Vector.RIGHT + Vector.UP + Vector.FORWARD #vect(-1, 1, 1)
+
 rule "subtract":
     A = B-C
     A = B-C-D
     A = B-0 #B
     A = B-B #0
     A = 1-2 #-1
+    A = B-vect(0,0,0) #B
     A = vect(B,C,D)-vect(1,2,3)
     A = vect(1,2,3)-vect(4,5,6) #vect(-3,-3,-3)
 
@@ -103,7 +133,7 @@ rule "power":
     A = (-1)**B #0
     A = 2**3 #8
     A = (-2)**3 #0
-    
+
 rule "assignment":
     @Event eachPlayer
     A = B
@@ -130,6 +160,7 @@ rule "and":
     A = B and false #false
     A = B and B #B
     A = B and not B #false
+    A = not B and not C #not (B or C)
 
 rule "or":
     A = A or B
@@ -137,10 +168,12 @@ rule "or":
     A = A or true #true
     A = B or false #B
     A = B or not B #true
+    A = not B or not C #not (B and C)
 
 rule "not":
     A = not B
-    A = not not B #B
+    A = not not B #not not B
+    A = not not (B == C) #B == C
     A = not true #false
     A = not false #true
     A = 3 * not B
@@ -158,3 +191,9 @@ rule "ternaries":
     A = B if C else B #B
     A = B if not C else D #if-then-else(C, D, B)
     A = B if 0 != 0 else C if 0 != 0 else D #D
+
+rule "handling random values":
+    random.choice(getAllPlayers()).A += 0 #pass
+    random.choice(getAllPlayers()).A += 1
+    random.choice(getAllPlayers()).A = random.choice(getAllPlayers()).A + 1
+    random.choice(getAllPlayers()).A max= B

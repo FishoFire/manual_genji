@@ -8,6 +8,7 @@ variables {
     player:
         8: I
 }
+//Optimize for size enabled
 rule ("while loop") {
     event {
         Ongoing - Global;
@@ -56,8 +57,6 @@ rule ("while false") {
         Ongoing - Global;
     }
     actions {
-        While(False);
-        End;
         Modify Global Variable(B, Add, True);
     }
 }

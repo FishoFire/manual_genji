@@ -11,6 +11,7 @@ variables {
     player:
         1: B
 }
+//Optimize for size enabled
 rule ("function") {
     event {
         Ongoing - Each Player;
@@ -21,14 +22,30 @@ rule ("function") {
         Set Global Variable(A, Ray Cast Hit Player(Global.B, Global.C, Global.D, Global.E, True));
         Set Global Variable(A, Ray Cast Hit Position(Global.B, Global.C, Global.D, Global.E, False));
         Set Global Variable(A, Ray Cast Hit Normal(Global.B, Global.C, Global.D, Global.E, True));
-        Set Global Variable(A, Subtract(Compare(-3, >, Null), Compare(-3, <, Null)));
+        Set Global Variable(A, Divide(Divide(Multiply(Multiply(-3, 999999999999), 999999999999), 999999999999), 10));
         Set Global Variable(A, String Slice(Global.B, 2, 4));
         Chase Player Variable Over Time(Event Player, B, 9999, 3, Destination and Duration);
-        Create HUD Text(All Players(All Teams), Custom String("test", Null, Null, Null), Null, Null, Left, True, Color(Red), Null, Null, Visible To and String, Visible Always);
-        Create HUD Text(All Players(All Teams), Null, Null, Custom String("test", Null, Null, Null), Left, True, Null, Null, Color(Red), Visible To and String, Visible Always);
-        Create HUD Text(All Players(All Teams), Null, Custom String("test", Null, Null, Null), Null, Left, True, Null, Color(Red), Null, Visible To and String, Visible Always);
-        Create HUD Text(Null, Custom String("azer", Null, Null, Null), Custom String("dqsf", Null, Null, Null), Custom String("fdsq", Null, Null, Null), Left, -1, Color(Red), Color(White), Color(Yellow), Visible To Sort Order and String, Visible Never);
+        Chase Player Variable Over Time(Event Player, B, 9999, 3, Destination and Duration);
+        Chase Player Variable At Rate(Event Player, B, 9999, 3, Destination and Rate);
+        Chase Global Variable Over Time(B, 9999, True, Destination and Duration);
+        Chase Global Variable At Rate(B, 99999, True, Destination and Rate);
+        Create HUD Text(All Players(All Teams), Custom String("test"), Null, Null, Left, True, Color(Red), Null, Null, Visible To and String, Visible Always);
+        Create HUD Text(All Players(All Teams), Null, Null, Custom String("test"), Left, True, Null, Null, Color(Red), Visible To and String, Visible Always);
+        Create HUD Text(All Players(All Teams), Null, Custom String("test"), Null, Left, True, Null, Color(Red), Null, Visible To and String, Visible Always);
+        Create HUD Text(Null, Custom String("azer"), Custom String("dqsf"), Custom String("fdsq"), Left, -1, Color(Red), Color(White), Color(Yellow), Visible To Sort Order and String, Visible Never);
         Wait(False, Ignore Condition);
+        Set Global Variable(A, Closest Player To(Global.B, Global.C));
+        Set Global Variable(A, First Of(Sorted Array(Filtered Array(All Living Players(Global.C), Has Spawned(Current Array Element)), Distance Between(Current Array Element, Global.B))));
+        Set Global Variable(A, First Of(Sorted Array(Filtered Array(All Living Players(Global.C), Has Spawned(Current Array Element)), Distance Between(Current Array Element, Global.B))));
+        Set Global Variable(A, Farthest Player From(Global.B, Global.C));
+        Set Global Variable(A, First Of(Sorted Array(Filtered Array(All Living Players(Global.C), Has Spawned(Current Array Element)), Multiply(-1, Distance Between(Current Array Element, Global.B)))));
+        Set Global Variable(A, First Of(Sorted Array(Filtered Array(All Living Players(Global.C), Has Spawned(Current Array Element)), Multiply(-1, Distance Between(Current Array Element, Global.B)))));
+        Set Global Variable(A, Player Closest To Reticle(Global.A, Global.B));
+        Set Global Variable(A, First Of(Sorted Array(Filtered Array(All Living Players(Global.B), And(Has Spawned(Current Array Element), Compare(Current Array Element, !=, Global.A))), Angle Between Vectors(Facing Direction Of(Global.A), Subtract(Current Array Element, Eye Position(Global.A))))));
+        Set Global Variable(A, First Of(Sorted Array(Filtered Array(All Living Players(Global.B), And(Has Spawned(Current Array Element), Compare(Current Array Element, !=, Global.A))), Angle Between Vectors(Facing Direction Of(Global.A), Subtract(Current Array Element, Eye Position(Global.A))))));
+        Set Global Variable(A, Compare(Angle Between Vectors(Global.B, Random Value In Array(Global.C)), <=, Arcsine In Degrees(Divide(Random Value In Array(Global.E), Distance Between(Global.B, Global.D)))));
+        "Color.YELLOW"
+        Set Global Variable(A, Color(Yellow));
     }
 }
 
@@ -37,9 +54,9 @@ rule ("beams") {
         Ongoing - Global;
     }
     actions {
-        Create Beam Effect(Global.A, Grapple Beam, Global.B, Global.C, Color(White), Visible To Position and Radius);
-        Create Beam Effect(Global.A, Grapple Beam, Vector(Global.A, Global.B, Global.C), Vector(Global.A, Global.D, Global.C), Color(White), Visible To Position and Radius);
-        Create Beam Effect(Global.A, Grapple Beam, Vector(Global.Z, Global.B, Global.C), Vector(Global.A, Global.D, Global.C), Color(White), Visible To Position and Radius);
+        Create Beam Effect(Global.A, Grapple Beam, Global.B, Global.C, Null, Visible To Position and Radius);
+        Create Beam Effect(Global.A, Grapple Beam, Vector(Global.A, Global.B, Global.C), Vector(Global.A, Global.D, Global.C), Null, Visible To Position and Radius);
+        Create Beam Effect(Global.A, Grapple Beam, Vector(Global.Z, Global.B, Global.C), Vector(Global.A, Global.D, Global.C), Null, Visible To Position and Radius);
         Create Beam Effect(Global.A, Good Beam, Vector(Global.A, Global.B, Global.C), Vector(Global.A, Global.D, Global.C), Color(White), Visible To Position and Radius);
         Create Beam Effect(Global.A, Good Beam, Vector(Global.A, Global.B, Global.C), Vector(Global.A, Global.D, Global.C), Color(White), Visible To Position and Radius);
         Create Beam Effect(Global.A, Bad Beam, Vector(Global.A, Global.B, Global.C), Vector(Global.A, Global.D, Global.C), Color(White), Visible To Position and Radius);
@@ -61,7 +78,7 @@ rule ("vectors") {
         "D"
         Set Global Variable(A, Global.D);
         "Vector.UP"
-        Set Global Variable(A, Vector(False, True, False));
+        Set Global Variable(A, Up);
     }
 }
 
@@ -116,6 +133,12 @@ rule ("optimizations with literals") {
         Modify Global Variable(A, Append To Array, Null);
         "3"
         Modify Global Variable(A, Append To Array, 3);
+        "4"
+        Modify Global Variable(A, Append To Array, 4);
+        "13.287"
+        Modify Global Variable(A, Append To Array, 13.28771237954945);
+        "9.210"
+        Modify Global Variable(A, Append To Array, 9.210340371976184);
         "32"
         Modify Global Variable(A, Append To Array, 32);
         "-31"
@@ -170,6 +193,24 @@ rule ("optimizations for function combinations") {
         Set Global Variable(A, Number Of Living Players(Global.B));
         "getNumberOfDeadPlayers(B)"
         Set Global Variable(A, Number Of Dead Players(Global.B));
+    }
+}
+
+rule ("default arguments") {
+    event {
+        Ongoing - Global;
+    }
+    actions {
+        Create HUD Text(All Players(All Teams), 1234, Null, Null, Left, False, Color(White), Null, Null, Visible To Sort Order String and Color, Default Visibility);
+        Create HUD Text(Global.A, 1234, Null, Null, Left, False, Color(White), Null, Null, Visible To Sort Order String and Color, Default Visibility);
+        Create HUD Text(Global.A, 1234, Null, Null, Left, False, Color(White), Null, Null, Visible To Sort Order String and Color, Default Visibility);
+        Create HUD Text(Global.A, 1234, Null, Null, Left, False, Color(White), Null, Null, Visible To Sort Order String and Color, Default Visibility);
+        Wait(False, Ignore Condition);
+        Start Facing(Global.C, Vector(True, 2, 3), 999999999999, To World, Direction and Turn Rate);
+        Start Facing(Global.C, Vector(True, 2, 3), 999999999999, To Player, Direction and Turn Rate);
+        Set Global Variable(D, Ammo(Global.D, False));
+        Set Global Variable(E, Array Slice(Global.E, 5, 999999999999));
+        Set Global Variable(E, Array Slice(Global.E, 5, 7));
     }
 }
 

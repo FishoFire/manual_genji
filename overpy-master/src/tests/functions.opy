@@ -7,12 +7,33 @@ rule "function":
     A = raycast(B, C, D, E, true).getNormal()
     A = getSign(-3)
     A = B.substring(2, 4)
+
     chase(eventPlayer.B, 9999, duration=3, ChaseReeval.DESTINATION_AND_DURATION)
+    chaseOverTime(eventPlayer.B, 9999, 3, ChaseTimeReeval.DESTINATION_AND_DURATION)
+    chaseAtRate(eventPlayer.B, 9999, 3, ChaseRateReeval.DESTINATION_AND_RATE)
+    chaseOverTime(B, 9999, 1, ChaseTimeReeval.DESTINATION_AND_DURATION)
+    chaseAtRate(B, 99999, 1, ChaseRateReeval.DESTINATION_AND_RATE)
+
     hudHeader(getAllPlayers(), "test", HudPosition.LEFT, 1, Color.RED, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
     hudSubtext(getAllPlayers(), "test", HudPosition.LEFT, 1, Color.RED, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
     hudSubheader(getAllPlayers(), "test", HudPosition.LEFT, 1, Color.RED, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.ALWAYS)
     hudText(null, "azer", "dqsf", "fdsq", HudPosition.LEFT, -1, Color.RED, Color.WHITE, Color.YELLOW, HudReeval.VISIBILITY_SORT_ORDER_AND_STRING, SpecVisibility.NEVER)
     wait()
+    A = getClosestPlayer(B, C)
+    A = getRealClosestPlayer(B, C)
+    A = sorted([p for p in getLivingPlayers(C) if p.hasSpawned()], key=lambda x: distance(x, B))[0]
+
+    A = getFarthestPlayer(B, C)
+    A = getRealFarthestPlayer(B, C)
+    A = sorted([p for p in getLivingPlayers(C) if p.hasSpawned()], key=lambda x: -distance(x, B))[0]
+
+    A = A.getPlayerClosestToReticle(B)
+    A = A.getRealPlayerClosestToReticle(B)
+    A = sorted([p for p in getLivingPlayers(B) if p.hasSpawned() and p != A], key=lambda x: angleBetweenVectors(A.getFacingDirection(), x - A.getEyePosition()))[0]
+
+    A = lineIntersectsSphere(B, random.choice(C), D, random.choice(E))
+
+    A = rgb(255, 255, 0) # Color.YELLOW
 
 rule "beams":
     createBeam(A, Beam.GRAPPLE, B, C, Color.WHITE, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
@@ -56,6 +77,9 @@ rule "optimizations with literals":
     A.append(getOppositeTeam(Team.ALL)) #All Teams
     A.append(len([])) #0
     A.append(len([B,C,D])) #3
+    A.append(log(10000, 10)) #4
+    A.append(log(10000, 2)) #13.287
+    A.append(log(10000)) #9.210
     A.append(max(5, 32)) #32
     A.append(min(-31, 6)) #-31
     A.append(normalize(vect(-13, 324, 674))) #vect(-0.017, 0.433, 0.901)
@@ -82,3 +106,15 @@ rule "optimizations for function combinations":
     A = len(getPlayersOnHero(B, C)) #getNumberOfHeroes(B, C)
     A = len(getLivingPlayers(B)) #getNumberOfLivingPlayers(B)
     A = len(getDeadPlayers(B)) #getNumberOfDeadPlayers(B)
+
+rule "default arguments":
+    hudHeader(text=1234)
+    hudHeader(A, text=1234)
+    hudHeader(A, 1234)
+    hudHeader(A, 1234, HudPosition.LEFT, 0, Color.WHITE, HudReeval.VISIBILITY_SORT_ORDER_STRING_AND_COLOR, SpecVisibility.DEFAULT)
+    wait()
+    C.startFacing(vect(1, 2, 3))
+    C.startFacing(vect(1, 2, 3), relativity=Relativity.TO_PLAYER)
+    D = D.getAmmo()
+    E = E.slice(5)
+    E = E.slice(5, 7)

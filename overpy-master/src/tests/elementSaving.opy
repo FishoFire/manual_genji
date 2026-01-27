@@ -1,4 +1,5 @@
 #!optimizeForSize
+#!suppressWarnings w_chased_var_in_for
 
 rule "0 to null":
     A = B.concat(0)
@@ -39,7 +40,7 @@ rule "0 to false":
     chase(B.A, 0, rate=0, ChaseReeval.NONE)
     chase(B.A, 0, duration=0, ChaseReeval.NONE)
     createDummy(Hero.ANA, Team.2, 0, B, C)
-    hudHeader(getAllPlayers(), "", HudPosition.LEFT, 0, Color.WHITE, HudReeval.VISIBILITY, SpecVisibility.ALWAYS)
+    hudHeader(getAllPlayers(), "123", HudPosition.LEFT, 0, Color.WHITE, HudReeval.VISIBILITY, SpecVisibility.ALWAYS)
     for A in range(0,0,0):
     for B.A in range(0,0,0):
     A[0] = B
@@ -75,7 +76,7 @@ rule "1 to true":
     chase(B.A, 1, rate=1, ChaseReeval.NONE)
     chase(B.A, 1, duration=1, ChaseReeval.NONE)
     createDummy(Hero.ANA, Team.2, 1, B, C)
-    hudHeader(getAllPlayers(), "", HudPosition.LEFT, 1, Color.WHITE, HudReeval.VISIBILITY, SpecVisibility.ALWAYS)
+    hudHeader(getAllPlayers(), "123", HudPosition.LEFT, 1, Color.WHITE, HudReeval.VISIBILITY, SpecVisibility.ALWAYS)
     for A in range(1,1,1):
     for B.A in range(1,1,1):
     A[1] = B
@@ -84,3 +85,22 @@ rule "1 to true":
 
 rule "null vector to null":
     createDummy(Hero.ANA, Team.2, A, vect(0,0,0), vect(0,0,0))
+
+rule "other optimizations":
+    A = vect(0, 0, 0) #left + right
+    A = vect(1, 0, 0) #left
+    A = Vector.LEFT #left
+    A = vect(-1, 0, 0) #right
+    A = Vector.RIGHT #right
+    A = vect(0, 1, 0) #up
+    A = Vector.UP #up
+    A = vect(0, -1, 0) #down
+    A = Vector.DOWN #down
+    A = vect(0, 0, 1) #forward
+    A = Vector.FORWARD #forward
+    A = vect(0, 0, -1) #backward
+    A = Vector.BACKWARD #backward
+
+    A = vect(B, 0, 0) #B * left
+    A = vect(0, B, 0) #B * up
+    A = vect(0, 0, B) #B * forward

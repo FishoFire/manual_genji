@@ -11,7 +11,9 @@ variables {
         8: I
         9: J
         10: K
+        18: S
 }
+//Optimize for size enabled
 rule ("enums") {
     event {
         Ongoing - Each Player;
@@ -37,6 +39,7 @@ rule ("enums") {
         Set Global Variable(I, 2.718281828459045);
         Set Global Variable(J, 3.141592653589793);
         Set Global Variable(K, Color(Blue));
+        Set Global Variable(S, Custom String("                                                                                                                             {0}", Custom String("                                             ")));
     }
 }
 
