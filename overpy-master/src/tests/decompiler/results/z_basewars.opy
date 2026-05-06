@@ -265,7 +265,7 @@ rule "LOOT BOUNTY COLLECT LOOP":
     for bountyArrayIterator in range(len(bountyArrayLocations)):
         if bountyArrayEffects[bountyArrayIterator] != null:
             tmpBountyLocation = bountyArrayLocations[bountyArrayIterator]
-            tmpBountyClosestPlayer = (sorted([player for player in getAllPlayers() if player.isAlive() and player.hasSpawned() and not player.isInBase and (enableInvisibleLootPickup or not player.isCloaked)], lambda i: distance(i.getPosition(), tmpBountyLocation)))[0]
+            tmpBountyClosestPlayer = (sorted(getAllPlayers().filter(lambda player: player.isAlive() and player.hasSpawned() and not player.isInBase and (enableInvisibleLootPickup or not player.isCloaked)), lambda x: distance(x.getPosition(), tmpBountyLocation)))[0]
             if entityExists(tmpBountyClosestPlayer) and distance(tmpBountyClosestPlayer.getPosition(), tmpBountyLocation) <= 2.5:
                 tmpBountyClosestPlayer.statsMoney += bountyArrayMoney[bountyArrayIterator]
                 tmpBountyClosestPlayer.scoreArray[2] += bountyArrayMoney[bountyArrayIterator]
@@ -305,7 +305,7 @@ rule "LOOT FIND SPAWNPOINTS":
                 goto lbl_1
         if tmpLootSpawnpoint == 0 or lootBlockerVolumePos != 0 and distance(tmpLootSpawnpoint, lootBlockerVolumePos) <= lootBlockerVolumeRadius:
             goto lbl_2
-        tmpLootSpawnpointProximity = sorted(lootSpawnPoints.exclude(null), lambda i: distance(tmpLootSpawnpoint, i))
+        tmpLootSpawnpointProximity = sorted(lootSpawnPoints.exclude(null), lambda x: distance(tmpLootSpawnpoint, x))
         if distance(tmpLootSpawnpoint, tmpLootSpawnpointProximity[0]) < lootSpread and len(tmpLootSpawnpointProximity) != 0:
             goto lbl_3
         goto lbl_4
@@ -427,7 +427,7 @@ rule "LOOT COLLECT LOOP":
     
     for lootCollectIterator in range(len(lootArrayLocations)):
         if lootArraySpawned[lootCollectIterator]:
-            tmpLootCollectClosestPlayer = (sorted([player for player in getAllPlayers() if player.isAlive() and player.hasSpawned() and not player.isInBase and (enableInvisibleLootPickup or not player.isCloaked)], lambda i: distance(i.getPosition(), lootArrayLocations[lootCollectIterator])))[0]
+            tmpLootCollectClosestPlayer = (sorted(getAllPlayers().filter(lambda player: player.isAlive() and player.hasSpawned() and not player.isInBase and (enableInvisibleLootPickup or not player.isCloaked)), lambda x: distance(x.getPosition(), lootArrayLocations[lootCollectIterator])))[0]
             if entityExists(tmpLootCollectClosestPlayer) and distance(tmpLootCollectClosestPlayer, lootArrayLocations[lootCollectIterator]) <= 2.5:
                 lootArrayLocationsStored[lootCollectIterator] = lootArrayLocations[lootCollectIterator]
                 lootSpawnerNumLoot--
@@ -463,7 +463,7 @@ rule "LOOT POWERUP COLLECT LOOP":
     @Condition sparkboltPickupPos != null
     @Condition enableSparkbolts != false
     
-    tmpSparkboltClosestPlayer = (sorted([player for player in getAllPlayers() if player.isAlive() and player.hasSpawned() and not player.isInBase and (enableInvisibleLootPickup or not player.isCloaked)], lambda i: distance(i.getPosition(), sparkboltPickupPos)))[0]
+    tmpSparkboltClosestPlayer = (sorted(getAllPlayers().filter(lambda player: player.isAlive() and player.hasSpawned() and not player.isInBase and (enableInvisibleLootPickup or not player.isCloaked)), lambda x: distance(x.getPosition(), sparkboltPickupPos)))[0]
     if entityExists(tmpSparkboltClosestPlayer) and distance(tmpSparkboltClosestPlayer.getPosition(), sparkboltPickupPos) <= 2.5:
         tmpSparkboltClosestPlayer.nbSparkbolts++
         smallMessage(tmpSparkboltClosestPlayer, "+1 {0}{1}".format(iconString(Icon.BOLT), [" SPARKBOLT", " faísca"][max(false, practiceRangeTranslations.index("{0}".format(Map.PRACTICE_RANGE)))]))
@@ -525,7 +525,7 @@ rule "GAME WIN CONDITION":
         wait()
     gameScoreTopPlayers = []
     for scoreboardIterator in range(10):
-        gameScoreTopPlayers.append(sorted(tmpAllPlayers, lambda player: player.scoreArray[scoreboardIterator]).last())
+        gameScoreTopPlayers.append(sorted(tmpAllPlayers, lambda x: x.scoreArray[scoreboardIterator]).last())
         wait()
     gameScoreTopPlayersValues = []
     for scoreboardIterator in range(10):
@@ -648,8 +648,8 @@ rule "init":
     disableScoring()
     destroyAllDummies()
     destroyHudText(waitingStartGameHud)
-    hudHeader([player for player in getAllPlayers() if not player.hasBase], ["{0} NO BASE BUILT {0}\n \u202fPRESS [{1}] TO BUILD".format(iconString(Icon.WARNING), inputBindingString(Button.INTERACT)), "   {0} Base não construída {0}\nPressione [{1}] para construir".format(iconString(Icon.WARNING), inputBindingString(Button.INTERACT))][max(false, practiceRangeTranslations.index("{0}".format(Map.PRACTICE_RANGE)))], HudPosition.TOP, -4, Color.RED, HudReeval.VISIBILITY_AND_STRING)
-    hudText([player.stealingFrom for player in getAllPlayers()], ["{0} ENEMY IN YOUR BASE! {0}".format(iconString(Icon.WARNING)), "{0} Inimigo na sua base! {0}".format(iconString(Icon.WARNING))][max(false, practiceRangeTranslations.index("{0}".format(Map.PRACTICE_RANGE)))], null, "              ", HudPosition.TOP, -2, Color.RED, Color.WHITE, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
+    hudHeader(getAllPlayers().filter(lambda player: not player.hasBase), ["{0} NO BASE BUILT {0}\n \u202fPRESS [{1}] TO BUILD".format(iconString(Icon.WARNING), inputBindingString(Button.INTERACT)), "   {0} Base não construída {0}\nPressione [{1}] para construir".format(iconString(Icon.WARNING), inputBindingString(Button.INTERACT))][max(false, practiceRangeTranslations.index("{0}".format(Map.PRACTICE_RANGE)))], HudPosition.TOP, -4, Color.RED, HudReeval.VISIBILITY_AND_STRING)
+    hudText(getAllPlayers().map(lambda player: player.stealingFrom), ["{0} ENEMY IN YOUR BASE! {0}".format(iconString(Icon.WARNING)), "{0} Inimigo na sua base! {0}".format(iconString(Icon.WARNING))][max(false, practiceRangeTranslations.index("{0}".format(Map.PRACTICE_RANGE)))], null, "              ", HudPosition.TOP, -2, Color.RED, Color.WHITE, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
     #disconnectedPlayers = []
     bountyArrayLocations[11] = null
     bountyArrayEffects[11] = null
@@ -675,7 +675,7 @@ rule "init":
         totalGoldToWin += tmpTotalGoldCalc
         tmpTotalGoldCalc = ceil(tmpTotalGoldCalc * 1.5 / 10) * 10
     totalGoldToWin += gameGoldVictory
-    gameHealingHeroes = (([i for i in getAllHeroes() if not i in getSupportHeroes()]).exclude(Hero.ROADHOG)).exclude(Hero.SOLDIER)
+    gameHealingHeroes = ((getAllHeroes().filter(lambda x: not x in getSupportHeroes())).exclude(Hero.ROADHOG)).exclude(Hero.SOLDIER)
     hasGameStarted = true
     wait(1)
     pauseMatchTime()
@@ -690,28 +690,28 @@ rule "GAME INIT MAP":
     mapInfo = null
     mapRotationVector = directionFromAngles(0, 0)
     lootBlockerVolumeRadius = 30
-    if getCurrentMap() == Map.BLACK_FOREST or getCurrentMap() == Map.BLACK_FOREST_WINTER:
+    if __getCurrentMap__() == Map.BLACK_FOREST or __getCurrentMap__() == Map.BLACK_FOREST_WINTER:
         mapInfo = vect(-64.026, 10.008, -63.027)
         gameEndCamera = vect(-21.45, 13.18, 2.03)
-    elif getCurrentMap() == Map.BLIZZ_WORLD or getCurrentMap() == Map.BLIZZ_WORLD_WINTER:
+    elif __getCurrentMap__() == Map.BLIZZ_WORLD or __getCurrentMap__() == Map.BLIZZ_WORLD_WINTER:
         mapNavMesh = vect(-92.816, -1.3, 119.946)
         mapInfo = vect(-93.084, 7, 68.06)
         gameEndCamera = vect(-124.15, 1.2, 107.3)
-    elif getCurrentMap() == Map.CASTILLO:
+    elif __getCurrentMap__() == Map.CASTILLO:
         mapInfo = vect(-60.13, 7.032, 52.027)
         gameEndCamera = vect(-82.63, 43.36, 16.35)
-    elif getCurrentMap() == Map.CHATEAU_GUILLARD or getCurrentMap() == Map.CHATEAU_GUILLARD_HALLOWEEN:
+    elif __getCurrentMap__() == Map.CHATEAU_GUILLARD or __getCurrentMap__() == Map.CHATEAU_GUILLARD_HALLOWEEN:
         mapInfo = vect(66.17, 13.001, 65.046)
         gameEndCamera = vect(205.74, 1.28, 76.17)
-    elif getCurrentMap() == Map.DORADO:
+    elif __getCurrentMap__() == Map.DORADO:
         mapInfo = vect(85.11, 14.007, -67.039)
         mapNavMesh = vect(69.636, 6.939, -13.709)
         mapRotationVector = directionFromAngles(321, 0)
         gameEndCamera = vect(133.25, 57.86, 34.46)
-    elif getCurrentMap() == Map.ECOPOINT_ANTARCTICA or getCurrentMap() == Map.ECOPOINT_ANTARCTICA_WINTER:
+    elif __getCurrentMap__() == Map.ECOPOINT_ANTARCTICA or __getCurrentMap__() == Map.ECOPOINT_ANTARCTICA_WINTER:
         mapInfo = vect(-110.027, 10.003, -56.06)
         gameEndCamera = vect(-5.46, 24.56, -55.57)
-    elif getCurrentMap() == Map.EICHENWALDE or getCurrentMap() == Map.EICHENWALDE_HALLOWEEN:
+    elif __getCurrentMap__() == Map.EICHENWALDE or __getCurrentMap__() == Map.EICHENWALDE_HALLOWEEN:
         mapNavMesh = vect(21.479, 4.943, -61.208)
         mapInfo = vect(55.021, 18.004, -77.102)
         mapRotationVector = directionFromAngles(15, 0)
@@ -724,7 +724,7 @@ rule "GAME INIT MAP":
             availableMapExtensions.remove(0)
         if createWorkshopSettingBool("\z\nMap extensions", "Eichenwalde 1st point", false, 1):
             availableMapExtensions.append(1)
-    elif getCurrentMap() == Map.HANAMURA or getCurrentMap() == Map.HANAMURA_WINTER:
+    elif __getCurrentMap__() == Map.HANAMURA or __getCurrentMap__() == Map.HANAMURA_WINTER:
         #first point: doable but no space, maybe as an extension
         mapNavMesh = vect(41.188, 0.478, 24.839)
         mapInfo = vect(-138.015, -14.005, -65.105)
@@ -738,7 +738,7 @@ rule "GAME INIT MAP":
             availableMapExtensions.remove(0)
         if createWorkshopSettingBool("      \u3000", "Hanamura pre-choke", false, 1):
             availableMapExtensions.append(1)
-    elif getCurrentMap() == Map.HAVANA:
+    elif __getCurrentMap__() == Map.HAVANA:
         #both points are doable and good + the secret space
         mapNavMesh = vect(-18.944, 6.062, -80.093)
         mapInfo = vect(44, 8.004, -61.103)
@@ -763,7 +763,7 @@ rule "GAME INIT MAP":
             availableMapExtensions.append(2)
         if createWorkshopSettingBool("     \u3000", "Havana secret area", false, 3):
             availableMapExtensions.append(3)
-    elif getCurrentMap() == Map.HOLLYWOOD or getCurrentMap() == Map.HOLLYWOOD_HALLOWEEN:
+    elif __getCurrentMap__() == Map.HOLLYWOOD or __getCurrentMap__() == Map.HOLLYWOOD_HALLOWEEN:
         #third point doable but meh, first point doable and good
         mapNavMesh = vect(-18.025, 1.777, 14.081)
         mapInfo = vect(-82.041, 6.002, -87.072)
@@ -783,28 +783,28 @@ rule "GAME INIT MAP":
             availableMapExtensions.append(1)
         if createWorkshopSettingBool("    \u3000", "Hollywood 1st point", false, 2):
             availableMapExtensions.append(2)
-    elif getCurrentMap() == Map.HORIZON_LUNAR_COLONY:
+    elif __getCurrentMap__() == Map.HORIZON_LUNAR_COLONY:
         mapNavMesh = vect(51.683, 6.129, -34.033)
         mapInfo = vect(-166.055, 11.003, -80.112)
         mapRotationVector = directionFromAngles(48, 0)
         lootBlockerVolumePos = vect(73.442, 17.829, -98.474)
         lootBlockerVolumeRadius = 16
         gameEndCamera = vect(-109, 4.77, -118.15)
-    elif getCurrentMap() == Map.ILIOS_LIGHTHOUSE:
+    elif __getCurrentMap__() == Map.ILIOS_LIGHTHOUSE:
         mapInfo = vect(176.245, -12.03, -100.103)
         mapRotationVector = directionFromAngles(23, 0)
         gameEndCamera = vect(315.15, -23.06, 82.19)
-    elif getCurrentMap() == Map.ILIOS_RUINS:
+    elif __getCurrentMap__() == Map.ILIOS_RUINS:
         mapInfo = vect(-45.081, 10.057, -219.184)
         gameEndCamera = vect(36.57, 102.09, -130)
-    elif getCurrentMap() == Map.ILIOS_WELL:
+    elif __getCurrentMap__() == Map.ILIOS_WELL:
         mapInfo = vect(-157.179, -10.005, -51.094)
         mapRotationVector = directionFromAngles(315, 0)
         gameEndCamera = vect(-217.03, 1.35, -18.18)
-    elif getCurrentMap() == Map.KANEZAKA:
+    elif __getCurrentMap__() == Map.KANEZAKA:
         mapInfo = vect(-102.07, 10.004, -86.056)
         gameEndCamera = vect(-14.67, 68.99, -126.2)
-    elif getCurrentMap() == Map.KINGS_ROW or getCurrentMap() == Map.KINGS_ROW_WINTER:
+    elif __getCurrentMap__() == Map.KINGS_ROW or __getCurrentMap__() == Map.KINGS_ROW_WINTER:
         #first point awesome, 3rd point meh, secret area ok (only for kings row normal)
         #for kings row winter, only 1st point ok
         mapNavMesh = vect(-122.712, -1.072, -1.493)
@@ -825,45 +825,45 @@ rule "GAME INIT MAP":
             availableMapExtensions.remove(0)
         if createWorkshopSettingBool("   \u3000", "King's Row 1st point", false, 1):
             availableMapExtensions.append(1)
-        if createWorkshopSettingBool("   \u3000", "King's Row secret area (not available on winter)", false, 2) and getCurrentMap() == Map.KINGS_ROW:
+        if createWorkshopSettingBool("   \u3000", "King's Row secret area (not available on winter)", false, 2) and __getCurrentMap__() == Map.KINGS_ROW:
             availableMapExtensions.append(2)
-    elif getCurrentMap() == Map.LIJIANG_CONTROL_CENTER or getCurrentMap() == Map.LIJIANG_CONTROL_CENTER_LNY:
+    elif __getCurrentMap__() == Map.LIJIANG_CONTROL_CENTER or __getCurrentMap__() == Map.LIJIANG_CONTROL_CENTER_LNY:
         mapInfo = vect(-123.089, 14.265, 127.335)
         mapRotationVector = directionFromAngles(45, 0)
         gameEndCamera = vect(87.78, 265.71, 363.57)
-    elif getCurrentMap() == Map.LIJIANG_GARDEN or getCurrentMap() == Map.LIJIANG_GARDEN_LNY:
+    elif __getCurrentMap__() == Map.LIJIANG_GARDEN or __getCurrentMap__() == Map.LIJIANG_GARDEN_LNY:
         mapInfo = vect(-79.092, 4.094, 187.108)
         gameEndCamera = vect(-1.28, 95.34, 179.78)
-    elif getCurrentMap() == Map.LIJIANG_NIGHT_MARKET or getCurrentMap() == Map.LIJIANG_NIGHT_MARKET_LNY:
+    elif __getCurrentMap__() == Map.LIJIANG_NIGHT_MARKET or __getCurrentMap__() == Map.LIJIANG_NIGHT_MARKET_LNY:
         mapInfo = vect(-83.084, -8.002, -185.081)
         gameEndCamera = vect(-77.06, 245.24, 369.46)
-    elif getCurrentMap() == Map.MALEVENTO:
+    elif __getCurrentMap__() == Map.MALEVENTO:
         mapInfo = vect(-78.033, -18.005, -83.032)
         gameEndCamera = vect(25, 9, 20)
-    elif getCurrentMap() == Map.NECROPOLIS:
+    elif __getCurrentMap__() == Map.NECROPOLIS:
         mapInfo = vect(-65.048, -18.007, -80.036)
         gameEndCamera = vect(0.92, 12.58, -18.32)
-    elif getCurrentMap() == Map.NEPAL_SANCTUM:
+    elif __getCurrentMap__() == Map.NEPAL_SANCTUM:
         mapInfo = vect(194.041, 6.128, -74.097)
         gameEndCamera = vect(81.96, 129.66, -2.54)
-    elif getCurrentMap() == Map.NEPAL_SHRINE:
+    elif __getCurrentMap__() == Map.NEPAL_SHRINE:
         mapInfo = vect(-183.073, 13.01, -54.09)
         gameEndCamera = vect(50.13, 130.99, -2.66)
-    elif getCurrentMap() == Map.NEPAL_VILLAGE:
+    elif __getCurrentMap__() == Map.NEPAL_VILLAGE:
         mapInfo = vect(-185.223, -14.102, -90.096)
         gameEndCamera = vect(-63.38, 16, -63.21)
-    elif getCurrentMap() == Map.OASIS_CITY_CENTER:
+    elif __getCurrentMap__() == Map.OASIS_CITY_CENTER:
         mapInfo = vect(66.068, 14, 156.281)
         mapRotationVector = directionFromAngles(-315, 0)
         gameEndCamera = vect(168.03, 61.19, 288.45)
-    elif getCurrentMap() == Map.OASIS_GARDENS:
+    elif __getCurrentMap__() == Map.OASIS_GARDENS:
         mapInfo = vect(163.047, 11.001, -79.268)
         mapRotationVector = directionFromAngles(45, 0)
         gameEndCamera = vect(142.13, 46.81, -224.55)
-    elif getCurrentMap() == Map.OASIS_UNIVERSITY:
+    elif __getCurrentMap__() == Map.OASIS_UNIVERSITY:
         mapInfo = vect(-140.225, 11.008, -64.07)
         gameEndCamera = vect(-197.81, 59.98, 43.73)
-    elif getCurrentMap() == Map.PARIS:
+    elif __getCurrentMap__() == Map.PARIS:
         #1st point ok
         mapNavMesh = vect(-46.367, 10.098, -0.162)
         mapInfo = vect(-86.143, 8.008, -82.084)
@@ -877,10 +877,10 @@ rule "GAME INIT MAP":
             availableMapExtensions.remove(0)
         if createWorkshopSettingBool("  \u3000", "Paris 1st point", false, 1):
             availableMapExtensions.append(1)
-    elif getCurrentMap() == Map.PETRA:
+    elif __getCurrentMap__() == Map.PETRA:
         mapInfo = vect(-83.044, -15.012, -83.015)
         gameEndCamera = vect(1.02, -8.96, 7.02)
-    elif getCurrentMap() == Map.ROUTE66:
+    elif __getCurrentMap__() == Map.ROUTE66:
         #3rd point ok
         mapInfo = vect(-62.014, 15.004, 57.019)
         gameEndCamera = vect(34.7, 37, 38.62)
@@ -893,12 +893,12 @@ rule "GAME INIT MAP":
             availableMapExtensions.remove(0)
         if createWorkshopSettingBool(" \u3000", "Route 66 3rd point", false, 1):
             availableMapExtensions.append(1)
-    elif getCurrentMap() == Map.TEMPLE_OF_ANUBIS:
+    elif __getCurrentMap__() == Map.TEMPLE_OF_ANUBIS:
         mapNavMesh = vect(-4.694, -2.336, -6.513)
         mapInfo = vect(80.016, 10, -130.004)
         mapRotationVector = directionFromAngles(275, 0)
         gameEndCamera = vect(15.08, 16.6, -18.58)
-    elif getCurrentMap() == Map.VOLSKAYA:
+    elif __getCurrentMap__() == Map.VOLSKAYA:
         mapNavMesh = vect(14.482, -4.352, 44.386)
         mapInfo = vect(-73.094, -8.005, 145.01)
         mapRotationVector = directionFromAngles(335, 0)
@@ -933,7 +933,7 @@ rule "GAME INIT MAP":
         mapOrigin = mapExtension3Origin
         mapRotationVector = directionFromAngles(mapExtension3Rotation, 0)
         mapExtensionSpawn = mapExtension3Spawn
-    if getCurrentMap() == Map.HAVANA and chosenMapExtension == 3 or getCurrentMap() == Map.KINGS_ROW and chosenMapExtension == 1 or getCurrentMap() == Map.ROUTE66 and chosenMapExtension == 1:
+    if __getCurrentMap__() == Map.HAVANA and chosenMapExtension == 3 or __getCurrentMap__() == Map.KINGS_ROW and chosenMapExtension == 1 or __getCurrentMap__() == Map.ROUTE66 and chosenMapExtension == 1:
         disableNwpCheck = true
     mapSize = sqrt(mapXYZ.x ** 2 + mapXYZ.z ** 2) - 20
     wait(1)
@@ -1020,7 +1020,7 @@ rule "unsupported map":
     @Condition mapInfo == null
     @Condition isGameInProgress() == true
     
-    hudHeader(getAllPlayers(), ["The map {0} IS NOT SUPPORTED!".format(getCurrentMap()), "O mapa {0} não é compatível!".format(getCurrentMap())][max(false, practiceRangeTranslations.index("{0}".format(Map.PRACTICE_RANGE)))], HudPosition.TOP, 3, Color.RED, HudReeval.VISIBILITY_AND_STRING)
+    hudHeader(getAllPlayers(), ["The map {0} IS NOT SUPPORTED!".format(__getCurrentMap__()), "O mapa {0} não é compatível!".format(__getCurrentMap__())][max(false, practiceRangeTranslations.index("{0}".format(Map.PRACTICE_RANGE)))], HudPosition.TOP, 3, Color.RED, HudReeval.VISIBILITY_AND_STRING)
 
 
 rule "waiting for navmesh to generate":
@@ -1049,7 +1049,7 @@ rule "init player hud":
     #upgrade description
     createInWorldText(eventPlayer if eventPlayer.showUpgradeText else [], ([(["    [LVL {0}]\n\n  Upgrades your gold generation\n    to {1} per second. Can't generate\nwhen there are players in your base\n ".format(eventPlayer.statsUpgradeLevels[eventPlayer.upgradeCurrentSelection], eventPlayer.statsMoneySec + 1), "    [NV {0}]\n\n       MELHORA A GERAÇÃO DE OURO\nPARA {1} POR SEGUNDO. NÃO FUNCIONA\n    QUANDO HÁ JOGADORES NA BASE.\n ".format(eventPlayer.statsUpgradeLevels[eventPlayer.upgradeCurrentSelection], eventPlayer.statsMoneySec + 1)])[max(false, practiceRangeTranslations.index("{0}".format(Map.PRACTICE_RANGE)))], (["     [LVL {0}]\n\n    Increases bounty from {1} to {2}\nAwarded by dealing finishing blow\n  Doesn't affect dropped loot orbs\n ".format(eventPlayer.statsUpgradeLevels[eventPlayer.upgradeCurrentSelection], eventPlayer.statsMoneyKill, eventPlayer.statsMoneyKill + 15), "       [NV {0}]\n\nAUMENTA A RECOMPENSA DE {1} PARA {2}\n         \u202fOBTIDO AO EFETUAR UM ABATE\n           NÃO AFETA ORBES DEIXADOS\n ".format(eventPlayer.statsUpgradeLevels[eventPlayer.upgradeCurrentSelection], eventPlayer.statsMoneyKill, eventPlayer.statsMoneyKill + 15)])[max(false, practiceRangeTranslations.index("{0}".format(Map.PRACTICE_RANGE)))], (["[LVL {0}]\n\nIncreases the maximum amount \n  of gold your base can store.\n  Upgraded storage: {1} gold\n ".format(eventPlayer.statsUpgradeLevels[eventPlayer.upgradeCurrentSelection], ceil(eventPlayer.statsMoneyStorage * 1.5)), "[NV {0}]\n\n\u3000\u3000\u3000\u3000 Aumenta o máximo de ouro\n\u3000\u3000\u3000 que a sua base pode armazenar.\u3000\u3000\u3000 \n\u3000\u3000\u3000\u3000 Após melhoria: {1} de ouro\n ".format(eventPlayer.statsUpgradeLevels[eventPlayer.upgradeCurrentSelection], ceil(eventPlayer.statsMoneyStorage * 1.5))])[max(false, practiceRangeTranslations.index("{0}".format(Map.PRACTICE_RANGE)))], ["   [NO LVL]\n \n           Packs up your base. \nYou keep your gold & upgrades. \nPrice depends on gold storage.\n ", "\u3000\u3000\u3000\u3000[SEM NV]\n\n\u3000\u3000\u3000\u3000\u202fEmpacota a sua base.\n\u3000 Ouro e melhorias são mantidos.\nO preço depende do armazenamento.\n "][max(false, practiceRangeTranslations.index("{0}".format(Map.PRACTICE_RANGE)))], [" [NO LVL]\n \n     Takes you to hero selection.\n  Bug: If only one hero shows up\nWait 5 seconds until they appear.\n ", "\u3000\u3000   [sem nv]\n\n\u3000\u3000\u3000   Leva à seleção de heróis.\n\u202f\u202f\u202f\u202f\u202f\u202f\u202f\u202fBug: se apenas um herói aparecer\naguarde 5 segundos até o resto surgir.\n "][max(false, practiceRangeTranslations.index("{0}".format(Map.PRACTICE_RANGE)))], (["     [LVL {0}]\n \n    Steal +2 gold/sec from bases.\nSame upgrade price as gold miner.\n  Total {1} + enemy gold miner/sec.\n ".format(eventPlayer.statsUpgradeLevels[eventPlayer.upgradeCurrentSelection], (eventPlayer.statsStealingSpeed + 1) * 2), "[NV {0}]\n\n\u3000\u3000\u3000  Roube +2 ouro/seg de bases.\n  \u3000 Mesmo preço do gerador de ouro.\u3000   \n\u3000\u3000   Total {1} + gerador inimigo/seg.\n ".format(eventPlayer.statsUpgradeLevels[eventPlayer.upgradeCurrentSelection], (eventPlayer.statsStealingSpeed + 1) * 2)])[max(false, practiceRangeTranslations.index("{0}".format(Map.PRACTICE_RANGE)))], ["  [LVL {0}]\n \n      Reduces the time it takes\nto enter your base by 0.5 sec.\n    The current delay is {1} sec.\n ".format(eventPlayer.statsUpgradeLevels[eventPlayer.upgradeCurrentSelection], eventPlayer.statsBaseDelay), "[NV {0}]\n\n\u3000\u3000\u3000\u3000 \u202f \u202f\u202fReduz o tempo necessário\n  \u3000\u3000\u3000para entrar na base por 0,5 seg.\u3000\u3000\u3000  \n\u3000\u3000\u3000\u3000\u3000   O tempo atual é {1} seg.\n ".format(eventPlayer.statsUpgradeLevels[eventPlayer.upgradeCurrentSelection], eventPlayer.statsBaseDelay)][max(false, practiceRangeTranslations.index("{0}".format(Map.PRACTICE_RANGE)))]])[eventPlayer.upgradeCurrentSelection], eventPlayer.playerBaseLocation, 1.1, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_AND_STRING)
     #base sphere
-    createEffect([player for player in getAllPlayers() if not (player == eventPlayer and player.isInBase)], Effect.SPHERE, powerLevelColors[eventPlayer.statsUpgradeLevels[2]], eventPlayer.playerBaseLocation, 3.5)
+    createEffect(getAllPlayers().filter(lambda player: not (player == eventPlayer and player.isInBase)), Effect.SPHERE, powerLevelColors[eventPlayer.statsUpgradeLevels[2]], eventPlayer.playerBaseLocation, 3.5)
     #base ring
     createEffect(eventPlayer if eventPlayer.isInBase else [], Effect.RING, powerLevelColors[eventPlayer.statsUpgradeLevels[2]], eventPlayer.playerBaseLocation, 3.5)
     #upgrade sphere
@@ -1057,9 +1057,9 @@ rule "init player hud":
     createIcon(eventPlayer if eventPlayer.showUpgradeText else [], updateEveryFrame(normalize(vect(eventPlayer.getFacingDirection().z * -1, 0, eventPlayer.getFacingDirection().x)) * eventPlayer.upgradeOffsetRight + (eventPlayer.playerBaseLocation - vect(0, 0.3, 0))), Icon.ARROW_LEFT, IconReeval.VISIBILITY_AND_POSITION, Color.WHITE, false)
     createIcon(eventPlayer if eventPlayer.showUpgradeText else [], updateEveryFrame(normalize(vect(eventPlayer.getFacingDirection().z * -1, 0, eventPlayer.getFacingDirection().x)) * eventPlayer.upgradeOffsetLeft + (eventPlayer.playerBaseLocation - vect(0, 0.3, 0))), Icon.ARROW_RIGHT, IconReeval.VISIBILITY_AND_POSITION, Color.WHITE, false)
     #stealing sphere
-    createEffect([player for player in getAllPlayers() if player.stealingFrom == eventPlayer], Effect.SPHERE, Color.RED, eventPlayer.playerBaseLocation, 0.4, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
+    createEffect(getAllPlayers().filter(lambda player: player.stealingFrom == eventPlayer), Effect.SPHERE, Color.RED, eventPlayer.playerBaseLocation, 0.4, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
     #stealing hud
-    createInWorldText([player for player in getAllPlayers() if player.stealingFrom == eventPlayer], ["HOLD {0} TO STEAL {1} GOLD: {2}".format(inputBindingString(Button.INTERACT), iconString(Icon.SKULL), eventPlayer.statsMoneyBase), "Segure {0} para roubar {1} ouro: {2}".format(inputBindingString(Button.INTERACT), iconString(Icon.SKULL), eventPlayer.statsMoneyBase)][max(false, practiceRangeTranslations.index("{0}".format(Map.PRACTICE_RANGE)))], eventPlayer.playerBaseLocation, 1.5, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_AND_STRING, Color.RED, SpecVisibility.NEVER)
+    createInWorldText(getAllPlayers().filter(lambda player: player.stealingFrom == eventPlayer), ["HOLD {0} TO STEAL {1} GOLD: {2}".format(inputBindingString(Button.INTERACT), iconString(Icon.SKULL), eventPlayer.statsMoneyBase), "Segure {0} para roubar {1} ouro: {2}".format(inputBindingString(Button.INTERACT), iconString(Icon.SKULL), eventPlayer.statsMoneyBase)][max(false, practiceRangeTranslations.index("{0}".format(Map.PRACTICE_RANGE)))], eventPlayer.playerBaseLocation, 1.5, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_AND_STRING, Color.RED, SpecVisibility.NEVER)
 
 
 rule "update outlines":
@@ -1084,7 +1084,7 @@ rule "update scoreboard":
     @Condition hasGameStarted != false
     
     while true:
-        leaderboard = sorted([player for player in getAllPlayers() if player.statsMoneyBase + player.statsMoneyStorage > 0], lambda i: -1 * (i.statsMoneyBase + i.statsMoneyStorage * 10))
+        leaderboard = sorted(getAllPlayers().filter(lambda player: player.statsMoneyBase + player.statsMoneyStorage > 0), lambda x: -1 * (x.statsMoneyBase + x.statsMoneyStorage * 10))
         wait(1)
 
 
@@ -1297,7 +1297,7 @@ rule "check if player is in someone else's base":
     #TODO: optimize this **** by not constantly looping if stealingFrom != null
     while true:
         if eventPlayer.isAlive() and eventPlayer.hasSpawned() and not eventPlayer.isCloaked:
-            tmpBaseOwners = [player for player in getAllPlayers() if player != eventPlayer and player.hasBase and player.statsMoneyBase != 0 and (not (player.isInBase and not enableOccupiedStealing))]
+            tmpBaseOwners = getAllPlayers().filter(lambda player: player != eventPlayer and player.hasBase and player.statsMoneyBase != 0 and (not (player.isInBase and not enableOccupiedStealing)))
             for stealingBaseOwnerIterator in range(len(tmpBaseOwners)):
                 if distance(eventPlayer.getPosition(), tmpBaseOwners[stealingBaseOwnerIterator].playerBaseLocation) <= 3.5:
                     eventPlayer.stealingFrom = tmpBaseOwners[stealingBaseOwnerIterator]
@@ -1403,7 +1403,7 @@ rule "gold miner loop":
     @Condition eventPlayer.statsMoneySec != 0
     
     while true:
-        if eventPlayer.hasBase and eventPlayer.isAlive() and not eventPlayer in [player.stealingFrom for player in getAllPlayers()] and not eventPlayer.isMovingBase and not eventPlayer.isInBase:
+        if eventPlayer.hasBase and eventPlayer.isAlive() and not eventPlayer in getAllPlayers().map(lambda player: player.stealingFrom) and not eventPlayer.isMovingBase and not eventPlayer.isInBase:
             if eventPlayer.statsMoneyBase < eventPlayer.statsMoneyStorage:
                 eventPlayer.scoreArray[2] += eventPlayer.tmpMoneyDifference
                 eventPlayer.statsMoneyBase += eventPlayer.statsMoneySec
@@ -1787,9 +1787,9 @@ def setBaseLocation():
     if distance(eventPlayer.getPosition(), nearestWalkablePosition(eventPlayer.getPosition())) > 8 and not disableNwpCheck:
         goto lbl_5
     #prevent placing base on cars
-    if getCurrentMap() == Map.KANEZAKA and eventPlayer.getPosition().y > 13 and eventPlayer.getPosition().z > 24:
+    if __getCurrentMap__() == Map.KANEZAKA and eventPlayer.getPosition().y > 13 and eventPlayer.getPosition().z > 24:
         goto lbl_6
-    if getCurrentMap() == Map.OASIS_CITY_CENTER:
+    if __getCurrentMap__() == Map.OASIS_CITY_CENTER:
         if dotProduct(vectorTowards(vect(186.86, 0.85, 180.78), eventPlayer.getPosition()), directionFromAngles(horizontalAngleOfDirection(vect(-0.784, 0, 0.621)) + 90, 0)) < 0:
             goto lbl_7
         if dotProduct(vectorTowards(vect(102.41, 0.85, 258.16), eventPlayer.getPosition()), directionFromAngles(horizontalAngleOfDirection(vect(-0.634, 0, 0.773)) + 90, 0)) < 0:

@@ -62,6 +62,13 @@ settings
 		}
 		General
 		{
+			Anran
+			{
+				Inferno Rush Cooldown Time: 50%
+				Dancing Blaze Cooldown Time: 50%
+				Damage Dealt: 200%
+				Ultimate Generation Vermillion Ascent: 120%
+			}
 			Ashe
 			{
 				Ammunition Clip Size Scalar: 200%
@@ -71,10 +78,49 @@ settings
 			{
 				Ammunition Clip Size Scalar: 200%
 			}
+			Domina
+			{
+				Sonic Repulsors Knockback Scalar: 125%
+				Reconstruction Heal Scalar: 125%
+				Ultimate Barrier Health Scalar Panopticon: 200%
+				Ammunition Clip Size Scalar: 200%
+			}
+			Emre
+			{
+				Cyber Frag Knockback Scalar: 50%
+				Siphon Blaster Duration Scalar: 200%
+				Siphon Blaster Heat Scalar: 125%
+				Override Protocol Knockback Scalar: 150%
+				Infinite Ultimate Duration: On
+			}
+			Jetpack Cat
+			{
+				Biotic Pawjectile Range: 150%
+				Frenetic Flight Maximum Time: 200%
+				Frenetic Flight Unlimited Fuel: On
+			}
+			Mizuki
+			{
+				Katashiro Return Duration Scalar: 200%
+				Role Passives: Off
+			}
+			Vendetta
+			{
+				Warding Stance Regen Scalar: 120%
+				Whirlwind Dash Cooldown Time: 10%
+				Whirlwind Dash Distance: 120%
+				Soaring Slice Cooldown Time: 10%
+				Soaring Slice Distance: 120%
+				Ultimate Generation Sundering Blade: 120%
+			}
 			Widowmaker
 			{
 				Damage Dealt: 120%
 				Grappling Hook Cooldown Time: 10%
+			}
+			Junker Queen
+			{
+				Jagged Blade Gracie Cooldown Time: 120%
 			}
 		}
 	}

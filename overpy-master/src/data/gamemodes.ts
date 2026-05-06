@@ -425,6 +425,10 @@ export const gamemodeKw: Record<string, LocalizableString & {
         "zh-CN": "雪球死斗",
         "zh-TW": "雪球死鬥大作戰"
     },
+    "stadiumPracticeRange": {
+        "en-US": "Stadium Practice Range",
+        "zh-CN": "决斗领域",
+    }, 
     "tdm": {
         "defaultTeam1Players": 4,
         "defaultTeam2Players": 4,
@@ -464,7 +468,22 @@ export const gamemodeKw: Record<string, LocalizableString & {
         "tr-TR": "Yeti Avcısı",
         "zh-CN": "雪域狩猎",
         "zh-TW": "雪怪大作戰"
-    }
+    },
+    "assaultBalancedOverwatch": {
+        "en-US": "Assault Balanced Overwatch",
+    },
+    "controlBalancedOverwatch": {
+        "en-US": "Control Balanced Overwatch",
+    },
+    "escortBalancedOverwatch": {
+        "en-US": "Escort Balanced Overwatch",
+    },
+    "hybridBalancedOverwatch": {
+        "en-US": "Hybrid Balanced Overwatch",
+    },
+    "pushBalancedOverwatch": {
+        "en-US": "Push Balanced Overwatch",
+    },
 }
 //end-json
 ;

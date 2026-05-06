@@ -11,6 +11,8 @@ The VS Code extension includes syntax highlighting, autocompletion, and document
 ![](img/readme_autocomplete1.png)
 ![](img/readme_autocomplete2.png)
 
+The [npm package](#npm-usage) supports both JS/TS API usage and CLI usage.
+
 Join the discord for help & feedback: https://workshop.codes/discord
 
 Play around with the demo: https://zezombye.github.io/overpy/demo
@@ -21,6 +23,7 @@ Thanks to:
 - The Overtool team for providing a way to datamine all translations
 - CactusPuppy for converting OverPy to Typescript
 
+
 # Development
 
 You first need to install the [pnpm package manager](https://pnpm.io/installation). For security reasons, `npm` is not supported.
@@ -29,6 +32,57 @@ You first need to install the [pnpm package manager](https://pnpm.io/installatio
 - Build in dev and test with the demo: `pnpm run dev`
 - Build `out/overpy_standalone.js`: `pnpm run package`
 - Build and publish to prod: `pnpm run publish`
+
+# NPM usage
+
+![NPM Version](https://img.shields.io/npm/v/overpy) ![NPM Type Definitions](https://img.shields.io/npm/types/overpy)
+
+Install:
+
+- As a dependency: `pnpm i overpy`
+- Global CLI (optional): `pnpm i -g overpy`
+- One-off CLI without install: `npx overpy --help`
+
+JS/TS API usage:
+
+```js
+// JavaScript (CommonJS)
+const overpy = require("overpy");
+
+async function main() {
+    await overpy.readyPromise;
+    const compileResult = await overpy.compile(
+        'rule "hello":\n    @Event global\n    wait(1)\n',
+        "en-US",
+        process.cwd(),
+        "inline.opy"
+    );
+    console.log(compileResult.result);
+}
+
+main().catch(console.error);
+```
+
+```ts
+// TypeScript
+import * as overpy from "overpy";
+
+async function main() {
+    await overpy.readyPromise;
+    const workshopText = "rule(\"hello\") { event { Ongoing - Global; } actions { Wait(1, Ignore Condition); } }";
+    const decompiled = overpy.decompileAllRules(workshopText, "en-US");
+    console.log(decompiled);
+}
+```
+
+CLI usage:
+
+- Compile a file: `overpy compile -i script.opy -o script.txt`
+- Compile from stdin to stdout: `cat script.opy | overpy compile > script.txt`
+- Decompile a file: `overpy decompile -i workshop.txt -o script.opy`
+- Decompile from stdin to stdout: `cat workshop.txt | overpy decompile --ignore-variable-index > script.opy`
+
+Run `overpy --help` to see all options (`-l/--language`, `--root`, `--main-file`, `--ignore-variable-index`, `--ignore-subroutine-index`).
 
 # Installation
 
@@ -199,8 +253,8 @@ If a function is not in that list, then the name is the English name in camelCas
 <code>Cosine From Degrees</code>                         | <code>cosDeg()</code>
 <code>Cosine From Radians</code>                         | <code>cos()</code>
 <code>Count Of</code>                                    | <code>len()</code>
-<code>Current Array Element</code>                       | See <code>Filtered Array</code>
-<code>Current Array Index</code>                         | See <code>Filtered Array</code>
+<code>Current Array Element</code>                       | See <code>.filter()</code>
+<code>Current Array Index</code>                         | See <code>.filter()</code>
 <code>Custom Color</code>                                | <code>rgb()</code>
 <code>Custom String("Score: {0}", Score Of(Event Player))</code> | <code>"Score: {}".format(eventPlayer.getScore())</code><br>See [Strings](#strings) for more info.
 <code>Damage Modification Count</code>                   | <code>getNumberOfDamageModificationIds()</code>
@@ -210,13 +264,13 @@ If a function is not in that list, then the name is the English name in camelCas
 <code>Disable Movement Collision With Players</code>     | <code><i>player</i>.disablePlayerCollision()</code>
 <code>Divide(A, 3)</code> | <code>A / 3</code>
 <code>Down</code>                                        | <code>Vector.DOWN</code>
-<code>Else</code>                                        | <code>else:</code>
+<code>Else</code>                                        | <code>else:</code>  
 <code>Else If</code>                                     | <code>elif:</code>
 <code>Empty Array</code>                                 | <code>[]</code>
 <code>End</code>                                         | Go back a level of indentation
 <code>Entity Count</code>                                | <code>getNumberOfEntityIds()</code>
 <code>Evaluate Once</code>                               | <code>evalOnce()</code>
-<code>Filtered Array(<i>array</i>, Current Array Element == 2)</code><br><code>Filtered Array(<i>array</i>, Current Array Element == 2 && Current Array Index > 4)</code> | <code>[<i>elem</i> for <i>elem</i> in <i>array</i> if <i>elem</i> == 2]</code><br><code>[<i>elem</i> for <i>elem</i>, <i>index</i> in <i>array</i> if <i>elem</i> == 2 and <i>index</i> > 4]</code><br>The <i>elem</i> and <i>index</i> variables represent <code>Current Array Element</code> and <code>Current Array Index</code> respectively. You can name them however you like.
+<code>Filtered Array(<i>array</i>, Current Array Element == 2)</code><br><code>Filtered Array(<i>array</i>, Current Array Element == 2 && Current Array Index > 4)</code> | <code><i>array</i>.filter(lambda <i>elem</i>: <i>elem</i> == 2)</code><br><code><i>array</i>.filter(lambda <i>elem</i>, <i>index</i>: <i>elem</i> == 2 and <i>index</i> > 4)</code><br>The <i>elem</i> and <i>index</i> variables represent <code>Current Array Element</code> and <code>Current Array Index</code> respectively. You can name them however you like.<br>Python-style comprehension syntax also works but is not recommended: <code>[<i>elem</i> for <i>elem</i> in <i>array</i> if <i>elem</i> == 2]</code>
 <code>First Of(<i>array</i>)</code> | <code><i>array</i>[0]</code>
 <code>For Global Variable(A, 0, 10, 1)</code><br><code>For Global Variable(A, 1, 10, 1)</code><br><code>For Global Variable(A, 0, 10, 2)</code> | <code>for A in range(10):</code><br><code>for A in range(1, 10):</code><br><code>for A in range(0, 10, 2)</code><br>The step can be omitted if it is 1, and the start can be omitted if it is 0 and step is 1.
 <code>For Player Variable(Event Player, A, 1, 10, 2)</code> | <code>for eventPlayer.A in range(1, 10, 2):</code>
@@ -235,8 +289,8 @@ If a function is not in that list, then the name is the English name in camelCas
 <code>Is Button Held</code>                              | <code><i>player</i>.isHoldingButton()</code>
 <code>Is In Line of Sight</code>                         | <code>isInLoS()</code>
 <code>Is Portrait On Fire</code>                         | <code><i>player</i>.isOnFire()</code>
-<code>Is True For All(<i>array</i>, Current Array Element == 2)</code> | <code>all([<i>elem</i> == 2 for <i>elem</i> in <i>array</i>])</code>
-<code>Is True For Any(<i>array</i>, Current Array Element == 2 && Current Array Index > 4)</code> | <code>any([<i>elem</i> == 2 and <i>idx</i> > 4 for <i>elem</i>, <i>idx</i> in <i>array</i>])</code><br>Also see Filtered Array.
+<code>Is True For All(<i>array</i>, Current Array Element == 2)</code> | <code><i>array</i>.all(lambda <i>elem</i>: <i>elem</i> == 2)</code><br>Python-style syntax also works but is not recommended: <code>all([<i>elem</i> == 2 for <i>elem</i> in <i>array</i>])</code>
+<code>Is True For Any(<i>array</i>, Current Array Element == 2 && Current Array Index > 4)</code> | <code><i>array</i>.any(lambda <i>elem</i>, <i>idx</i>: <i>elem</i> == 2 and <i>idx</i> > 4)</code><br>Python-style syntax also works but is not recommended: <code>any([<i>elem</i> == 2 and <i>idx</i> > 4 for <i>elem</i>, <i>idx</i> in <i>array</i>])</code>
 <code>Last Of(<i>array</i>)</code>                                     | <code><i>array</i>.last()</code>
 <code>Left</code>                                        | <code>Vector.LEFT</code>
 <code>Loop If(A == 2)</code>                                     | <code>if A == 2:</code><br><code>&nbsp;&nbsp;&nbsp;&nbsp;loop()</code>
@@ -244,7 +298,7 @@ If a function is not in that list, then the name is the English name in camelCas
 <code>Loop If Condition Is True</code>                   | <code>if ruleCondition:</code><br><code>&nbsp;&nbsp;&nbsp;&nbsp;loop()</code>
 <code>Magnitude Of</code>                                | <code>magnitude()</code>
 <code>Map(Workshop Island)</code>                                         | <code>Map.WORKSHOP_ISLAND</code>
-<code>Mapped Array(<i>array</i>, Current Array Element + 2)</code><br><code>Mapped Array(<i>array</i>, Current Array Element * Current Array Index)</code> | <code>[<i>elem</i>+2 for <i>elem</i> in <i>array</i>]</code><br><code>[<i>elem</i> * <i>idx</i> for <i>elem</i>,<i>idx</i> in <i>array</i>]</code>
+<code>Mapped Array(<i>array</i>, Current Array Element + 2)</code><br><code>Mapped Array(<i>array</i>, Current Array Element * Current Array Index)</code> | <code><i>array</i>.map(lambda <i>elem</i>: <i>elem</i>+2)</code><br><code><i>array</i>.map(lambda <i>elem</i>, <i>idx</i>: <i>elem</i> * <i>idx</i>)</code><br>Python-style comprehension syntax also works but is not recommended: <code>[<i>elem</i>+2 for <i>elem</i> in <i>array</i>]</code>
 <code>Modify Global Variable(A, Add, 2)</code>                      | <code>A += 2</code>
 <code>Modify Global Variable(A, Append To Array, 2)</code>                      | <code>A.append(2)</code>
 <code>Modify Global Variable(A, Divide, 2)</code>                      | <code>A /= 2</code>
@@ -558,9 +612,9 @@ The `#!optimizeForSize` directive prioritizes lowering the number of elements ov
 
 The `#!optimizeStrict` directive disables some optimizations that may cause issues in extreme cases of type conversion. For example:
 
-- A*0 can return vect(0,0,0) instead of 0
-- A+0 and A*1 can return 0 if A is not a number
-- A or true should return A instead of true if A is truthy
+- `A*0` can return `vect(0,0,0)` instead of `0`
+- `A+0` and `A*1` can return `0` if `A` is not a number
+- `A or true` should return `A` instead of `true` if `A` is truthy
 
 Those optimizations (and others) will be disabled so that the behavior of the gamemode will not be altered.
 
@@ -709,6 +763,33 @@ If an enum member is not given a value, it will take the previous value plus 1 (
 You can use `len(GameStatus)` to have the amount of values in the enum and `GameStatus.toArray()` to get an array of the values. This is useful to iterate on the values.
 
 Note that enum members are inlined, so if you use a value such as `getAllPlayers()` that changes during a game, the value of the enum will also change.
+
+## #!postCompileHook
+
+Runs a JavaScript post-processing script after OverPy finishes compilation. This can effectively resolve certain compilation errors caused by language translation.
+
+```hs
+#!postCompileHook "hooks/postCompileHook.js"
+```
+
+### How it works:
+
+- The compiled Workshop text is exposed to the script as a `content` variable.
+- The final value produced by the script is used as the final compiled output.
+- The hook path is resolved from the main file root path (the compile `rootPath`).
+- Only one `#!postCompileHook` directive can be defined per compilation.
+
+Example `hooks/postCompileHook.js`:
+
+```js
+content = content.replace(/abc/g, "def");
+
+// If the last operation returns an interpreter object,
+// force a plain string as final output.
+content.toString();
+```
+
+The hook script does not need to declare a wrapper function; writing statements that transform `content` is enough.
 
 # Advanced constructs
 

@@ -10,9 +10,11 @@ import { postInitialLoad, rootPath, overpyTemplate } from "./globalVars";
 import { allFuncList, constantValuesCompLists, defaultCompList, fillAutocompletionAstMacros, fillAutocompletionConstants, fillAutocompletionEnums, fillAutocompletionMacros, fillAutocompletionSubroutines, fillAutocompletionVariables, memberCompletionItems, metaRuleParamsCompList, preprocessingDirectivesList, refreshAutoComplete, setActivatedExtensions, setAvailableExtensionPoints, setSpentExtensionPoints, stringEntitiesCompList } from "./autocomplete";
 import { Argument, CompilationDiagnostic, OWLanguage, ow_languages } from "./types.d";
 import { OpyError as OverpyError } from "./utils/logging";
+import { initializeQuickJSRuntime } from "./quickjs";
 
 export function activate(context: vscode.ExtensionContext) {
     postInitialLoad();
+    void initializeQuickJSRuntime();
     const diagnostics = vscode.languages.createDiagnosticCollection('opy');
 
     vscode.commands.registerCommand("overpy.insertTemplate", () => {
@@ -270,10 +272,10 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 export function showOverPyExtensionError(message: string): void {
-    vscode.window.showErrorMessage(`Error: ${message}. Please ensure the code is copied directly from Overwatch. If it is, contact CactusPuppy about this.`);
+    vscode.window.showErrorMessage(`Error: ${message}. Please ensure the code is copied directly from Overwatch. If so, send a message in #hll-scripting about this.`);
 }
 
-async function applyCompilationDiagnostics(diagnostics: vscode.DiagnosticCollection, content: CompilationDiagnostic[]) {
+function applyCompilationDiagnostics(diagnostics: vscode.DiagnosticCollection, content: CompilationDiagnostic[]) {
     const apply = new Map<string, vscode.Diagnostic[]>;
 
     // Collect all diagnostics first.
@@ -310,7 +312,7 @@ async function applyCompilationDiagnostics(diagnostics: vscode.DiagnosticCollect
 
     // Apply all diagnostics at once.
     for (const [fileName, list] of apply.entries()) {
-        const uri = vscode.Uri.parse("file:///" + fileName);
+        const uri = vscode.Uri.file(fileName);
         diagnostics.set(uri, list);
     }
 }

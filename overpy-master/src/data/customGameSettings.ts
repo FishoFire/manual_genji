@@ -210,7 +210,7 @@ export const customGameSettingsSchema: CustomGameSettingSchema =
             "projectiles": {
                 "points": 4,
 
-                "guid": "00000000C991",
+                "guid": "000000019736",
                 "en-US": "Projectiles",
                 "de-DE": "Projektile",
                 "es-ES": "Proyectiles",
@@ -222,7 +222,7 @@ export const customGameSettingsSchema: CustomGameSettingSchema =
                 "ru-RU": "Снаряды",
                 "th-TH": "โพรเจกไทล์",
                 "tr-TR": "Atılır Cisimler",
-                "zh-CN": "飞弹",
+                "zh-CN": "弹道",
                 "zh-TW": "拋射物",
                 "fr-FR": "Projectiles",
                 "ko-KR": "Projectiles"
@@ -805,6 +805,7 @@ export const customGameSettingsSchema: CustomGameSettingSchema =
                         "max": 500,
                         "default": 100,
                         "en-US": "Perk Generation",
+                        "zh-CN": "威能充能速度",
                     },
                     "tankPassiveHealthBonus": {
                         "values": {
@@ -880,6 +881,10 @@ export const customGameSettingsSchema: CustomGameSettingSchema =
                         "tr-TR": "Tank Rolü Pasif Can Bonusu",
                         "zh-CN": "重装职责被动生命值加成",
                         "zh-TW": "肉盾角色類型被動生命值加成"
+                    },
+                    "teamOverlay": {
+                        "values": "__boolOnOff__",
+                        "en-US": "Team Overlay",
                     },
                     "disabledMaps": {
                         "guid": "000000010041",
@@ -3094,6 +3099,72 @@ export const customGameSettingsSchema: CustomGameSettingSchema =
                     }
                 }
             },
+            "stadiumPracticeRange": {
+                "values": {
+                    "spawnTrainingBots": {
+                        "values": "__boolOnOff__",
+                        "default": "on",
+                        "guid": "00000000EC7E",
+                        "en-US": "Spawn Training Bots",
+                        "de-DE": "Trainingsbots erscheinen lassen",
+                        "es-ES": "Poner robots de entrenamiento",
+                        "es-MX": "Reaparición de robots de entrenamiento",
+                        "fr-FR": "Générer des robots d’entraînement",
+                        "it-IT": "Generazione Addestra-bot",
+                        "ja-JP": "トレーニング・ボット リスポーン",
+                        "ko-KR": "훈련용 봇 생성",
+                        "pl-PL": "Odrodź boty treningowe",
+                        "pt-BR": "Gerar bots de treinamento",
+                        "ru-RU": "Возродить тренировочных роботов",
+                        "th-TH": "เรียกบอทฝึกฝน",
+                        "tr-TR": "Talim Robotu Yaratımı",
+                        "zh-CN": "刷新训练机器人",
+                        "zh-TW": "產生訓練機器人"
+                    },
+                    "trainingBotsRespawnTime%": {
+                        "values": "__percent__",
+                        "min": 10,
+                        "max": 500,
+                        "default": 100,
+                        "guid": "00000000F0CC",
+                        "en-US": "Training Bot Respawn Time Scalar",
+                        "de-DE": "Wiederbelebungszeit von Trainingsbots",
+                        "es-ES": "Tiempo de reaparición de robot de entrenamiento",
+                        "es-MX": "Escala de tiempo de reaparición de robot de entrenamiento",
+                        "fr-FR": "Temps de réapparition des robots d’entraînement",
+                        "it-IT": "Frequenza di ricomparsa degli Addestra-bot",
+                        "ja-JP": "トレーニング・ボット リスポーン時間スカラー",
+                        "ko-KR": "훈련용 봇 재생성 시간 조정",
+                        "pl-PL": "Skalowanie czasu odświeżania botów treningowych",
+                        "pt-BR": "Tempo escalar de ressurgimento de bots de treinamento",
+                        "ru-RU": "Время возрождения тренировочных роботов",
+                        "th-TH": "ปรับเวลาเกิดใหม่เกิดใหม่ของบอทฝึกฝน",
+                        "tr-TR": "Talim Robotu Yeniden Doğma Süre Skaleri",
+                        "zh-CN": "训练机器人刷新时间",
+                        "zh-TW": "訓練機器人重生時間"
+                    },
+                    "enableTrainingPartner": {
+                        "values": "__boolOnOff__",
+                        "default": "on",
+                        "guid": "0000000105D8",
+                        "en-US": "Training Partner",
+                        "de-DE": "Trainingspartner",
+                        "es-ES": "Pareja de entrenamiento",
+                        "es-MX": "Compañero de entrenamiento",
+                        "fr-FR": "Partenaire d’entraînement",
+                        "it-IT": "Assistente d'Addestramento",
+                        "ja-JP": "トレーニング・パートナー",
+                        "ko-KR": "훈련 상대",
+                        "pl-PL": "Partner treningowy",
+                        "pt-BR": "Parceiro de Treinamento",
+                        "ru-RU": "Спарринг-партнер",
+                        "th-TH": "คู่หูฝึกฝน",
+                        "tr-TR": "Talim Arkadaşı",
+                        "zh-CN": "训练伙伴",
+                        "zh-TW": "訓練夥伴"
+                    }
+                }
+            },
             "junkenstein": {
                 "values": {
                     "difficulty": {
@@ -4506,6 +4577,7 @@ export const customGameSettingsSchema: CustomGameSettingSchema =
                         "baptiste",
                         "bastion",
                         "doomfist",
+                        "emre",
                         "genji",
                         "junkrat",
                         "mauga",
@@ -4543,6 +4615,7 @@ export const customGameSettingsSchema: CustomGameSettingSchema =
                         "baptiste",
                         "bastion",
                         "doomfist",
+                        "emre",
                         "genji",
                         "junkrat",
                         "moira",
@@ -4848,6 +4921,9 @@ export const customGameSettingsSchema: CustomGameSettingSchema =
                     "guid": "000000005B4B",
                     "values": "__boolOnOff__",
                     "default": "on",
+                    "exclude": [
+                        "mauga",
+                    ],
                     "en-US": "Primary Fire",
                     "de-DE": "Primärer Feuermodus",
                     "es-ES": "Disparo principal",
@@ -4948,6 +5024,12 @@ export const customGameSettingsSchema: CustomGameSettingSchema =
                     "tr-TR": "Pasif Can Yenileme",
                     "zh-CN": "被动生命值恢复",
                     "zh-TW": "生命值再生被動技能"
+                },
+                "enableRolePassive": {
+                    "values": "__boolOnOff__",
+                    "default": "on",
+                    "en-US": "Role Passives",
+                    "zh-CN": "职责被动"
                 }
             },
             "__eachHero__": {
@@ -5230,7 +5312,7 @@ export const customGameSettingsSchema: CustomGameSettingSchema =
                         "orisa",
                         "pharah",
                         "reinhardt",
-                        "roadhog",
+                        "sierra",
                         "sigma",
                         "sojourn",
                         "soldier",
@@ -5267,14 +5349,16 @@ export const customGameSettingsSchema: CustomGameSettingSchema =
                         "bastion",
                         "brigitte",
                         "doomfist",
+                        "domina",
                         "echo",
                         "freja",
-                        "junkerQueen",
                         "lucio",
+                        "mizuki",
                         "orisa",
                         "pharah",
                         "reinhardt",
                         "roadhog",
+                        "sierra",
                         "sigma",
                         "soldier",
                         "sombra",
@@ -5334,9 +5418,11 @@ export const customGameSettingsSchema: CustomGameSettingSchema =
                     "include": [
                         "brigitte",
                         "dva",
+                        "jetpackCat",
                         "roadhog",
                         "reinhardt",
-                        "sigma"
+                        "sigma",
+                        "wuyang"
                     ],
                     "guid": "000000005B3F",
                     "en-US": "%1$s Recharge Rate",
@@ -5360,6 +5446,7 @@ export const customGameSettingsSchema: CustomGameSettingSchema =
                     "values": "__boolOnOff__",
                     "default": "on",
                     "include": [
+                        "anran",
                         "baptiste",
                         "genji",
                         "illari",
@@ -5368,7 +5455,7 @@ export const customGameSettingsSchema: CustomGameSettingSchema =
                         "mei",
                         "mercy",
                         "moira",
-                        "sojourn",
+                        "roadhog",
                         "symmetra",
                         "torbjorn",
                         "winston",
@@ -5851,6 +5938,72 @@ export const customGameSettingsSchema: CustomGameSettingSchema =
                     }
                 }
             },
+            "domina": {
+                "values": {
+                    "ability1KB%": {
+                        "values": "__percent__",
+                        "min": 25,
+                        "max": 300,
+                        "default": 100,
+                        "en-US": "Sonic Repulsors Knockback Scalar",
+                        "zh-CN": "音速斥力场击退倍率",
+                        "zh-TW": "音波反斥器擊退距離"
+                    },
+                    "passiveHeal%": {
+                        "values": "__percent__",
+                        "min": 10,
+                        "max": 500,
+                        "default": 100,
+                        "en-US": "Reconstruction Heal Scalar",
+                        "zh-CN": "护盾重构治疗量倍率",
+                        "zh-TW": "重組治療量"
+                    },
+                    "ultBarrierHealth%": {
+                        "values": "__percent__",
+                        "min": 10,
+                        "max": 500,
+                        "default": 100,
+                        "en-US": "Ultimate Barrier Health Scalar Panopticon",
+                        "zh-CN": "终极技能屏障生命值倍率（全景牢笼）"
+                    }
+                }
+            },
+            "emre": {
+                "values": {
+                    "ability2Kb%": {
+                        "values": "__percent__",
+                        "min": 25,
+                        "max": 300,
+                        "default": 100,
+                        "en-US": "Cyber Frag Knockback Scalar",
+                        "zh-CN": "赛博手雷击退倍率"
+                    },
+                    "ability1Duration%": {
+                        "values": "__percent__",
+                        "min": 10,
+                        "max": 500,
+                        "default": 100,
+                        "en-US": "Siphon Blaster Duration Scalar",
+                        "zh-CN": "虹吸冲击枪持续时间倍率"
+                    },
+                    "ability1Heat%": {
+                        "values": "__percent__",
+                        "min": 0,
+                        "max": 500,
+                        "default": 100,
+                        "en-US": "Siphon Blaster Heat Scalar",
+                        "zh-CN": "虹吸冲击枪热量倍率"
+                    },
+                    "ultKb%": {
+                        "values": "__percent__",
+                        "min": 25,
+                        "max": 300,
+                        "default": 100,
+                        "en-US": "Override Protocol Knockback Scalar",
+                        "zh-CN": "覆盖协议击退倍率"
+                    }
+                }
+            },
             "freja": {
                 "values": {
                     "secondaryFireDuration%": {
@@ -5859,6 +6012,7 @@ export const customGameSettingsSchema: CustomGameSettingSchema =
                         "max": 300,
                         "default": 100,
                         "en-US": "Take Aim Duration",
+                        "zh-CN": "瞄准射击持续时间"
                     },
                     "ability1Distance%": {
                         "values": "__percent__",
@@ -5866,6 +6020,7 @@ export const customGameSettingsSchema: CustomGameSettingSchema =
                         "max": 200,
                         "default": 100,
                         "en-US": "Quick Dash Distance",
+                        "zh-CN": "疾冲距离"
                     },
                     "ability2Height%": {
                         "values": "__percent__",
@@ -5873,6 +6028,7 @@ export const customGameSettingsSchema: CustomGameSettingSchema =
                         "max": 150,
                         "default": 100,
                         "en-US": "Updraft Height",
+                        "zh-CN": "上升气流高度"
                     }
                 }
             },
@@ -5994,8 +6150,44 @@ export const customGameSettingsSchema: CustomGameSettingSchema =
                     }
                 }
             },
+            "jetpackCat": {
+                "values": {
+                    "primaryFireRange%": {
+                        "values": "__percent__",
+                        "min": 10,
+                        "max": 500,
+                        "default": 100,
+                        "en-US": "Biotic Pawjectile Range",
+                        "zh-CN": "生物猫爪弹射程"
+                    },
+                    "secondaryFireMaximumTime%": {
+                        "values": "__percent__",
+                        "min": 20,
+                        "max": 500,
+                        "default": 100,
+                        "en-US": "Frenetic Flight Maximum Time",
+                        "zh-CN": "咻咻飞最大时间",
+                    },
+                    "enablePassiveUnlimitedFuel": {
+                        "values": "__boolOnOff__",
+                        "default": "off",
+                        "en-US": "Frenetic Flight Unlimited Fuel",
+                        "zh-CN": "咻咻飞无限燃料",
+                        "zh-TW": "狂飆飛貓無限燃料"
+                    }
+                }
+            },
             "junkerQueen": {
                 "values": {
+                    "secondaryFireCooldown%": {
+                        "values": "__percent__",
+                        "min": 0,
+                        "max": 500,
+                        "default": 100,
+                        "en-US": "Jagged Blade Gracie Cooldown Time",
+                        "zh-CN": "锯齿利刃（格雷西）冷却时间",
+                        "zh-TW": "鋸刃（格雷西）冷卻時間"
+                    },
                     "secondaryFireKb%": {
                         "values": "__percent__",
                         "min": 0,
@@ -6489,6 +6681,18 @@ export const customGameSettingsSchema: CustomGameSettingSchema =
                     }
                 }
             },
+            "mizuki": {
+                "values": {
+                    "ability1Duration%": {
+                        "values": "__percent__",
+                        "min": 10,
+                        "max": 500,
+                        "default": 100,
+                        "en-US": "Katashiro Return Duration Scalar",
+                        "zh-CN": "替魂纸人持续时间倍率"
+                    }
+                }
+            },
             "moira": {
                 "values": {
                     "ability2MaxDamage%": {
@@ -6576,7 +6780,7 @@ export const customGameSettingsSchema: CustomGameSettingSchema =
                         "ru-RU": "Скорость восполнения биотической энергии",
                         "th-TH": "อัตราการรีชาร์จพลังงานชีวภาพ",
                         "tr-TR": "Biyotik Enerji Dolum Oranı",
-                        "zh-CN": "生化能量回复速度",
+                        "zh-CN": "生化能量恢复速度",
                         "zh-TW": "生化能量恢復速率"
                     }
                 }
@@ -6898,6 +7102,18 @@ export const customGameSettingsSchema: CustomGameSettingSchema =
                         "tr-TR": "Domuz Çevirme Geri İtme Skaleri",
                         "zh-CN": "鸡飞狗跳击退倍率",
                         "zh-TW": "火力全開擊退距離"
+                    }
+                }
+            },
+            "sierra": {
+                "values": {
+                    "ability2Kb%": {
+                        "values": "__percent__",
+                        "min": 0,
+                        "max": 400,
+                        "default": 100,
+                        "en-US": "Tremor Charge Knockback Scalar",
+                        "zh-CN": "震地手雷击退倍率",
                     }
                 }
             },
@@ -7385,6 +7601,34 @@ export const customGameSettingsSchema: CustomGameSettingSchema =
                     }
                 }
             },
+            "vendetta": {
+                "values": {
+                    "secondaryFireRechargeRate%": {
+                        "values": "__percent__",
+                        "min": 10,
+                        "max": 500,
+                        "default": 100,
+                        "en-US": "Warding Stance Regen Scalar",
+                        "zh-CN": "招架姿态恢复倍率"
+                    },
+                    "ability1Distance%": {
+                        "values": "__percent__",
+                        "min": 10,
+                        "max": 500,
+                        "default": 100,
+                        "en-US": "Whirlwind Dash Distance",
+                        "zh-CN": "旋风疾步距离"
+                    },
+                    "ability2Distance%": {
+                        "values": "__percent__",
+                        "min": 10,
+                        "max": 500,
+                        "default": 100,
+                        "en-US": "Soaring Slice Distance",
+                        "zh-CN": "飞空斩击距离"
+                    },
+                },
+            },
             "venture": {
                 "values": {
                     "ability1Duration%": {
@@ -7406,7 +7650,7 @@ export const customGameSettingsSchema: CustomGameSettingSchema =
                         "ru-RU": "Длительность закапывания",
                         "th-TH": "ปรับระยะเวลาเบอร์โรว์",
                         "tr-TR": "Battıçıktı Süresi Skaleri",
-                        "zh-CN": "钻地持续时间",
+                        "zh-CN": "钻地持续时间倍率",
                         "zh-TW": "鑽地持續時間"
                     }
                 }
@@ -7432,7 +7676,7 @@ export const customGameSettingsSchema: CustomGameSettingSchema =
                         "ru-RU": "Усиление планирования",
                         "th-TH": "ปรับระยะเวลาไกลด์บูสต์",
                         "tr-TR": "Süzülme Desteği Süresi Skaleri",
-                        "zh-CN": "滑翔推进持续时间",
+                        "zh-CN": "滑翔推进持续时间倍率",
                         "zh-TW": "滑翔加速持續時間"
                     }
                 }
@@ -7555,6 +7799,34 @@ export const customGameSettingsSchema: CustomGameSettingSchema =
                         "tr-TR": "Haşin Atlayış Mesafe Skaleri",
                         "zh-CN": "狂跃距离倍率",
                         "zh-TW": "猛躍距離"
+                    }
+                }
+            },
+            "wuyang": {
+                "values": {
+                    "secondaryFireCost%": {
+                        "values": "__percent__",
+                        "min": 0,
+                        "max": 500,
+                        "default": 100,
+                        "en-US": "Restorative Stream Drain Rate",
+                        "zh-CN": "养神泉消耗速度"
+                    },
+                    "ability1Duration%": {
+                        "values": "__percent__",
+                        "min": 10,
+                        "max": 500,
+                        "default": 100,
+                        "en-US": "Rushing Torrent Duration Scalar",
+                        "zh-CN": "飞流步持续时间倍率"
+                    },
+                    "ability2Kb%": {
+                        "values": "__percent__",
+                        "min": 10,
+                        "max": 500,
+                        "default": 100,
+                        "en-US": "Guardian Wave Knockback Scalar",
+                        "zh-CN": "翻江浪击退倍率"
                     }
                 }
             }

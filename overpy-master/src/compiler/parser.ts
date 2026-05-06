@@ -18,13 +18,13 @@
 "use strict";
 
 import { constantValues } from "../data/constants";
-import { bigLettersMappings, caseSensitiveReplacements, currentArrayElementName, currentArrayIndexName, enumMembers, fullwidthMappings, operatorPrecedence, setCurrentArrayElementName, setCurrentArrayIndexName, setCurrentRuleName, setEnableTagsSetup, setFileStack, subroutines, funcKw, notConstantFunctions, rootPath, fileStack, astConstants, astMacros, astMacroLocalVariables, resetAstMacroLocalVariables, reservedNames, reservedMemberNames, DEBUG_MODE, enableTagsSetup } from "../globalVars";
+import { bigLettersMappings, caseSensitiveReplacements, currentArrayElementName, currentArrayIndexName, enumMembers, fullwidthMappings, operatorPrecedence, setCurrentArrayElementName, setCurrentArrayIndexName, setCurrentRuleName, setEnableTagsSetup, setFileStack, subroutines, funcKw, notConstantFunctions, rootPath, fileStack, astConstants, astMacros, astMacroLocalVariables, resetAstMacroLocalVariables, reservedNames, reservedMemberNames, DEBUG_MODE, enableTagsSetup, usedMaps } from "../globalVars";
 import { BaseNormalFileStackMember, OWLanguage, StringToken } from "../types";
 import { Token, tokenize } from "./tokenizer";
 import { Ast, areAstsAlwaysEqual, astContainsFunctions, getAstFor0, getAstFor1, getAstForArgDefault, getAstForCustomString, getAstForE, getAstForFalse, getAstForFucktonOfSpaces, getAstForInfinity, getAstForNull, getAstForNullVector, getAstForNumber, getAstForTeamAll, getAstForTrue, replaceFunctionInAst } from "../utils/ast";
 import { getFileContent, getFilePaths } from "file_utils";
 import { debug, error, functionNameToString, getFileStackRange, getInternalFileStack, warn } from "../utils/logging";
-import { isNumber, safeEval } from "../utils/other";
+import { isNumber } from "../utils/other";
 import { escapeString, getUtf8Length, unescapeString } from "../utils/strings";
 import { dispTokens, getTokenBracketPos, splitTokens } from "../utils/tokens";
 import { parseType } from "../utils/types";
@@ -934,6 +934,10 @@ export function parse(content: Token[], kwargs: Record<string, any> = {}): Ast {
         if (isNumber(name)) {
             //It is an int, else it would have a dot, and wouldn't be processed here.
             //It is also an unsigned int, as the negative sign is not part of the name.
+            if (name.startsWith("0x")) {
+                //Convert hex numbers to decimal. Do not do that for all numbers, to keep stuff like 1e10 which is accepted by the workshop.
+                name = parseInt(name, 16).toString();
+            }
             return new Ast("__number__", [new Ast(name, [], [], "UnsignedIntLiteral")], [], "unsigned int");
         }
 
@@ -1236,6 +1240,9 @@ function parseMember(object: Token[], member: Token[]) {
                 if (astInfo.name === "__color__" && constantValues[astInfo.type][name]?.onlyInOverpy) {
                     return new Ast("rgb", [getAstForNumber(constantValues[astInfo.type][name].red ?? 0), getAstForNumber(constantValues[astInfo.type][name].green ?? 0), getAstForNumber(constantValues[astInfo.type][name].blue ?? 0), getAstForNumber(constantValues[astInfo.type][name].alpha ?? 255)]);
                 }
+                if (astInfo.name === "__map__") {
+                    usedMaps.add(name.toLowerCase());
+                }
                 return new Ast(astInfo.name, [new Ast(name, [], [], astInfo.type)]);
                 //Check the pseudo-enum "math"
             } else if (object[0].text === "Math") {
@@ -1347,6 +1354,61 @@ function parseMember(object: Token[], member: Token[]) {
             stringAst.fileStack = getFileStackRange(object.concat(...member));
             return stringAst;
         } else {
+            //Array member functions that take a lambda: .map, .filter, .all, .any
+            if (["map", "filter", "all", "any"].includes(name) && args !== null) {
+                //Lazy & dirty way of properly parsing ".map(lambda a,b: z)" as the parser also splits on the comma on "lambda a,b".
+                if (args.length === 2) {
+                    args[0].push({ text: ",", fileStack: [] });
+                    args[0].push(...args[1]);
+                    args = args.slice(0, 1);
+                }
+                if ((name === "all" || name === "any") && args.length === 0) {
+                    //No argument: default to current array element
+                    let result = new Ast("__"+name+"__", [parse(object), new Ast("__currentArrayElement__")]);
+                    result.fileStack = getFileStackRange(object.concat(...member));
+                    return result;
+                }
+
+                if (args.length !== 1) {
+                    error("Function '." + name + "' takes 1 argument (a lambda expression), received " + args.length);
+                }
+                var lambdaArgs = splitTokens(args[0], ":");
+                if (lambdaArgs.length !== 2) {
+                    error("Syntax for ." + name + "() is '." + name + "(lambda x: expression(x))'");
+                }
+                if (lambdaArgs[0].length < 2) {
+                    error("Expected 'lambda x' before ':'");
+                }
+                if (lambdaArgs[0][0].text !== "lambda") {
+                    error("Expected 'lambda x' before ':'");
+                }
+                if (lambdaArgs[0].length === 2) {
+                    setCurrentArrayElementName(lambdaArgs[0][1].text);
+                    setCurrentArrayIndexName("");
+                } else if (lambdaArgs[0].length === 4) {
+                    if (lambdaArgs[0][2].text !== ",") {
+                        error("Expected ',' after '" + lambdaArgs[0][1].text + "', but found '" + lambdaArgs[0][2].text, lambdaArgs[0][2].fileStack);
+                    }
+                    setCurrentArrayElementName(lambdaArgs[0][1].text);
+                    setCurrentArrayIndexName(lambdaArgs[0][3].text);
+                } else {
+                    error("Expected 1 or 3 tokens after 'lambda', but got " + (lambdaArgs[0].length - 1), lambdaArgs[0][0].fileStack);
+                }
+
+                var lambdaBody = parse(lambdaArgs[1]);
+                setCurrentArrayElementName("");
+                setCurrentArrayIndexName("");
+
+                let result = new Ast({
+                    "map": "__mappedArray__",
+                    "filter": "__filteredArray__",
+                    "all": "__all__",
+                    "any": "__any__",
+                }[name as "map" | "filter" | "all" | "any"], [parse(object), lambdaBody]);
+                result.fileStack = getFileStackRange(object.concat(...member));
+                return result;
+            }
+
             //Assume it is a generic member function
 
             //old functions

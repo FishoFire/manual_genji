@@ -99,6 +99,22 @@ export const heroKw: Record<Overwatch2Heroes, HeroData> =
         "pl-PL": "Ana",
         "pt-BR": "Ana"
     },
+    "anran": {
+        "ability1": {
+            "en-US": "Inferno Rush",
+            "zh-CN": "怒炎冲"
+        },
+        "ability2": {
+            "en-US": "Dancing Blaze",
+            "zh-CN": "熠闪舞"
+        },
+        "ultimate": {
+            "en-US": "Vermillion Ascent",
+            "zh-CN": "朱羽焚"
+        },
+        "en-US": "Anran",
+        "zh-CN": "安燃"
+    },
     "ashe": {
         "guid": "00000000832E",
         "ability1": {
@@ -585,6 +601,41 @@ export const heroKw: Record<Overwatch2Heroes, HeroData> =
         "it-IT": "Doomfist",
         "pt-BR": "Doomfist"
     },
+    "domina":{
+        "passive": {
+            "en-US": "Reconstruction",
+            "zh-CN": "护盾重构",
+            "zh-TW": "重組"
+        },
+        "primaryFire": {
+            "en-US": "Photon Magnum",
+            "zh-CN": "光子马格南",
+            "zh-TW": "光子麥格農"
+        },
+        "secondaryFire": {
+            "en-US": "Barrier Array",
+            "zh-CN": "屏障阵列",
+            "zh-TW": "屏障陣列"
+        },
+        "ability1": {
+            "en-US": "Sonic Repulsors",
+            "zh-CN": "音速斥力场",
+            "zh-TW": "音波反斥器"
+        },
+        "ability2": {
+            "en-US": "Crystal Charge",
+            "zh-CN": "爆能水晶",
+            "zh-TW": "晶體炸彈"
+        },
+        "ultimate": {
+            "en-US": "Panopticon",
+            "zh-CN": "全景牢笼",
+            "zh-TW": "全景光牢"
+        },
+        "en-US": "Domina",
+        "zh-CN": "金驭",
+        "zh-TW": "多米娜"
+    },
     "dva": {
         "guid": "0000000002E2",
         "secondaryFire": {
@@ -782,6 +833,26 @@ export const heroKw: Record<Overwatch2Heroes, HeroData> =
         "pl-PL": "Echo",
         "pt-BR": "Echo",
         "tr-TR": "Echo"
+    },
+    "emre": {
+        "en-US": "Emre",
+        "zh-CN": "埃姆雷",
+        "zh-TW": "伊默",
+        "ability1": {
+            "en-US": "Siphon Blaster",
+            "zh-CN": "虹吸冲击枪",
+            "zh-TW": "虹吸爆能槍",
+        },
+        "ability2": {
+            "en-US": "Cyber Frag",
+            "zh-CN": "赛博手雷",
+            "zh-TW": "生化手榴彈",
+        },
+        "ultimate": {
+            "en-US": "Override Protocol",
+            "zh-CN": "覆盖协议",
+            "zh-TW": "覆寫協定",
+        }
     },
     "freja": {
         "en-US": "Freja",
@@ -1150,10 +1221,35 @@ export const heroKw: Record<Overwatch2Heroes, HeroData> =
         "pt-BR": "Hanzo",
         "tr-TR": "Hanzo"
     },
+    "jetpackCat": {
+        "en-US": "Jetpack Cat",
+        "zh-CN": "飞天猫",
+        "zh-TW": "火箭貓",
+        "secondaryFire": {
+            "en-US": "Frenetic Flight",
+            "zh-CN": "咻咻飞",
+            "zh-TW": "狂飆飛貓",
+        },
+        "ability1": {
+            "en-US": "Lifeline",
+            "zh-CN": "救生索",
+            "zh-TW": "救生索",
+        },
+        "ability2": {
+            "en-US": "Purr",
+            "zh-CN": "呼噜噜",
+            "zh-TW": "呼嚕",
+        },
+        "ultimate": {
+            "en-US": "Catnapper",
+            "zh-CN": "猫猫劫",
+            "zh-TW": "貓的綁架",
+        }
+    },
     "junkerQueen": {
         "secondaryFire": {
             "guid": "00000000D3A4",
-            "en-US": "Jagged Blade",
+            "en-US": "Jagged Blade Gracie",
             "de-DE": "Gezackte Klinge",
             "es-ES": "Cuchilla dentada",
             "es-MX": "Hoja dentada",
@@ -1744,6 +1840,31 @@ export const heroKw: Record<Overwatch2Heroes, HeroData> =
         "pt-BR": "Mercy",
         "tr-TR": "Mercy"
     },
+    "mizuki": {
+        "en-US": "Mizuki",
+        "zh-CN": "瑞稀",
+        "zh-TW": "瑞稀",
+        "secondaryFire": {
+            "en-US": "Healing Kasa",
+            "zh-CN": "疗魂斗笠",
+            "zh-TW": "治癒之笠",
+        },
+        "ability1": {
+            "en-US": "Katashiro Return",
+            "zh-CN": "替魂纸人",
+            "zh-TW": "形代歸返",
+        },
+        "ability2": {
+            "en-US": "Binding Chain",
+            "zh-CN": "缚魂锁链",
+            "zh-TW": "束縛鎖鏈",
+        },
+        "ultimate": {
+            "en-US": "Kekkai Sanctuary",
+            "zh-CN": "护魂结界",
+            "zh-TW": "結界護佑",
+        }
+    },
     "moira": {
         "guid": "000000006339",
         "ability1": {
@@ -2266,6 +2387,26 @@ export const heroKw: Record<Overwatch2Heroes, HeroData> =
         "pt-BR": "Roadhog",
         "tr-TR": "Roadhog"
     },
+    "sierra": {
+        "secondaryFire": {
+            "en-US": "Tracking Shot",
+            "zh-CN": "追踪弹",
+        },
+        "ability1": {
+            "en-US": "Anchor Drone",
+            "zh-CN": "锚点无人机"
+        },
+        "ability2": {
+            "en-US": "Tremor Charge",
+            "zh-CN": "震地手雷"
+        },
+        "ultimate": {
+            "en-US": "Trailblazer",
+            "zh-CN": "开路先锋"
+        },
+        "en-US": "Sierra",
+        "zh-CN": "西拉"
+    },
     "sigma": {
         "guid": "000000009E9E",
         "secondaryFire": {
@@ -2358,22 +2499,7 @@ export const heroKw: Record<Overwatch2Heroes, HeroData> =
     },
     "sojourn": {
         "secondaryFire": {
-            "guid": "00000000796B",
-            "en-US": "Railgun Alt Fire",
-            "de-DE": "Railgun – Alternativer Feuermodus",
-            "es-ES": "Disparo secundario del cañón de riel",
-            "es-MX": "Disparo secundario de Cañón de riel",
-            "fr-FR": "Canon électrique : tir alternatif",
-            "it-IT": "Fuoco Alternativo Fucile a Rotaia",
-            "ja-JP": "レールガン - サブ攻撃",
-            "ko-KR": "레일건 보조 발사",
-            "pl-PL": "Alternatywny atak Karabinu Kinetycznego",
-            "pt-BR": "Canhão Elétrico - Disparo alternativo",
-            "ru-RU": "Дополнительный режим огня рельсотрона",
-            "th-TH": "อาวุธสำรองเรลกัน",
-            "tr-TR": "Raylı Tüfek Alternatif Ateşi",
-            "zh-CN": "电磁炮辅助模式",
-            "zh-TW": "磁軌槍次要攻擊"
+            "en-US": "Charged Shot",
         },
         "ability1": {
             "guid": "000000007964",

@@ -16,16 +16,16 @@
  */
 
 import { customGameSettingsSchema } from "../data/customGameSettings";
-import { DEBUG_MODE, activatedExtensions, builtInJsFunctions, builtInJsFunctionsNbLines, fileStack, globallySuppressedWarningTypes, macros, optimizeForSize, replacementFor0, replacementFor1, replacementForTeam1, reservedNames, setOptimizationEnabled, setOptimizationForSize, setReplacementFor0, setReplacementFor1, setReplacementForTeam1, setEnableTagsSetup, translationLanguages, setTranslationLanguages, setUsePlayerVarForTranslations, setExcludeVariablesInCompilation, rootPath, setOptimizeStrict, setGenerateRuleForTranslationsPlayerVar, setGlobalvarInitRuleName, setPlayervarInitRuleName, setDisableInspector, setKeepUnusedTranslations, setDisableTranslationSourceLines } from "../globalVars";
+import { DEBUG_MODE, activatedExtensions, builtInJsFunctions, builtInJsFunctionsNbLines, fileStack, globallySuppressedWarningTypes, macros, optimizeForSize, replacementFor0, replacementFor1, replacementForTeam1, reservedNames, setOptimizationEnabled, setOptimizationForSize, setReplacementFor0, setReplacementFor1, setReplacementForTeam1, setEnableTagsSetup, translationLanguages, setTranslationLanguages, setUsePlayerVarForTranslations, setExcludeVariablesInCompilation, rootPath, setOptimizeStrict, setGenerateRuleForTranslationsPlayerVar, setGlobalvarInitRuleName, setPlayervarInitRuleName, setDisableInspector, setKeepUnusedTranslations, setDisableTranslationSourceLines, setPostCompileHook, postCompileHook } from "../globalVars";
 import { getArgs, getBracketPositions } from "../utils/decompilation";
 import { getFileContent, getFilePaths, getFilenameFromPath } from "file_utils";
 import { debug, error, warn } from "../utils/logging";
-import { getFileStackCopy, isVarChar, safeEval } from "../utils/other";
+import { getFileStackCopy, isVarChar } from "../utils/other";
 import { BaseNormalFileStackMember, FileStackMember, FunctionMacroData, MacroData, MacroFileStackMember, ScriptFileStackMember } from "../types";
 import { dispTokens } from "../utils/tokens";
 import { TranslationLanguage } from "./translations";
 import { unescapeString } from "../utils/strings";
-
+import { executeQuickJSScript } from "../quickjs";
 export class Macro {
     isFunction: boolean;
     args: unknown[];
@@ -89,6 +89,10 @@ export function tokenize(content: string): LogicalLine[] {
     let currentLine: LogicalLine = new LogicalLine();
 
     let i = 0;
+
+    // Track the fileStack position where the first unclosed bracket was opened
+    // This allows us to report accurate error locations instead of the current (modified) fileStack
+    let unclosedBracketFileStack: FileStackMember[] | undefined = undefined;
 
     function addToken(text: string) {
         if (text.length === 0) {
@@ -191,6 +195,27 @@ export function tokenize(content: string): LogicalLine[] {
                 error("Unknown extension '" + addedExtension + "', valid ones are: " + Object.keys(customGameSettingsSchema.extensions.values).join(", "));
             }
             activatedExtensions.push(addedExtension);
+            return;
+        }
+        if(content.startsWith("#!postCompileHook ")) {
+            if (postCompileHook) {
+                error("Post-compile hook is already defined");
+            }
+            let hookPath = getFilePaths(content.substring("#!postCompileHook ".length).trim(), rootPath)[0];
+            const scriptText = getFileContent(hookPath);
+            setPostCompileHook((content: string) => {
+                try {
+                    return executeQuickJSScript(`var content = ${JSON.stringify(content)};\n${scriptText}`, {
+                        filename: hookPath,
+                        kind: "postCompileHook",
+                    });
+                }  catch (e: any) {
+                    if (e instanceof Error) {
+                        addScriptErrorFileStack(e, hookPath, 1);
+                    }
+                    error(e);
+                };
+            });
             return;
         }
         if (content.startsWith("#!excludeVariablesInCompilation")) {
@@ -361,6 +386,11 @@ export function tokenize(content: string): LogicalLine[] {
         }
         if (content[i] === "(" || content[i] === "[" || content[i] === "{") {
             bracketsLevel++;
+            // Record the fileStack position when opening a bracket at level 0
+            // This is used to report accurate error locations for unclosed brackets
+            if (bracketsLevel === 1) {
+                unclosedBracketFileStack = getFileStackCopy();
+            }
             addToken(content[i]);
             continue;
         }
@@ -568,7 +598,9 @@ export function tokenize(content: string): LogicalLine[] {
     }
 
     if (bracketsLevel > 0) {
-        error("Found end of file, but a bracket isn't closed");
+        // Use the recorded fileStack to report accurate line numbers
+        // The current fileStack has been modified by moveCursor() during tokenization
+        error("Found end of file, but a bracket isn't closed", unclosedBracketFileStack);
     }
 
     if (DEBUG_MODE) {
@@ -576,6 +608,27 @@ export function tokenize(content: string): LogicalLine[] {
     }
 
     return result;
+}
+
+function addScriptErrorFileStack(errorObject: Error, scriptPath: string, lineOffset: number) {
+    if (!errorObject.stack) {
+        return;
+    }
+
+    const scriptPathPattern = scriptPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const matchRegex = new RegExp(`${scriptPathPattern}:(\\d+):(\\d+)`, "g");
+    const fileName = getFilenameFromPath(scriptPath);
+    let match: RegExpExecArray | null = null;
+    while ((match = matchRegex.exec(errorObject.stack)) !== null) {
+        fileStack.push({
+            name: fileName,
+            startLine: Math.max(1, parseInt(match[1]) - lineOffset),
+            startCol: parseInt(match[2]),
+            endLine: null,
+            endCol: null,
+            staticMember: true,
+        });
+    }
 }
 
 function resolveMacro(macro: MacroData, args: string[] = [], indentLevel: number): string {
@@ -595,40 +648,15 @@ function resolveMacro(macro: MacroData, args: string[] = [], indentLevel: number
             }
             scriptContent = vars + "\n" + scriptContent;
             scriptContent = builtInJsFunctions + scriptContent;
-            //console.log(scriptContent);
-            //console.log("owo123");
             try {
-                result = safeEval(scriptContent);
-                if (!result) {
-                    error("Script '" + getFilenameFromPath(macro.scriptPath) + "' yielded an invalid result.\nPlease note that your script should yield a primitive value (e.g. a number or a string) as the final result.");
-                }
-                result = result.toString();
+                result = executeQuickJSScript(scriptContent, {
+                    filename: macro.scriptPath,
+                    kind: "macro",
+                    lineOffset: builtInJsFunctionsNbLines,
+                });
             } catch (e: any) {
-                //console.log("aaa");
-                //console.log("b:"+e.toString());
-                //console.log("cccc");
-                let stackTrace = e.stack.split("\n").slice(1).reverse();
-                let encounteredEval = false;
-                for (let line of stackTrace) {
-                    line = line.trim();
-                    let name = line.substring("at ".length, line.indexOf("(")).trim();
-                    if (name === "eval") {
-                        name = getFilenameFromPath(macro.scriptPath);
-                        encounteredEval = true;
-                    }
-                    if (encounteredEval) {
-                        let colNb = parseInt(line.substring(line.lastIndexOf(":") + 1, line.lastIndexOf(")")));
-                        let lineNb = parseInt(line.substring(line.substring(0, line.lastIndexOf(":")).lastIndexOf(":") + 1, line.lastIndexOf(":")));
-                        lineNb -= builtInJsFunctionsNbLines;
-                        fileStack.push({
-                            name: name,
-                            startLine: lineNb,
-                            startCol: colNb,
-                            endLine: null,
-                            endCol: null,
-                            staticMember: true,
-                        });
-                    }
+                if (e instanceof Error) {
+                    addScriptErrorFileStack(e, macro.scriptPath, builtInJsFunctionsNbLines);
                 }
                 error(e);
             }

@@ -54,6 +54,12 @@ settings {
             }
         },
         "allTeams": {
+            "anran": {
+                "ability1Cooldown%": 50,
+                "ability2Cooldown%": 50,
+                "damageDealt%": 200,
+                "ultGen%": 120
+            },
             "ashe": {
                 "ammoClipSize%": 200,
                 "ultDuration%": HeroUltModifiers.ASHE
@@ -61,9 +67,42 @@ settings {
             "bastion": {
                 "ammoClipSize%": 200
             },
+            "domina": {
+                "ability1KB%": 125,
+                "passiveHeal%": 125,
+                "ultBarrierHealth%": 200,
+                "ammoClipSize%": 200
+            },
+            "emre": {
+                "ability2Kb%": 50,
+                "ability1Duration%": 200,
+                "ability1Heat%": 125,
+                "ultKb%": 150,
+                "enableInfiniteUlt": true
+            },
+            "jetpackCat": {
+                "primaryFireRange%": 150,
+                "secondaryFireMaximumTime%": 200,
+                "enablePassiveUnlimitedFuel": true
+            },
+            "mizuki": {
+                "ability1Duration%": 200,
+                "enableRolePassive": false
+            },
+            "vendetta": {
+                "secondaryFireRechargeRate%": 120,
+                "ability1Cooldown%": 10,
+                "ability1Distance%": 120,
+                "ability2Cooldown%": 10,
+                "ability2Distance%": 120,
+                "ultGen%": 120
+            },
             "widowmaker": {
                 "damageDealt%": 120,
                 "ability1Cooldown%": 10
+            },
+            "junkerQueen": {
+                "secondaryFireCooldown%": 120
             }
         }
     }

@@ -69,6 +69,10 @@ export const setMainFileName = (name: string) => (mainFileName = name);
 export var rootPath: string;
 export const setRootPath = (path: string) => (rootPath = path);
 
+//Called after compilation to transform the compiled output. Set with #!postCompileHook
+type PostCompileHook = ((content: string) => string) | null;
+export var postCompileHook: PostCompileHook = null;
+export var setPostCompileHook = (hook: PostCompileHook) => (postCompileHook = hook); 
 //Global variables used to keep track of the name for the current array element/index.
 //Should be null at the beginning and end of each rule; if not, throws an error. (for compilation and decompilation)
 export var currentArrayElementName: string;
@@ -190,6 +194,10 @@ export const setActivatedExtensions = (extensions: string[]) => (activatedExtens
 /** The amount of available extension points. */
 export var availableExtensionPoints: number;
 export const setAvailableExtensionPoints = (points: number) => (availableExtensionPoints = points);
+
+//List of used maps for the getCurrentMap() fix, in lowercase
+export var usedMaps: Set<string> = new Set();
+export const addUsedMap = (map: string) => usedMaps.add(map.toLowerCase());
 
 //Bypass for <tx> and <fg>
 export var enableTagsSetup: boolean;
@@ -323,6 +331,8 @@ export function resetGlobalVariables(language: OWLanguage) {
     disableInspector = false;
     keepUnusedTranslations = false;
     disableTranslationSourceLines = false;
+    usedMaps = new Set();
+    postCompileHook = null;
 }
 
 //Other constants
@@ -756,11 +766,14 @@ export function computeCustomGameSettingsSchema() {
     //Apply general settings to each gamemode... but not Elimination for some reason lmao
     for (var gamemode in customGameSettingsSchema.gamemodes.values) {
         if (gamemode === "elimination") {
-            for (var key of ["enabledMaps", "disabledMaps", "enableEnemyHealthBars", "gamemodeStartTrigger", "healthPackRespawnTime%", "enableKillCam", "enableKillFeed", "enableSkins", "spawnHealthPacks", "perkEliminationCatchupLevelAmount%", "perkGeneration%"]) {
+            for (var key of ["enabledMaps", "disabledMaps", "enableEnemyHealthBars", "gamemodeStartTrigger", "healthPackRespawnTime%", "enableKillCam", "enableKillFeed", "enableSkins", "spawnHealthPacks", "perkEliminationCatchupLevelAmount%", "perkGeneration%", "teamOverlay"]) {
                 customGameSettingsSchema.gamemodes.values[gamemode].values[key] = customGameSettingsSchema.gamemodes.values.general.values[key];
             }
         } else {
             Object.assign(customGameSettingsSchema.gamemodes.values[gamemode].values, customGameSettingsSchema.gamemodes.values.general.values);
+        }
+        if (gamemode.endsWith("BalancedOverwatch")) {
+            Object.assign(customGameSettingsSchema.gamemodes.values[gamemode].values, customGameSettingsSchema.gamemodes.values[gamemode.replace("BalancedOverwatch", "")].values);
         }
     }
     //Can't enable/disable maps in general
@@ -771,6 +784,7 @@ export function computeCustomGameSettingsSchema() {
     for (var gamemode in customGameSettingsSchema.gamemodes.values) {
         Object.assign(customGameSettingsSchema.gamemodes.values.general.values, customGameSettingsSchema.gamemodes.values[gamemode].values);
     }
+    customGameSettingsSchema.gamemodes.values.general.values.scoreToWin = customGameSettingsSchema.gamemodes.values.ffa.values.scoreToWin; //other gamemodes have a more restrictive "score to win" setting
 
     //Generate settings for heroes.general
     customGameSettingsSchema.heroes.values["general"] = {values: {}};
